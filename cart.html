@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/cart.css?v=20260813">
+<link rel="stylesheet" href="css/cart.css?v=20260813b">
 <style>
 .nvgh-bar{position:sticky;top:0;z-index:500;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid #e6e1dc;font-family:'Poppins',Arial,"Helvetica Neue",sans-serif}
 .nvgh-inner{max-width:1180px;margin:0 auto;padding:0 24px;height:76px;display:flex;align-items:center;justify-content:space-between;box-sizing:border-box}
@@ -191,10 +191,10 @@ const clientLogos = [
   ["PRU Life UK", "assets/cart/client-logos/pru-life-uk.png"], ["Rapidé", "assets/cart/client-logos/rapide.png"],
 ];
 const services = [
-  { number: "01", name: "Naz Community Cart", audience: "Schools & community gatherings", promise: "Quality coffee and a welcoming setup, designed around a controlled budget.", inclusions: ["Curated limited menu", "Simplified setup", "Two baristas", "3-hour service"], price: "From ₱8,500", note: "50 or 100 drinks" },
-  { number: "02", name: "Naz Social Cart", audience: "Birthdays & private celebrations", promise: "A memorable café experience—without adding coordination stress to your day.", inclusions: ["Five drink choices", "Menu board", "Two baristas", "3-hour service"], price: "From ₱9,500", note: "50, 100, or 150 drinks" },
-  { number: "03", name: "Naz Professional Cart", audience: "Companies & organizations", promise: "Reliable refreshments that keep guests energized and reflect well on your team.", inclusions: ["Expanded menu", "Two baristas", "Basic branding", "Invoice & documentation"], price: "From ₱16,500", note: "100, 150, or 200 drinks" },
-  { number: "04", name: "Naz Brand Experience", audience: "Lifestyle & entertainment brands", promise: "A brand-aligned café activation made for interaction, recall, and content.", inclusions: ["Activation brief", "Signature drinks", "Co-branded presentation", "Two baristas"], price: "Starts at ₱25,000", note: "100 drinks · custom quote", featured: true },
+  { number: "01", type: "community", name: "Naz Community Cart", audience: "Schools & community gatherings", promise: "Quality coffee and a welcoming setup, designed around a controlled budget.", inclusions: ["Curated limited menu", "Simplified setup", "Two baristas", "3-hour service"], price: "From ₱8,500", note: "50 or 100 drinks" },
+  { number: "02", type: "social", name: "Naz Social Cart", audience: "Birthdays & private celebrations", promise: "A memorable café experience—without adding coordination stress to your day.", inclusions: ["Five drink choices", "Menu board", "Two baristas", "3-hour service"], price: "From ₱9,500", note: "50, 100, or 150 drinks" },
+  { number: "03", type: "professional", name: "Naz Professional Cart", audience: "Companies & organizations", promise: "Reliable refreshments that keep guests energized and reflect well on your team.", inclusions: ["Expanded menu", "Two baristas", "Basic branding", "Invoice & documentation"], price: "From ₱16,500", note: "100, 150, or 200 drinks" },
+  { number: "04", type: "brand", name: "Naz Brand Experience", audience: "Lifestyle & entertainment brands", promise: "A brand-aligned café activation made for interaction, recall, and content.", inclusions: ["Activation brief", "Signature drinks", "Co-branded presentation", "Two baristas"], price: "Starts at ₱25,000", note: "100 drinks · custom quote", featured: true },
 ];
 
 let eventType = "social";
@@ -215,13 +215,28 @@ function renderClientLogos() {
 
 function renderServices() {
   document.getElementById("servicesGrid").innerHTML = services.map(s => `
-    <a class="service-card ${s.featured ? "featured" : ""}" href="#inquire">
+    <a class="service-card ${s.featured ? "featured" : ""}" href="#inquire" data-type="${s.type}">
       <div class="card-top"><span>${s.number}</span><span>${s.audience}</span></div>
       <h3>${s.name}</h3><p class="promise">${s.promise}</p>
       <ul>${s.inclusions.map(i => `<li>${i}</li>`).join("")}</ul>
       <div class="card-price"><strong>${s.price}</strong><small>${s.note}</small></div>
       <span class="card-cta">Select this service <span>→</span></span>
     </a>`).join("");
+
+  document.querySelectorAll(".service-card").forEach(card => {
+    card.addEventListener("click", (e) => {
+      e.preventDefault();
+      selectService(card.dataset.type);
+    });
+  });
+}
+
+function selectService(type) {
+  eventType = type;
+  document.getElementById("event-type").value = type;
+  renderGuestCountOptions();
+  renderResult();
+  document.getElementById("inquire").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 function renderAddonPicker() {
