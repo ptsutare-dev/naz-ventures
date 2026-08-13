@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reserve Your Event | Naz Coffee Cart</title>
+<meta name="description" content="Secure your Naz Coffee Cart event date with a 20% deposit.">
+<link rel="icon" href="assets/logos/naz-ventures-mark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/cart.css">
+<style>
+.nvgh-bar{position:sticky;top:0;z-index:500;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid #e6e1dc;font-family:'Poppins',Arial,"Helvetica Neue",sans-serif}
+.nvgh-inner{max-width:1180px;margin:0 auto;padding:0 24px;height:76px;display:flex;align-items:center;justify-content:space-between;box-sizing:border-box}
+.nvgh-brand{display:flex;align-items:center;gap:10px;font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:1.25rem;color:#000;text-decoration:none}
+.nvgh-brand img{width:40px;height:40px;object-fit:contain;flex-shrink:0;border-radius:0;box-shadow:none;background:none}
+.nvgh-brand small{display:block;font-family:'Poppins',Arial,sans-serif;font-size:.62rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#6b6058}
+.nvgh-links{display:flex;align-items:center;gap:6px}
+.nvgh-links a{padding:9px 16px;border-radius:999px;font-size:.93rem;font-weight:600;color:#6b6058;text-decoration:none;transition:background .15s ease,color .15s ease}
+.nvgh-links a:hover{color:#000;background:#f6f3f1}
+.nvgh-cta{margin-left:6px;background:#a6816e;color:#000 !important;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.nvgh-cta:hover{background:#8a6a58;color:#fff !important}
+.nvgh-toggle{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px}
+.nvgh-toggle span{width:22px;height:2px;background:#000;border-radius:2px;transition:transform .2s ease,opacity .2s ease}
+@media (max-width:720px){
+.nvgh-links{position:fixed;top:76px;left:0;right:0;height:calc(100vh - 76px);background:#fff;border-bottom:1px solid #e6e1dc;flex-direction:column;align-items:stretch;padding:12px;gap:4px;overflow-y:auto;transform:translateY(-130%);opacity:0;pointer-events:none;transition:transform .22s ease,opacity .22s ease;box-shadow:0 10px 30px rgba(0,0,0,.08)}
+.nvgh-links.is-open{transform:translateY(0);opacity:1;pointer-events:auto}
+.nvgh-links a{padding:13px 16px}
+.nvgh-cta{margin-left:0}
+.nvgh-toggle{display:flex}
+}
+</style>
+</head>
+<body>
+
+<header class="nvgh-bar">
+  <div class="nvgh-inner">
+    <a href="index.html" class="nvgh-brand">
+      <img src="assets/logos/naz-ventures-mark.png" alt="Naz Ventures">
+      <span>Naz Ventures<small>Business Ecosystem</small></span>
+    </a>
+    <nav class="nvgh-links" id="nvghLinks">
+      <a href="index.html">Home</a>
+      <a href="index.html#businesses">Businesses</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="contact.html" class="nvgh-cta">Get in Touch</a>
+    </nav>
+    <button class="nvgh-toggle" id="nvghToggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+<script>
+(function(){
+  var toggle=document.getElementById('nvghToggle');
+  var links=document.getElementById('nvghLinks');
+  if(!toggle||!links)return;
+  toggle.addEventListener('click',function(){
+    var isOpen=links.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded',String(isOpen));
+  });
+  links.querySelectorAll('a').forEach(function(link){
+    link.addEventListener('click',function(){
+      links.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded','false');
+    });
+  });
+})();
+</script>
+
+<main class="checkout-page">
+  <nav class="nav shell">
+    <a class="brand" href="cart.html" aria-label="Naz Coffee home"><img src="assets/cart/naz-logo.png" alt="Naz Coffee"></a>
+    <a class="text-link" href="cart.html#inquire">← Edit package</a>
+  </nav>
+  <section class="checkout-shell shell">
+    <div>
+      <p class="eyebrow">Reserve your event</p>
+      <h1>Secure your date<br>with a <em>20% deposit.</em></h1>
+      <p class="checkout-lede">Review your package before sending the downpayment. The remaining balance and any custom add-ons will be confirmed by Naz.</p>
+    </div>
+    <aside class="order-card">
+      <p class="eyebrow">Booking summary</p>
+      <h2 id="packageName">Naz Coffee Cart</h2>
+      <div class="order-line"><span>Drinks</span><strong id="drinksLine">—</strong></div>
+      <div class="order-line"><span>Agreed base rate</span><strong id="rateLine">₱0</strong></div>
+      <div class="deposit-total">
+        <span>Downpayment due</span><strong id="depositLine">₱0</strong><small>20% of the agreed base rate</small>
+      </div>
+      <div class="payment-pending"><strong>Payment setup required</strong><p>Naz's verified payment destination will appear here once connected.</p></div>
+    </aside>
+  </section>
+</main>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const packageName = params.get("package") || "Naz Coffee Cart";
+const drinks = params.get("drinks") || "";
+const rate = Number(params.get("rate")) || 0;
+const deposit = rate * 0.2;
+const money = (amount) => new Intl.NumberFormat("en-PH").format(amount);
+
+document.getElementById("packageName").textContent = packageName;
+document.getElementById("drinksLine").textContent = drinks || "—";
+document.getElementById("rateLine").textContent = "₱" + money(rate);
+document.getElementById("depositLine").textContent = "₱" + money(deposit);
+</script>
+
+</body>
+</html>

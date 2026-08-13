@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop — Ally Cafe Solutions</title>
+<meta name="description" content="Browse beans, milk, syrups, and everyday cafe supplies from Ally Cafe Solutions and reserve your order.">
+<link rel="icon" href="assets/logos/naz-ventures-mark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .page-hero-logo { display: block; height: 56px; width: auto; margin: 0 auto 20px; object-fit: contain; }
+
+  /* Category landing */
+  .category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+  .category-tile { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 30px 24px; text-align: center; cursor: pointer; transition: transform .18s ease, box-shadow .18s ease; }
+  .category-tile:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: var(--color-primary); }
+  .category-tile.disabled { cursor: not-allowed; opacity: .55; }
+  .category-tile.disabled:hover { transform: none; box-shadow: none; border-color: var(--color-border); }
+  .category-tile-icon { width: 52px; height: 52px; border-radius: 50%; background: var(--color-bg-alt); color: var(--color-accent-dark); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+  .category-tile h3 { font-size: 1.15rem; margin-bottom: 6px; }
+  .category-tile p { font-size: .85rem; color: var(--color-text-muted); margin: 0; }
+  .category-tile .badge { margin-top: 12px; display: inline-block; }
+
+  /* Category detail view */
+  .category-detail { display: none; }
+  .category-detail.active { display: block; }
+  .back-to-categories { display: inline-flex; align-items: center; gap: 6px; font-size: .88rem; font-weight: 600; color: var(--color-text-muted); cursor: pointer; margin-bottom: 24px; }
+  .back-to-categories:hover { color: var(--color-primary); }
+
+  .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
+  .shop-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); overflow: hidden; display: flex; flex-direction: column; transition: transform .18s ease, box-shadow .18s ease; }
+  .shop-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+  .shop-card-photo { aspect-ratio: 4/3; background: var(--color-bg-alt); }
+  .shop-card-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .shop-card-body { padding: 20px; display: flex; flex-direction: column; gap: 12px; flex-grow: 1; }
+  .shop-card-body h3 { font-size: 1.02rem; margin: 0; }
+  .shop-card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 6px; }
+
+  /* Coffee beans size variant */
+  .bean-card .shop-card-body { gap: 14px; }
+  .bean-origin { font-size: .72rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--color-accent-dark); }
+  .bean-size-picker { display: flex; flex-direction: column; gap: 6px; }
+  .bean-size-picker label { font-size: .72rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--color-text-muted); margin: 0; }
+  .bean-size-select { padding: 9px 12px; font-size: .88rem; font-weight: 600; cursor: pointer; }
+  .bean-card-footer { justify-content: center; }
+
+  .stepper { display: flex; align-items: center; gap: 10px; }
+  .stepper button { width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid var(--color-border); background: var(--color-bg); color: var(--color-primary); font-size: 1rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1; }
+  .stepper button:hover { border-color: var(--color-primary); }
+  .stepper button:disabled { opacity: .4; cursor: not-allowed; }
+  .stepper .qty { min-width: 18px; text-align: center; font-weight: 700; font-size: .92rem; }
+
+  .promo-banner { background: var(--color-primary); color: #fff; border-radius: var(--radius-lg); padding: 32px 24px; margin-bottom: 40px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .promo-banner-kicker { font-size: .82rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: rgba(255,255,255,.72); }
+  .promo-banner-code { font-family: var(--font-heading); font-weight: 700; font-size: 1.9rem; letter-spacing: .06em; color: var(--color-primary); background: var(--color-accent); padding: 8px 28px; border-radius: 999px; }
+  .promo-banner-detail { font-size: .95rem; color: rgba(255,255,255,.85); }
+  .promo-row { display: flex; gap: 10px; margin-top: 16px; }
+  .promo-row input { flex: 1; }
+  .promo-row button { flex-shrink: 0; }
+  .promo-msg { font-size: .82rem; margin-top: 8px; }
+  .promo-msg.applied { color: #3d6b32; }
+  .promo-msg.invalid { color: #a13c3c; }
+  .order-line-row.discount-line { color: #3d6b32; }
+
+  .cart-bar { position: sticky; bottom: 0; z-index: 50; background: var(--color-primary); color: #fff; padding: 16px 0; margin-top: 40px; }
+  .cart-bar-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .cart-bar-count { font-size: .82rem; color: rgba(255,255,255,0.7); }
+  .cart-bar-total { font-family: var(--font-heading); font-size: 1.3rem; font-weight: 700; }
+
+  .gcash-box { border: 1px dashed var(--color-border); border-radius: var(--radius); padding: 20px; text-align: center; background: var(--color-bg); margin-top: 16px; }
+  .gcash-box img { max-width: 180px; margin: 0 auto 12px; border-radius: var(--radius-sm); opacity: .8; }
+
+  .order-lines { border-top: 1px solid var(--color-border); margin-top: 16px; padding-top: 12px; }
+  .order-line-row { display: flex; justify-content: space-between; font-size: .88rem; padding: 6px 0; color: var(--color-text-muted); }
+  .order-line-row strong { color: var(--color-primary); font-weight: 600; }
+  .order-total-row { display: flex; justify-content: space-between; border-top: 1px solid var(--color-border); margin-top: 10px; padding-top: 12px; font-weight: 700; color: var(--color-primary); }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav container">
+    <a href="index.html" class="brand">
+      <img class="brand-mark" src="assets/logos/naz-ventures-mark.png" alt="Naz Ventures">
+      <span>Naz Ventures<span class="brand-sub">Business Ecosystem</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" data-page="index.html">Home</a>
+      <a href="index.html#businesses">Businesses</a>
+      <a href="about.html" data-page="about.html">About</a>
+      <a href="contact.html" data-page="contact.html">Contact</a>
+      <a href="contact.html" class="btn btn-accent btn-sm nav-cta">Get in Touch</a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
+
+<main>
+
+  <!-- Page hero -->
+  <section class="page-hero">
+    <div class="container">
+      <img class="page-hero-logo" src="assets/logos/ally-cafe-solutions.png" alt="Ally Cafe Solutions">
+      <h1>Everyday cafe supplies, sorted</h1>
+      <p>Beans, milk, syrups, and the everyday essentials that keep a cafe running — browse by category and reserve what you need.</p>
+    </div>
+  </section>
+
+  <!-- Shop -->
+  <section class="section">
+    <div class="container">
+      <div class="promo-banner">
+        <span class="promo-banner-kicker">🎉 First order?</span>
+        <span class="promo-banner-code">WELCOME10</span>
+        <span class="promo-banner-detail">for 10% off reservations ₱3,000 and up</span>
+      </div>
+
+      <!-- Category landing -->
+      <div id="categoryLanding">
+        <div class="section-head">
+          <span class="eyebrow">Shop by category</span>
+          <h2>What are you looking for?</h2>
+          <p>Choose a category to see items, photos, and prices.</p>
+        </div>
+        <div class="category-grid" id="categoryGrid"></div>
+      </div>
+
+      <!-- Category detail -->
+      <div id="categoryDetail" class="category-detail">
+        <span class="back-to-categories" id="backToCategories">← All Categories</span>
+        <div class="section-head" style="text-align:left; margin-left:0;">
+          <span class="eyebrow" id="detailEyebrow">Category</span>
+          <h2 id="detailHeading">Items</h2>
+          <p id="detailNote"></p>
+        </div>
+        <div id="detailGrid"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Checkout -->
+  <section class="section section-alt" id="checkout">
+    <div class="container contact-grid">
+
+      <!-- Order form -->
+      <div class="form-card reveal">
+        <h2 style="margin-bottom:6px;">Reserve Your Order</h2>
+        <p style="color:var(--color-text-muted); margin-bottom:24px;">This reserves your order — we'll follow up to confirm availability, pricing, and how to pay.</p>
+
+        <div id="form-status" class="form-status" role="status"></div>
+
+        <form id="ally-order-form" name="ally-order" method="POST" data-netlify="true">
+          <input type="hidden" name="form-name" value="ally-order">
+          <input type="hidden" name="order-summary" id="order-summary-field">
+          <!-- Honeypot field — hidden from real visitors, catches bots -->
+          <div class="honeypot" aria-hidden="true">
+            <label for="ally-company">Company</label>
+            <input type="text" id="ally-company" name="company" tabindex="-1" autocomplete="off">
+          </div>
+
+          <div class="form-row form-row-split">
+            <div>
+              <label for="name">Full name</label>
+              <input type="text" id="name" name="name" placeholder="Jane Doe" required>
+            </div>
+            <div>
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="jane@example.com" required>
+            </div>
+          </div>
+
+          <div class="form-row form-row-split">
+            <div>
+              <label for="phone">Phone</label>
+              <input type="tel" id="phone" name="phone" placeholder="09XX XXX XXXX" required>
+            </div>
+            <div>
+              <label for="fulfillment">Pickup or delivery?</label>
+              <select id="fulfillment" name="fulfillment">
+                <option value="pickup">Pickup at Naz Coffee</option>
+                <option value="delivery">Delivery</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label for="address">Delivery address <span class="placeholder-flag">If applicable</span></label>
+            <input type="text" id="address" name="address" placeholder="Street, Barangay, City">
+          </div>
+
+          <div class="form-row">
+            <label for="message">Notes</label>
+            <textarea id="message" name="message" placeholder="Anything else we should know?"></textarea>
+          </div>
+
+          <div class="order-lines" id="orderLines"></div>
+
+          <div class="form-row" style="margin-top:16px; margin-bottom:0;">
+            <label for="promoCode">Promo code</label>
+            <div class="promo-row">
+              <input type="text" id="promoCode" name="promo-code" placeholder="WELCOME10">
+              <button type="button" class="btn btn-outline btn-sm" id="applyPromoBtn">Apply</button>
+            </div>
+            <div class="promo-msg" id="promoMsg"></div>
+          </div>
+
+          <div class="order-total-row"><span>Estimated Total</span><span id="orderTotalDisplay">₱0</span></div>
+
+          <button type="submit" class="btn btn-primary btn-block" style="margin-top:16px;" id="submitOrderBtn" disabled>Add items to reserve</button>
+
+          <p class="form-note">
+            Submissions are handled by Netlify Forms and arrive in your Netlify dashboard's Forms tab. No payment is collected now — we'll confirm final pricing and payment details with you directly.
+          </p>
+        </form>
+      </div>
+
+      <!-- Payment info -->
+      <div class="reveal">
+        <div class="info-card">
+          <h3>Payment</h3>
+          <p style="color:var(--color-text-muted); font-size:.9rem; margin-bottom:0;">Nothing to pay yet. Once we confirm your order and final pricing, we'll share payment details — typically via GCash below.</p>
+          <div class="gcash-box">
+            <img src="gcash-qr.jpg" alt="GCash QR code">
+            <strong style="display:block; font-family:var(--font-heading); color:var(--color-primary); margin-bottom:4px;">For reference only</strong>
+            <span style="font-size:.82rem; color:var(--color-text-muted);">We'll confirm before requesting payment</span>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <h3>Contact Details</h3>
+          <div class="info-row">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v12H4Z"/><path d="m4 7 8 6 8-6"/></svg>
+            <div>
+              <strong>Email</strong>
+              <span>ptsutare@gmail.com</span>
+            </div>
+          </div>
+          <div class="info-row">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg>
+            <div>
+              <strong>Phone</strong>
+              <span>+63 917 274 1129</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<!-- Sticky cart bar -->
+<div class="cart-bar" id="cartBar" style="display:none;">
+  <div class="container cart-bar-inner">
+    <div>
+      <div class="cart-bar-total" id="cartBarTotal">₱0</div>
+      <div class="cart-bar-count" id="cartBarCount">0 items</div>
+    </div>
+    <a href="#checkout" class="btn btn-accent">Review Reservation</a>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-brand">
+        <a href="index.html" class="brand"><img class="brand-mark" src="assets/logos/naz-ventures-mark.png" alt="Naz Ventures"><span>Naz Ventures</span></a>
+        <p>A growing ecosystem of cafés, spaces, and ventures built on one operating philosophy: keep improving, one business at a time.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Ventures</h4>
+        <ul>
+          <li><a href="order.html">Naz Coffee</a></li>
+          <li><a href="cart.html">Naz Coffee Cart Service</a></li>
+          <li><a href="kaizen-spaces.html">Kaizen Spaces</a></li>
+          <li><a href="index.html#businesses">Flow State Studio</a></li>
+          <li><a href="ally-store.html">Ally Cafe Solutions</a></li>
+          <li><a href="index.html#businesses">Onoy's Cloud Kitchen</a></li>
+          <li><a href="index.html#businesses">DOSE Franchising</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="index.html#businesses">Businesses</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><span>ptsutare@gmail.com</span></li>
+          <li><a href="contact.html">Send a message</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="year"></span> Naz Ventures. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/script.js"></script>
+<script>
+const CATEGORY_META = {
+  "Coffee Beans": { note: "100% Arabica. Choose 250g, 500g, or 1kg per bag.", icon: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c-1.5 3-4 4-4 8a4 4 0 0 0 8 0c0-4-2.5-5-4-8Z"/><path d="M12 21v-3"/><path d="M7 21h10"/></svg>` },
+  "Milk": { note: "Full cream, barista-formulated, and alternative milks.", icon: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2h6l1 4-1 2v12a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2V8L8 6l1-4Z"/></svg>` },
+  "Syrups, Sauces, and Spreads": { note: "Torani syrups and sauces, Biscoff spreads and biscuits.", icon: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 2h10l-1 6H8L7 2Z"/><path d="M8 8v11a3 3 0 0 0 3 3h2a3 3 0 0 0 3-3V8"/></svg>` },
+  "Supplies and Other Consumables": { note: "Cups and straws in the sizes cafes actually use.", icon: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.5 12a2 2 0 0 1-2 1.8H8.5a2 2 0 0 1-2-1.8L5 8Z"/><path d="M3 8h18M9 8V5a3 3 0 0 1 6 0v3"/></svg>` },
+  "Tools and Equipment": { note: "Coming soon — order-based once the essentials are validated.", icon: `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 1-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 1 5.4-5.4L14.7 6.3Z"/></svg>` },
+};
+const CATEGORIES = Object.keys(CATEGORY_META);
+
+const ITEMS = [
+  // Milk
+  { id: "milk-arla", name: "Arla", category: "Milk", price: 180, image: "assets/ally/milk-arla.jpg" },
+  { id: "milk-arla-barista", name: "Arla Barista", category: "Milk", price: 220, image: "assets/ally/milk-arla-barista.jpg" },
+  { id: "milk-emborg", name: "Emborg Full Cream", category: "Milk", price: 190, image: "assets/ally/milk-emborg-full-cream.jpg" },
+  { id: "milk-jersey", name: "Jersey Full Cream", category: "Milk", price: 175, image: "assets/ally/milk-jersey-full-cream.jpg" },
+  { id: "milk-oatside", name: "Oatside Barista Blend", category: "Milk", price: 260, image: "assets/ally/milk-oatside-barista.jpg" },
+  { id: "milk-free-now", name: "Free Now Barista Coconut", category: "Milk", price: 250, image: "assets/ally/milk-free-now-coconut.jpg" },
+
+  // Syrups, Sauces, and Spreads
+  { id: "syrup-vanilla", name: "Torani Vanilla Syrup", category: "Syrups, Sauces, and Spreads", price: 450, image: "assets/ally/syrup-torani-vanilla.jpg" },
+  { id: "syrup-caramel", name: "Torani Caramel Syrup", category: "Syrups, Sauces, and Spreads", price: 450, image: "assets/ally/syrup-torani-caramel.jpg" },
+  { id: "syrup-hazelnut", name: "Torani Hazelnut Syrup", category: "Syrups, Sauces, and Spreads", price: 450, image: "assets/ally/syrup-torani-hazelnut.jpg" },
+  { id: "sauce-caramel", name: "Torani Caramel Sauce", category: "Syrups, Sauces, and Spreads", price: 480, image: "assets/ally/sauce-torani-caramel.jpg" },
+  { id: "sauce-white-choc", name: "Torani White Chocolate Sauce", category: "Syrups, Sauces, and Spreads", price: 480, image: "assets/ally/sauce-torani-white-chocolate.jpg" },
+  { id: "biscoff-smooth", name: "Biscoff Spread (Smooth)", category: "Syrups, Sauces, and Spreads", price: 380, image: "assets/ally/biscoff-spread-smooth.jpg" },
+  { id: "biscoff-crunchy", name: "Biscoff Spread (Crunchy)", category: "Syrups, Sauces, and Spreads", price: 380, image: "assets/ally/biscoff-spread-crunchy.jpg" },
+  { id: "biscoff-biscuits", name: "Biscoff Biscuits", category: "Syrups, Sauces, and Spreads", price: 220, image: "assets/ally/biscoff-biscuits.jpg" },
+
+  // Supplies and Other Consumables
+  { id: "cup-dabba-12", name: "12oz DABBA Cups", category: "Supplies and Other Consumables", price: 320, image: "assets/ally/cup-dabba-12oz.jpg" },
+  { id: "cup-dabba-16", name: "16oz DABBA Cups", category: "Supplies and Other Consumables", price: 360, image: "assets/ally/cup-dabba-16oz.jpg" },
+  { id: "cup-dw-8", name: "8oz DW Cups", category: "Supplies and Other Consumables", price: 280, image: "assets/ally/cup-dw-8oz.jpg" },
+  { id: "cup-dw-12", name: "12oz DW Cups", category: "Supplies and Other Consumables", price: 310, image: "assets/ally/cup-dw-12oz.jpg" },
+  { id: "straw-slim", name: "Slim Straws", category: "Supplies and Other Consumables", price: 150, image: "assets/ally/straw-slim.jpg" },
+  { id: "straw-thick", name: "Thick Straws", category: "Supplies and Other Consumables", price: 160, image: "assets/ally/straw-thick.jpg" },
+];
+
+const COFFEE_BEANS = [
+  { id: "beans-brazil-cerrado", name: "Brazil Cerrado", origin: "Single Origin", image: "assets/ally/beans-brazil-cerrado.jpg" },
+  { id: "beans-brazil-capricornio", name: "Brazil Capricornio", origin: "Single Origin", image: "assets/ally/beans-brazil-capricornio.jpg" },
+  { id: "beans-azul-sumatra", name: "Brazil Azul & Sumatra Aceh", origin: "Multi-Origin Blend", image: "assets/ally/beans-azul-sumatra-aceh.jpg" },
+  { id: "beans-capricornio-ethiopia", name: "Brazil Capricornio & Ethiopia", origin: "Multi-Origin Blend", image: "assets/ally/beans-capricornio-ethiopia.jpg" },
+];
+const BEAN_SIZES = [
+  { key: "250g", label: "250g", price: 380 },
+  { key: "500g", label: "500g", price: 720 },
+  { key: "1kg", label: "1kg", price: 1350 },
+];
+
+const qty = {}; // regular items: qty[itemId]; beans: qty["beanId|sizeKey"]
+const money = (n) => "₱" + n.toLocaleString("en-PH");
+const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+
+function stepperHtml(key, currentQty) {
+  return `
+    <div class="stepper">
+      <button type="button" data-key="${key}" data-d="-1" ${!currentQty ? "disabled" : ""}>−</button>
+      <span class="qty" id="qty-${slug(key)}">${currentQty || 0}</span>
+      <button type="button" data-key="${key}" data-d="1">+</button>
+    </div>
+  `;
+}
+
+function regularItemCard(item) {
+  return `
+    <article class="card shop-card">
+      <div class="shop-card-photo"><img src="${item.image}" alt="${item.name}" loading="lazy"></div>
+      <div class="shop-card-body">
+        <h3>${item.name}</h3>
+        <div class="shop-card-footer">
+          <span class="rate-price">${money(item.price)}</span>
+          ${stepperHtml(item.id, qty[item.id])}
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+const selectedBeanSize = {};
+
+function beanCard(bean) {
+  const currentSizeKey = selectedBeanSize[bean.id] || BEAN_SIZES[0].key;
+  const currentSize = BEAN_SIZES.find(s => s.key === currentSizeKey);
+  const key = `${bean.id}|${currentSizeKey}`;
+  const optionsHtml = BEAN_SIZES.map(size => `
+    <option value="${size.key}" ${size.key === currentSizeKey ? "selected" : ""}>${size.label} — ${money(size.price)}</option>
+  `).join("");
+
+  return `
+    <article class="card shop-card bean-card">
+      <div class="shop-card-photo"><img src="${bean.image}" alt="${bean.name}" loading="lazy"></div>
+      <div class="shop-card-body">
+        <span class="bean-origin">${bean.origin}</span>
+        <h3>${bean.name}</h3>
+        <div class="bean-size-picker">
+          <label for="size-${slug(bean.id)}">Size</label>
+          <select class="bean-size-select" id="size-${slug(bean.id)}" data-bean="${bean.id}">${optionsHtml}</select>
+        </div>
+        <div class="shop-card-footer bean-card-footer">
+          ${stepperHtml(key, qty[key])}
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+function attachStepperListeners(root) {
+  root.querySelectorAll(".stepper button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const key = btn.dataset.key;
+      const delta = Number(btn.dataset.d);
+      qty[key] = Math.max(0, (qty[key] || 0) + delta);
+      renderActiveView();
+      renderCart();
+    });
+  });
+  root.querySelectorAll(".bean-size-select").forEach(sel => {
+    sel.addEventListener("change", () => {
+      selectedBeanSize[sel.dataset.bean] = sel.value;
+      renderActiveView();
+    });
+  });
+}
+
+let activeCategory = null;
+
+function renderCategoryGrid() {
+  const activeCategories = CATEGORIES.filter(cat =>
+    cat === "Coffee Beans" ? COFFEE_BEANS.length > 0 : ITEMS.some(item => item.category === cat)
+  );
+  const grid = document.getElementById("categoryGrid");
+  grid.innerHTML = CATEGORIES.map(cat => {
+    const meta = CATEGORY_META[cat];
+    const hasItems = activeCategories.includes(cat);
+    return `
+      <div class="category-tile ${hasItems ? "" : "disabled"}" data-cat="${cat}">
+        <div class="category-tile-icon">${meta.icon}</div>
+        <h3>${cat}</h3>
+        <p>${meta.note}</p>
+        ${hasItems ? "" : '<span class="badge status-soon">Coming Soon</span>'}
+      </div>
+    `;
+  }).join("");
+
+  grid.querySelectorAll(".category-tile:not(.disabled)").forEach(tile => {
+    tile.addEventListener("click", () => openCategory(tile.dataset.cat));
+  });
+}
+
+function openCategory(cat) {
+  activeCategory = cat;
+  document.getElementById("categoryLanding").style.display = "none";
+  document.getElementById("categoryDetail").classList.add("active");
+  document.getElementById("detailEyebrow").textContent = cat;
+  document.getElementById("detailHeading").textContent = cat;
+  document.getElementById("detailNote").textContent = CATEGORY_META[cat].note;
+  renderActiveView();
+  window.scrollTo(0, document.getElementById("categoryDetail").getBoundingClientRect().top + window.scrollY - 100);
+}
+
+function closeCategory() {
+  activeCategory = null;
+  document.getElementById("categoryLanding").style.display = "block";
+  document.getElementById("categoryDetail").classList.remove("active");
+}
+
+document.getElementById("backToCategories").addEventListener("click", closeCategory);
+
+function renderActiveView() {
+  if (!activeCategory) return;
+  const detailGrid = document.getElementById("detailGrid");
+  if (activeCategory === "Coffee Beans") {
+    detailGrid.innerHTML = `<div class="shop-grid">${COFFEE_BEANS.map(beanCard).join("")}</div>`;
+  } else {
+    const items = ITEMS.filter(item => item.category === activeCategory);
+    detailGrid.innerHTML = `<div class="shop-grid">${items.map(regularItemCard).join("")}</div>`;
+  }
+  attachStepperListeners(detailGrid);
+}
+
+function cartItems() {
+  const lines = [];
+  ITEMS.forEach(item => {
+    if (qty[item.id] > 0) lines.push({ name: item.name, unitPrice: item.price, qty: qty[item.id] });
+  });
+  COFFEE_BEANS.forEach(bean => {
+    BEAN_SIZES.forEach(size => {
+      const key = `${bean.id}|${size.key}`;
+      if (qty[key] > 0) lines.push({ name: `${bean.name} (${size.label})`, unitPrice: size.price, qty: qty[key] });
+    });
+  });
+  return lines;
+}
+
+const PROMO_CODES = { "WELCOME10": 0.10 };
+const PROMO_MIN_ORDER = 3000;
+let promoApplied = null;
+
+function renderCart() {
+  const items = cartItems();
+  const subtotal = items.reduce((sum, item) => sum + item.qty * item.unitPrice, 0);
+  const count = items.reduce((sum, item) => sum + item.qty, 0);
+
+  if (promoApplied && subtotal < PROMO_MIN_ORDER) {
+    promoApplied = null;
+    const msg = document.getElementById("promoMsg");
+    msg.textContent = `Promo removed — orders need to be ${money(PROMO_MIN_ORDER)} or more.`;
+    msg.classList.remove("applied");
+    msg.classList.add("invalid");
+  }
+
+  const discountRate = promoApplied ? PROMO_CODES[promoApplied] : 0;
+  const discount = Math.round(subtotal * discountRate);
+  const total = subtotal - discount;
+
+  const cartBar = document.getElementById("cartBar");
+  cartBar.style.display = count > 0 ? "block" : "none";
+  document.getElementById("cartBarTotal").textContent = money(total);
+  document.getElementById("cartBarCount").textContent = count + (count === 1 ? " item" : " items");
+
+  const orderLines = document.getElementById("orderLines");
+  let linesHtml = items.map(item => `
+    <div class="order-line-row"><span>${item.name} × ${item.qty}</span><strong>${money(item.qty * item.unitPrice)}</strong></div>
+  `).join("");
+  if (discount > 0) {
+    linesHtml += `<div class="order-line-row discount-line"><span>Promo (${promoApplied}, -${Math.round(discountRate*100)}%)</span><strong>−${money(discount)}</strong></div>`;
+  }
+  orderLines.innerHTML = linesHtml;
+  document.getElementById("orderTotalDisplay").textContent = money(total);
+
+  let summaryText = items.map(item => `${item.name} x${item.qty} — ${money(item.qty * item.unitPrice)}`).join("; ");
+  if (discount > 0) summaryText += ` | PROMO ${promoApplied} (-${Math.round(discountRate*100)}%): -${money(discount)}`;
+  summaryText += ` | ESTIMATED TOTAL: ${money(total)}`;
+  document.getElementById("order-summary-field").value = count > 0 ? summaryText : "";
+
+  const submitBtn = document.getElementById("submitOrderBtn");
+  submitBtn.disabled = count === 0;
+  submitBtn.textContent = count === 0 ? "Add items to reserve" : `Reserve This Order — ${money(total)}`;
+}
+
+document.getElementById("applyPromoBtn").addEventListener("click", () => {
+  const input = document.getElementById("promoCode");
+  const msg = document.getElementById("promoMsg");
+  const code = input.value.trim().toUpperCase();
+
+  if (!code) return;
+
+  const subtotal = cartItems().reduce((sum, item) => sum + item.qty * item.unitPrice, 0);
+
+  if (!PROMO_CODES[code]) {
+    promoApplied = null;
+    msg.textContent = "That code isn't valid.";
+    msg.classList.remove("applied");
+    msg.classList.add("invalid");
+  } else if (subtotal < PROMO_MIN_ORDER) {
+    promoApplied = null;
+    msg.textContent = `This code needs a minimum order of ${money(PROMO_MIN_ORDER)}. Add ${money(PROMO_MIN_ORDER - subtotal)} more to qualify.`;
+    msg.classList.remove("applied");
+    msg.classList.add("invalid");
+  } else {
+    promoApplied = code;
+    msg.textContent = `"${code}" applied — ${Math.round(PROMO_CODES[code]*100)}% off your order.`;
+    msg.classList.remove("invalid");
+    msg.classList.add("applied");
+  }
+  renderCart();
+});
+
+document.getElementById("ally-order-form").addEventListener("submit", (event) => {
+  event.preventDefault();
+  const form = event.target;
+  const status = document.getElementById("form-status");
+
+  const honeypot = form.querySelector('input[name="company"]');
+  if (honeypot && honeypot.value.trim() !== "") return;
+
+  if (cartItems().length === 0) {
+    status.textContent = "Add at least one item before reserving.";
+    status.classList.remove("success");
+    status.classList.add("error", "is-visible");
+    return;
+  }
+
+  const requiredFields = ["name", "email", "phone"];
+  for (const field of requiredFields) {
+    if (!form.querySelector(`#${field}`).value.trim()) {
+      status.textContent = "Please fill in your name, email, and phone number.";
+      status.classList.remove("success");
+      status.classList.add("error", "is-visible");
+      return;
+    }
+  }
+
+  const submitBtn = document.getElementById("submitOrderBtn");
+  submitBtn.disabled = true;
+
+  fetch("/", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams(new FormData(form)).toString(),
+  })
+    .then((response) => {
+      if (!response.ok) throw new Error("Submission failed");
+      status.textContent = "Reservation received! We'll follow up to confirm availability, final pricing, and payment.";
+      status.classList.remove("error");
+      status.classList.add("success", "is-visible");
+      Object.keys(qty).forEach(k => delete qty[k]);
+      promoApplied = null;
+      document.getElementById("promoMsg").textContent = "";
+      form.reset();
+      renderCategoryGrid();
+      if (activeCategory) renderActiveView();
+      renderCart();
+    })
+    .catch(() => {
+      status.textContent = "Something went wrong sending this. Please email ptsutare@gmail.com directly instead.";
+      status.classList.remove("success");
+      status.classList.add("error", "is-visible");
+    })
+    .finally(() => {
+      submitBtn.disabled = cartItems().length === 0;
+    });
+});
+
+renderCategoryGrid();
+renderCart();
+</script>
+</body>
+</html>

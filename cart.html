@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Naz Coffee Cart | Café Experiences for Events</title>
+<meta name="description" content="Thoughtfully crafted coffee cart experiences for brand activations, celebrations, corporate events, and community gatherings.">
+<link rel="icon" href="assets/logos/naz-ventures-mark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/cart.css?v=20260813">
+<style>
+.nvgh-bar{position:sticky;top:0;z-index:500;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid #e6e1dc;font-family:'Poppins',Arial,"Helvetica Neue",sans-serif}
+.nvgh-inner{max-width:1180px;margin:0 auto;padding:0 24px;height:76px;display:flex;align-items:center;justify-content:space-between;box-sizing:border-box}
+.nvgh-brand{display:flex;align-items:center;gap:10px;font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:1.25rem;color:#000;text-decoration:none}
+.nvgh-brand img{width:40px;height:40px;object-fit:contain;flex-shrink:0;border-radius:0;box-shadow:none;background:none}
+.nvgh-brand small{display:block;font-family:'Poppins',Arial,sans-serif;font-size:.62rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#6b6058}
+.nvgh-links{display:flex;align-items:center;gap:6px}
+.nvgh-links a{padding:9px 16px;border-radius:999px;font-size:.93rem;font-weight:600;color:#6b6058;text-decoration:none;transition:background .15s ease,color .15s ease}
+.nvgh-links a:hover{color:#000;background:#f6f3f1}
+.nvgh-cta{margin-left:6px;background:#a6816e;color:#000 !important;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.nvgh-cta:hover{background:#8a6a58;color:#fff !important}
+.nvgh-toggle{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px}
+.nvgh-toggle span{width:22px;height:2px;background:#000;border-radius:2px;transition:transform .2s ease,opacity .2s ease}
+@media (max-width:720px){
+.nvgh-links{position:fixed;top:76px;left:0;right:0;height:calc(100vh - 76px);background:#fff;border-bottom:1px solid #e6e1dc;flex-direction:column;align-items:stretch;padding:12px;gap:4px;overflow-y:auto;transform:translateY(-130%);opacity:0;pointer-events:none;transition:transform .22s ease,opacity .22s ease;box-shadow:0 10px 30px rgba(0,0,0,.08)}
+.nvgh-links.is-open{transform:translateY(0);opacity:1;pointer-events:auto}
+.nvgh-links a{padding:13px 16px}
+.nvgh-cta{margin-left:0}
+.nvgh-toggle{display:flex}
+}
+</style>
+</head>
+<body>
+
+<header class="nvgh-bar">
+  <div class="nvgh-inner">
+    <a href="index.html" class="nvgh-brand">
+      <img src="assets/logos/naz-ventures-mark.png" alt="Naz Ventures">
+      <span>Naz Ventures<small>Business Ecosystem</small></span>
+    </a>
+    <nav class="nvgh-links" id="nvghLinks">
+      <a href="index.html">Home</a>
+      <a href="index.html#businesses">Businesses</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="contact.html" class="nvgh-cta">Get in Touch</a>
+    </nav>
+    <button class="nvgh-toggle" id="nvghToggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+<script>
+(function(){
+  var toggle=document.getElementById('nvghToggle');
+  var links=document.getElementById('nvghLinks');
+  if(!toggle||!links)return;
+  toggle.addEventListener('click',function(){
+    var isOpen=links.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded',String(isOpen));
+  });
+  links.querySelectorAll('a').forEach(function(link){
+    link.addEventListener('click',function(){
+      links.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded','false');
+    });
+  });
+})();
+</script>
+
+<main>
+  <nav class="nav shell" aria-label="Main navigation">
+    <a class="brand" href="#top" aria-label="Naz Coffee home"><img src="assets/cart/naz-logo.png" alt="Naz Coffee"><span class="brand-tagline">Coffee Bar Service for Events</span></a>
+    <div class="nav-links">
+      <a href="#services">Services</a><a href="#inclusions">Inclusions</a><a href="#process">How it works</a>
+    </div>
+    <a class="button button-small" href="../index.html" style="display:none"></a>
+  </nav>
+
+  <section class="hero shell" id="top">
+    <div class="hero-copy">
+      <h1>A café experience, <em>wherever</em> your event takes you.</h1>
+      <p class="lede">From intimate celebrations to full-scale brand activations, Naz brings thoughtfully crafted drinks, polished service, and a cart that feels right at home.</p>
+      <div class="hero-actions"><a class="button" href="#services">Explore services</a><a class="button button-outline" href="#inquire">Plan your event</a></div>
+      <div class="trust-row"><span>Experienced event team</span><span>Customizable menus</span><span>Brand-ready setup</span></div>
+      <div class="hero-client-proof">
+        <p class="hero-client-proof-label">Brands and organizations we've served</p>
+        <div class="client-logo-grid" id="clientLogoGrid"></div>
+      </div>
+    </div>
+    <div class="hero-video-block">
+      <div class="hero-carousel" aria-label="Naz Coffee at the Philippine Tech Expo for Cinema One">
+        <video class="hero-video" autoplay muted loop playsinline controls poster="assets/cart/events/cinema-one-poster.jpg" aria-label="Naz Coffee at the Philippine Tech Expo for Cinema One">
+          <source src="assets/cart/events/cinema-one-tech-expo.mp4" type="video/mp4">
+          Your browser does not support embedded video.
+        </video>
+      </div>
+      <div class="hero-video-caption">
+        <span class="hero-video-caption-label">Cinema One &times; Naz Coffee</span>
+        <p>Brand partnership and activation for the launch of Cinema One on iWant during the Philippine Tech Show 2026 at the SMX Convention Center.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="finder shell" id="inquire" aria-labelledby="finder-title">
+    <div class="finder-intro"><p class="eyebrow">Build your event package</p><h2 id="finder-title">Start with what<br>you <em>need.</em></h2><p>Choose your event, quantity, and add-ons. We'll give you an immediate base estimate and carry your selections into your inquiry.</p></div>
+    <div class="finder-form">
+      <label for="event-type">Service type</label>
+      <select id="event-type">
+        <option value="social">Wedding, birthday, or private celebration</option>
+        <option value="community">School or community gathering</option>
+        <option value="professional">Company or organization event</option>
+        <option value="brand">Brand activation or launch</option>
+      </select>
+      <label for="guest-count">Number of drinks</label>
+      <select id="guest-count"></select>
+      <fieldset class="addon-picker" id="addonPicker"><legend>Optional add-ons</legend></fieldset>
+      <div class="finder-result visible" aria-live="polite" id="finderResult">
+        <span>Your estimated starting rate</span><strong id="finderRateLine"></strong><p id="finderNote"></p>
+        <div class="result-actions"><a class="inquiry-link" id="inquiryLink" href="#">Send inquiry</a><a class="checkout-link" id="checkoutLink" href="#">Accept rate &amp; reserve →</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="moments shell" aria-label="Naz coffee cart at past events">
+    <div class="moments-copy"><p class="eyebrow">Seen at real events</p><h2>Built to belong in the <em>moment.</em></h2><p>Polished enough for a launch. Warm enough for a wedding. Reliable enough for a full room.</p></div>
+    <div class="moments-grid">
+      <div class="moment"><img src="assets/cart/events/naz-cart-service.jpg" alt="Naz baristas preparing drinks at the coffee cart"><span>Made fresh, served well</span></div>
+      <div class="moment brand-moment"><img src="assets/cart/events/naz-brand-activation.jpg" alt="Naz coffee cart inside the Illest store"><span>Brand activations · Illest</span></div>
+      <div class="moment"><img src="assets/cart/events/naz-wedding-event.jpg" alt="Newlywed couple with the Naz coffee cart team"><span>Private celebrations</span></div>
+      <div class="moment"><img src="assets/cart/events/naz-guest-experience.jpg" alt="A guest enjoying a Naz matcha drink"><span>Guest moments</span></div>
+      <div class="moment"><img src="assets/cart/events/naz-illest-cup.jpg" alt="Naz coffee served at an Illest event"><span>Co-branded details · Illest</span></div>
+      <div class="moment"><img src="assets/cart/events/naz-myx-activation.jpg" alt="Naz coffee cart menu and engagement setup for MYX"><span>Interactive activations · MYX</span></div>
+    </div>
+  </section>
+
+  <section class="section shell" id="services">
+    <div class="section-heading"><div><p class="eyebrow">Choose your experience</p><h2>One cart.<br><em>Four ways to serve.</em></h2></div><p>Every event has a different priority. Pick the service designed around yours, then tailor the details with our team.</p></div>
+    <div class="services-grid" id="servicesGrid"></div>
+  </section>
+
+  <section class="dark-section" id="inclusions">
+    <div class="shell split">
+      <div><p class="eyebrow light">The Naz standard</p><h2>Good coffee is only the <em>beginning.</em></h2><p class="muted">We take care of the working parts so your guests only experience the good part.</p></div>
+      <div class="included-list">
+        <div><span>01</span><p>Coffee cart &amp; equipment</p><b>✓</b></div>
+        <div><span>02</span><p>Professional barista service</p><b>✓</b></div>
+        <div><span>03</span><p>Setup and cleanup</p><b>✓</b></div>
+        <div><span>04</span><p>Ingredients and consumables</p><b>✓</b></div>
+        <div><span>05</span><p>Three hours of service</p><b>✓</b></div>
+      </div>
+      <div class="dark-addons"><h3>Customize your cart</h3><p>Add extra hours or drinks, premium and non-dairy milk, custom cups and menus, special equipment, out-of-area transport, or rush service as needed.</p></div>
+    </div>
+  </section>
+
+  <section class="process-section" id="process">
+    <div class="shell">
+      <p class="eyebrow">From idea to first pour</p><h2>Easy to plan.<br><em>Effortless to enjoy.</em></h2>
+      <div class="steps">
+        <div class="step"><span>01</span><h3>Tell us about it</h3><p>Share your date, venue, guest count, and the kind of experience you want.</p></div>
+        <div class="step"><span>02</span><h3>Shape your service</h3><p>We'll recommend the right package and confirm any custom details.</p></div>
+        <div class="step"><span>03</span><h3>We bring the café</h3><p>Our team handles setup, service, and cleanup on event day.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer shell">
+    <a class="brand" href="#top" aria-label="Naz Coffee home"><img src="assets/cart/naz-logo.png" alt="Naz Coffee"></a>
+    <p>Thoughtfully crafted café experiences for every kind of gathering.</p>
+    <a href="#top">Back to top ↑</a>
+  </footer>
+</main>
+
+<script>
+const packageRates = {
+  community: { "50": 8500, "100": 13000, "200": 22000, "300": 31000 },
+  social: { "50": 9500, "100": 14500, "150": 18500, "200": 22500, "300": 30500 },
+  professional: { "100": 16500, "150": 21000, "200": 25500, "300": 34500 },
+  brand: { "100": 25000, "200": 34000, "300": 43000 },
+};
+const packageNames = {
+  community: "Naz Community Cart", social: "Naz Social Cart", professional: "Naz Professional Cart", brand: "Naz Brand Experience",
+};
+const addOns = ["Extra service hours", "Additional drinks", "Premium or non-dairy milk", "Custom cups or sleeves", "Custom menu or printed materials", "Special equipment", "Out-of-area transport", "Rush service"];
+const clientLogos = [
+  ["ABS-CBN", "assets/cart/client-logos/abs-cbn.png"], ["MYX", "assets/cart/client-logos/myx.png"], ["Cinema One", "assets/cart/client-logos/cinema-one.png"],
+  ["MoonEyes", "assets/cart/client-logos/mooneyes.png"], ["Illest", "assets/cart/client-logos/illest.png"], ["Guess", "assets/cart/client-logos/guess.png"],
+  ["Marithé François Girbaud", "assets/cart/client-logos/girbaud.png"], ["Amazon", "assets/cart/client-logos/amazon.png"],
+  ["PRU Life UK", "assets/cart/client-logos/pru-life-uk.png"], ["Rapidé", "assets/cart/client-logos/rapide.png"],
+];
+const services = [
+  { number: "01", name: "Naz Community Cart", audience: "Schools & community gatherings", promise: "Quality coffee and a welcoming setup, designed around a controlled budget.", inclusions: ["Curated limited menu", "Simplified setup", "Two baristas", "3-hour service"], price: "From ₱8,500", note: "50 or 100 drinks" },
+  { number: "02", name: "Naz Social Cart", audience: "Birthdays & private celebrations", promise: "A memorable café experience—without adding coordination stress to your day.", inclusions: ["Five drink choices", "Menu board", "Two baristas", "3-hour service"], price: "From ₱9,500", note: "50, 100, or 150 drinks" },
+  { number: "03", name: "Naz Professional Cart", audience: "Companies & organizations", promise: "Reliable refreshments that keep guests energized and reflect well on your team.", inclusions: ["Expanded menu", "Two baristas", "Basic branding", "Invoice & documentation"], price: "From ₱16,500", note: "100, 150, or 200 drinks" },
+  { number: "04", name: "Naz Brand Experience", audience: "Lifestyle & entertainment brands", promise: "A brand-aligned café activation made for interaction, recall, and content.", inclusions: ["Activation brief", "Signature drinks", "Co-branded presentation", "Two baristas"], price: "Starts at ₱25,000", note: "100 drinks · custom quote", featured: true },
+];
+
+let eventType = "social";
+let guestCount = "50";
+let selectedAddOns = [];
+
+function money(n) { return new Intl.NumberFormat("en-PH").format(n); }
+
+function renderClientLogos() {
+  const logoHtml = arr => arr.map(([name, src]) =>
+    `<div class="client-logo"><img src="${src}" alt="${name} logo"></div>`).join("");
+  const firstRow = clientLogos.slice(0, 7);
+  const secondRow = clientLogos.slice(7);
+  document.getElementById("clientLogoGrid").innerHTML =
+    `<div class="client-logo-row">${logoHtml(firstRow)}</div>` +
+    `<div class="client-logo-row client-logo-row-center">${logoHtml(secondRow)}</div>`;
+}
+
+function renderServices() {
+  document.getElementById("servicesGrid").innerHTML = services.map(s => `
+    <a class="service-card ${s.featured ? "featured" : ""}" href="#inquire">
+      <div class="card-top"><span>${s.number}</span><span>${s.audience}</span></div>
+      <h3>${s.name}</h3><p class="promise">${s.promise}</p>
+      <ul>${s.inclusions.map(i => `<li>${i}</li>`).join("")}</ul>
+      <div class="card-price"><strong>${s.price}</strong><small>${s.note}</small></div>
+      <span class="card-cta">Select this service <span>→</span></span>
+    </a>`).join("");
+}
+
+function renderAddonPicker() {
+  document.getElementById("addonPicker").innerHTML = "<legend>Optional add-ons</legend>" + addOns.map(a =>
+    `<label><input type="checkbox" data-addon="${a}"> <span>${a}</span></label>`).join("");
+  document.querySelectorAll("#addonPicker input[type=checkbox]").forEach(cb => {
+    cb.addEventListener("change", () => {
+      const addon = cb.dataset.addon;
+      if (cb.checked) { if (!selectedAddOns.includes(addon)) selectedAddOns.push(addon); }
+      else { selectedAddOns = selectedAddOns.filter(a => a !== addon); }
+      renderResult();
+    });
+  });
+}
+
+function renderGuestCountOptions() {
+  const select = document.getElementById("guest-count");
+  const counts = Object.keys(packageRates[eventType]);
+  select.innerHTML = counts.map(c => `<option value="${c}">${c} drinks</option>`).join("");
+  if (!counts.includes(guestCount)) guestCount = counts[0];
+  select.value = guestCount;
+}
+
+function renderResult() {
+  const counts = Object.keys(packageRates[eventType]);
+  const baseRate = packageRates[eventType][guestCount] ?? packageRates[eventType][counts[0]];
+  const formattedRate = money(baseRate);
+  document.getElementById("finderRateLine").textContent = `${packageNames[eventType]} · ₱${formattedRate}${eventType === "brand" ? "+" : ""}`;
+  document.getElementById("finderNote").textContent = `Includes ${guestCount} drinks and three hours of service. ` +
+    (selectedAddOns.length ? `${selectedAddOns.length} selected add-on${selectedAddOns.length > 1 ? "s" : ""} will be priced in the final quote.` : "Choose add-ons above if needed.");
+
+  const mailBody = `Recommended package: ${packageNames[eventType]}%0ADrinks: ${guestCount}%0AEstimated base: ₱${formattedRate}%0AAdd-ons: ${encodeURIComponent(selectedAddOns.join(", ") || "None")}%0AEvent date:%0AVenue:%0AAdditional details:`;
+  document.getElementById("inquiryLink").href = `mailto:?subject=Naz%20Coffee%20Custom%20Package&body=${mailBody}`;
+  document.getElementById("checkoutLink").href = `cart-checkout.html?package=${encodeURIComponent(packageNames[eventType])}&drinks=${guestCount}&rate=${baseRate}`;
+}
+
+document.getElementById("event-type").addEventListener("change", (e) => {
+  eventType = e.target.value;
+  renderGuestCountOptions();
+  renderResult();
+});
+document.getElementById("guest-count").addEventListener("change", (e) => {
+  guestCount = e.target.value;
+  renderResult();
+});
+
+renderClientLogos();
+renderServices();
+renderAddonPicker();
+renderGuestCountOptions();
+renderResult();
+</script>
+
+</body>
+</html>

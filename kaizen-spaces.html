@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kaizen Spaces — Naz Ventures</title>
+<meta name="description" content="Kaizen Spaces — workshop and event space rental from Naz Ventures. Host Coffee 101, Cafe Business 101, and Matcha workshops, or book the space for your own event.">
+<link rel="icon" href="assets/logos/naz-ventures-mark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav container">
+    <a href="index.html" class="brand">
+      <img class="brand-mark" src="assets/logos/naz-ventures-mark.png" alt="Naz Ventures">
+      <span>Naz Ventures<span class="brand-sub">Business Ecosystem</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" data-page="index.html">Home</a>
+      <a href="index.html#businesses">Businesses</a>
+      <a href="about.html" data-page="about.html">About</a>
+      <a href="contact.html" data-page="contact.html">Contact</a>
+      <a href="contact.html" class="btn btn-accent btn-sm nav-cta">Get in Touch</a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
+
+<main>
+
+  <!-- Page hero -->
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow">Kaizen Spaces</span>
+      <h1>Your space, your people, your vibe</h1>
+      <p>Workshop space, event space, private bookings — Kaizen Spaces is the room next door to Naz Coffee, built for people who want to learn, host, or gather without the fuss.</p>
+    </div>
+  </section>
+
+  <!-- The Space -->
+  <section class="section section-tight">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">The Space</span>
+        <h2>Where it happens</h2>
+        <p>A real room next door to Naz Coffee — not a rented function hall.</p>
+      </div>
+      <div class="story-grid">
+        <div class="photo-frame"><img src="assets/photos/kaizen-lounge-1.jpg" alt="Kaizen Spaces lounge seating with workshop gallery wall"></div>
+        <div class="photo-frame"><img src="assets/photos/kaizen-lounge-2.jpg" alt="Kaizen Spaces armchair corner seating"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Workshops -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Hosted Here</span>
+        <h2>Workshops &amp; classes</h2>
+        <p>Regularly running sessions, plus space for your own — bring a group and we'll help you plan it.</p>
+      </div>
+      <div class="values-grid">
+        <div class="value-card">
+          <h3>Coffee 101 Workshop</h3>
+          <p>Brewing fundamentals for home baristas and anyone curious about what actually happens in the cup.</p>
+        </div>
+        <div class="value-card">
+          <h3>Cafe Business 101 Workshop</h3>
+          <p>For aspiring cafe owners — costing, operations, and the real lessons from running Naz Coffee.</p>
+        </div>
+        <div class="value-card">
+          <h3>Matcha Workshop</h3>
+          <p>Whisking technique, grade selection, and building a matcha menu that doesn't taste like an afterthought.</p>
+        </div>
+        <div class="value-card">
+          <h3>Private &amp; Custom Sessions</h3>
+          <p>Pop-ups, team offsites, birthdays, study groups — if it needs a room and good coffee nearby, ask us.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Workshop in session -->
+  <section class="photo-band">
+    <img src="assets/photos/kaizen-workshop-band.jpg" alt="Coffee 101 workshop graduates holding their certificates of completion at Kaizen Spaces">
+    <div class="photo-band-overlay">
+      <div class="container">
+        <p class="photo-band-quote">Real workshops. Real graduates. Coffee 101: The Basics, hosted right here.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rates + Inquiry -->
+  <section class="section section-alt">
+    <div class="container contact-grid">
+
+      <!-- Inquiry form -->
+      <div class="form-card reveal">
+        <h2 style="margin-bottom:6px;">Inquire about the space</h2>
+        <p style="color:var(--color-text-muted); margin-bottom:24px;">Tell us what you're planning and we'll get back to you with availability.</p>
+
+        <div id="form-status" class="form-status" role="status"></div>
+
+        <form id="contact-form" name="contact" method="POST" data-netlify="true">
+          <input type="hidden" name="form-name" value="contact">
+          <input type="hidden" name="venture" value="kaizen-spaces">
+          <!-- Honeypot field — hidden from real visitors, catches bots -->
+          <div class="honeypot" aria-hidden="true">
+            <label for="kaizen-company">Company</label>
+            <input type="text" id="kaizen-company" name="company" tabindex="-1" autocomplete="off">
+          </div>
+
+          <div class="form-row form-row-split">
+            <div>
+              <label for="name">Full name</label>
+              <input type="text" id="name" name="name" placeholder="Jane Doe" required>
+            </div>
+            <div>
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="jane@example.com" required>
+            </div>
+          </div>
+
+          <div class="form-row form-row-split">
+            <div>
+              <label for="kaizen-phone">Phone <span class="placeholder-flag">Optional</span></label>
+              <input type="tel" id="kaizen-phone" name="phone" placeholder="09XX XXX XXXX">
+            </div>
+            <div>
+              <label for="kaizen-date">Preferred date</label>
+              <input type="date" id="kaizen-date" name="preferred-date">
+            </div>
+          </div>
+
+          <div class="form-row form-row-split">
+            <div>
+              <label for="kaizen-tier">Which space?</label>
+              <select id="kaizen-tier" name="space-tier">
+                <option value="kaizen-only">Kaizen Spaces (up to 15 pax)</option>
+                <option value="naz-coffee-area">Naz Coffee (up to 25 pax)</option>
+                <option value="full-space">Full Space (up to 35 pax)</option>
+                <option value="not-sure">Not sure yet</option>
+              </select>
+            </div>
+            <div>
+              <label for="kaizen-type">What's it for?</label>
+              <select id="kaizen-type" name="inquiry-type">
+                <option value="coffee-101">Coffee 101 Workshop</option>
+                <option value="cafe-business-101">Cafe Business 101 Workshop</option>
+                <option value="matcha">Matcha Workshop</option>
+                <option value="private-event">Private Event</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Tell us a bit about your group and what you have in mind..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block">Send Inquiry</button>
+
+          <p class="form-note">
+            Submissions are handled by Netlify Forms and arrive in your Netlify dashboard's Forms tab.
+          </p>
+        </form>
+      </div>
+
+      <!-- Rates -->
+      <div class="reveal">
+        <div class="info-card">
+          <h3>Private Booking Rates</h3>
+          <div class="quick-link-row">
+            <div>
+              <strong>Kaizen Spaces</strong>
+              <span>Up to 15 pax</span>
+            </div>
+            <span class="rate-price">&#8369;3,000</span>
+          </div>
+          <div class="quick-link-row">
+            <div>
+              <strong>Naz Coffee</strong>
+              <span>Up to 25 pax</span>
+            </div>
+            <span class="rate-price">&#8369;5,000</span>
+          </div>
+          <div class="quick-link-row">
+            <div>
+              <strong>Full Space</strong>
+              <span>Up to 35 pax</span>
+            </div>
+            <span class="rate-price">&#8369;7,000</span>
+          </div>
+          <p class="form-note" style="margin-top:16px;">That's 3 hours, all yours — no interruptions, no sharing. Fully consumable private bookings.</p>
+        </div>
+
+        <div class="info-card">
+          <h3>Contact Details</h3>
+          <div class="info-row">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v12H4Z"/><path d="m4 7 8 6 8-6"/></svg>
+            <div>
+              <strong>Email</strong>
+              <span>ptsutare@gmail.com</span>
+            </div>
+          </div>
+          <div class="info-row">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg>
+            <div>
+              <strong>Phone</strong>
+              <span>+63 917 274 1129</span>
+            </div>
+          </div>
+          <div class="info-row">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-7.2 7-12a7 7 0 0 0-14 0c0 4.8 7 12 7 12Z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            <div>
+              <strong>Location</strong>
+              <span>Naz Coffee, National Highway, Candelaria, Balian, Pangil, Laguna</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-brand">
+        <a href="index.html" class="brand"><img class="brand-mark" src="assets/logos/naz-ventures-mark.png" alt="Naz Ventures"><span>Naz Ventures</span></a>
+        <p>A growing ecosystem of cafés, spaces, and ventures built on one operating philosophy: keep improving, one business at a time.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Ventures</h4>
+        <ul>
+          <li><a href="order.html">Naz Coffee</a></li>
+          <li><a href="cart.html">Naz Coffee Cart Service</a></li>
+          <li><a href="kaizen-spaces.html">Kaizen Spaces</a></li>
+          <li><a href="index.html#businesses">Flow State Studio</a></li>
+          <li><a href="ally-store.html">Ally Cafe Solutions</a></li>
+          <li><a href="index.html#businesses">Onoy's Cloud Kitchen</a></li>
+          <li><a href="index.html#businesses">DOSE Franchising</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="index.html#businesses">Businesses</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><span>ptsutare@gmail.com</span></li>
+          <li><a href="contact.html">Send a message</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="year"></span> Naz Ventures. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/script.js"></script>
+</body>
+</html>
