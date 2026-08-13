@@ -998,3 +998,298 @@ textarea { resize: vertical; min-height: 130px; }
   opacity: 1;
   transform: translateY(0);
 }
+
+/* ========================================================
+   PILOT — Beanro-inspired visual direction (experimental)
+   Scoped entirely to .pilot-* / *-pilot classes so nothing
+   else on the site is affected. Safe to strip out wholesale
+   by removing this block + the pilot classes in the HTML.
+   ======================================================== */
+
+:root {
+  --pilot-cream: #f8ecd9;
+  --pilot-cream-deep: #f0dfc4;
+  --pilot-rust: #7a3a1f;
+  --pilot-rust-dark: #5c2b16;
+  --pilot-gold: #e0a030;
+  --pilot-ink: #2a1810;
+}
+
+/* Marquee bar */
+.pilot-marquee {
+  background: var(--pilot-rust-dark);
+  color: #fff;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 10px 0;
+}
+.pilot-marquee-track {
+  display: inline-block;
+  animation: pilot-marquee-scroll 22s linear infinite;
+}
+.pilot-marquee-track span {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--pilot-gold);
+}
+@keyframes pilot-marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-33.333%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pilot-marquee-track { animation: none; }
+}
+
+/* Hero */
+.hero-pilot {
+  background: var(--pilot-cream);
+  position: relative;
+}
+.hero-pilot::before {
+  content: "";
+  position: absolute;
+  top: -120px;
+  right: -120px;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--pilot-gold) 0%, transparent 70%);
+  opacity: 0.35;
+  pointer-events: none;
+}
+.pilot-eyebrow {
+  color: var(--pilot-rust) !important;
+  font-weight: 800 !important;
+}
+.pilot-h1 {
+  font-family: 'Archivo Black', var(--font-heading), sans-serif !important;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 0.98 !important;
+  color: var(--pilot-rust-dark) !important;
+  font-size: clamp(2.4rem, 5.2vw, 4.1rem) !important;
+}
+.pilot-btn-primary {
+  background: var(--pilot-rust-dark) !important;
+  border-radius: 999px !important;
+  font-weight: 800 !important;
+  text-transform: uppercase;
+  font-size: 0.85rem !important;
+  letter-spacing: 0.03em;
+  padding: 15px 26px !important;
+}
+.pilot-btn-primary:hover { background: var(--pilot-ink) !important; }
+.pilot-btn-outline {
+  border-radius: 999px !important;
+  border-color: var(--pilot-rust-dark) !important;
+  color: var(--pilot-rust-dark) !important;
+  font-weight: 800 !important;
+  text-transform: uppercase;
+  font-size: 0.85rem !important;
+  letter-spacing: 0.03em;
+  padding: 15px 26px !important;
+}
+.pilot-btn-outline:hover { background: var(--pilot-rust-dark) !important; color: #fff !important; }
+
+.pilot-photo {
+  border-radius: 28px !important;
+  position: relative;
+  box-shadow: 0 24px 50px rgba(122, 58, 31, 0.28) !important;
+}
+.pilot-photo-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: var(--pilot-gold);
+  color: var(--pilot-ink);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 7px 14px;
+  border-radius: 999px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+}
+.pilot-panel {
+  border-radius: 22px !important;
+  border-color: var(--pilot-cream-deep) !important;
+  box-shadow: 0 16px 34px rgba(122, 58, 31, 0.1) !important;
+}
+
+/* Businesses section + cards */
+.pilot-businesses { background: var(--pilot-cream); }
+.pilot-h2 {
+  font-family: 'Archivo Black', var(--font-heading), sans-serif !important;
+  text-transform: uppercase;
+  color: var(--pilot-rust-dark) !important;
+  letter-spacing: -0.01em;
+  line-height: 1.02 !important;
+}
+
+.card-pilot {
+  border-radius: 22px !important;
+  border-color: var(--pilot-cream-deep) !important;
+  box-shadow: 0 10px 26px rgba(122, 58, 31, 0.08) !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+.card-pilot:hover {
+  transform: translateY(-6px) !important;
+  box-shadow: 0 20px 40px rgba(122, 58, 31, 0.18) !important;
+}
+.card-pilot .card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.card-pilot h3 {
+  font-family: 'Archivo Black', var(--font-heading), sans-serif;
+  text-transform: uppercase;
+  font-size: 1.1rem;
+  letter-spacing: -0.005em;
+  color: var(--pilot-ink);
+  margin-top: 14px;
+}
+.pilot-badge {
+  color: #fff !important;
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.tone-coffee .pilot-badge { background: var(--color-coffee); }
+.tone-cart .pilot-badge { background: var(--color-accent-dark); }
+.tone-kaizen .pilot-badge { background: var(--color-kaizen); }
+.tone-flow .pilot-badge { background: var(--color-flow); }
+.tone-ally .pilot-badge { background: var(--color-ally); }
+.tone-cloud .pilot-badge { background: var(--color-cloud); }
+.tone-dose .pilot-badge { background: var(--color-dose); }
+
+/* card-tag now sits on its own line above the heading, not squeezed
+   next to the logo — fixes long tags (eg. Ally Cafe Solutions) clipping */
+.card-pilot .card-top { margin-bottom: 0; }
+.card-pilot > .pilot-badge.card-tag {
+  display: inline-block;
+  width: fit-content;
+  margin-top: 16px;
+}
+.card-pilot h3 { margin-top: 8px !important; }
+
+/* Header / nav */
+.header-pilot {
+  background: rgba(248, 236, 217, 0.92) !important;
+  border-bottom: 1px solid var(--pilot-cream-deep) !important;
+}
+.header-pilot .brand { color: var(--pilot-rust-dark); }
+.header-pilot .nav-links a {
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: var(--pilot-rust-dark);
+}
+.header-pilot .nav-links a:hover,
+.header-pilot .nav-links a.active {
+  background: var(--pilot-cream-deep);
+  color: var(--pilot-rust-dark);
+}
+.pilot-nav-cta {
+  background: var(--pilot-rust-dark) !important;
+  border-radius: 999px !important;
+  color: #fff !important;
+}
+.pilot-nav-cta:hover { background: var(--pilot-ink) !important; }
+
+/* Needs Navigator */
+.needs-section-pilot { background: var(--pilot-cream); }
+.needs-card-pilot {
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  text-align: left !important;
+  background: #fff !important;
+  border: 1.5px solid var(--pilot-cream-deep) !important;
+  border-radius: 16px !important;
+  padding: 22px 24px !important;
+}
+.needs-card-pilot:hover {
+  border-color: var(--pilot-rust-dark) !important;
+  box-shadow: 0 14px 28px rgba(122, 58, 31, 0.14) !important;
+}
+.needs-card-pilot .needs-label {
+  font-family: 'Archivo Black', var(--font-heading), sans-serif;
+  text-transform: uppercase;
+  font-size: 0.92rem;
+  letter-spacing: -0.005em;
+  color: var(--pilot-ink);
+  line-height: 1.3;
+}
+.needs-arrow {
+  font-size: 1.2rem;
+  color: var(--pilot-rust-dark);
+  flex-shrink: 0;
+  transform: translateX(0);
+  transition: transform 0.18s ease;
+}
+.needs-card-pilot:hover .needs-arrow { transform: translateX(4px); }
+
+/* Photo band */
+.photo-band-pilot .photo-band-overlay {
+  background: linear-gradient(90deg, rgba(42, 24, 16, 0.82) 0%, rgba(42, 24, 16, 0.36) 55%, rgba(42, 24, 16, 0.06) 100%);
+}
+.photo-band-pilot .photo-band-quote {
+  font-family: 'Archivo Black', var(--font-heading), sans-serif;
+  text-transform: uppercase;
+  letter-spacing: -0.005em;
+  line-height: 1.25;
+}
+
+/* How it works */
+.section-alt-pilot { background: var(--pilot-cream) !important; border-color: var(--pilot-cream-deep) !important; }
+.feature-pilot .feature-num {
+  background: var(--pilot-rust-dark);
+  color: var(--pilot-gold);
+  font-family: 'Archivo Black', var(--font-heading), sans-serif;
+}
+.feature-pilot h3 {
+  font-family: 'Archivo Black', var(--font-heading), sans-serif;
+  text-transform: uppercase;
+  letter-spacing: -0.005em;
+  color: var(--pilot-rust-dark);
+  font-size: 1.05rem;
+}
+
+/* CTA banner */
+.cta-banner-pilot {
+  background: linear-gradient(135deg, var(--pilot-rust-dark), var(--pilot-ink)) !important;
+  border-radius: 24px !important;
+}
+.cta-banner-pilot h2 {
+  font-family: 'Archivo Black', var(--font-heading), sans-serif;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+.pilot-btn-ghost {
+  border-radius: 999px !important;
+  font-weight: 800 !important;
+  text-transform: uppercase;
+  font-size: 0.85rem !important;
+  letter-spacing: 0.03em;
+  padding: 15px 26px !important;
+}
+
+/* Footer */
+.footer-pilot { background: var(--pilot-ink) !important; }
+.footer-pilot .footer-brand .brand { color: #fff; }
+.footer-pilot .footer-col h4 {
+  font-family: 'Archivo Black', var(--font-heading), sans-serif;
+  letter-spacing: 0.02em;
+}
+.footer-pilot .footer-grid { border-color: rgba(255,255,255,0.12) !important; }

@@ -8,12 +8,12 @@
 <link rel="icon" href="assets/logos/naz-ventures-mark.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=20260813c">
 </head>
 <body>
 
-<header class="site-header">
+<header class="site-header header-pilot">
   <nav class="nav container">
     <a href="index.html" class="brand">
       <img class="brand-mark" src="assets/logos/naz-ventures-mark.png" alt="Naz Ventures">
@@ -24,7 +24,7 @@
       <a href="index.html#businesses">Businesses</a>
       <a href="about.html" data-page="about.html">About</a>
       <a href="contact.html" data-page="contact.html">Contact</a>
-      <a href="contact.html" class="btn btn-accent btn-sm nav-cta">Get in Touch</a>
+      <a href="contact.html" class="btn btn-accent btn-sm nav-cta pilot-nav-cta">Get in Touch</a>
     </div>
     <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -34,31 +34,39 @@
 
 <main>
 
+  <!-- Pilot marquee -->
+  <div class="pilot-marquee">
+    <div class="pilot-marquee-track">
+      <span>SEVEN VENTURES, ONE PHILOSOPHY — EXPLORE THE ECOSYSTEM&nbsp;&nbsp;★&nbsp;&nbsp;SEVEN VENTURES, ONE PHILOSOPHY — EXPLORE THE ECOSYSTEM&nbsp;&nbsp;★&nbsp;&nbsp;SEVEN VENTURES, ONE PHILOSOPHY — EXPLORE THE ECOSYSTEM&nbsp;&nbsp;★&nbsp;&nbsp;</span>
+    </div>
+  </div>
+
   <!-- Hero -->
-  <section class="hero">
+  <section class="hero hero-pilot">
     <div class="container hero-grid">
       <div>
-        <span class="eyebrow">Naz Ventures</span>
-        <h1>A growing ecosystem of hospitality &amp; business ventures.</h1>
+        <span class="eyebrow pilot-eyebrow">Naz Ventures</span>
+        <h1 class="pilot-h1">A growing ecosystem of hospitality &amp; business ventures.</h1>
         <p class="hero-lede">
           From the espresso bar to the boardroom, Naz Ventures connects every business
           under one roof — order a coffee, book the cart, rent a space, get consulting,
           or explore what's coming next.
         </p>
         <div class="hero-actions">
-          <a href="#businesses" class="btn btn-primary">
+          <a href="#businesses" class="btn btn-primary pilot-btn-primary">
             Explore the Ecosystem
             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </a>
-          <a href="contact.html" class="btn btn-outline">Contact Us</a>
+          <a href="contact.html" class="btn btn-outline pilot-btn-outline">Contact Us</a>
         </div>
       </div>
 
       <div class="hero-visual">
-        <div class="hero-photo">
+        <div class="hero-photo pilot-photo">
           <img src="assets/photos/storefront.jpg" alt="The Naz Coffee storefront, flagship of the Naz Ventures ecosystem">
+          <span class="pilot-photo-badge">★ Est. Naz Coffee</span>
         </div>
-        <div class="hero-panel">
+        <div class="hero-panel pilot-panel">
           <div class="hero-panel-title">The Ecosystem at a Glance</div>
           <div class="hero-logo-strip">
             <span class="hero-strip-logo" title="Naz Coffee"><img src="assets/logos/naz-coffee.png" alt="Naz Coffee"></span>
@@ -74,74 +82,56 @@
   </section>
 
   <!-- Needs Navigator -->
-  <section class="section needs-section">
+  <section class="section needs-section needs-section-pilot">
     <div class="container">
       <div class="section-head">
-        <span class="eyebrow">Start Here</span>
-        <h2>What do you need?</h2>
+        <span class="eyebrow pilot-eyebrow">Start Here</span>
+        <h2 class="pilot-h2">What do you need?</h2>
         <p>Tell us what you're looking for and we'll point you to the right place.</p>
       </div>
       <div class="needs-grid">
-        <a href="order.html" class="needs-card">
-          <span class="needs-icon">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-5h16l1 5"/><path d="M3 9a2 2 0 0 0 4 0 2 2 0 0 0 4 0 2 2 0 0 0 4 0 2 2 0 0 0 4 0"/><path d="M4 9v10h16V9"/></svg>
-          </span>
+        <a href="order.html" class="needs-card needs-card-pilot">
           <span class="needs-label">Specialty Coffee Shop</span>
+          <span class="needs-arrow">→</span>
         </a>
-        <a href="cart.html" class="needs-card">
-          <span class="needs-icon">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-          </span>
+        <a href="cart.html" class="needs-card needs-card-pilot">
           <span class="needs-label">Book a Coffee Cart</span>
+          <span class="needs-arrow">→</span>
         </a>
-        <a href="kaizen-spaces.html" class="needs-card">
-          <span class="needs-icon">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          </span>
+        <a href="kaizen-spaces.html" class="needs-card needs-card-pilot">
           <span class="needs-label">Host a Workshop or Meeting</span>
+          <span class="needs-arrow">→</span>
         </a>
-        <a href="kaizen-spaces.html" class="needs-card">
-          <span class="needs-icon">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"/></svg>
-          </span>
+        <a href="kaizen-spaces.html" class="needs-card needs-card-pilot">
           <span class="needs-label">Coffee 101 or Barista Training</span>
+          <span class="needs-arrow">→</span>
         </a>
-        <a href="contact.html?venture=flow-state-studio" class="needs-card">
-          <span class="needs-icon">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-          </span>
+        <a href="contact.html?venture=flow-state-studio" class="needs-card needs-card-pilot">
           <span class="needs-label">Open or Grow my Cafe</span>
+          <span class="needs-arrow">→</span>
         </a>
-        <a href="ally-store.html" class="needs-card">
-          <span class="needs-icon">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8l9 5 9-5Z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg>
-          </span>
+        <a href="ally-store.html" class="needs-card needs-card-pilot">
           <span class="needs-label">Source Cafe Supplies</span>
+          <span class="needs-arrow">→</span>
         </a>
-        <a href="contact.html?venture=dose-franchising" class="needs-card">
-          <span class="needs-icon">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-          </span>
+        <a href="contact.html?venture=dose-franchising" class="needs-card needs-card-pilot">
           <span class="needs-label">Franchise Opportunity</span>
+          <span class="needs-arrow">→</span>
         </a>
-        <a href="contact.html?venture=cloud-kitchen" class="needs-card">
-          <span class="needs-icon">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8Z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
-          </span>
+        <a href="contact.html?venture=cloud-kitchen" class="needs-card needs-card-pilot">
           <span class="needs-label">Quick Meals and Platters</span>
+          <span class="needs-arrow">→</span>
         </a>
-        <a href="contact.html" class="needs-card">
-          <span class="needs-icon">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-8.8 8.4 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.4a8.4 8.4 0 0 1-.9-3.8 8.4 8.4 0 0 1 17-.3Z"/></svg>
-          </span>
+        <a href="contact.html" class="needs-card needs-card-pilot">
           <span class="needs-label">Something else</span>
+          <span class="needs-arrow">→</span>
         </a>
       </div>
     </div>
   </section>
 
   <!-- Photo band -->
-  <section class="photo-band">
+  <section class="photo-band photo-band-pilot">
     <img src="assets/photos/interior-band.jpg" alt="Inside Naz Coffee, where the ecosystem started">
     <div class="photo-band-overlay">
       <div class="container">
@@ -151,120 +141,120 @@
   </section>
 
   <!-- Businesses -->
-  <section class="section" id="businesses">
+  <section class="section pilot-businesses" id="businesses">
     <div class="container">
       <div class="section-head">
-        <span class="eyebrow">The Ventures</span>
-        <h2>Seven businesses, one ecosystem</h2>
+        <span class="eyebrow pilot-eyebrow">The Ventures</span>
+        <h2 class="pilot-h2">Seven businesses, one ecosystem</h2>
         <p>Every venture is independent — but built on the same operating principles and, over time, the same doorway in.</p>
       </div>
 
       <div class="business-grid">
 
         <!-- Naz Coffee -->
-        <article class="card tone-coffee">
+        <article class="card card-pilot tone-coffee">
           <div class="card-top">
             <div class="card-logo">
               <img src="assets/logos/naz-coffee.png" alt="Naz Coffee logo">
             </div>
           </div>
-          <span class="card-tag">Cafe Operations</span>
+          <span class="card-tag pilot-badge">Cafe Operations</span>
           <h3>Naz Coffee</h3>
           <p>Our flagship café — coffee, food, and community, brewed daily. Order ahead and skip the line.</p>
           <div class="card-footer">
-            <a href="order.html" class="btn btn-primary btn-sm">Order Now</a>
+            <a href="order.html" class="btn btn-primary btn-sm pilot-btn-primary">Order Now</a>
           </div>
         </article>
 
         <!-- Naz Coffee Cart Service -->
-        <article class="card tone-cart">
+        <article class="card card-pilot tone-cart">
           <div class="card-top">
             <div class="card-logo">
               <img src="assets/logos/naz-coffee.png" alt="Naz Coffee logo">
             </div>
           </div>
-          <span class="card-tag">Mobile Bar &amp; Events</span>
+          <span class="card-tag pilot-badge">Mobile Bar &amp; Events</span>
           <h3>Naz Coffee Cart Service</h3>
           <p>Espresso-bar quality for weddings, corporate events, and private parties — we bring the counter to you.</p>
           <div class="card-footer">
-            <a href="cart.html" class="btn btn-primary btn-sm">Book the Cart</a>
+            <a href="cart.html" class="btn btn-primary btn-sm pilot-btn-primary">Book the Cart</a>
           </div>
         </article>
 
         <!-- Kaizen Spaces -->
-        <article class="card tone-kaizen">
+        <article class="card card-pilot tone-kaizen">
           <div class="card-top">
             <div class="card-logo">
               <img src="assets/logos/kaizen-spaces.png" alt="Kaizen Spaces logo">
             </div>
           </div>
-          <span class="card-tag">Space Rental &amp; Workshops</span>
+          <span class="card-tag pilot-badge">Space Rental &amp; Workshops</span>
           <h3>Kaizen Spaces</h3>
           <p>Home to Coffee 101, Cafe Business 101, and Matcha workshops — plus private bookings for pop-ups and events.</p>
           <div class="card-footer">
-            <a href="kaizen-spaces.html" class="btn btn-primary btn-sm">Inquire About Space</a>
+            <a href="kaizen-spaces.html" class="btn btn-primary btn-sm pilot-btn-primary">Inquire About Space</a>
           </div>
         </article>
 
         <!-- Flow State Studio -->
-        <article class="card tone-flow">
+        <article class="card card-pilot tone-flow">
           <div class="card-top">
             <div class="card-logo">
               <img src="assets/logos/flow-state-studio.png" alt="Flow State Studio logo">
             </div>
           </div>
-          <span class="card-tag">Cafe &amp; Business Consultancy</span>
+          <span class="card-tag pilot-badge">Cafe &amp; Business Consultancy</span>
           <h3>Flow State Studio</h3>
           <p>Hands-on consulting for café and hospitality operators — from opening-day systems to scaling multiple locations.</p>
           <div class="card-footer">
-            <a href="contact.html?venture=flow-state-studio" class="btn btn-primary btn-sm">Book a Consultation</a>
+            <a href="contact.html?venture=flow-state-studio" class="btn btn-primary btn-sm pilot-btn-primary">Book a Consultation</a>
           </div>
         </article>
 
         <!-- Ally Cafe Solutions -->
-        <article class="card tone-ally">
+        <article class="card card-pilot tone-ally">
           <div class="card-top">
             <div class="card-logo">
               <img src="assets/logos/ally-cafe-solutions.png" alt="Ally Cafe Solutions logo">
             </div>
           </div>
-          <span class="card-tag">Cafe Supplies &amp; Equipment</span>
+          <span class="card-tag pilot-badge">Cafe Supplies &amp; Equipment</span>
           <h3>Ally Cafe Solutions</h3>
           <p>Sourcing the beans, equipment, and everyday essentials that keep cafés running smoothly.</p>
           <div class="card-footer">
-            <a href="ally-store.html" class="btn btn-primary btn-sm">Visit Store</a>
+            <a href="ally-store.html" class="btn btn-primary btn-sm pilot-btn-primary">Visit Store</a>
           </div>
         </article>
 
         <!-- Onoy's Cloud Kitchen -->
-        <article class="card tone-cloud">
+        <article class="card card-pilot tone-cloud">
           <div class="card-top">
             <div class="card-logo">
               <img src="assets/logos/onoys-cloud-kitchen.png" alt="Onoy's Cloud Kitchen logo">
             </div>
             <span class="badge status-soon">Coming Soon</span>
           </div>
-          <span class="card-tag">Delivery-Only Kitchen</span>
+          <span class="card-tag pilot-badge">Delivery-Only Kitchen</span>
           <h3>Onoy's Cloud Kitchen</h3>
           <p>A shared cloud kitchen concept for delivery-first food brands. Launch details are still in the works.</p>
           <div class="card-footer">
-            <a href="contact.html?venture=cloud-kitchen" class="btn btn-primary btn-sm">Get Notified</a>
+            <a href="contact.html?venture=cloud-kitchen" class="btn btn-primary btn-sm pilot-btn-primary">Get Notified</a>
           </div>
         </article>
 
         <!-- DOSE Franchising -->
-        <article class="card tone-dose">
+        <article class="card card-pilot tone-dose">
           <div class="card-top">
             <div class="card-logo">
               <img src="assets/logos/dose-franchising.png" alt="DOSE Franchising logo">
             </div>
             <span class="badge status-pipeline">In the Pipeline</span>
           </div>
-          <span class="card-tag">Franchise Development</span>
+          <span class="card-tag pilot-badge">Franchise Development</span>
           <h3>DOSE Franchising</h3>
           <p>Packaging the Naz Ventures playbook into a franchise model for operators who want to open their own location.</p>
           <div class="card-footer">
-            <a href="contact.html?venture=dose-franchising" class="btn btn-primary btn-sm">Franchise Inquiries</a>
+            <a href="contact.html?venture=dose-franchising" class="btn btn-primary btn-sm pilot-btn-primary">Franchise Inquiries</a>
           </div>
         </article>
 
@@ -273,24 +263,24 @@
   </section>
 
   <!-- How it works -->
-  <section class="section section-alt">
+  <section class="section section-alt section-alt-pilot">
     <div class="container">
       <div class="section-head">
-        <span class="eyebrow">How the Ecosystem Works</span>
-        <h2>One place to discover, connect, and grow with us</h2>
+        <span class="eyebrow pilot-eyebrow">How the Ecosystem Works</span>
+        <h2 class="pilot-h2">One place to discover, connect, and grow with us</h2>
       </div>
       <div class="feature-grid">
-        <div class="feature reveal">
+        <div class="feature feature-pilot reveal">
           <div class="feature-num">1</div>
           <h3>Discover a venture</h3>
           <p>Browse everything under the Naz Ventures umbrella, from your daily coffee run to space rentals and consulting.</p>
         </div>
-        <div class="feature reveal">
+        <div class="feature feature-pilot reveal">
           <div class="feature-num">2</div>
           <h3>Connect directly</h3>
           <p>Order, book, or inquire — live ventures link straight to their own ordering and booking sites; the rest route through us.</p>
         </div>
-        <div class="feature reveal">
+        <div class="feature feature-pilot reveal">
           <div class="feature-num">3</div>
           <h3>Grow with the ecosystem</h3>
           <p>As new ventures launch — like Onoy's Cloud Kitchen and DOSE Franchising — they'll show up here first.</p>
@@ -302,14 +292,14 @@
   <!-- CTA -->
   <section class="section">
     <div class="container">
-      <div class="cta-banner reveal">
+      <div class="cta-banner cta-banner-pilot reveal">
         <div>
           <h2>Have a coffee, a space, or a partnership in mind?</h2>
           <p>Whether it's a wholesale order, a workshop booking, or a franchise inquiry — we'll route you to the right team.</p>
         </div>
         <div class="cta-actions">
-          <a href="contact.html" class="btn btn-accent">Contact Naz Ventures</a>
-          <a href="about.html" class="btn btn-ghost">Read Our Story</a>
+          <a href="contact.html" class="btn btn-accent pilot-btn-primary">Contact Naz Ventures</a>
+          <a href="about.html" class="btn btn-ghost pilot-btn-ghost">Read Our Story</a>
         </div>
       </div>
     </div>
@@ -317,7 +307,7 @@
 
 </main>
 
-<footer class="site-footer">
+<footer class="site-footer footer-pilot">
   <div class="container">
     <div class="footer-grid">
       <div class="footer-col footer-brand">
