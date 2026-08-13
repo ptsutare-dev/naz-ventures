@@ -8,12 +8,12 @@
 <link rel="icon" href="assets/logos/naz-ventures-mark.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=20260813c">
 </head>
 <body>
 
-<header class="site-header">
+<header class="site-header header-pilot">
   <nav class="nav container">
     <a href="index.html" class="brand">
       <img class="brand-mark" src="assets/logos/naz-ventures-mark.png" alt="Naz Ventures">
@@ -24,7 +24,7 @@
       <a href="index.html#businesses">Businesses</a>
       <a href="about.html" data-page="about.html">About</a>
       <a href="contact.html" data-page="contact.html">Contact</a>
-      <a href="contact.html" class="btn btn-accent btn-sm nav-cta">Get in Touch</a>
+      <a href="contact.html" class="btn btn-accent btn-sm nav-cta pilot-nav-cta">Get in Touch</a>
     </div>
     <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -35,9 +35,9 @@
 <main>
 
   <!-- Page hero -->
-  <section class="page-hero">
+  <section class="page-hero pilot-page-hero">
     <div class="container">
-      <span class="eyebrow">Kaizen Spaces</span>
+      <span class="eyebrow pilot-eyebrow">Kaizen Spaces</span>
       <h1>Your space, your people, your vibe</h1>
       <p>Workshop space, event space, private bookings — Kaizen Spaces is the room next door to Naz Coffee, built for people who want to learn, host, or gather without the fuss.</p>
     </div>
@@ -47,8 +47,8 @@
   <section class="section section-tight">
     <div class="container">
       <div class="section-head">
-        <span class="eyebrow">The Space</span>
-        <h2>Where it happens</h2>
+        <span class="eyebrow pilot-eyebrow">The Space</span>
+        <h2 class="pilot-h2">Where it happens</h2>
         <p>A real room next door to Naz Coffee — not a rented function hall.</p>
       </div>
       <div class="story-grid">
@@ -59,27 +59,27 @@
   </section>
 
   <!-- Workshops -->
-  <section class="section section-alt">
+  <section class="section section-alt section-alt-pilot">
     <div class="container">
       <div class="section-head">
-        <span class="eyebrow">Hosted Here</span>
-        <h2>Workshops &amp; classes</h2>
+        <span class="eyebrow pilot-eyebrow">Hosted Here</span>
+        <h2 class="pilot-h2">Workshops &amp; classes</h2>
         <p>Regularly running sessions, plus space for your own — bring a group and we'll help you plan it.</p>
       </div>
       <div class="values-grid">
-        <a class="value-card value-card-link" href="#inquire" data-type="coffee-101">
+        <a class="value-card value-card-link value-card-pilot" href="#inquire" data-type="coffee-101">
           <h3>Coffee 101 Workshop</h3>
           <p>Brewing fundamentals for home baristas and anyone curious about what actually happens in the cup.</p>
         </a>
-        <a class="value-card value-card-link" href="#inquire" data-type="cafe-business-101">
+        <a class="value-card value-card-link value-card-pilot" href="#inquire" data-type="cafe-business-101">
           <h3>Cafe Business 101 Workshop</h3>
           <p>For aspiring cafe owners — costing, operations, and the real lessons from running Naz Coffee.</p>
         </a>
-        <a class="value-card value-card-link" href="#inquire" data-type="matcha">
+        <a class="value-card value-card-link value-card-pilot" href="#inquire" data-type="matcha">
           <h3>Matcha Workshop</h3>
           <p>Whisking technique, grade selection, and building a matcha menu that doesn't taste like an afterthought.</p>
         </a>
-        <a class="value-card value-card-link" href="#inquire" data-type="private-event">
+        <a class="value-card value-card-link value-card-pilot" href="#inquire" data-type="private-event">
           <h3>Private &amp; Custom Sessions</h3>
           <p>Pop-ups, team offsites, birthdays, study groups — if it needs a room and good coffee nearby, ask us.</p>
         </a>
@@ -88,7 +88,7 @@
   </section>
 
   <!-- Workshop in session -->
-  <section class="photo-band">
+  <section class="photo-band photo-band-pilot">
     <img src="assets/photos/kaizen-workshop-band.jpg" alt="Coffee 101 workshop graduates holding their certificates of completion at Kaizen Spaces" style="object-position: center 34%;">
     <div class="photo-band-overlay">
       <div class="container">
@@ -98,11 +98,11 @@
   </section>
 
   <!-- Rates + Inquiry -->
-  <section class="section section-alt" id="inquire">
+  <section class="section section-alt section-alt-pilot" id="inquire">
     <div class="container contact-grid">
 
       <!-- Inquiry form -->
-      <div class="form-card reveal">
+      <div class="form-card pilot-card reveal">
         <h2 style="margin-bottom:6px;">Inquire about the space</h2>
         <p style="color:var(--color-text-muted); margin-bottom:24px;">Tell us what you're planning and we'll get back to you with availability.</p>
 
@@ -166,7 +166,7 @@
             <textarea id="message" name="message" placeholder="Tell us a bit about your group and what you have in mind..." required></textarea>
           </div>
 
-          <button type="submit" class="btn btn-primary btn-block">Send Inquiry</button>
+          <button type="submit" class="btn btn-primary btn-block pilot-btn-primary">Send Inquiry</button>
 
           <p class="form-note">
             Submissions are handled by Netlify Forms and arrive in your Netlify dashboard's Forms tab.
@@ -176,7 +176,7 @@
 
       <!-- Rates -->
       <div class="reveal">
-        <div class="info-card">
+        <div class="info-card pilot-card">
           <h3>Private Booking Rates</h3>
           <div class="quick-link-row">
             <div>
@@ -202,7 +202,7 @@
           <p class="form-note" style="margin-top:16px;">That's 3 hours, all yours — no interruptions, no sharing. Fully consumable private bookings.</p>
         </div>
 
-        <div class="info-card">
+        <div class="info-card pilot-card">
           <h3>Contact Details</h3>
           <div class="info-row">
             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v12H4Z"/><path d="m4 7 8 6 8-6"/></svg>
@@ -233,7 +233,7 @@
 
 </main>
 
-<footer class="site-footer">
+<footer class="site-footer footer-pilot">
   <div class="container">
     <div class="footer-grid">
       <div class="footer-col footer-brand">

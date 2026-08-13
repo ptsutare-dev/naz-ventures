@@ -8,8 +8,8 @@
 <link rel="icon" href="assets/logos/naz-ventures-mark.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=20260813c">
 <style>
   .page-hero-logo { display: block; height: 56px; width: auto; margin: 0 auto 20px; object-fit: contain; }
 
@@ -81,7 +81,7 @@
 </head>
 <body>
 
-<header class="site-header">
+<header class="site-header header-pilot">
   <nav class="nav container">
     <a href="index.html" class="brand">
       <img class="brand-mark" src="assets/logos/naz-ventures-mark.png" alt="Naz Ventures">
@@ -92,7 +92,7 @@
       <a href="index.html#businesses">Businesses</a>
       <a href="about.html" data-page="about.html">About</a>
       <a href="contact.html" data-page="contact.html">Contact</a>
-      <a href="contact.html" class="btn btn-accent btn-sm nav-cta">Get in Touch</a>
+      <a href="contact.html" class="btn btn-accent btn-sm nav-cta pilot-nav-cta">Get in Touch</a>
     </div>
     <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -103,7 +103,7 @@
 <main>
 
   <!-- Page hero -->
-  <section class="page-hero">
+  <section class="page-hero pilot-page-hero">
     <div class="container">
       <img class="page-hero-logo" src="assets/logos/ally-cafe-solutions.png" alt="Ally Cafe Solutions">
       <h1>Everyday cafe supplies, sorted</h1>
@@ -114,7 +114,7 @@
   <!-- Shop -->
   <section class="section">
     <div class="container">
-      <div class="promo-banner">
+      <div class="promo-banner promo-banner-pilot">
         <span class="promo-banner-kicker">🎉 First order?</span>
         <span class="promo-banner-code">WELCOME10</span>
         <span class="promo-banner-detail">for 10% off reservations ₱3,000 and up</span>
@@ -123,8 +123,8 @@
       <!-- Category landing -->
       <div id="categoryLanding">
         <div class="section-head">
-          <span class="eyebrow">Shop by category</span>
-          <h2>What are you looking for?</h2>
+          <span class="eyebrow pilot-eyebrow">Shop by category</span>
+          <h2 class="pilot-h2">What are you looking for?</h2>
           <p>Choose a category to see items, photos, and prices.</p>
         </div>
         <div class="category-grid" id="categoryGrid"></div>
@@ -134,8 +134,8 @@
       <div id="categoryDetail" class="category-detail">
         <span class="back-to-categories" id="backToCategories">← All Categories</span>
         <div class="section-head" style="text-align:left; margin-left:0;">
-          <span class="eyebrow" id="detailEyebrow">Category</span>
-          <h2 id="detailHeading">Items</h2>
+          <span class="eyebrow pilot-eyebrow" id="detailEyebrow">Category</span>
+          <h2 class="pilot-h2" id="detailHeading">Items</h2>
           <p id="detailNote"></p>
         </div>
         <div id="detailGrid"></div>
@@ -144,11 +144,11 @@
   </section>
 
   <!-- Checkout -->
-  <section class="section section-alt" id="checkout">
+  <section class="section section-alt section-alt-pilot" id="checkout">
     <div class="container contact-grid">
 
       <!-- Order form -->
-      <div class="form-card reveal">
+      <div class="form-card pilot-card reveal">
         <h2 style="margin-bottom:6px;">Reserve Your Order</h2>
         <p style="color:var(--color-text-muted); margin-bottom:24px;">This reserves your order — we'll follow up to confirm availability, pricing, and how to pay.</p>
 
@@ -211,7 +211,7 @@
 
           <div class="order-total-row"><span>Estimated Total</span><span id="orderTotalDisplay">₱0</span></div>
 
-          <button type="submit" class="btn btn-primary btn-block" style="margin-top:16px;" id="submitOrderBtn" disabled>Add items to reserve</button>
+          <button type="submit" class="btn btn-primary btn-block pilot-btn-primary" style="margin-top:16px;" id="submitOrderBtn" disabled>Add items to reserve</button>
 
           <p class="form-note">
             Submissions are handled by Netlify Forms and arrive in your Netlify dashboard's Forms tab. No payment is collected now — we'll confirm final pricing and payment details with you directly.
@@ -221,7 +221,7 @@
 
       <!-- Payment info -->
       <div class="reveal">
-        <div class="info-card">
+        <div class="info-card pilot-card">
           <h3>Payment</h3>
           <p style="color:var(--color-text-muted); font-size:.9rem; margin-bottom:0;">Nothing to pay yet. Once we confirm your order and final pricing, we'll share payment details — typically via GCash below.</p>
           <div class="gcash-box">
@@ -231,7 +231,7 @@
           </div>
         </div>
 
-        <div class="info-card">
+        <div class="info-card pilot-card">
           <h3>Contact Details</h3>
           <div class="info-row">
             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v12H4Z"/><path d="m4 7 8 6 8-6"/></svg>
@@ -256,17 +256,17 @@
 </main>
 
 <!-- Sticky cart bar -->
-<div class="cart-bar" id="cartBar" style="display:none;">
+<div class="cart-bar cart-bar-pilot" id="cartBar" style="display:none;">
   <div class="container cart-bar-inner">
     <div>
       <div class="cart-bar-total" id="cartBarTotal">₱0</div>
       <div class="cart-bar-count" id="cartBarCount">0 items</div>
     </div>
-    <a href="#checkout" class="btn btn-accent">Review Reservation</a>
+    <a href="#checkout" class="btn btn-accent pilot-btn-primary">Review Reservation</a>
   </div>
 </div>
 
-<footer class="site-footer">
+<footer class="site-footer footer-pilot">
   <div class="container">
     <div class="footer-grid">
       <div class="footer-col footer-brand">
@@ -374,7 +374,7 @@ function stepperHtml(key, currentQty) {
 
 function regularItemCard(item) {
   return `
-    <article class="card shop-card">
+    <article class="card shop-card shop-card-pilot">
       <div class="shop-card-photo"><img src="${item.image}" alt="${item.name}" loading="lazy"></div>
       <div class="shop-card-body">
         <h3>${item.name}</h3>
@@ -398,7 +398,7 @@ function beanCard(bean) {
   `).join("");
 
   return `
-    <article class="card shop-card bean-card">
+    <article class="card shop-card shop-card-pilot bean-card">
       <div class="shop-card-photo"><img src="${bean.image}" alt="${bean.name}" loading="lazy"></div>
       <div class="shop-card-body">
         <span class="bean-origin">${bean.origin}</span>
@@ -444,7 +444,7 @@ function renderCategoryGrid() {
     const meta = CATEGORY_META[cat];
     const hasItems = activeCategories.includes(cat);
     return `
-      <div class="category-tile ${hasItems ? "" : "disabled"}" data-cat="${cat}">
+      <div class="category-tile category-tile-pilot ${hasItems ? "" : "disabled"}" data-cat="${cat}">
         <div class="category-tile-icon">${meta.icon}</div>
         <h3>${cat}</h3>
         <p>${meta.note}</p>
