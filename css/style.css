@@ -789,8 +789,10 @@ p { margin: 0 0 1em; }
   border-radius: var(--radius);
   padding: 26px;
 }
-.value-card h3 { font-size: 1.05rem; }
+.value-card h3 { font-size: 1.22rem; font-weight: 700; margin-bottom: 8px; }
 .value-card p { color: var(--color-text-muted); font-size: 0.92rem; margin: 0; }
+.value-card-link { display: block; cursor: pointer; transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease; }
+.value-card-link:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: var(--color-primary); }
 
 /* Timeline */
 .timeline {

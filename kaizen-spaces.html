@@ -67,29 +67,29 @@
         <p>Regularly running sessions, plus space for your own — bring a group and we'll help you plan it.</p>
       </div>
       <div class="values-grid">
-        <div class="value-card">
+        <a class="value-card value-card-link" href="#inquire" data-type="coffee-101">
           <h3>Coffee 101 Workshop</h3>
           <p>Brewing fundamentals for home baristas and anyone curious about what actually happens in the cup.</p>
-        </div>
-        <div class="value-card">
+        </a>
+        <a class="value-card value-card-link" href="#inquire" data-type="cafe-business-101">
           <h3>Cafe Business 101 Workshop</h3>
           <p>For aspiring cafe owners — costing, operations, and the real lessons from running Naz Coffee.</p>
-        </div>
-        <div class="value-card">
+        </a>
+        <a class="value-card value-card-link" href="#inquire" data-type="matcha">
           <h3>Matcha Workshop</h3>
           <p>Whisking technique, grade selection, and building a matcha menu that doesn't taste like an afterthought.</p>
-        </div>
-        <div class="value-card">
+        </a>
+        <a class="value-card value-card-link" href="#inquire" data-type="private-event">
           <h3>Private &amp; Custom Sessions</h3>
           <p>Pop-ups, team offsites, birthdays, study groups — if it needs a room and good coffee nearby, ask us.</p>
-        </div>
+        </a>
       </div>
     </div>
   </section>
 
   <!-- Workshop in session -->
   <section class="photo-band">
-    <img src="assets/photos/kaizen-workshop-band.jpg" alt="Coffee 101 workshop graduates holding their certificates of completion at Kaizen Spaces">
+    <img src="assets/photos/kaizen-workshop-band.jpg" alt="Coffee 101 workshop graduates holding their certificates of completion at Kaizen Spaces" style="object-position: center 24%;">
     <div class="photo-band-overlay">
       <div class="container">
         <p class="photo-band-quote">Real workshops. Real graduates. Coffee 101: The Basics, hosted right here.</p>
@@ -98,7 +98,7 @@
   </section>
 
   <!-- Rates + Inquiry -->
-  <section class="section section-alt">
+  <section class="section section-alt" id="inquire">
     <div class="container contact-grid">
 
       <!-- Inquiry form -->
@@ -275,5 +275,16 @@
 </footer>
 
 <script src="js/script.js"></script>
+<script>
+document.querySelectorAll(".value-card-link").forEach(function (card) {
+  card.addEventListener("click", function (e) {
+    e.preventDefault();
+    var type = card.dataset.type;
+    var select = document.getElementById("kaizen-type");
+    if (select && type) select.value = type;
+    document.getElementById("inquire").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+});
+</script>
 </body>
 </html>
