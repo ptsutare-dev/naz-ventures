@@ -183,6 +183,9 @@ const packageRates = {
 const packageNames = {
   community: "Naz Community Cart", social: "Naz Social Cart", professional: "Naz Professional Cart", brand: "Naz Brand Experience",
 };
+const packageColors = {
+  community: "#c9a227", social: "#d98c4a", professional: "#8fb4a8", brand: "#e8b4bc",
+};
 const addOns = ["Extra service hours", "Additional drinks", "Premium or non-dairy milk", "Custom cups or sleeves", "Custom menu or printed materials", "Special equipment", "Out-of-area transport", "Rush service"];
 const clientLogos = [
   ["ABS-CBN", "assets/cart/client-logos/abs-cbn.png"], ["MYX", "assets/cart/client-logos/myx.png"], ["Cinema One", "assets/cart/client-logos/cinema-one.png"],
@@ -256,7 +259,7 @@ function renderGuestCountOptions() {
   const select = document.getElementById("guest-count");
   const counts = Object.keys(packageRates[eventType]);
   select.innerHTML = counts.map(c => `<option value="${c}">${c} drinks</option>`).join("");
-  if (!counts.includes(guestCount)) guestCount = counts[0];
+  guestCount = counts[0];
   select.value = guestCount;
 }
 
@@ -264,7 +267,9 @@ function renderResult() {
   const counts = Object.keys(packageRates[eventType]);
   const baseRate = packageRates[eventType][guestCount] ?? packageRates[eventType][counts[0]];
   const formattedRate = money(baseRate);
-  document.getElementById("finderRateLine").textContent = `${packageNames[eventType]} · ₱${formattedRate}${eventType === "brand" ? "+" : ""}`;
+  const rateLine = document.getElementById("finderRateLine");
+  rateLine.textContent = `${packageNames[eventType]} · ₱${formattedRate}${eventType === "brand" ? "+" : ""}`;
+  rateLine.style.color = packageColors[eventType];
   document.getElementById("finderNote").textContent = `Includes ${guestCount} drinks and three hours of service. ` +
     (selectedAddOns.length ? `${selectedAddOns.length} selected add-on${selectedAddOns.length > 1 ? "s" : ""} will be priced in the final quote.` : "Choose add-ons above if needed.");
 

@@ -23,7 +23,7 @@
 @media(max-width:850px){
 .hero-client-proof{text-align:center}
 .hero-client-proof .client-logo-row{justify-content:center}
-.trust-row{flex-direction:column;align-items:flex-start;gap:8px}
+.trust-row{flex-direction:row;flex-wrap:wrap;justify-content:center;gap:10px 22px;font-size:13px}
 }
 @media(max-width:520px){
 .hero-client-proof .client-logo-row{gap:20px 24px}
