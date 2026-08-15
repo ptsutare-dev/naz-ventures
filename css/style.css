@@ -1486,6 +1486,7 @@ textarea { resize: vertical; min-height: 130px; }
   border-radius: 22px;
   padding: 32px;
   box-shadow: 0 12px 30px rgba(122, 58, 31, 0.08);
+  scroll-margin-top: 96px;
 }
 .session-configurator-head { margin-bottom: 20px; }
 .session-configurator-head span {
