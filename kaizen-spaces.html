@@ -427,6 +427,8 @@ let selectedOccasionValue = "private-meeting";
 let extraHoursOn = false;
 let extraHoursCount = 1;
 let outsideFoodOn = false;
+let offsiteOn = false;
+let offsiteAddress = "";
 
 function inclusionsHtml(list) {
   return `<ul class="session-inclusions">${list.map(i => `<li>${i}</li>`).join("")}</ul>`;
@@ -559,6 +561,19 @@ function renderConfigurator() {
           <button type="button" id="paxPlus" ${pax >= maxPax ? "disabled" : ""}>+</button>
         </div>
         ${inclusionsHtml(service.inclusions)}
+        ${service.kind === "tiered" ? `
+          <label class="config-checkbox" style="margin-top:16px;">
+            <input type="checkbox" id="offsiteToggle" ${offsiteOn ? "checked" : ""}>
+            Conduct this workshop offsite (not at Kaizen)?
+          </label>
+          ${offsiteOn ? `
+            <div class="form-row" style="margin-top:12px;">
+              <label for="offsiteAddressInput" style="display:block; font-size:0.85rem; font-weight:700; color:var(--color-primary); margin-bottom:7px;">Venue Address</label>
+              <input type="text" id="offsiteAddressInput" placeholder="Street, Barangay, City" value="${offsiteAddress.replace(/"/g, "&quot;")}">
+            </div>
+            <p class="form-note" style="margin-top:8px;">Transportation costs to and from the venue will be shouldered by the client.</p>
+          ` : ""}
+        ` : ""}
       </div>
       <div class="session-price-box">
         <span>Per Person</span>
@@ -585,9 +600,24 @@ function renderConfigurator() {
       btn.addEventListener("click", () => { customChoice = btn.dataset.choice; renderConfigurator(); });
     });
   }
+  if (service.kind === "tiered") {
+    document.getElementById("offsiteToggle").addEventListener("change", function () {
+      offsiteOn = this.checked;
+      renderConfigurator();
+    });
+    if (offsiteOn) {
+      document.getElementById("offsiteAddressInput").addEventListener("input", function () {
+        offsiteAddress = this.value;
+      });
+    }
+  }
 }
 
 function selectService(key) {
+  if (activeService !== key) {
+    offsiteOn = false;
+    offsiteAddress = "";
+  }
   activeService = key;
   document.querySelectorAll(".session-card").forEach(card => {
     card.classList.toggle("is-active", card.dataset.service === key);
@@ -627,6 +657,9 @@ function proceedToCheckout() {
     label = service.label;
     if (service.kind === "flat-min") label += ` (${customChoice === "coffee" ? "Coffee" : "Matcha"})`;
     detail = `${pax} pax — ${money(perPerson)} each`;
+    if (service.kind === "tiered" && offsiteOn) {
+      detail += ` — Offsite at: ${offsiteAddress || "(address not provided)"} — Transportation costs shouldered by client`;
+    }
   }
 
   const deposit = Math.round(total * 0.2);
