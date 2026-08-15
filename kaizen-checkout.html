@@ -55,7 +55,7 @@
 
         <div id="form-status" class="form-status" role="status"></div>
 
-        <form id="checkout-form" name="kaizen-checkout" method="POST" data-netlify="true">
+        <form id="checkout-form" name="kaizen-checkout" method="POST" data-netlify="true" enctype="multipart/form-data">
           <input type="hidden" name="form-name" value="kaizen-checkout">
           <input type="hidden" name="venture" value="kaizen-spaces">
           <input type="hidden" id="checkoutSummaryField" name="booking-summary" value="">
@@ -93,6 +93,12 @@
           </div>
 
           <div class="form-row">
+            <label for="checkout-proof">Proof of Payment <span class="placeholder-flag">Screenshot</span></label>
+            <input type="file" id="checkout-proof" name="proof-of-payment" accept="image/*,.pdf" required>
+            <p class="form-note" style="margin-top:6px;">Upload a screenshot of your GCash payment confirmation.</p>
+          </div>
+
+          <div class="form-row">
             <label for="message">Message <span class="placeholder-flag">Optional</span></label>
             <textarea id="message" name="message" placeholder="Anything else we should know?"></textarea>
           </div>
@@ -103,6 +109,11 @@
             Submissions are handled by Netlify Forms and arrive in your Netlify dashboard's Forms tab.
           </p>
         </form>
+
+        <div id="orderSiteCta" style="display:none; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-top:20px; padding:18px 20px; background:var(--pilot-cream); border:1px solid var(--pilot-cream-deep); border-radius:14px;">
+          <p style="margin:0; font-size:0.9rem; max-width:320px;">Want to place any advance food or drink orders for your event?</p>
+          <a href="https://naz-ventures.netlify.app/order" class="btn btn-primary pilot-btn-primary btn-sm">Order in Advance</a>
+        </div>
       </div>
 
       <!-- Booking summary + payment -->
@@ -179,7 +190,29 @@
 </footer>
 
 <script src="js/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
+// ---- EmailJS setup (optional — booking confirmation emails) ----
+// Sign up free at emailjs.com, connect your Gmail, create an email
+// template, then fill these in. Leave EMAILJS_ENABLED false until set up.
+const EMAILJS_ENABLED = false;
+const EMAILJS_PUBLIC_KEY = "";
+const EMAILJS_SERVICE_ID = "";
+const EMAILJS_TEMPLATE_ID = "";
+if (EMAILJS_ENABLED && window.emailjs) emailjs.init(EMAILJS_PUBLIC_KEY);
+
+function sendConfirmationEmail(fields) {
+  if (!EMAILJS_ENABLED || !window.emailjs) return;
+  emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+    to_email: fields.email,
+    to_name: fields.name,
+    booking_label: label,
+    booking_detail: detail,
+    reservation_fee: money(deposit),
+    booking_summary: document.getElementById("checkoutSummaryField").value,
+  }).catch((err) => console.error("Confirmation email failed to send", err));
+}
+
 const params = new URLSearchParams(window.location.search);
 const label = params.get("label") || "Kaizen Spaces Booking";
 const detail = params.get("detail") || "";
@@ -215,26 +248,34 @@ checkoutForm.addEventListener("submit", function (event) {
     return;
   }
 
+  const proofField = checkoutForm.querySelector("#checkout-proof");
+  if (!proofField.files || !proofField.files.length) {
+    showCheckoutStatus("error", "Please upload your proof of payment before submitting.");
+    return;
+  }
+
   const submitBtn = checkoutForm.querySelector('button[type="submit"]');
   submitBtn.disabled = true;
 
+  // Sent as multipart/form-data (not URL-encoded) so the proof-of-payment
+  // file actually uploads — Netlify Forms stores file attachments natively.
   fetch("/", {
     method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: new URLSearchParams(new FormData(checkoutForm)).toString(),
+    body: new FormData(checkoutForm),
   })
     .then((response) => {
       if (!response.ok) throw new Error("Submission failed");
+
+      sendConfirmationEmail({ name: nameField.value.trim(), email: emailField.value.trim() });
+
+      showCheckoutStatus("success", "Reservation received! We'll confirm your booking once we verify your payment.");
+      checkoutForm.reset();
+      submitBtn.disabled = false;
+      submitBtn.style.display = "none";
+
       if (isPrivateSessions) {
-        showCheckoutStatus("success", "Reservation received! Taking you to the Naz Coffee ordering site to add any advance orders for your event...");
-        submitBtn.textContent = "Redirecting...";
-        setTimeout(() => {
-          window.location.href = "https://naz-ventures.netlify.app/order";
-        }, 2200);
-      } else {
-        showCheckoutStatus("success", "Reservation received! We'll confirm your booking once we verify your GCash payment.");
-        checkoutForm.reset();
-        submitBtn.disabled = false;
+        const orderCta = document.getElementById("orderSiteCta");
+        if (orderCta) orderCta.style.display = "flex";
       }
     })
     .catch(() => {
