@@ -159,8 +159,8 @@
           <input type="hidden" name="order-summary" id="order-summary-field">
           <!-- Honeypot field — hidden from real visitors, catches bots -->
           <div class="honeypot" aria-hidden="true">
-            <label for="ally-company">Company</label>
-            <input type="text" id="ally-company" name="company" tabindex="-1" autocomplete="off">
+            <label for="ally-company">Leave this field blank</label>
+            <input type="text" id="ally-company" name="hp_field" tabindex="-1" autocomplete="off">
           </div>
 
           <div class="form-row form-row-split">
@@ -582,7 +582,7 @@ document.getElementById("ally-order-form").addEventListener("submit", (event) =>
   const form = event.target;
   const status = document.getElementById("form-status");
 
-  const honeypot = form.querySelector('input[name="company"]');
+  const honeypot = form.querySelector('input[name="hp_field"]');
   if (honeypot && honeypot.value.trim() !== "") return;
 
   if (cartItems().length === 0) {

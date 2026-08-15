@@ -74,7 +74,7 @@ function initContactForm() {
     event.preventDefault();
 
     // Honeypot check — bots fill hidden fields, humans never see them.
-    const honeypot = form.querySelector('input[name="company"]');
+    const honeypot = form.querySelector('input[name="hp_field"]');
     if (honeypot && honeypot.value.trim() !== '') {
       return;
     }

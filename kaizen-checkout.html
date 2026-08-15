@@ -55,14 +55,19 @@
 
         <div id="form-status" class="form-status" role="status"></div>
 
+        <div id="orderSiteCta" style="display:none; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:20px; padding:18px 20px; background:var(--pilot-cream); border:1px solid var(--pilot-cream-deep); border-radius:14px;">
+          <p style="margin:0; font-size:0.9rem; max-width:320px;">Want to place any advance food or drink orders for your event?</p>
+          <a href="https://naz-ventures.netlify.app/order" class="btn btn-primary pilot-btn-primary btn-sm">Order in Advance</a>
+        </div>
+
         <form id="checkout-form" name="kaizen-checkout" method="POST" data-netlify="true" enctype="multipart/form-data">
           <input type="hidden" name="form-name" value="kaizen-checkout">
           <input type="hidden" name="venture" value="kaizen-spaces">
           <input type="hidden" id="checkoutSummaryField" name="booking-summary" value="">
           <!-- Honeypot field — hidden from real visitors, catches bots -->
           <div class="honeypot" aria-hidden="true">
-            <label for="checkout-company">Company</label>
-            <input type="text" id="checkout-company" name="company" tabindex="-1" autocomplete="off">
+            <label for="checkout-company">Leave this field blank</label>
+            <input type="text" id="checkout-company" name="hp_field" tabindex="-1" autocomplete="off">
           </div>
 
           <div class="form-row form-row-split">
@@ -109,11 +114,6 @@
             Submissions are handled by Netlify Forms and arrive in your Netlify dashboard's Forms tab.
           </p>
         </form>
-
-        <div id="orderSiteCta" style="display:none; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-top:20px; padding:18px 20px; background:var(--pilot-cream); border:1px solid var(--pilot-cream-deep); border-radius:14px;">
-          <p style="margin:0; font-size:0.9rem; max-width:320px;">Want to place any advance food or drink orders for your event?</p>
-          <a href="https://naz-ventures.netlify.app/order" class="btn btn-primary pilot-btn-primary btn-sm">Order in Advance</a>
-        </div>
       </div>
 
       <!-- Booking summary + payment -->
@@ -236,7 +236,7 @@ const isPrivateSessions = label === "Private Sessions";
 checkoutForm.addEventListener("submit", function (event) {
   event.preventDefault();
 
-  const honeypot = checkoutForm.querySelector('input[name="company"]');
+  const honeypot = checkoutForm.querySelector('input[name="hp_field"]');
   if (honeypot && honeypot.value.trim() !== "") return;
 
   const nameField = checkoutForm.querySelector("#name");
