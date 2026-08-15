@@ -144,8 +144,6 @@
         <form id="contact-form" name="contact" method="POST" data-netlify="true">
           <input type="hidden" name="form-name" value="contact">
           <input type="hidden" name="venture" value="kaizen-spaces">
-          <input type="hidden" id="kaizen-session-summary" name="session-summary" value="">
-          <input type="hidden" id="kaizen-space-choice" name="space-choice" value="">
           <!-- Honeypot field — hidden from real visitors, catches bots -->
           <div class="honeypot" aria-hidden="true">
             <label for="kaizen-company">Company</label>
@@ -428,6 +426,7 @@ let selectedSpaceKey = "kaizen";
 let selectedOccasionValue = "private-meeting";
 let extraHoursOn = false;
 let extraHoursCount = 1;
+let outsideFoodOn = false;
 
 function inclusionsHtml(list) {
   return `<ul class="session-inclusions">${list.map(i => `<li>${i}</li>`).join("")}</ul>`;
@@ -467,10 +466,16 @@ function renderConfigurator() {
             ${OCCASIONS.map(o => `<option value="${o.value}" ${o.value === selectedOccasionValue ? "selected" : ""}>${o.label}</option>`).join("")}
           </select>
 
-          <label class="config-checkbox">
-            <input type="checkbox" id="extraHoursToggle" ${extraHoursOn ? "checked" : ""}>
-            Need additional hours?
-          </label>
+          <div style="display:flex; flex-wrap:wrap; gap:20px;">
+            <label class="config-checkbox">
+              <input type="checkbox" id="extraHoursToggle" ${extraHoursOn ? "checked" : ""}>
+              Need additional hours?
+            </label>
+            <label class="config-checkbox">
+              <input type="checkbox" id="outsideFoodToggle" ${outsideFoodOn ? "checked" : ""}>
+              Bringing outside food?
+            </label>
+          </div>
 
           ${extraHoursOn ? `
             <div class="pax-stepper" style="margin-top:12px;">
@@ -480,6 +485,11 @@ function renderConfigurator() {
             </div>
             <p class="form-note" style="margin-top:8px;">${money(space.hourly)} per additional hour at ${space.label}</p>
           ` : ""}
+
+          <div class="waiver-box ${outsideFoodOn ? "show" : ""}">
+            <p>Please review and sign our outside food liability waiver before your session.</p>
+            <a href="assets/kaizen-outside-food-waiver.pdf" download>Download Waiver</a>
+          </div>
 
           <p class="form-note" style="margin:18px 0 0;">Base booking is 3 hours, all yours — no interruptions, no sharing. Fully consumable private bookings.</p>
         </div>
@@ -503,6 +513,10 @@ function renderConfigurator() {
     });
     document.getElementById("configOccasion").addEventListener("change", function () {
       selectedOccasionValue = this.value;
+    });
+    document.getElementById("outsideFoodToggle").addEventListener("change", function () {
+      outsideFoodOn = this.checked;
+      renderConfigurator();
     });
     document.getElementById("extraHoursToggle").addEventListener("change", function () {
       extraHoursOn = this.checked;
@@ -586,41 +600,39 @@ document.querySelectorAll(".session-card").forEach(card => {
 });
 
 document.getElementById("sessionConfigurator").addEventListener("click", (e) => {
-  if (e.target && e.target.id === "sessionContinueBtn") submitToInquiry();
+  if (e.target && e.target.id === "sessionContinueBtn") proceedToCheckout();
 });
 
-function submitToInquiry() {
+function proceedToCheckout() {
   const service = SESSIONS[activeService];
-  const typeSelect = document.getElementById("kaizen-type");
-  const paxInput = document.getElementById("kaizen-pax");
-  const occasionRow = document.getElementById("kaizen-occasion-row");
-  const summaryField = document.getElementById("kaizen-session-summary");
-
-  typeSelect.value = activeService;
+  let label, detail, total;
 
   if (service.kind === "space-rate") {
     const space = SPACE_OPTIONS.find(s => s.key === selectedSpaceKey);
     const extraCost = extraHoursOn ? extraHoursCount * space.hourly : 0;
-    const total = space.base + extraCost;
-    occasionRow.style.display = "block";
-    document.getElementById("kaizen-occasion").value = selectedOccasionValue;
-    document.getElementById("kaizen-space-choice").value = `${space.label} (${space.capacity})`;
-    paxInput.value = "";
-    summaryField.value = `Private Sessions — ${space.label} (${space.capacity})` +
+    total = space.base + extraCost;
+    label = "Private Sessions";
+    const occasionLabel = OCCASIONS.find(o => o.value === selectedOccasionValue).label;
+    detail = `${space.label} (${space.capacity})` +
       (extraHoursOn ? ` + ${extraHoursCount} extra hr${extraHoursCount > 1 ? "s" : ""}` : "") +
-      ` — Est. total ${money(total)} — Reservation fee (20%) ${money(total * 0.2)}`;
+      ` — Occasion: ${occasionLabel}` +
+      (outsideFoodOn ? " — Bringing outside food" : "");
   } else {
-    occasionRow.style.display = "none";
     const pax = currentPax[activeService] || service.minPax;
     const perPerson = service.kind === "flat-min" ? service.price : tierPriceFor(service, pax);
-    const total = perPerson * pax;
-    paxInput.value = pax;
-    let label = service.label;
+    total = perPerson * pax;
+    label = service.label;
     if (service.kind === "flat-min") label += ` (${customChoice === "coffee" ? "Coffee" : "Matcha"})`;
-    summaryField.value = `${label} — ${pax} pax — ${money(perPerson)} each — Est. total ${money(total)} — Reservation fee (20%) ${money(total * 0.2)}`;
+    detail = `${pax} pax — ${money(perPerson)} each`;
   }
 
-  document.getElementById("inquire").scrollIntoView({ behavior: "smooth", block: "start" });
+  const deposit = Math.round(total * 0.2);
+  const url = "kaizen-checkout.html" +
+    `?label=${encodeURIComponent(label)}` +
+    `&detail=${encodeURIComponent(detail)}` +
+    `&total=${total}` +
+    `&deposit=${deposit}`;
+  window.location.href = url;
 }
 
 selectService("private-sessions");

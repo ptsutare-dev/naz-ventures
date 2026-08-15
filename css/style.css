@@ -1743,3 +1743,56 @@ textarea { resize: vertical; min-height: 130px; }
 @media (max-width: 560px) {
   .space-options { grid-template-columns: 1fr; }
 }
+
+/* ---------- GCash payment box (shared) ---------- */
+
+.gcash-box {
+  border: 1px dashed var(--pilot-cream-deep);
+  border-radius: var(--radius);
+  padding: 24px;
+  text-align: center;
+  background: var(--pilot-cream);
+  margin-top: 16px;
+}
+.gcash-box img.gcash-qr-img {
+  max-width: 220px;
+  width: 100%;
+  margin: 0 auto 14px;
+  border-radius: var(--radius-sm);
+  display: block;
+}
+
+/* ---------- Outside food waiver toggle ---------- */
+
+.waiver-box {
+  display: none;
+  margin-top: 14px;
+  padding: 14px 16px;
+  background: #fff;
+  border: 1px solid var(--pilot-cream-deep);
+  border-radius: 14px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.waiver-box.show { display: flex; }
+.waiver-box p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  max-width: 320px;
+}
+.waiver-box a {
+  flex-shrink: 0;
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #fff;
+  background: var(--pilot-rust-dark);
+  padding: 10px 16px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.waiver-box a:hover { background: var(--pilot-ink); }

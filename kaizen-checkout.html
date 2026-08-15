@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout — Kaizen Spaces</title>
+<meta name="description" content="Complete your Kaizen Spaces booking — review your session, send your reservation fee via GCash, and confirm your details.">
+<link rel="icon" href="assets/logos/naz-ventures-mark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=20260813c">
+</head>
+<body>
+
+<header class="site-header header-pilot">
+  <nav class="nav container">
+    <a href="index.html" class="brand">
+      <img class="brand-mark" src="assets/logos/naz-ventures-mark.png" alt="Naz Ventures">
+      <span>Naz Ventures<span class="brand-sub">Business Ecosystem</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" data-page="index.html">Home</a>
+      <a href="index.html#businesses">Businesses</a>
+      <a href="about.html" data-page="about.html">About</a>
+      <a href="contact.html" data-page="contact.html">Contact</a>
+      <a href="contact.html" class="btn btn-accent btn-sm nav-cta pilot-nav-cta">Get in Touch</a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
+
+<main>
+
+  <!-- Page hero -->
+  <section class="page-hero pilot-page-hero">
+    <div class="container">
+      <img class="page-hero-logo" src="assets/logos/kaizen-spaces.png" alt="Kaizen Spaces">
+      <span class="eyebrow pilot-eyebrow">Checkout</span>
+      <h1 id="checkoutHeading">Secure your booking</h1>
+      <p>Review your session, send your reservation fee via GCash, then confirm your details below.</p>
+      <a href="kaizen-spaces.html" class="text-link" style="display:inline-block; margin-top:14px; font-weight:700; color:var(--pilot-rust-dark);">&larr; Edit selection</a>
+    </div>
+  </section>
+
+  <section class="section section-alt section-alt-pilot">
+    <div class="container contact-grid">
+
+      <!-- Details form -->
+      <div class="form-card pilot-card reveal">
+        <h2 style="margin-bottom:6px;">Your details</h2>
+        <p style="color:var(--color-text-muted); margin-bottom:24px;">We'll confirm your booking once we receive your reservation fee.</p>
+
+        <div id="form-status" class="form-status" role="status"></div>
+
+        <form id="contact-form" name="kaizen-checkout" method="POST" data-netlify="true">
+          <input type="hidden" name="form-name" value="kaizen-checkout">
+          <input type="hidden" name="venture" value="kaizen-spaces">
+          <input type="hidden" id="checkoutSummaryField" name="booking-summary" value="">
+          <!-- Honeypot field — hidden from real visitors, catches bots -->
+          <div class="honeypot" aria-hidden="true">
+            <label for="checkout-company">Company</label>
+            <input type="text" id="checkout-company" name="company" tabindex="-1" autocomplete="off">
+          </div>
+
+          <div class="form-row form-row-split">
+            <div>
+              <label for="name">Full name</label>
+              <input type="text" id="name" name="name" placeholder="Jane Doe" required>
+            </div>
+            <div>
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="jane@example.com" required>
+            </div>
+          </div>
+
+          <div class="form-row form-row-split">
+            <div>
+              <label for="checkout-phone">Phone</label>
+              <input type="tel" id="checkout-phone" name="phone" placeholder="09XX XXX XXXX" required>
+            </div>
+            <div>
+              <label for="checkout-date">Preferred date</label>
+              <input type="date" id="checkout-date" name="preferred-date">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label for="checkout-reference">GCash reference number <span class="placeholder-flag">Once sent</span></label>
+            <input type="text" id="checkout-reference" name="gcash-reference" placeholder="e.g. 1234567890123">
+          </div>
+
+          <div class="form-row">
+            <label for="message">Message <span class="placeholder-flag">Optional</span></label>
+            <textarea id="message" name="message" placeholder="Anything else we should know?"></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block pilot-btn-primary">Send Reservation Details</button>
+
+          <p class="form-note">
+            Submissions are handled by Netlify Forms and arrive in your Netlify dashboard's Forms tab.
+          </p>
+        </form>
+      </div>
+
+      <!-- Booking summary + payment -->
+      <div class="reveal">
+        <div class="info-card pilot-card">
+          <h3>Booking Summary</h3>
+          <div class="quick-link-row">
+            <div>
+              <strong id="summaryLabel">—</strong>
+              <span id="summaryDetail"></span>
+            </div>
+          </div>
+          <div class="session-price-box session-price-box-standalone" style="max-width:none; margin-top:16px;">
+            <span>Reservation Fee Due</span>
+            <strong id="summaryDeposit">₱0</strong>
+            <small id="summaryTotalNote"></small>
+          </div>
+        </div>
+
+        <div class="info-card pilot-card">
+          <h3>Pay via GCash</h3>
+          <div class="gcash-box">
+            <img src="gcash-qr.jpg" alt="GCash QR code" class="gcash-qr-img">
+            <strong style="display:block; font-family:'Archivo Black',var(--font-heading),sans-serif; color:var(--pilot-rust-dark); margin-bottom:4px;">Scan to pay your reservation fee</strong>
+            <span style="font-size:.82rem; color:var(--color-text-muted);">Add your GCash reference number in the form, or email it to ptsutare@gmail.com so we can confirm faster.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer footer-pilot">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-brand">
+        <a href="index.html" class="brand"><img class="brand-mark" src="assets/logos/naz-ventures-mark.png" alt="Naz Ventures"><span>Naz Ventures</span></a>
+        <p>A growing ecosystem of cafés, spaces, and ventures built on one operating philosophy: keep improving, one business at a time.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Ventures</h4>
+        <ul>
+          <li><a href="order.html">Naz Coffee</a></li>
+          <li><a href="cart.html">Naz Coffee Cart Service</a></li>
+          <li><a href="kaizen-spaces.html">Kaizen Spaces</a></li>
+          <li><a href="index.html#businesses">Flow State Studio</a></li>
+          <li><a href="ally-store.html">Ally Cafe Solutions</a></li>
+          <li><a href="index.html#businesses">Onoy's Cloud Kitchen</a></li>
+          <li><a href="index.html#businesses">DOSE Franchising</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="index.html#businesses">Businesses</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><span>ptsutare@gmail.com</span></li>
+          <li><a href="contact.html">Send a message</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="year"></span> Naz Ventures. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/script.js"></script>
+<script>
+const params = new URLSearchParams(window.location.search);
+const label = params.get("label") || "Kaizen Spaces Booking";
+const detail = params.get("detail") || "";
+const total = Number(params.get("total")) || 0;
+const deposit = Number(params.get("deposit")) || Math.round(total * 0.2);
+const money = (n) => "₱" + n.toLocaleString("en-PH");
+
+document.title = `Checkout — ${label} — Kaizen Spaces`;
+document.getElementById("checkoutHeading").textContent = `Secure your ${label} booking`;
+document.getElementById("summaryLabel").textContent = label;
+document.getElementById("summaryDetail").textContent = detail;
+document.getElementById("summaryDeposit").textContent = money(deposit);
+document.getElementById("summaryTotalNote").textContent = total ? `20% of estimated total ${money(total)}` : "";
+document.getElementById("checkoutSummaryField").value =
+  `${label}${detail ? " — " + detail : ""} — Est. total ${money(total)} — Reservation fee due ${money(deposit)}`;
+</script>
+</body>
+</html>
