@@ -37,6 +37,7 @@
   <!-- Page hero -->
   <section class="page-hero pilot-page-hero">
     <div class="container">
+      <img class="page-hero-logo" src="assets/logos/kaizen-spaces.png" alt="Kaizen Spaces">
       <span class="eyebrow pilot-eyebrow">Kaizen Spaces</span>
       <h1>Your space, your people, your vibe</h1>
       <p>Workshop space, event space, private bookings — Kaizen Spaces is the room next door to Naz Coffee, built for people who want to learn, host, or gather without the fuss.</p>
@@ -63,36 +64,65 @@
     <div class="container">
       <div class="section-head">
         <span class="eyebrow pilot-eyebrow">Hosted Here</span>
-        <h2 class="pilot-h2">Workshops &amp; classes</h2>
-        <p>Regularly running sessions, plus space for your own — bring a group and we'll help you plan it.</p>
+        <h2 class="pilot-h2">Choose your session</h2>
+        <p>Pick what you're planning — pricing and inclusions update instantly.</p>
       </div>
-      <div class="values-grid">
-        <a class="value-card value-card-link value-card-pilot" href="#inquire" data-type="coffee-101">
+
+      <div class="session-grid" id="sessionGrid">
+        <button type="button" class="session-card" data-service="private-sessions">
+          <h3>Private Sessions</h3>
+          <p>Meetings, birthdays, bridal showers, pop-ups, study sessions — book the room for your own occasion.</p>
+        </button>
+        <button type="button" class="session-card" data-service="coffee-101">
           <h3>Coffee 101 Workshop</h3>
           <p>Brewing fundamentals for home baristas and anyone curious about what actually happens in the cup.</p>
-        </a>
-        <a class="value-card value-card-link value-card-pilot" href="#inquire" data-type="cafe-business-101">
-          <h3>Cafe Business 101 Workshop</h3>
-          <p>For aspiring cafe owners — costing, operations, and the real lessons from running Naz Coffee.</p>
-        </a>
-        <a class="value-card value-card-link value-card-pilot" href="#inquire" data-type="matcha">
+        </button>
+        <button type="button" class="session-card" data-service="cafe-business-crash-course">
+          <h3>Cafe Business Crash Course</h3>
+          <p>A 2-day deep dive for aspiring cafe owners — costing, operations, and the real lessons from running Naz Coffee.</p>
+        </button>
+        <button type="button" class="session-card" data-service="matcha">
           <h3>Matcha Workshop</h3>
           <p>Whisking technique, grade selection, and building a matcha menu that doesn't taste like an afterthought.</p>
-        </a>
-        <a class="value-card value-card-link value-card-pilot" href="#inquire" data-type="private-event">
-          <h3>Private &amp; Custom Sessions</h3>
-          <p>Pop-ups, team offsites, birthdays, study groups — if it needs a room and good coffee nearby, ask us.</p>
-        </a>
+        </button>
+        <button type="button" class="session-card" data-service="custom-workshop">
+          <h3>Custom Workshop</h3>
+          <p>Coffee or matcha, built for an intimate group event — minimum 10 participants.</p>
+        </button>
       </div>
+
+      <div class="session-configurator" id="sessionConfigurator"></div>
     </div>
   </section>
 
   <!-- Workshop in session -->
   <section class="photo-band photo-band-pilot">
-    <img src="assets/photos/kaizen-workshop-band.jpg" alt="Coffee 101 workshop graduates holding their certificates of completion at Kaizen Spaces" style="object-position: center 34%;">
+    <video autoplay muted loop playsinline poster="assets/photos/kaizen-workshop-band.jpg">
+      <source src="assets/photos/kaizen-workshop-band.mp4" type="video/mp4">
+    </video>
     <div class="photo-band-overlay">
       <div class="container">
         <p class="photo-band-quote">Real workshops. Real graduates. Coffee 101: The Basics, hosted right here.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Past workshops carousel -->
+  <section class="section section-tight">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow pilot-eyebrow">From Past Sessions</span>
+        <h2 class="pilot-h2">A look inside the workshops</h2>
+      </div>
+      <div class="carousel">
+        <button type="button" class="carousel-arrow" id="carouselPrev" aria-label="Previous photo">&#8249;</button>
+        <div class="carousel-track" id="carouselTrack">
+          <div class="carousel-slide"><img src="assets/photos/kaizen-workshop-band.jpg" alt="Coffee 101 workshop graduates holding their certificates of completion" style="object-position:center 34%;"></div>
+          <div class="carousel-slide"><img src="assets/photos/kaizen-cupping.jpg" alt="Hands-on cupping activity during a Kaizen Spaces workshop"></div>
+          <div class="carousel-slide"><img src="assets/photos/kaizen-lounge-1.jpg" alt="Kaizen Spaces lounge set up for a workshop"></div>
+          <div class="carousel-slide"><img src="assets/photos/kaizen-lounge-2.jpg" alt="Kaizen Spaces seating area between sessions"></div>
+        </div>
+        <button type="button" class="carousel-arrow" id="carouselNext" aria-label="Next photo">&#8250;</button>
       </div>
     </div>
   </section>
@@ -111,6 +141,7 @@
         <form id="contact-form" name="contact" method="POST" data-netlify="true">
           <input type="hidden" name="form-name" value="contact">
           <input type="hidden" name="venture" value="kaizen-spaces">
+          <input type="hidden" id="kaizen-session-summary" name="session-summary" value="">
           <!-- Honeypot field — hidden from real visitors, catches bots -->
           <div class="honeypot" aria-hidden="true">
             <label for="kaizen-company">Company</label>
@@ -141,24 +172,33 @@
 
           <div class="form-row form-row-split">
             <div>
-              <label for="kaizen-tier">Which space?</label>
-              <select id="kaizen-tier" name="space-tier">
-                <option value="kaizen-only">Kaizen Spaces (up to 15 pax)</option>
-                <option value="naz-coffee-area">Naz Coffee (up to 25 pax)</option>
-                <option value="full-space">Full Space (up to 35 pax)</option>
-                <option value="not-sure">Not sure yet</option>
-              </select>
-            </div>
-            <div>
               <label for="kaizen-type">What's it for?</label>
               <select id="kaizen-type" name="inquiry-type">
+                <option value="private-sessions">Private Sessions</option>
                 <option value="coffee-101">Coffee 101 Workshop</option>
-                <option value="cafe-business-101">Cafe Business 101 Workshop</option>
+                <option value="cafe-business-crash-course">Cafe Business Crash Course</option>
                 <option value="matcha">Matcha Workshop</option>
-                <option value="private-event">Private Event</option>
+                <option value="custom-workshop">Custom Workshop</option>
                 <option value="other">Other</option>
               </select>
             </div>
+            <div>
+              <label for="kaizen-pax">Participants</label>
+              <input type="number" id="kaizen-pax" name="participants" min="1" placeholder="e.g. 4">
+            </div>
+          </div>
+
+          <div class="form-row" id="kaizen-occasion-row" style="display:none;">
+            <label for="kaizen-occasion">What's the occasion?</label>
+            <select id="kaizen-occasion" name="occasion">
+              <option value="private-meeting">Private Meeting</option>
+              <option value="birthday">Birthday</option>
+              <option value="bridal-shower">Bridal Shower</option>
+              <option value="gender-reveal">Gender Reveal</option>
+              <option value="proposal-engagement">Proposal / Engagement</option>
+              <option value="pop-up">Pop-up</option>
+              <option value="study-session">Study Session</option>
+            </select>
           </div>
 
           <div class="form-row">
@@ -276,15 +316,241 @@
 
 <script src="js/script.js"></script>
 <script>
-document.querySelectorAll(".value-card-link").forEach(function (card) {
-  card.addEventListener("click", function (e) {
-    e.preventDefault();
-    var type = card.dataset.type;
-    var select = document.getElementById("kaizen-type");
-    if (select && type) select.value = type;
-    document.getElementById("inquire").scrollIntoView({ behavior: "smooth", block: "start" });
+const SESSIONS = {
+  "private-sessions": {
+    label: "Private Sessions",
+    kind: "space-rate",
+  },
+  "coffee-101": {
+    label: "Coffee 101 Workshop",
+    kind: "tiered",
+    tiers: [
+      { min: 1, max: 3, price: 1500 },
+      { min: 4, max: 5, price: 1000 },
+      { min: 6, max: 10, price: 800 },
+    ],
+    inclusions: [
+      "Workshop certificate",
+      "Specialty coffee beans (used during hands-on activities)",
+      "Lunch",
+      "Workshop materials",
+    ],
+    minPax: 1,
+    maxPax: 10,
+  },
+  "cafe-business-crash-course": {
+    label: "Cafe Business Crash Course",
+    sublabel: "2-day program",
+    kind: "tiered",
+    tiers: [
+      { min: 1, max: 3, price: 2500 },
+      { min: 4, max: 5, price: 2000 },
+      { min: 6, max: 10, price: 1800 },
+    ],
+    inclusions: [
+      "Workshop certificate",
+      "Barista 101",
+      "Lunch",
+      "Workshop workbook (recipes, costing, SOPs, etc.)",
+      "Business audit",
+    ],
+    minPax: 1,
+    maxPax: 10,
+  },
+  "matcha": {
+    label: "Matcha Workshop",
+    kind: "tiered",
+    tiers: [
+      { min: 1, max: 3, price: 1500 },
+      { min: 4, max: 5, price: 1000 },
+      { min: 6, max: 10, price: 800 },
+    ],
+    inclusions: [
+      "Workshop certificate",
+      "Ceremonial grade matcha (used during hands-on activities)",
+      "Lunch",
+      "Workshop materials",
+    ],
+    minPax: 1,
+    maxPax: 10,
+  },
+  "custom-workshop": {
+    label: "Custom Workshop",
+    sublabel: "Coffee or Matcha — for intimate events",
+    kind: "flat-min",
+    price: 1000,
+    minPax: 10,
+    maxPax: 30,
+    inclusions: [
+      "Workshop proper",
+      "1 food item from the Naz menu",
+      "DIY drink",
+      "Workshop materials",
+      "Naz staff assistance",
+    ],
+  },
+};
+
+const money = (n) => "₱" + n.toLocaleString("en-PH");
+
+function tierPriceFor(service, pax) {
+  for (const t of service.tiers) {
+    if (pax >= t.min && pax <= t.max) return t.price;
+  }
+  return service.tiers[service.tiers.length - 1].price;
+}
+
+let activeService = null;
+const currentPax = {};
+let customChoice = "coffee";
+
+function inclusionsHtml(list) {
+  return `<ul class="session-inclusions">${list.map(i => `<li>${i}</li>`).join("")}</ul>`;
+}
+
+function renderConfigurator() {
+  const el = document.getElementById("sessionConfigurator");
+  if (!activeService) { el.innerHTML = ""; return; }
+  const service = SESSIONS[activeService];
+
+  if (service.kind === "space-rate") {
+    el.innerHTML = `
+      <div class="session-configurator-head">
+        <span>Book the room</span>
+        <h3>${service.label}</h3>
+      </div>
+      <div class="session-rate-list">
+        <div class="quick-link-row">
+          <div><strong>Kaizen Spaces</strong><span>Up to 15 pax</span></div>
+          <span class="rate-price">₱3,000</span>
+        </div>
+        <div class="quick-link-row">
+          <div><strong>Naz Coffee</strong><span>Up to 25 pax</span></div>
+          <span class="rate-price">₱5,000</span>
+        </div>
+        <div class="quick-link-row">
+          <div><strong>Full Space</strong><span>Up to 35 pax</span></div>
+          <span class="rate-price">₱7,000</span>
+        </div>
+      </div>
+      <p class="form-note" style="margin-bottom:20px;">That's 3 hours, all yours — no interruptions, no sharing. Fully consumable private bookings.</p>
+      <button type="button" class="btn btn-primary pilot-btn-primary" id="sessionContinueBtn">Continue to Inquiry</button>
+    `;
+    return;
+  }
+
+  const minPax = service.minPax;
+  const maxPax = service.maxPax;
+  if (!currentPax[activeService]) currentPax[activeService] = minPax;
+  const pax = currentPax[activeService];
+  const perPerson = service.kind === "flat-min" ? service.price : tierPriceFor(service, pax);
+  const total = perPerson * pax;
+
+  el.innerHTML = `
+    <div class="session-configurator-head">
+      <span>${service.sublabel || "Workshop"}</span>
+      <h3>${service.label}</h3>
+    </div>
+    <div class="session-configurator-grid">
+      <div>
+        ${service.kind === "flat-min" ? `
+        <div class="session-coffee-matcha">
+          <button type="button" data-choice="coffee" class="${customChoice === "coffee" ? "is-active" : ""}">Coffee</button>
+          <button type="button" data-choice="matcha" class="${customChoice === "matcha" ? "is-active" : ""}">Matcha</button>
+        </div>` : ""}
+        <label style="display:block; font-size:0.85rem; font-weight:700; color:var(--color-primary); margin-bottom:7px;">Participants ${service.kind === "flat-min" ? "(min. 10)" : "(1–10)"}</label>
+        <div class="pax-stepper">
+          <button type="button" id="paxMinus" ${pax <= minPax ? "disabled" : ""}>−</button>
+          <strong>${pax} pax</strong>
+          <button type="button" id="paxPlus" ${pax >= maxPax ? "disabled" : ""}>+</button>
+        </div>
+        ${inclusionsHtml(service.inclusions)}
+      </div>
+      <div class="session-price-box">
+        <span>Per Person</span>
+        <strong>${money(perPerson)}</strong>
+        <small>Estimated Total</small>
+        <strong style="font-size:1.3rem; margin-top:2px;">${money(total)}</strong>
+      </div>
+    </div>
+    <button type="button" class="btn btn-primary pilot-btn-primary" id="sessionContinueBtn" style="margin-top:24px;">Continue to Inquiry</button>
+  `;
+
+  document.getElementById("paxMinus").addEventListener("click", () => {
+    if (currentPax[activeService] > minPax) { currentPax[activeService]--; renderConfigurator(); }
   });
+  document.getElementById("paxPlus").addEventListener("click", () => {
+    if (currentPax[activeService] < maxPax) { currentPax[activeService]++; renderConfigurator(); }
+  });
+  if (service.kind === "flat-min") {
+    el.querySelectorAll(".session-coffee-matcha button").forEach(btn => {
+      btn.addEventListener("click", () => { customChoice = btn.dataset.choice; renderConfigurator(); });
+    });
+  }
+}
+
+function selectService(key) {
+  activeService = key;
+  document.querySelectorAll(".session-card").forEach(card => {
+    card.classList.toggle("is-active", card.dataset.service === key);
+  });
+  renderConfigurator();
+}
+
+document.querySelectorAll(".session-card").forEach(card => {
+  card.addEventListener("click", () => selectService(card.dataset.service));
 });
+
+document.getElementById("sessionConfigurator").addEventListener("click", (e) => {
+  if (e.target && e.target.id === "sessionContinueBtn") submitToInquiry();
+});
+
+function submitToInquiry() {
+  const service = SESSIONS[activeService];
+  const typeSelect = document.getElementById("kaizen-type");
+  const paxInput = document.getElementById("kaizen-pax");
+  const occasionRow = document.getElementById("kaizen-occasion-row");
+  const summaryField = document.getElementById("kaizen-session-summary");
+
+  typeSelect.value = activeService;
+
+  if (service.kind === "space-rate") {
+    occasionRow.style.display = "block";
+    summaryField.value = "Private Sessions inquiry — see occasion and space rates.";
+    paxInput.value = "";
+  } else {
+    occasionRow.style.display = "none";
+    const pax = currentPax[activeService] || service.minPax;
+    const perPerson = service.kind === "flat-min" ? service.price : tierPriceFor(service, pax);
+    const total = perPerson * pax;
+    paxInput.value = pax;
+    let label = service.label;
+    if (service.kind === "flat-min") label += ` (${customChoice === "coffee" ? "Coffee" : "Matcha"})`;
+    summaryField.value = `${label} — ${pax} pax — ${money(perPerson)} each — Est. total ${money(total)}`;
+  }
+
+  document.getElementById("inquire").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+selectService("private-sessions");
+
+document.getElementById("kaizen-type").addEventListener("change", function () {
+  document.getElementById("kaizen-occasion-row").style.display =
+    this.value === "private-sessions" ? "block" : "none";
+});
+
+(function () {
+  const track = document.getElementById("carouselTrack");
+  const prev = document.getElementById("carouselPrev");
+  const next = document.getElementById("carouselNext");
+  if (!track) return;
+  function slideStep() {
+    const slide = track.querySelector(".carousel-slide");
+    return slide ? slide.getBoundingClientRect().width + 18 : 300;
+  }
+  prev.addEventListener("click", () => track.scrollBy({ left: -slideStep(), behavior: "smooth" }));
+  next.addEventListener("click", () => track.scrollBy({ left: slideStep(), behavior: "smooth" }));
+})();
 </script>
 </body>
 </html>
