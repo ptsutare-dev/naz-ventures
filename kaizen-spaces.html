@@ -446,49 +446,53 @@ function renderConfigurator() {
         <h3>${service.label}</h3>
       </div>
 
-      <label class="config-label">Which space?</label>
-      <div class="space-options">
-        ${SPACE_OPTIONS.map(s => `
-          <button type="button" class="space-option ${s.key === selectedSpaceKey ? "is-active" : ""}" data-space="${s.key}">
-            <span class="space-option-name">${s.label}</span>
-            <span class="space-option-cap">${s.capacity}</span>
-            <span class="space-option-price">${money(s.base)}</span>
-          </button>
-        `).join("")}
+      <div class="session-configurator-grid">
+        <div>
+          <label class="config-label">Which space?</label>
+          <div class="space-options">
+            ${SPACE_OPTIONS.map(s => `
+              <button type="button" class="space-option ${s.key === selectedSpaceKey ? "is-active" : ""}" data-space="${s.key}">
+                <span class="space-option-name">${s.label}</span>
+                <span class="space-option-cap">${s.capacity}</span>
+                <span class="space-option-price">${money(s.base)}</span>
+              </button>
+            `).join("")}
+          </div>
+
+          <label class="config-label" for="configOccasion">What's the occasion?</label>
+          <select id="configOccasion" class="config-select">
+            ${OCCASIONS.map(o => `<option value="${o.value}" ${o.value === selectedOccasionValue ? "selected" : ""}>${o.label}</option>`).join("")}
+          </select>
+
+          <label class="config-checkbox">
+            <input type="checkbox" id="extraHoursToggle" ${extraHoursOn ? "checked" : ""}>
+            Need additional hours?
+          </label>
+
+          ${extraHoursOn ? `
+            <div class="pax-stepper" style="margin-top:12px;">
+              <button type="button" id="hoursMinus" ${extraHoursCount <= 1 ? "disabled" : ""}>−</button>
+              <strong>+${extraHoursCount} hr${extraHoursCount > 1 ? "s" : ""}</strong>
+              <button type="button" id="hoursPlus" ${extraHoursCount >= 5 ? "disabled" : ""}>+</button>
+            </div>
+            <p class="form-note" style="margin-top:8px;">${money(space.hourly)} per additional hour at ${space.label}</p>
+          ` : ""}
+
+          <p class="form-note" style="margin:18px 0 0;">Base booking is 3 hours, all yours — no interruptions, no sharing. Fully consumable private bookings.</p>
+        </div>
+
+        <div class="session-price-box session-price-box-standalone">
+          <span>Estimated Total</span>
+          <strong>${money(total)}</strong>
+          <small>${extraHoursOn ? `3 hrs + ${extraHoursCount} extra hr${extraHoursCount > 1 ? "s" : ""}` : "3 hrs"}</small>
+          <div class="session-deposit-line">
+            <span class="session-deposit-label">Reservation Fee (20%)</span>
+            <span class="session-deposit-amount">${money(total * 0.2)}</span>
+          </div>
+        </div>
       </div>
 
-      <label class="config-label" for="configOccasion">What's the occasion?</label>
-      <select id="configOccasion" class="config-select">
-        ${OCCASIONS.map(o => `<option value="${o.value}" ${o.value === selectedOccasionValue ? "selected" : ""}>${o.label}</option>`).join("")}
-      </select>
-
-      <label class="config-checkbox">
-        <input type="checkbox" id="extraHoursToggle" ${extraHoursOn ? "checked" : ""}>
-        Need additional hours?
-      </label>
-
-      ${extraHoursOn ? `
-        <div class="pax-stepper" style="margin-top:12px;">
-          <button type="button" id="hoursMinus" ${extraHoursCount <= 1 ? "disabled" : ""}>−</button>
-          <strong>+${extraHoursCount} hr${extraHoursCount > 1 ? "s" : ""}</strong>
-          <button type="button" id="hoursPlus" ${extraHoursCount >= 5 ? "disabled" : ""}>+</button>
-        </div>
-        <p class="form-note" style="margin-top:8px;">${money(space.hourly)} per additional hour at ${space.label}</p>
-      ` : ""}
-
-      <p class="form-note" style="margin:18px 0 20px;">Base booking is 3 hours, all yours — no interruptions, no sharing. Fully consumable private bookings.</p>
-
-      <div class="session-price-box session-price-box-standalone">
-        <span>Estimated Total</span>
-        <strong>${money(total)}</strong>
-        <small>${extraHoursOn ? `3 hrs + ${extraHoursCount} extra hr${extraHoursCount > 1 ? "s" : ""}` : "3 hrs"}</small>
-        <div class="session-deposit-line">
-          <span class="session-deposit-label">Reservation Fee (20%)</span>
-          <span class="session-deposit-amount">${money(total * 0.2)}</span>
-        </div>
-      </div>
-
-      <button type="button" class="btn btn-primary pilot-btn-primary" id="sessionContinueBtn">Proceed to Checkout</button>
+      <button type="button" class="btn btn-primary pilot-btn-primary" id="sessionContinueBtn" style="margin-top:24px;">Proceed to Checkout</button>
     `;
 
     el.querySelectorAll(".space-option").forEach(btn => {
