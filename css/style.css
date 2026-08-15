@@ -1630,12 +1630,22 @@ textarea { resize: vertical; min-height: 130px; }
   border-top: 4px solid var(--pilot-gold);
   border-bottom: 4px solid var(--pilot-gold);
   position: relative;
+  padding: 40px 0 !important;
 }
 .workshop-video-grid {
   display: grid;
-  grid-template-columns: 1.4fr 0.6fr;
-  gap: 48px;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 40px;
   align-items: center;
+}
+.workshop-video-copy { display: flex; flex-direction: column; gap: 20px; align-items: flex-start; }
+.workshop-video-cta {
+  border-color: var(--pilot-gold) !important;
+  color: #fff !important;
+}
+.workshop-video-cta:hover {
+  background: var(--pilot-gold) !important;
+  color: var(--pilot-ink) !important;
 }
 .workshop-video-quote {
   font-family: 'Archivo Black', var(--font-heading), sans-serif;
@@ -1643,7 +1653,7 @@ textarea { resize: vertical; min-height: 130px; }
   letter-spacing: -0.005em;
   line-height: 1.25;
   color: #fff;
-  font-size: clamp(1.1rem, 1.9vw, 1.5rem);
+  font-size: clamp(1.3rem, 2.3vw, 1.9rem);
   white-space: normal;
   margin: 0;
 }
@@ -1653,7 +1663,8 @@ textarea { resize: vertical; min-height: 130px; }
   border: 4px solid var(--pilot-gold);
   box-shadow: 0 20px 44px rgba(0, 0, 0, 0.35);
   aspect-ratio: 9 / 16;
-  max-width: 320px;
+  max-width: 400px;
+  width: 100%;
   margin: 0 auto;
 }
 .workshop-video-frame video {
@@ -1664,7 +1675,8 @@ textarea { resize: vertical; min-height: 130px; }
 }
 @media (max-width: 780px) {
   .workshop-video-grid { grid-template-columns: 1fr; text-align: center; }
-  .workshop-video-frame { max-width: 260px; }
+  .workshop-video-copy { align-items: center; }
+  .workshop-video-frame { max-width: 280px; }
 }
 
 /* ---------- Private Sessions configurator ---------- */
