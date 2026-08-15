@@ -1558,12 +1558,34 @@ textarea { resize: vertical; min-height: 130px; }
 }
 .session-price-box-standalone {
   max-width: 300px;
-  margin: 0 auto 20px;
+  margin: 0 0 20px;
   padding: 16px 20px;
+  background: var(--pilot-ink) !important;
 }
 .session-price-box-standalone strong { font-size: 1.5rem !important; }
 .session-price-box-standalone span { font-size: 0.66rem !important; }
 .session-price-box-standalone small { font-size: 0.72rem !important; }
+
+.session-deposit-line {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.22);
+}
+.session-price-box .session-deposit-label {
+  display: block;
+  text-transform: uppercase;
+  font-size: 0.66rem !important;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--pilot-gold) !important;
+}
+.session-price-box .session-deposit-amount {
+  display: block;
+  font-family: 'Archivo Black', var(--font-heading), sans-serif;
+  font-size: 1.15rem !important;
+  color: #fff !important;
+  margin-top: 3px;
+}
 .session-price-box span {
   display: block;
   text-transform: uppercase;
@@ -1611,7 +1633,7 @@ textarea { resize: vertical; min-height: 130px; }
 }
 .workshop-video-grid {
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
+  grid-template-columns: 1.4fr 0.6fr;
   gap: 48px;
   align-items: center;
 }
@@ -1619,9 +1641,10 @@ textarea { resize: vertical; min-height: 130px; }
   font-family: 'Archivo Black', var(--font-heading), sans-serif;
   text-transform: uppercase;
   letter-spacing: -0.005em;
-  line-height: 1.2;
+  line-height: 1.25;
   color: #fff;
-  font-size: clamp(1.5rem, 3.2vw, 2.3rem);
+  font-size: clamp(1.1rem, 1.9vw, 1.5rem);
+  white-space: normal;
   margin: 0;
 }
 .workshop-video-frame {

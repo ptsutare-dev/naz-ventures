@@ -98,7 +98,7 @@
   <!-- Workshop in session -->
   <section class="section section-tight workshop-video-section">
     <div class="container workshop-video-grid">
-      <p class="workshop-video-quote">Real workshops. Real graduates. Coffee 101: The Basics, hosted right here.</p>
+      <p class="workshop-video-quote">Real Workshops. Real Graduates.<br>Coffee 101: The Basics, Hosted Right Here.</p>
       <div class="workshop-video-frame">
         <video autoplay muted loop playsinline poster="assets/photos/kaizen-workshop-band.jpg">
           <source src="assets/photos/kaizen-workshop-band.mp4" type="video/mp4">
@@ -482,6 +482,10 @@ function renderConfigurator() {
         <span>Estimated Total</span>
         <strong>${money(total)}</strong>
         <small>${extraHoursOn ? `3 hrs + ${extraHoursCount} extra hr${extraHoursCount > 1 ? "s" : ""}` : "3 hrs"}</small>
+        <div class="session-deposit-line">
+          <span class="session-deposit-label">Reservation Fee (20%)</span>
+          <span class="session-deposit-amount">${money(total * 0.2)}</span>
+        </div>
       </div>
 
       <button type="button" class="btn btn-primary pilot-btn-primary" id="sessionContinueBtn">Proceed to Checkout</button>
@@ -540,6 +544,10 @@ function renderConfigurator() {
         <strong>${money(perPerson)}</strong>
         <small>Estimated Total</small>
         <strong style="font-size:1.3rem; margin-top:2px;">${money(total)}</strong>
+        <div class="session-deposit-line">
+          <span class="session-deposit-label">Reservation Fee (20%)</span>
+          <span class="session-deposit-amount">${money(total * 0.2)}</span>
+        </div>
       </div>
     </div>
     <button type="button" class="btn btn-primary pilot-btn-primary" id="sessionContinueBtn" style="margin-top:24px;">Proceed to Checkout</button>
@@ -593,7 +601,7 @@ function submitToInquiry() {
     paxInput.value = "";
     summaryField.value = `Private Sessions — ${space.label} (${space.capacity})` +
       (extraHoursOn ? ` + ${extraHoursCount} extra hr${extraHoursCount > 1 ? "s" : ""}` : "") +
-      ` — Est. total ${money(total)}`;
+      ` — Est. total ${money(total)} — Reservation fee (20%) ${money(total * 0.2)}`;
   } else {
     occasionRow.style.display = "none";
     const pax = currentPax[activeService] || service.minPax;
@@ -602,7 +610,7 @@ function submitToInquiry() {
     paxInput.value = pax;
     let label = service.label;
     if (service.kind === "flat-min") label += ` (${customChoice === "coffee" ? "Coffee" : "Matcha"})`;
-    summaryField.value = `${label} — ${pax} pax — ${money(perPerson)} each — Est. total ${money(total)}`;
+    summaryField.value = `${label} — ${pax} pax — ${money(perPerson)} each — Est. total ${money(total)} — Reservation fee (20%) ${money(total * 0.2)}`;
   }
 
   document.getElementById("inquire").scrollIntoView({ behavior: "smooth", block: "start" });
