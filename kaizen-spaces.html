@@ -484,7 +484,7 @@ function renderConfigurator() {
         <small>${extraHoursOn ? `3 hrs + ${extraHoursCount} extra hr${extraHoursCount > 1 ? "s" : ""}` : "3 hrs"}</small>
       </div>
 
-      <button type="button" class="btn btn-primary pilot-btn-primary" id="sessionContinueBtn">Continue to Inquiry</button>
+      <button type="button" class="btn btn-primary pilot-btn-primary" id="sessionContinueBtn">Proceed to Checkout</button>
     `;
 
     el.querySelectorAll(".space-option").forEach(btn => {
@@ -542,7 +542,7 @@ function renderConfigurator() {
         <strong style="font-size:1.3rem; margin-top:2px;">${money(total)}</strong>
       </div>
     </div>
-    <button type="button" class="btn btn-primary pilot-btn-primary" id="sessionContinueBtn" style="margin-top:24px;">Continue to Inquiry</button>
+    <button type="button" class="btn btn-primary pilot-btn-primary" id="sessionContinueBtn" style="margin-top:24px;">Proceed to Checkout</button>
   `;
 
   document.getElementById("paxMinus").addEventListener("click", () => {
