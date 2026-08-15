@@ -1560,7 +1560,7 @@ textarea { resize: vertical; min-height: 130px; }
   max-width: 300px;
   margin: 0 0 20px;
   padding: 16px 20px;
-  background: var(--pilot-ink) !important;
+  background: var(--pilot-rust-dark) !important;
 }
 .session-price-box-standalone strong { font-size: 1.5rem !important; }
 .session-price-box-standalone span { font-size: 0.66rem !important; }
