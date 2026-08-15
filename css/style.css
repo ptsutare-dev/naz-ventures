@@ -1437,10 +1437,19 @@ textarea { resize: vertical; min-height: 130px; }
 /* ---------- Session selector + configurator (Kaizen) ---------- */
 
 .session-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 18px;
   margin-bottom: 32px;
+}
+.session-card {
+  flex: 1 1 calc(33.333% - 12px);
+  max-width: calc(33.333% - 12px);
+  min-width: 230px;
+}
+@media (max-width: 720px) {
+  .session-card { flex: 1 1 100%; max-width: 100%; }
 }
 .session-card {
   display: block;
