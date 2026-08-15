@@ -1583,3 +1583,39 @@ textarea { resize: vertical; min-height: 130px; }
 @media (max-width: 780px) {
   .session-configurator-grid { grid-template-columns: 1fr; }
 }
+
+/* ---------- Workshop video (beside text, natural aspect ratio) ---------- */
+
+.workshop-video-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 48px;
+  align-items: center;
+}
+.workshop-video-quote {
+  font-family: 'Archivo Black', var(--font-heading), sans-serif;
+  text-transform: uppercase;
+  letter-spacing: -0.005em;
+  line-height: 1.2;
+  color: var(--pilot-rust-dark);
+  font-size: clamp(1.5rem, 3.2vw, 2.3rem);
+  margin: 0;
+}
+.workshop-video-frame {
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 44px rgba(122, 58, 31, 0.16);
+  aspect-ratio: 9 / 16;
+  max-width: 320px;
+  margin: 0 auto;
+}
+.workshop-video-frame video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+@media (max-width: 780px) {
+  .workshop-video-grid { grid-template-columns: 1fr; text-align: center; }
+  .workshop-video-frame { max-width: 260px; }
+}

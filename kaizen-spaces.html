@@ -96,13 +96,13 @@
   </section>
 
   <!-- Workshop in session -->
-  <section class="photo-band photo-band-pilot">
-    <video autoplay muted loop playsinline poster="assets/photos/kaizen-workshop-band.jpg">
-      <source src="assets/photos/kaizen-workshop-band.mp4" type="video/mp4">
-    </video>
-    <div class="photo-band-overlay">
-      <div class="container">
-        <p class="photo-band-quote">Real workshops. Real graduates. Coffee 101: The Basics, hosted right here.</p>
+  <section class="section section-tight">
+    <div class="container workshop-video-grid">
+      <p class="workshop-video-quote">Real workshops. Real graduates. Coffee 101: The Basics, hosted right here.</p>
+      <div class="workshop-video-frame">
+        <video autoplay muted loop playsinline poster="assets/photos/kaizen-workshop-band.jpg">
+          <source src="assets/photos/kaizen-workshop-band.mp4" type="video/mp4">
+        </video>
       </div>
     </div>
   </section>
@@ -458,7 +458,7 @@ function renderConfigurator() {
           <button type="button" data-choice="coffee" class="${customChoice === "coffee" ? "is-active" : ""}">Coffee</button>
           <button type="button" data-choice="matcha" class="${customChoice === "matcha" ? "is-active" : ""}">Matcha</button>
         </div>` : ""}
-        <label style="display:block; font-size:0.85rem; font-weight:700; color:var(--color-primary); margin-bottom:7px;">Participants ${service.kind === "flat-min" ? "(min. 10)" : "(1–10)"}</label>
+        ${service.kind === "flat-min" ? `<label style="display:block; font-size:0.85rem; font-weight:700; color:var(--color-primary); margin-bottom:7px;">Participants (min. 10)</label>` : ""}
         <div class="pax-stepper">
           <button type="button" id="paxMinus" ${pax <= minPax ? "disabled" : ""}>−</button>
           <strong>${pax} pax</strong>
