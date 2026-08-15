@@ -142,6 +142,7 @@
           <input type="hidden" name="form-name" value="contact">
           <input type="hidden" name="venture" value="kaizen-spaces">
           <input type="hidden" id="kaizen-session-summary" name="session-summary" value="">
+          <input type="hidden" id="kaizen-space-choice" name="space-choice" value="">
           <!-- Honeypot field — hidden from real visitors, catches bots -->
           <div class="honeypot" aria-hidden="true">
             <label for="kaizen-company">Company</label>
@@ -198,6 +199,7 @@
               <option value="proposal-engagement">Proposal / Engagement</option>
               <option value="pop-up">Pop-up</option>
               <option value="study-session">Study Session</option>
+              <option value="other">Other</option>
             </select>
           </div>
 
@@ -400,9 +402,29 @@ function tierPriceFor(service, pax) {
   return service.tiers[service.tiers.length - 1].price;
 }
 
+const SPACE_OPTIONS = [
+  { key: "kaizen", label: "Kaizen Spaces", capacity: "Up to 15 pax", base: 3000, hourly: 1000 },
+  { key: "naz-coffee", label: "Naz Coffee", capacity: "Up to 25 pax", base: 5000, hourly: 1700 },
+  { key: "full-space", label: "Full Space", capacity: "Up to 35 pax", base: 7000, hourly: 2300 },
+];
+const OCCASIONS = [
+  { value: "private-meeting", label: "Private Meeting" },
+  { value: "birthday", label: "Birthday" },
+  { value: "bridal-shower", label: "Bridal Shower" },
+  { value: "gender-reveal", label: "Gender Reveal" },
+  { value: "proposal-engagement", label: "Proposal / Engagement" },
+  { value: "pop-up", label: "Pop-up" },
+  { value: "study-session", label: "Study Session" },
+  { value: "other", label: "Other" },
+];
+
 let activeService = null;
 const currentPax = {};
 let customChoice = "coffee";
+let selectedSpaceKey = "kaizen";
+let selectedOccasionValue = "private-meeting";
+let extraHoursOn = false;
+let extraHoursCount = 1;
 
 function inclusionsHtml(list) {
   return `<ul class="session-inclusions">${list.map(i => `<li>${i}</li>`).join("")}</ul>`;
@@ -414,28 +436,75 @@ function renderConfigurator() {
   const service = SESSIONS[activeService];
 
   if (service.kind === "space-rate") {
+    const space = SPACE_OPTIONS.find(s => s.key === selectedSpaceKey);
+    const extraCost = extraHoursOn ? extraHoursCount * space.hourly : 0;
+    const total = space.base + extraCost;
+
     el.innerHTML = `
       <div class="session-configurator-head">
         <span>Book the room</span>
         <h3>${service.label}</h3>
       </div>
-      <div class="session-rate-list">
-        <div class="quick-link-row">
-          <div><strong>Kaizen Spaces</strong><span>Up to 15 pax</span></div>
-          <span class="rate-price">₱3,000</span>
-        </div>
-        <div class="quick-link-row">
-          <div><strong>Naz Coffee</strong><span>Up to 25 pax</span></div>
-          <span class="rate-price">₱5,000</span>
-        </div>
-        <div class="quick-link-row">
-          <div><strong>Full Space</strong><span>Up to 35 pax</span></div>
-          <span class="rate-price">₱7,000</span>
-        </div>
+
+      <label class="config-label">Which space?</label>
+      <div class="space-options">
+        ${SPACE_OPTIONS.map(s => `
+          <button type="button" class="space-option ${s.key === selectedSpaceKey ? "is-active" : ""}" data-space="${s.key}">
+            <span class="space-option-name">${s.label}</span>
+            <span class="space-option-cap">${s.capacity}</span>
+            <span class="space-option-price">${money(s.base)}</span>
+          </button>
+        `).join("")}
       </div>
-      <p class="form-note" style="margin-bottom:20px;">That's 3 hours, all yours — no interruptions, no sharing. Fully consumable private bookings.</p>
+
+      <label class="config-label" for="configOccasion">What's the occasion?</label>
+      <select id="configOccasion" class="config-select">
+        ${OCCASIONS.map(o => `<option value="${o.value}" ${o.value === selectedOccasionValue ? "selected" : ""}>${o.label}</option>`).join("")}
+      </select>
+
+      <label class="config-checkbox">
+        <input type="checkbox" id="extraHoursToggle" ${extraHoursOn ? "checked" : ""}>
+        Need additional hours?
+      </label>
+
+      ${extraHoursOn ? `
+        <div class="pax-stepper" style="margin-top:12px;">
+          <button type="button" id="hoursMinus" ${extraHoursCount <= 1 ? "disabled" : ""}>−</button>
+          <strong>+${extraHoursCount} hr${extraHoursCount > 1 ? "s" : ""}</strong>
+          <button type="button" id="hoursPlus" ${extraHoursCount >= 5 ? "disabled" : ""}>+</button>
+        </div>
+        <p class="form-note" style="margin-top:8px;">${money(space.hourly)} per additional hour at ${space.label}</p>
+      ` : ""}
+
+      <p class="form-note" style="margin:18px 0 20px;">Base booking is 3 hours, all yours — no interruptions, no sharing. Fully consumable private bookings.</p>
+
+      <div class="session-price-box" style="margin-bottom:20px;">
+        <span>Estimated Total</span>
+        <strong>${money(total)}</strong>
+        <small>${extraHoursOn ? `3 hrs + ${extraHoursCount} extra hr${extraHoursCount > 1 ? "s" : ""}` : "3 hrs"}</small>
+      </div>
+
       <button type="button" class="btn btn-primary pilot-btn-primary" id="sessionContinueBtn">Continue to Inquiry</button>
     `;
+
+    el.querySelectorAll(".space-option").forEach(btn => {
+      btn.addEventListener("click", () => { selectedSpaceKey = btn.dataset.space; renderConfigurator(); });
+    });
+    document.getElementById("configOccasion").addEventListener("change", function () {
+      selectedOccasionValue = this.value;
+    });
+    document.getElementById("extraHoursToggle").addEventListener("change", function () {
+      extraHoursOn = this.checked;
+      renderConfigurator();
+    });
+    if (extraHoursOn) {
+      document.getElementById("hoursMinus").addEventListener("click", () => {
+        if (extraHoursCount > 1) { extraHoursCount--; renderConfigurator(); }
+      });
+      document.getElementById("hoursPlus").addEventListener("click", () => {
+        if (extraHoursCount < 5) { extraHoursCount++; renderConfigurator(); }
+      });
+    }
     return;
   }
 
@@ -515,9 +584,16 @@ function submitToInquiry() {
   typeSelect.value = activeService;
 
   if (service.kind === "space-rate") {
+    const space = SPACE_OPTIONS.find(s => s.key === selectedSpaceKey);
+    const extraCost = extraHoursOn ? extraHoursCount * space.hourly : 0;
+    const total = space.base + extraCost;
     occasionRow.style.display = "block";
-    summaryField.value = "Private Sessions inquiry — see occasion and space rates.";
+    document.getElementById("kaizen-occasion").value = selectedOccasionValue;
+    document.getElementById("kaizen-space-choice").value = `${space.label} (${space.capacity})`;
     paxInput.value = "";
+    summaryField.value = `Private Sessions — ${space.label} (${space.capacity})` +
+      (extraHoursOn ? ` + ${extraHoursCount} extra hr${extraHoursCount > 1 ? "s" : ""}` : "") +
+      ` — Est. total ${money(total)}`;
   } else {
     occasionRow.style.display = "none";
     const pax = currentPax[activeService] || service.minPax;

@@ -1628,3 +1628,68 @@ textarea { resize: vertical; min-height: 130px; }
   .workshop-video-grid { grid-template-columns: 1fr; text-align: center; }
   .workshop-video-frame { max-width: 260px; }
 }
+
+/* ---------- Private Sessions configurator ---------- */
+
+.config-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--pilot-rust-dark);
+  margin: 18px 0 10px;
+}
+.config-label:first-of-type { margin-top: 0; }
+.config-select { width: 100%; margin-bottom: 4px; font-weight: 600; }
+.config-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-top: 20px;
+  cursor: pointer;
+}
+.config-checkbox input { width: 18px; height: 18px; accent-color: var(--pilot-rust-dark); }
+
+.space-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.space-option {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+  background: #fff;
+  border: 1.5px solid var(--pilot-cream-deep);
+  border-radius: 14px;
+  padding: 14px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.space-option:hover { border-color: var(--pilot-rust); }
+.space-option.is-active {
+  border-color: var(--pilot-rust-dark);
+  box-shadow: 0 0 0 2px var(--pilot-rust-dark) inset;
+}
+.space-option-name {
+  font-family: 'Archivo Black', var(--font-heading), sans-serif;
+  text-transform: uppercase;
+  font-size: 0.82rem;
+  letter-spacing: -0.005em;
+  color: var(--pilot-rust-dark);
+}
+.space-option-cap { font-size: 0.76rem; color: var(--color-text-muted); }
+.space-option-price {
+  font-family: 'Archivo Black', var(--font-heading), sans-serif;
+  font-size: 1.1rem;
+  color: var(--pilot-ink);
+  margin-top: 4px;
+}
+@media (max-width: 560px) {
+  .space-options { grid-template-columns: 1fr; }
+}
