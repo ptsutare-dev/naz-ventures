@@ -55,7 +55,7 @@
 
         <div id="form-status" class="form-status" role="status"></div>
 
-        <form id="contact-form" name="kaizen-checkout" method="POST" data-netlify="true">
+        <form id="checkout-form" name="kaizen-checkout" method="POST" data-netlify="true">
           <input type="hidden" name="form-name" value="kaizen-checkout">
           <input type="hidden" name="venture" value="kaizen-spaces">
           <input type="hidden" id="checkoutSummaryField" name="booking-summary" value="">
@@ -195,6 +195,59 @@ document.getElementById("summaryDeposit").textContent = money(deposit);
 document.getElementById("summaryTotalNote").textContent = total ? `20% of estimated total ${money(total)}` : "";
 document.getElementById("checkoutSummaryField").value =
   `${label}${detail ? " — " + detail : ""} — Est. total ${money(total)} — Reservation fee due ${money(deposit)}`;
+
+const checkoutForm = document.getElementById("checkout-form");
+const checkoutStatus = document.getElementById("form-status");
+const isPrivateSessions = label === "Private Sessions";
+
+checkoutForm.addEventListener("submit", function (event) {
+  event.preventDefault();
+
+  const honeypot = checkoutForm.querySelector('input[name="company"]');
+  if (honeypot && honeypot.value.trim() !== "") return;
+
+  const nameField = checkoutForm.querySelector("#name");
+  const emailField = checkoutForm.querySelector("#email");
+  const phoneField = checkoutForm.querySelector("#checkout-phone");
+
+  if (!nameField.value.trim() || !emailField.value.trim() || !phoneField.value.trim()) {
+    showCheckoutStatus("error", "Please fill in your name, email, and phone number.");
+    return;
+  }
+
+  const submitBtn = checkoutForm.querySelector('button[type="submit"]');
+  submitBtn.disabled = true;
+
+  fetch("/", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams(new FormData(checkoutForm)).toString(),
+  })
+    .then((response) => {
+      if (!response.ok) throw new Error("Submission failed");
+      if (isPrivateSessions) {
+        showCheckoutStatus("success", "Reservation received! Taking you to the Naz Coffee ordering site to add any advance orders for your event...");
+        submitBtn.textContent = "Redirecting...";
+        setTimeout(() => {
+          window.location.href = "https://naz-ventures.netlify.app/order";
+        }, 2200);
+      } else {
+        showCheckoutStatus("success", "Reservation received! We'll confirm your booking once we verify your GCash payment.");
+        checkoutForm.reset();
+        submitBtn.disabled = false;
+      }
+    })
+    .catch(() => {
+      showCheckoutStatus("error", "Something went wrong sending this. Please email ptsutare@gmail.com directly instead.");
+      submitBtn.disabled = false;
+    });
+});
+
+function showCheckoutStatus(type, msg) {
+  checkoutStatus.textContent = msg;
+  checkoutStatus.classList.remove("success", "error");
+  checkoutStatus.classList.add(type, "is-visible");
+}
 </script>
 </body>
 </html>
