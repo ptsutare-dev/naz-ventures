@@ -694,8 +694,36 @@ document.getElementById("kaizen-type").addEventListener("change", function () {
     const slide = track.querySelector(".carousel-slide");
     return slide ? slide.getBoundingClientRect().width + 18 : 300;
   }
-  prev.addEventListener("click", () => track.scrollBy({ left: -slideStep(), behavior: "smooth" }));
-  next.addEventListener("click", () => track.scrollBy({ left: slideStep(), behavior: "smooth" }));
+  function atEnd() {
+    return track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+  }
+  function advance() {
+    if (atEnd()) {
+      track.scrollTo({ left: 0, behavior: "smooth" });
+    } else {
+      track.scrollBy({ left: slideStep(), behavior: "smooth" });
+    }
+  }
+  prev.addEventListener("click", () => { track.scrollBy({ left: -slideStep(), behavior: "smooth" }); resetAutoplay(); });
+  next.addEventListener("click", () => { advance(); resetAutoplay(); });
+
+  let autoplayTimer = null;
+  function startAutoplay() {
+    autoplayTimer = setInterval(advance, 4000);
+  }
+  function stopAutoplay() {
+    clearInterval(autoplayTimer);
+  }
+  function resetAutoplay() {
+    stopAutoplay();
+    startAutoplay();
+  }
+
+  track.addEventListener("mouseenter", stopAutoplay);
+  track.addEventListener("mouseleave", startAutoplay);
+  track.addEventListener("touchstart", stopAutoplay, { passive: true });
+
+  startAutoplay();
 })();
 </script>
 </body>
