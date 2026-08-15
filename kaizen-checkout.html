@@ -32,8 +32,6 @@
   </nav>
 </header>
 
-<iframe name="kaizenSheetFrame" style="display:none"></iframe>
-
 <main>
 
   <!-- Page hero -->
@@ -70,18 +68,18 @@
           <div class="form-row form-row-split">
             <div>
               <label for="name">Full name</label>
-              <input type="text" id="name" name="name" placeholder="Jane Doe" required>
+              <input type="text" id="name" name="name" placeholder="Jane Doe">
             </div>
             <div>
               <label for="email">Email</label>
-              <input type="email" id="email" name="email" placeholder="jane@example.com" required>
+              <input type="email" id="email" name="email" placeholder="jane@example.com">
             </div>
           </div>
 
           <div class="form-row form-row-split">
             <div>
               <label for="checkout-phone">Phone</label>
-              <input type="tel" id="checkout-phone" name="phone" placeholder="09XX XXX XXXX" required>
+              <input type="tel" id="checkout-phone" name="phone" placeholder="09XX XXX XXXX">
             </div>
             <div>
               <label for="checkout-date">Preferred date</label>
@@ -96,7 +94,7 @@
 
           <div class="form-row">
             <label for="checkout-proof">Proof of Payment <span class="placeholder-flag">Screenshot</span></label>
-            <input type="file" id="checkout-proof" name="proof-of-payment" accept="image/*,.pdf" required>
+            <input type="file" id="checkout-proof" name="proof-of-payment" accept="image/*,.pdf">
             <p class="form-note" style="margin-top:6px;">Upload a screenshot of your GCash payment confirmation.</p>
           </div>
 
@@ -215,38 +213,6 @@ function sendConfirmationEmail(fields) {
   }).catch((err) => console.error("Confirmation email failed to send", err));
 }
 
-// ---- Google Sheet (Kaizen Spaces Reservations) ----
-// Text fields only — Google Forms can't accept a file POSTed from an
-// external page, so the proof-of-payment upload stays in Netlify Forms.
-const KAIZEN_SHEET_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLScSEIRrWjtX5Iw4y_FDbAnu68mTbPyaEvFzi0XG7qMG1BWbFQ/formResponse";
-const KAIZEN_SHEET_ENTRIES = {
-  name: "entry.1188547180",
-  email: "entry.434126064",
-  phone: "entry.940907830",
-  date: "entry.2100747037",
-  summary: "entry.1964444177",
-  reference: "entry.748932223",
-  message: "entry.993551591",
-};
-
-function submitToKaizenSheet(fields) {
-  const f = document.createElement("form");
-  f.method = "POST";
-  f.action = KAIZEN_SHEET_FORM_URL;
-  f.target = "kaizenSheetFrame";
-  f.style.display = "none";
-  Object.entries(KAIZEN_SHEET_ENTRIES).forEach(([key, entryId]) => {
-    const input = document.createElement("input");
-    input.type = "hidden";
-    input.name = entryId;
-    input.value = fields[key] || "";
-    f.appendChild(input);
-  });
-  document.body.appendChild(f);
-  f.submit();
-  f.remove();
-}
-
 const params = new URLSearchParams(window.location.search);
 const label = params.get("label") || "Kaizen Spaces Booking";
 const detail = params.get("detail") || "";
@@ -276,12 +242,17 @@ checkoutForm.addEventListener("submit", function (event) {
   const nameField = checkoutForm.querySelector("#name");
   const emailField = checkoutForm.querySelector("#email");
   const phoneField = checkoutForm.querySelector("#checkout-phone");
-  const dateField = checkoutForm.querySelector("#checkout-date");
-  const referenceField = checkoutForm.querySelector("#checkout-reference");
-  const messageField = checkoutForm.querySelector("#message");
 
-  if (!nameField.value.trim() || !emailField.value.trim() || !phoneField.value.trim()) {
-    showCheckoutStatus("error", "Please fill in your name, email, and phone number.");
+  if (!nameField.value.trim()) {
+    showCheckoutStatus("error", "Please enter your full name.");
+    return;
+  }
+  if (!emailField.value.trim() || !emailField.value.includes("@")) {
+    showCheckoutStatus("error", "Please enter a valid email address.");
+    return;
+  }
+  if (!phoneField.value.trim()) {
+    showCheckoutStatus("error", "Please enter your phone number.");
     return;
   }
 
@@ -305,16 +276,6 @@ checkoutForm.addEventListener("submit", function (event) {
 
       sendConfirmationEmail({ name: nameField.value.trim(), email: emailField.value.trim() });
 
-      submitToKaizenSheet({
-        name: nameField.value.trim(),
-        email: emailField.value.trim(),
-        phone: phoneField.value.trim(),
-        date: dateField.value,
-        summary: document.getElementById("checkoutSummaryField").value,
-        reference: referenceField.value.trim(),
-        message: messageField.value.trim(),
-      });
-
       showCheckoutStatus("success", "Reservation received! We'll confirm your booking once we verify your payment.");
       checkoutForm.reset();
       submitBtn.disabled = false;
@@ -335,6 +296,7 @@ function showCheckoutStatus(type, msg) {
   checkoutStatus.textContent = msg;
   checkoutStatus.classList.remove("success", "error");
   checkoutStatus.classList.add(type, "is-visible");
+  checkoutStatus.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 </script>
 </body>

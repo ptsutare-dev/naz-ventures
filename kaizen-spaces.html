@@ -596,7 +596,10 @@ function selectService(key) {
 }
 
 document.querySelectorAll(".session-card").forEach(card => {
-  card.addEventListener("click", () => selectService(card.dataset.service));
+  card.addEventListener("click", () => {
+    selectService(card.dataset.service);
+    document.getElementById("sessionConfigurator").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
 });
 
 document.getElementById("sessionConfigurator").addEventListener("click", (e) => {
