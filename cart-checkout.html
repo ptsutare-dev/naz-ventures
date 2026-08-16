@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Reserve Your Event | Naz Coffee Cart</title>
-<meta name="description" content="Secure your Naz Coffee Cart event date with a 20% deposit.">
+<meta name="description" content="Secure your Naz Coffee Cart event date with a 20% reservation fee.">
 <link rel="icon" href="assets/logos/naz-ventures-mark.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/cart.css">
+<link rel="stylesheet" href="css/cart.css?v=20260816d">
 <style>
 .nvgh-bar{position:sticky;top:0;z-index:500;background:rgba(247,238,222,.92);backdrop-filter:blur(10px);border-bottom:1px solid #f0dfc4;font-family:'Poppins',Arial,"Helvetica Neue",sans-serif}
 .nvgh-inner{max-width:1180px;margin:0 auto;padding:0 24px;height:76px;display:flex;align-items:center;justify-content:space-between;box-sizing:border-box}
@@ -30,6 +30,22 @@
 .nvgh-cta{margin-left:0}
 .nvgh-toggle{display:flex}
 }
+/* Checkout form fields — editorial cart.css palette */
+.checkout-form .field-row{margin-bottom:16px}
+.checkout-form .field-row-split{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.checkout-form label{display:block;font:700 10px Arial,sans-serif;text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px;color:#5b554d}
+.checkout-form .opt-flag{text-transform:none;letter-spacing:0;font-weight:400;opacity:.7}
+.checkout-form input,.checkout-form textarea{width:100%;border:1px solid var(--ink);background:#fff;color:var(--ink);padding:14px 15px;font:14px Arial,sans-serif}
+.checkout-form textarea{min-height:80px;resize:vertical}
+.checkout-form input::placeholder,.checkout-form textarea::placeholder{color:#a89a90}
+.checkout-form .field-note{font-size:11px;color:#8d837b;margin-top:10px}
+@media(max-width:600px){.checkout-form .field-row-split{grid-template-columns:1fr}}
+.gcash-box-cart{background:#fff;border:1px solid var(--ink);padding:26px;text-align:center;margin-top:22px}
+.gcash-box-cart img{max-width:230px;width:100%;display:block;margin:0 auto 16px;border:1px solid var(--line)}
+.gcash-box-cart strong{display:block;font:20px Georgia,serif;margin-bottom:8px}
+.gcash-box-cart span{font-size:12px;color:#5b554d;line-height:1.6;display:block}
+.order-summary-row{display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding:12px 0;font-size:13px}
+.order-summary-row:first-of-type{border-top:none}
 </style>
 </head>
 <body>
@@ -73,40 +89,149 @@
 <main class="checkout-page">
   <nav class="nav shell">
     <a class="brand" href="cart.html" aria-label="Naz Coffee home"><img src="assets/cart/naz-logo.png" alt="Naz Coffee"></a>
-    <a class="text-link" href="cart.html#inquire">← Edit package</a>
+    <a class="text-link" href="cart.html#planner">← Edit selection</a>
   </nav>
   <section class="checkout-shell shell">
     <div>
       <p class="eyebrow">Reserve your event</p>
-      <h1>Secure your date<br>with a <em>20% deposit.</em></h1>
-      <p class="checkout-lede">Review your package before sending the downpayment. The remaining balance and any custom add-ons will be confirmed by Naz.</p>
+      <h1 id="checkoutHeading">Secure your date<br>with a <em>reservation fee.</em></h1>
+      <p class="checkout-lede">Review your package, send your reservation fee via GCash, then confirm your details below. We'll follow up once payment is verified.</p>
+
+      <div id="form-status" class="form-status" role="status"></div>
+
+      <form class="checkout-form" id="checkout-form" name="cart-checkout" method="POST" data-netlify="true" enctype="multipart/form-data">
+        <input type="hidden" name="form-name" value="cart-checkout">
+        <input type="hidden" id="checkoutSummaryField" name="booking-summary" value="">
+        <div class="honeypot" aria-hidden="true">
+          <label for="checkout-company">Leave this field blank</label>
+          <input type="text" id="checkout-company" name="hp_field" tabindex="-1" autocomplete="off">
+        </div>
+
+        <div class="field-row field-row-split">
+          <div><label for="name">Full name</label><input type="text" id="name" name="name" placeholder="Jane Doe"></div>
+          <div><label for="email">Email</label><input type="email" id="email" name="email" placeholder="jane@example.com"></div>
+        </div>
+        <div class="field-row field-row-split">
+          <div><label for="checkout-phone">Mobile number</label><input type="tel" id="checkout-phone" name="phone" placeholder="09XX XXX XXXX"></div>
+          <div><label for="checkout-date">Event date</label><input type="date" id="checkout-date" name="event-date"></div>
+        </div>
+        <div class="field-row field-row-split">
+          <div><label for="checkout-location">Event location</label><input type="text" id="checkout-location" name="event-location"></div>
+          <div><label for="checkout-eventtype">Event type</label><input type="text" id="checkout-eventtype" name="event-type"></div>
+        </div>
+        <div class="field-row">
+          <label for="checkout-requests">Special requests <span class="opt-flag">(optional)</span></label>
+          <textarea id="checkout-requests" name="special-requests" placeholder="Anything else we should know?"></textarea>
+        </div>
+        <div class="field-row">
+          <label for="checkout-reference">GCash reference number <span class="opt-flag">Once sent</span></label>
+          <input type="text" id="checkout-reference" name="gcash-reference" placeholder="e.g. 1234567890123">
+        </div>
+        <div class="field-row">
+          <label for="checkout-proof">Proof of payment <span class="opt-flag">Screenshot</span></label>
+          <input type="file" id="checkout-proof" name="proof-of-payment" accept="image/*,.pdf">
+          <p class="field-note">Upload a screenshot of your GCash payment confirmation.</p>
+        </div>
+
+        <button type="submit" class="button button-block">Send Reservation Details</button>
+        <p class="field-note">Submissions are handled by Netlify Forms and arrive in your Netlify dashboard's Forms tab.</p>
+      </form>
     </div>
     <aside class="order-card">
       <p class="eyebrow">Booking summary</p>
       <h2 id="packageName">Naz Coffee Cart</h2>
-      <div class="order-line"><span>Drinks</span><strong id="drinksLine">—</strong></div>
-      <div class="order-line"><span>Agreed base rate</span><strong id="rateLine">₱0</strong></div>
+      <div class="order-summary-row"><span id="detailLine">—</span></div>
+      <div class="order-line"><span>Estimated total</span><strong id="totalLine">₱0</strong></div>
       <div class="deposit-total">
-        <span>Downpayment due</span><strong id="depositLine">₱0</strong><small>20% of the agreed base rate</small>
+        <span>Reservation fee due</span><strong id="depositLine">₱0</strong><small id="depositNote">20% of the estimated total</small>
       </div>
-      <div class="payment-pending"><strong>Payment setup required</strong><p>Naz's verified payment destination will appear here once connected.</p></div>
+      <div class="gcash-box-cart">
+        <img src="gcash-qr.jpg" alt="GCash QR code">
+        <strong>Scan to pay your reservation fee</strong>
+        <span>Add your GCash reference number in the form, or email it to ptsutare@gmail.com so we can confirm faster.</span>
+      </div>
     </aside>
   </section>
 </main>
 
+<footer class="footer shell">
+  <a class="brand" href="cart.html" aria-label="Naz Coffee home"><img src="assets/cart/naz-logo.png" alt="Naz Coffee"></a>
+  <p>Thoughtfully crafted café experiences for every kind of gathering.</p>
+  <a href="cart.html">Back to Coffee Cart ↑</a>
+</footer>
+
 <script>
+function trackEvent(name, params) {
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push(Object.assign({ event: name }, params || {}));
+}
+
 const params = new URLSearchParams(window.location.search);
-const packageName = params.get("package") || "Naz Coffee Cart";
-const drinks = params.get("drinks") || "";
-const rate = Number(params.get("rate")) || 0;
-const deposit = rate * 0.2;
-const money = (amount) => new Intl.NumberFormat("en-PH").format(amount);
+const packageName = params.get("label") || "Naz Coffee Cart";
+const detail = params.get("detail") || "";
+const total = Number(params.get("total")) || 0;
+const deposit = Number(params.get("deposit")) || Math.round(total * 0.2);
+const eventLocation = params.get("location") || "";
+const eventType = params.get("eventtype") || "";
+const money = (amount) => "₱" + new Intl.NumberFormat("en-PH").format(amount);
 
+document.title = `Checkout — ${packageName} — Naz Coffee Cart`;
 document.getElementById("packageName").textContent = packageName;
-document.getElementById("drinksLine").textContent = drinks || "—";
-document.getElementById("rateLine").textContent = "₱" + money(rate);
-document.getElementById("depositLine").textContent = "₱" + money(deposit);
-</script>
+document.getElementById("detailLine").textContent = detail;
+document.getElementById("totalLine").textContent = money(total);
+document.getElementById("depositLine").textContent = money(deposit);
+document.getElementById("depositNote").textContent = total ? `20% of estimated total ${money(total)}` : "";
+document.getElementById("checkout-location").value = eventLocation;
+document.getElementById("checkout-eventtype").value = eventType;
+document.getElementById("checkoutSummaryField").value =
+  `${packageName}${detail ? " — " + detail : ""} — Est. total ${money(total)} — Reservation fee due ${money(deposit)}`;
 
+const checkoutForm = document.getElementById("checkout-form");
+const checkoutStatus = document.getElementById("form-status");
+
+checkoutForm.addEventListener("submit", function (event) {
+  event.preventDefault();
+
+  const honeypot = checkoutForm.querySelector('input[name="hp_field"]');
+  if (honeypot && honeypot.value.trim() !== "") return;
+
+  const nameField = checkoutForm.querySelector("#name");
+  const emailField = checkoutForm.querySelector("#email");
+  const phoneField = checkoutForm.querySelector("#checkout-phone");
+  const dateField = checkoutForm.querySelector("#checkout-date");
+
+  if (!nameField.value.trim()) return showCheckoutStatus("error", "Please enter your full name.");
+  if (!emailField.value.trim() || !emailField.value.includes("@")) return showCheckoutStatus("error", "Please enter a valid email address.");
+  if (!phoneField.value.trim()) return showCheckoutStatus("error", "Please enter your phone number.");
+  if (!dateField.value) return showCheckoutStatus("error", "Please select your event date.");
+
+  const proofField = checkoutForm.querySelector("#checkout-proof");
+  if (!proofField.files || !proofField.files.length) return showCheckoutStatus("error", "Please upload your proof of payment before submitting.");
+
+  const submitBtn = checkoutForm.querySelector('button[type="submit"]');
+  submitBtn.disabled = true;
+
+  fetch("/", { method: "POST", body: new FormData(checkoutForm) })
+    .then((response) => {
+      if (!response.ok) throw new Error("Submission failed");
+      trackEvent("reservation_submitted", { package: packageName });
+      showCheckoutStatus("success", "Reservation received! We'll confirm your booking once we verify your payment.");
+      checkoutForm.reset();
+      submitBtn.disabled = false;
+      submitBtn.style.display = "none";
+    })
+    .catch(() => {
+      showCheckoutStatus("error", "Something went wrong sending this. Please email ptsutare@gmail.com directly instead.");
+      submitBtn.disabled = false;
+    });
+});
+
+function showCheckoutStatus(type, msg) {
+  checkoutStatus.textContent = msg;
+  checkoutStatus.classList.remove("success", "error");
+  checkoutStatus.classList.add(type, "is-visible");
+  checkoutStatus.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+</script>
 </body>
 </html>

@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Naz Coffee Cart | Café Experiences for Events</title>
-<meta name="description" content="Thoughtfully crafted coffee cart experiences for brand activations, celebrations, corporate events, and community gatherings.">
+<title>Naz Coffee Cart for Events | Café Experiences, Wherever You Are</title>
+<meta name="description" content="A managed café experience brought directly to your event — weddings, celebrations, corporate activations, and brand launches. Plan your Coffee Cart and see instantly if you can reserve your date or need a custom proposal.">
 <link rel="icon" href="assets/logos/naz-ventures-mark.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/cart.css?v=20260813b">
+<link rel="stylesheet" href="css/cart.css?v=20260816d">
 <style>
 .nvgh-bar{position:sticky;top:0;z-index:500;background:rgba(247,238,222,.92);backdrop-filter:blur(10px);border-bottom:1px solid #f0dfc4;font-family:'Poppins',Arial,"Helvetica Neue",sans-serif}
 .nvgh-inner{max-width:1180px;margin:0 auto;padding:0 24px;height:76px;display:flex;align-items:center;justify-content:space-between;box-sizing:border-box}
@@ -74,7 +74,7 @@
   <nav class="nav shell" aria-label="Main navigation">
     <a class="brand" href="#top" aria-label="Naz Coffee home"><img src="assets/cart/naz-logo.png" alt="Naz Coffee"><span class="brand-tagline">Coffee Bar Service for Events</span></a>
     <div class="nav-links">
-      <a href="#services">Services</a><a href="#inclusions">Inclusions</a><a href="#process">How it works</a>
+      <a href="#services">Packages</a><a href="#compare">Compare</a><a href="#planner">Plan Your Event</a><a href="#faq">FAQ</a>
     </div>
     <a class="button button-small" href="../index.html" style="display:none"></a>
   </nav>
@@ -82,13 +82,9 @@
   <section class="hero shell" id="top">
     <div class="hero-copy">
       <h1>A café experience, <em>wherever</em> your event takes you.</h1>
-      <p class="lede">From intimate celebrations to full-scale brand activations, Naz brings thoughtfully crafted drinks, polished service, and a cart that feels right at home.</p>
-      <div class="hero-actions"><a class="button" href="#services">Explore services</a><a class="button button-outline" href="#inquire">Plan your event</a></div>
+      <p class="lede">From intimate celebrations to full-scale brand activations, Naz brings thoughtfully crafted drinks, professional service, and a café experience designed around your occasion.</p>
+      <div class="hero-actions"><a class="button" href="#planner">Plan Your Event</a><a class="button button-outline" href="#services">Explore Packages</a></div>
       <div class="trust-row"><span>Experienced event team</span><span>Customizable menus</span><span>Brand-ready setup</span></div>
-      <div class="hero-client-proof">
-        <p class="hero-client-proof-label">Brands and organizations we've served</p>
-        <div class="client-logo-grid" id="clientLogoGrid"></div>
-      </div>
     </div>
     <div class="hero-video-block">
       <div class="hero-carousel" aria-label="Naz Coffee at the Philippine Tech Expo for Cinema One">
@@ -104,66 +100,143 @@
     </div>
   </section>
 
-  <section class="finder shell" id="inquire" aria-labelledby="finder-title">
-    <div class="finder-intro"><p class="eyebrow">Build your event package</p><h2 id="finder-title">Start with what<br>you <em>need.</em></h2><p>Choose your event, quantity, and add-ons. We'll give you an immediate base estimate and carry your selections into your inquiry.</p></div>
-    <div class="finder-form">
-      <label for="event-type">Service type</label>
-      <select id="event-type">
-        <option value="social">Wedding, birthday, or private celebration</option>
-        <option value="community">School or community gathering</option>
-        <option value="professional">Company or organization event</option>
-        <option value="brand">Brand activation or launch</option>
-      </select>
-      <label for="guest-count">Number of drinks</label>
-      <select id="guest-count"></select>
-      <fieldset class="addon-picker" id="addonPicker"><legend>Optional add-ons</legend></fieldset>
-      <div class="finder-result visible" aria-live="polite" id="finderResult">
-        <span>Your estimated starting rate</span><strong id="finderRateLine"></strong><p id="finderNote"></p>
-        <div class="result-actions"><a class="inquiry-link" id="inquiryLink" href="#">Send inquiry</a><a class="checkout-link" id="checkoutLink" href="#">Accept rate &amp; reserve →</a></div>
+  <section class="client-proof shell" id="trust" aria-labelledby="trust-title">
+    <p class="eyebrow">Trusted for events &amp; brand experiences</p>
+    <h2 id="trust-title" style="font-size:clamp(36px,4vw,52px); margin:0 0 18px;">Real brands. <em>Real engagements.</em></h2>
+    <p style="font:17px/1.55 Georgia,serif; color:#5a534b; max-width:560px; margin:0 auto 10px;">From private celebrations to corporate activations, Naz Coffee has served events for brands and organizations including:</p>
+    <div class="client-logo-grid" id="clientLogoGrid"></div>
+  </section>
+
+  <section class="dark-section" id="inclusions">
+    <div class="shell">
+      <p class="eyebrow light">The Naz standard</p><h2 style="max-width:900px;">Every Naz Coffee Cart <em>includes.</em></h2>
+      <p class="muted" style="max-width:640px;">Every package — whatever the size or occasion — starts from the same professional foundation. Package tiers below only list what's different from this baseline.</p>
+      <div class="included-list" id="commonInclusions" style="margin-top:36px;"></div>
+    </div>
+  </section>
+
+  <section class="section shell" id="services">
+    <div class="section-heading"><div><p class="eyebrow">Choose your experience</p><h2>One cart.<br><em>Four ways to serve.</em></h2></div><p>Community &rarr; Celebration &rarr; Signature &rarr; Brand Activation. Every step up has a clear reason for costing more — pick the level of customization your event needs, then plan your date below.</p></div>
+    <div class="services-grid" id="servicesGrid"></div>
+  </section>
+
+  <section class="section shell compare-section" id="compare" aria-labelledby="compare-title">
+    <div class="section-heading"><div><p class="eyebrow">Compare packages</p><h2 id="compare-title">See the <em>difference.</em></h2></div><p>A quick side-by-side of what each tier adds.</p></div>
+    <div class="compare-table-wrap">
+      <table class="compare-table">
+        <thead>
+          <tr><th scope="col">Feature</th><th scope="col">Community</th><th scope="col">Celebration</th><th scope="col">Signature</th><th scope="col">Brand<br>Activation</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Menu size</th><td>5</td><td>7</td><td>7 + 1 custom</td><td>7 + up to 3 custom</td></tr>
+          <tr><th scope="row">Client chooses menu</th><td>No</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+          <tr><th scope="row">Custom signature drink</th><td>No</td><td>No</td><td>1</td><td>Up to 3</td></tr>
+          <tr><th scope="row">Taste testing</th><td>No</td><td>No</td><td>Included</td><td>Included</td></tr>
+          <tr><th scope="row">Branded cups</th><td>No</td><td>No</td><td>Included</td><td>Included</td></tr>
+          <tr><th scope="row">Branded cart</th><td>No</td><td>No</td><td>No</td><td>Included</td></tr>
+          <tr><th scope="row">Booking path</th><td>Direct</td><td>Direct</td><td>Direct / Quote</td><td>Quote</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="planner-section shell" id="planner" aria-labelledby="planner-title">
+    <div class="section-heading"><div><p class="eyebrow">Plan your event</p><h2 id="planner-title">Plan Your <em>Coffee Cart.</em></h2></div><p>Four quick steps — location, event, guest count, and package. We'll tell you right away whether you can reserve your date now or need a custom proposal.</p></div>
+
+    <div class="planner-card" id="plannerCard">
+      <ol class="planner-progress" id="plannerProgress">
+        <li data-step="1">Location</li>
+        <li data-step="2">Event</li>
+        <li data-step="3">Guests</li>
+        <li data-step="4">Package</li>
+      </ol>
+
+      <div class="planner-step" data-step="1">
+        <p class="planner-step-label">Step 1 &middot; Where will your event be held?</p>
+        <label class="config-label" for="plannerLocation">Municipality / city (or full venue address)</label>
+        <input type="text" id="plannerLocation" placeholder="e.g. Pangil, Laguna or your venue address" autocomplete="off">
+        <div class="planner-quickpicks">
+          <span>Quick picks:</span>
+          <button type="button" data-loc="Pangil, Laguna">Pangil, Laguna</button>
+          <button type="button" data-loc="Sta. Cruz, Laguna">Sta. Cruz, Laguna</button>
+          <button type="button" data-loc="Baybay Circuit">Baybay Circuit</button>
+        </div>
+        <p class="planner-zone-hint" id="plannerZoneHint"></p>
+        <div class="planner-actions"><span></span><button type="button" class="button" id="step1Next" disabled>Continue</button></div>
       </div>
+
+      <div class="planner-step" data-step="2" hidden>
+        <p class="planner-step-label">Step 2 &middot; What kind of event is it?</p>
+        <div class="planner-pill-grid" id="eventTypeGrid"></div>
+        <div class="planner-actions"><button type="button" class="button-outline button-small" data-back="1">Back</button><button type="button" class="button" id="step2Next" disabled>Continue</button></div>
+      </div>
+
+      <div class="planner-step" data-step="3" hidden>
+        <p class="planner-step-label">Step 3 &middot; About how many guests / cups?</p>
+        <div class="planner-pill-grid" id="eventSizeGrid"></div>
+        <div id="customSizeWrap" hidden style="margin-top:14px;">
+          <label class="config-label" for="customSizeInput">Estimated guests / cups</label>
+          <input type="number" id="customSizeInput" min="1" placeholder="e.g. 220">
+        </div>
+        <div class="planner-actions"><button type="button" class="button-outline button-small" data-back="2">Back</button><button type="button" class="button" id="step3Next" disabled>Continue</button></div>
+      </div>
+
+      <div class="planner-step" data-step="4" hidden>
+        <p class="planner-step-label">Step 4 &middot; Choose your Coffee Cart experience</p>
+        <div class="planner-package-grid" id="packageStepGrid"></div>
+        <p class="planner-zone-hint" id="packageZoneNote"></p>
+        <div class="planner-actions"><button type="button" class="button-outline button-small" data-back="3">Back</button><button type="button" class="button" id="step4Next" disabled>See my result</button></div>
+      </div>
+
+      <div class="planner-result" id="plannerResult" hidden></div>
+    </div>
+  </section>
+
+  <section class="event-film shell" aria-label="Selected Coffee Cart experiences">
+    <div class="event-film-grid">
+      <div class="event-film-copy">
+        <p class="eyebrow light">Level 3 evidence</p>
+        <h2>Selected Coffee <em>experiences.</em></h2>
+        <p>A small, honest sample of real Naz Coffee Cart engagements — from brand launches to private celebrations.</p>
+      </div>
+      <div class="case-grid" id="caseGrid"></div>
     </div>
   </section>
 
   <section class="moments shell" aria-label="Naz coffee cart at past events">
     <div class="moments-copy"><p class="eyebrow">Seen at real events</p><h2>Built to belong in the <em>moment.</em></h2><p>Polished enough for a launch. Warm enough for a wedding. Reliable enough for a full room.</p></div>
-    <div class="moments-grid">
-      <div class="moment"><img src="assets/cart/events/naz-cart-service.jpg" alt="Naz baristas preparing drinks at the coffee cart"><span>Made fresh, served well</span></div>
-      <div class="moment brand-moment"><img src="assets/cart/events/naz-brand-activation.jpg" alt="Naz coffee cart inside the Illest store"><span>Brand activations · Illest</span></div>
-      <div class="moment"><img src="assets/cart/events/naz-wedding-event.jpg" alt="Newlywed couple with the Naz coffee cart team"><span>Private celebrations</span></div>
-      <div class="moment"><img src="assets/cart/events/naz-guest-experience.jpg" alt="A guest enjoying a Naz matcha drink"><span>Guest moments</span></div>
-      <div class="moment"><img src="assets/cart/events/naz-illest-cup.jpg" alt="Naz coffee served at an Illest event"><span>Co-branded details · Illest</span></div>
-      <div class="moment"><img src="assets/cart/events/naz-myx-activation.jpg" alt="Naz coffee cart menu and engagement setup for MYX"><span>Interactive activations · MYX</span></div>
-    </div>
+    <div class="moments-grid" id="momentsGrid"></div>
   </section>
 
-  <section class="section shell" id="services">
-    <div class="section-heading"><div><p class="eyebrow">Choose your experience</p><h2>One cart.<br><em>Four ways to serve.</em></h2></div><p>Every event has a different priority. Pick the service designed around yours, then tailor the details with our team.</p></div>
-    <div class="services-grid" id="servicesGrid"></div>
-  </section>
-
-  <section class="dark-section" id="inclusions">
-    <div class="shell split">
-      <div><p class="eyebrow light">The Naz standard</p><h2>Good coffee is only the <em>beginning.</em></h2><p class="muted">We take care of the working parts so your guests only experience the good part.</p></div>
-      <div class="included-list">
-        <div><span>01</span><p>Coffee cart &amp; equipment</p><b>✓</b></div>
-        <div><span>02</span><p>Professional barista service</p><b>✓</b></div>
-        <div><span>03</span><p>Setup and cleanup</p><b>✓</b></div>
-        <div><span>04</span><p>Ingredients and consumables</p><b>✓</b></div>
-        <div><span>05</span><p>Three hours of service</p><b>✓</b></div>
-      </div>
-      <div class="dark-addons"><h3>Customize your cart</h3><p>Add extra hours or drinks, premium and non-dairy milk, custom cups and menus, special equipment, out-of-area transport, or rush service as needed.</p></div>
-    </div>
-  </section>
-
-  <section class="process-section" id="process">
+  <section class="process-section" id="how-it-works">
     <div class="shell">
       <p class="eyebrow">From idea to first pour</p><h2>Easy to plan.<br><em>Effortless to enjoy.</em></h2>
-      <div class="steps">
-        <div class="step"><span>01</span><h3>Tell us about it</h3><p>Share your date, venue, guest count, and the kind of experience you want.</p></div>
-        <div class="step"><span>02</span><h3>Shape your service</h3><p>We'll recommend the right package and confirm any custom details.</p></div>
-        <div class="step"><span>03</span><h3>We bring the café</h3><p>Our team handles setup, service, and cleanup on event day.</p></div>
+      <div class="how-it-works-split">
+        <div>
+          <p class="how-heading">Direct Reservation</p>
+          <div class="steps">
+            <div class="step"><span>01</span><h3>Tell us about it</h3><p>Select your location, event type, and guest count.</p></div>
+            <div class="step"><span>02</span><h3>Choose your experience</h3><p>Select the Coffee Cart package that matches your event.</p></div>
+            <div class="step"><span>03</span><h3>Review your price</h3><p>We determine whether local or extended-area pricing applies.</p></div>
+            <div class="step"><span>04</span><h3>Reserve your date</h3><p>Send your reservation fee and confirm the details.</p></div>
+          </div>
+        </div>
+        <div>
+          <p class="how-heading">Custom Events</p>
+          <div class="steps">
+            <div class="step"><span>05</span><h3>Send your event brief</h3><p>Give us the core details of your event.</p></div>
+            <div class="step"><span>06</span><h3>We prepare your proposal</h3><p>Our team reviews logistics and customization needs.</p></div>
+            <div class="step"><span>07</span><h3>Review &amp; confirm</h3><p>You receive your custom quotation or event proposal.</p></div>
+            <div class="step"><span>08</span><h3>Secure the booking</h3><p>The reservation is finalized per Naz booking policy.</p></div>
+          </div>
+        </div>
       </div>
     </div>
+  </section>
+
+  <section class="section shell faq-section" id="faq" aria-labelledby="faq-title">
+    <div class="section-heading"><div><p class="eyebrow">Questions</p><h2 id="faq-title">Good to <em>know.</em></h2></div><p>Can't find your answer? Reach out and we'll help directly.</p></div>
+    <div class="faq-list" id="faqList"></div>
   </section>
 
   <footer class="footer shell">
@@ -174,121 +247,510 @@
 </main>
 
 <script>
-const packageRates = {
-  community: { "50": 8500, "100": 13000, "200": 22000, "300": 31000 },
-  social: { "50": 9500, "100": 14500, "150": 18500, "200": 22500, "300": 30500 },
-  professional: { "100": 16500, "150": 21000, "200": 25500, "300": 34500 },
-  brand: { "100": 25000, "200": 34000, "300": 43000 },
-};
-const packageNames = {
-  community: "Naz Community Cart", social: "Naz Social Cart", professional: "Naz Professional Cart", brand: "Naz Brand Experience",
-};
-const addOns = ["Extra service hours", "Additional drinks", "Premium or non-dairy milk", "Custom cups or sleeves", "Custom menu or printed materials", "Special equipment", "Out-of-area transport", "Rush service"];
+/* ===================== Analytics readiness (GA4-style, guarded) ===================== */
+function trackEvent(name, params) {
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push(Object.assign({ event: name }, params || {}));
+}
+trackEvent("cart_page_view");
+
+/* ===================== Data ===================== */
 const clientLogos = [
   ["ABS-CBN", "assets/cart/client-logos/abs-cbn.png"], ["MYX", "assets/cart/client-logos/myx.png"], ["Cinema One", "assets/cart/client-logos/cinema-one.png"],
   ["MoonEyes", "assets/cart/client-logos/mooneyes.png"], ["Illest", "assets/cart/client-logos/illest.png"], ["Guess", "assets/cart/client-logos/guess.png"],
   ["Marithé François Girbaud", "assets/cart/client-logos/girbaud.png"], ["Amazon", "assets/cart/client-logos/amazon.png"],
   ["PRU Life UK", "assets/cart/client-logos/pru-life-uk.png"], ["Rapidé", "assets/cart/client-logos/rapide.png"],
 ];
-const services = [
-  { number: "01", type: "community", name: "Naz Community Cart", audience: "Schools & community gatherings", promise: "Quality coffee and a welcoming setup, designed around a controlled budget.", inclusions: ["Curated limited menu", "Simplified setup", "Two baristas", "3-hour service"], price: "From ₱8,500", note: "50 or 100 drinks" },
-  { number: "02", type: "social", name: "Naz Social Cart", audience: "Birthdays & private celebrations", promise: "A memorable café experience—without adding coordination stress to your day.", inclusions: ["Five drink choices", "Menu board", "Two baristas", "3-hour service"], price: "From ₱9,500", note: "50, 100, or 150 drinks" },
-  { number: "03", type: "professional", name: "Naz Professional Cart", audience: "Companies & organizations", promise: "Reliable refreshments that keep guests energized and reflect well on your team.", inclusions: ["Expanded menu", "Two baristas", "Basic branding", "Invoice & documentation"], price: "From ₱16,500", note: "100, 150, or 200 drinks" },
-  { number: "04", type: "brand", name: "Naz Brand Experience", audience: "Lifestyle & entertainment brands", promise: "A brand-aligned café activation made for interaction, recall, and content.", inclusions: ["Activation brief", "Signature drinks", "Co-branded presentation", "Two baristas"], price: "Starts at ₱25,000", note: "100 drinks · custom quote", featured: true },
+
+const COMMON_INCLUSIONS = [
+  "Professional Naz Coffee baristas", "Complete Coffee Cart setup", "Espresso machine and grinder",
+  "Quality coffee and ingredients", "Event setup and breakdown", "Pre-event coordination",
 ];
 
-let eventType = "social";
-let guestCount = "50";
-let selectedAddOns = [];
+// type keys kept stable (community/social/professional/brand) for CSS + pricing compatibility.
+// displayName is the customer-facing package name per the redesign brief.
+const services = [
+  { number: "01", type: "community", displayName: "Community Cart", audience: "Community &amp; school gatherings", tagline: "Simple. Reliable. Crowd-ready.",
+    promise: "A professional Coffee Cart experience with minimal complexity — the menu is curated by Naz Coffee.",
+    inclusions: ["5-drink menu (4 coffee, 1 non-coffee)", "Menu curated by Naz Coffee", "Most standardized package"],
+    bestFor: ["Community gatherings", "School functions", "Small private events", "Casual celebrations"],
+    price: "From ₱8,500", note: "50 cups &middot; direct booking in local zone" },
+  { number: "02", type: "social", displayName: "Celebration Cart", audience: "Weddings &amp; private celebrations", tagline: "More choices for your celebration.",
+    promise: "More variety and control, chosen from Naz Coffee's approved event menu — without custom product development.",
+    inclusions: ["7-drink menu (5 coffee, 2 non-coffee)", "Client chooses the menu", "More variety, no custom drinks"],
+    bestFor: ["Weddings", "Birthdays", "Anniversaries", "Bridal showers", "Reunions"],
+    price: "From ₱9,500", note: "50 cups &middot; direct booking in local zone" },
+  { number: "03", type: "professional", displayName: "Signature Cart", audience: "Weddings &amp; premium events", tagline: "Make the coffee experience yours.",
+    promise: "Everything in Celebration Cart, plus a custom signature drink developed specifically for your event.",
+    inclusions: ["Everything in Celebration Cart", "+1 custom signature drink", "+1 pre-event tasting session", "Branded event cups"],
+    bestFor: ["Weddings", "Premium celebrations", "Corporate gatherings", "Special events"],
+    price: "From ₱16,500", note: "100 cups &middot; direct or quote by location" },
+  { number: "04", type: "brand", displayName: "Brand Activation", audience: "Brands &amp; corporate activations", tagline: "Turn the Coffee Cart into part of your brand experience.",
+    promise: "Full brand integration — from signature drinks to a customized cart — scoped and quoted for your event.",
+    inclusions: ["7-drink selectable menu", "Up to 3 custom signature drinks", "1 pre-event tasting session", "Branded cups + customized cart branding", "Basic brand/menu coordination"],
+    bestFor: ["Product launches", "Corporate activations", "Marketing campaigns", "Brand &amp; media events"],
+    price: "Custom quotation", note: "Scope-based pricing &middot; quote only", featured: true },
+];
 
+// Real, known prices carried over from existing Naz Coffee Cart rates. Any tier not
+// listed here is genuinely unconfirmed (per owner instruction: do not invent prices) —
+// those combinations automatically route to Custom Quotation instead of a guessed number.
+const PACKAGE_PRICING = {
+  community:   { "50": 8500, "100": 13000 },
+  social:      { "50": 9500, "100": 14500, "150": 18500 },
+  professional:{ "100": 16500, "150": 21000 },
+  brand:       {}, // Brand Activation is always Custom Proposal / Quotation Only, per spec.
+};
+
+// ---- Service-zone architecture (editable placeholder block) ----------------------------
+// OWNER TO CONFIRM: final municipality coverage and the Extended Service Area Rate amount.
+// Until an Extended Service Area Rate is set, Extended-Laguna events safely route to a
+// Custom Quotation instead of guessing a surcharge — update EXTENDED_RATE below once decided.
+const LOCAL_ZONE_KEYWORDS = ["pangil", "candelaria", "baybay", "sta. cruz", "santa cruz"];
+const EXTENDED_RATE = null; // e.g. 1500 — leave null until confirmed
+const SERVICE_ZONES = {
+  local: { label: "Local Service Area", note: "Local Service Included" },
+  extended: { label: "Extended Laguna", note: "Extended Service Area Rate — included in your custom proposal" },
+  city: { label: "City / Out-of-Area", note: "Custom Event Logistics — quoted individually" },
+};
+
+const EVENT_TYPES = [
+  ["wedding", "Wedding"], ["birthday", "Birthday"], ["private-celebration", "Private celebration"],
+  ["bridal-shower", "Bridal shower"], ["corporate-event", "Corporate event"], ["brand-activation", "Brand activation"],
+  ["school-event", "School event"], ["community-event", "Community event"], ["other", "Other"],
+];
+const EVENT_SIZES = ["50", "80", "100", "150", "custom"];
+
+const CASE_STUDIES = [
+  { img: "assets/cart/events/cinema-one-poster.jpg", name: "Cinema One &times; Naz Coffee", category: "Brand Activation",
+    desc: "Customized Coffee Cart experience delivered for the launch of Cinema One on iWant at the Philippine Tech Show 2026." },
+  { img: "assets/cart/events/naz-brand-activation.jpg", name: "Illest &times; Naz Coffee", category: "Brand Activation",
+    desc: "In-store Coffee Cart activation for Illest, serving guests as part of a brand event." },
+  { img: "assets/cart/events/naz-myx-activation.jpg", name: "MYX &times; Naz Coffee", category: "Media Activation",
+    desc: "Interactive Coffee Cart setup for a MYX brand engagement." },
+  { img: "assets/cart/events/naz-wedding-event.jpg", name: "A Naz Coffee Wedding", category: "Private Celebration",
+    desc: "Full Coffee Cart service for a couple's wedding day, from setup to send-off." },
+];
+
+const MOMENTS = [
+  { type: "img", src: "assets/cart/events/naz-cart-service.jpg", label: "Made fresh, served well" },
+  { type: "video", src: "assets/cart/events/cart-moment-nightpop.mp4", poster: "assets/cart/events/cart-moment-nightpop-poster.jpg", label: "Event day energy" },
+  { type: "img", src: "assets/cart/events/naz-guest-experience.jpg", label: "Guest moments" },
+  { type: "video", src: "assets/cart/events/cart-moment-instore.mp4", poster: "assets/cart/events/cart-moment-instore-poster.jpg", label: "On location" },
+  { type: "img", src: "assets/cart/events/naz-illest-cup.jpg", label: "Co-branded details" },
+  { type: "video", src: "assets/cart/events/cart-moment-street.mp4", poster: "assets/cart/events/cart-moment-street-poster.jpg", label: "Setup & service" },
+  { type: "video", src: "assets/cart/events/cart-moment-backstage.mp4", poster: "assets/cart/events/cart-moment-backstage-poster.jpg", label: "Behind the scenes" },
+];
+
+const FAQS = [
+  { q: "Where does Naz Coffee Cart operate?", a: "We're based in Pangil, Laguna and serve the surrounding local area directly. We also travel farther across Laguna and to Metro Manila and other provinces for larger or custom events — those are booked through a custom proposal." },
+  { q: "When is local transportation included?", a: "For events within our local service area, transportation is already built into the package price — we call this “Local Service Included.”" },
+  { q: "What is the Extended Service Area Rate?", a: "For municipalities farther from our base, an Extended Service Area Rate covers the added travel, staff time, and logistics. This rate is still being finalized, so these events are currently routed to a custom quotation instead of an instant price." },
+  { q: "Do you accept Metro Manila events?", a: "Yes. Metro Manila events are handled through a custom proposal that accounts for distance, logistics, and event scale." },
+  { q: "Do you accept events outside Laguna?", a: "Yes — through a custom proposal, the same as Metro Manila and other provinces." },
+  { q: "Which packages can be reserved directly?", a: "Community Cart and Celebration Cart can typically be reserved directly for events within our local service area. Signature Cart may be direct or quoted depending on your location. Brand Activation is always a custom proposal." },
+  { q: "Why do some events require a custom quotation?", a: "Distance, guest count, customization, staffing, and branding all affect cost. We quote these individually so you get an accurate price instead of a generic one." },
+  { q: "Can additional cups be added?", a: "Yes — choose Custom in the planner, or let us know your estimated count, and we'll include it in your reservation or quotation." },
+  { q: "Can clients customize the drink menu?", a: "Community Cart uses a curated menu. Celebration Cart, Signature Cart, and Brand Activation all let you choose from Naz Coffee's approved event-menu selections." },
+  { q: "How does custom signature drink development work?", a: "Available with Signature Cart (1 drink) and Brand Activation (up to 3 drinks). Development is subject to ingredient availability, feasibility, and an agreed scope — not unlimited revisions." },
+  { q: "What happens during the tasting session?", a: "Included with Signature Cart and Brand Activation, the tasting session lets you and our team finalize your custom drink ahead of the event." },
+  { q: "What does branded cart customization include?", a: "Included with Brand Activation — basic brand and menu coordination so the cart setup reflects your brand. Exact scope is confirmed during your proposal." },
+  { q: "How far in advance should customers book?", a: "As early as possible, especially for weekend dates and larger guest counts. Reach out with your date and we'll confirm availability." },
+  { q: "How long does Coffee Cart service last?", a: "Every package includes three hours of service. Extra hours can be added — just ask when you inquire." },
+  { q: "What does the venue need to provide?", a: "A level area for the cart setup and access to a power outlet where available. We'll confirm any specific requirements during planning." },
+  { q: "How is the reservation confirmed?", a: "Direct reservations are confirmed once we receive your reservation fee via GCash. Custom-quoted events are confirmed once your proposal is reviewed and finalized." },
+  { q: "What happens if the event date changes or is cancelled?", a: "Message us as soon as possible if your date changes — we'll do our best to work with your new schedule based on availability." },
+];
+
+/* ===================== Render: client logos, inclusions, packages ===================== */
 function money(n) { return new Intl.NumberFormat("en-PH").format(n); }
 
 function renderClientLogos() {
-  const logoHtml = arr => arr.map(([name, src]) =>
-    `<div class="client-logo"><img src="${src}" alt="${name} logo"></div>`).join("");
-  const firstRow = clientLogos.slice(0, 7);
-  const secondRow = clientLogos.slice(7);
-  document.getElementById("clientLogoGrid").innerHTML =
-    `<div class="client-logo-row">${logoHtml(firstRow)}</div>` +
-    `<div class="client-logo-row client-logo-row-center">${logoHtml(secondRow)}</div>`;
+  document.getElementById("clientLogoGrid").innerHTML = clientLogos.map(([name, src]) =>
+    `<div class="client-logo"><img src="${src}" alt="${name} logo" loading="lazy"></div>`).join("");
+}
+
+function renderCommonInclusions() {
+  document.getElementById("commonInclusions").innerHTML = COMMON_INCLUSIONS.map((item, i) =>
+    `<div><span>${String(i + 1).padStart(2, "0")}</span><p>${item}</p><b>&#10003;</b></div>`).join("");
 }
 
 function renderServices() {
   document.getElementById("servicesGrid").innerHTML = services.map(s => `
-    <a class="service-card ${s.featured ? "featured" : ""}" href="#inquire" data-type="${s.type}">
+    <div class="service-card ${s.featured ? "featured" : ""}" data-type="${s.type}">
       <div class="card-top"><span>${s.number}</span><span>${s.audience}</span></div>
-      <h3>${s.name}</h3><p class="promise">${s.promise}</p>
+      <h3>${s.displayName}</h3><p class="promise"><em>${s.tagline}</em><br>${s.promise}</p>
       <ul>${s.inclusions.map(i => `<li>${i}</li>`).join("")}</ul>
+      <p class="best-for"><strong>Best for:</strong> ${s.bestFor.join(", ")}</p>
       <div class="card-price"><strong>${s.price}</strong><small>${s.note}</small></div>
-      <span class="card-cta">Select this service <span>→</span></span>
-    </a>`).join("");
+      <a class="card-cta" href="#planner" data-jump-type="${s.type}">Plan this experience <span>&rarr;</span></a>
+    </div>`).join("");
 
   document.querySelectorAll(".service-card").forEach(card => {
-    card.addEventListener("click", (e) => {
-      e.preventDefault();
-      selectService(card.dataset.type);
+    card.addEventListener("click", () => {
+      trackEvent("package_view", { package: card.dataset.type });
+      preselectedPackage = card.dataset.type;
+      document.getElementById("planner").scrollIntoView({ behavior: "smooth", block: "start" });
     });
+  });
+
+  if ("IntersectionObserver" in window) {
+    const seen = new Set();
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && !seen.has(entry.target.dataset.type)) {
+          seen.add(entry.target.dataset.type);
+          trackEvent("package_view", { package: entry.target.dataset.type });
+        }
+      });
+    }, { threshold: 0.4 });
+    document.querySelectorAll(".service-card").forEach(c => obs.observe(c));
+  }
+}
+
+function renderCaseStudies() {
+  document.getElementById("caseGrid").innerHTML = CASE_STUDIES.map(c => `
+    <div class="case-card">
+      <div class="case-card-img"><img src="${c.img}" alt="${c.name.replace(/&times;/g, "x")}" loading="lazy"></div>
+      <span class="case-card-cat">${c.category}</span>
+      <h4>${c.name}</h4>
+      <p>${c.desc}</p>
+    </div>`).join("");
+}
+
+function renderMoments() {
+  document.getElementById("momentsGrid").innerHTML = MOMENTS.map(m => {
+    if (m.type === "img") return `<div class="moment"><img src="${m.src}" alt="${m.label}" loading="lazy"><span>${m.label}</span></div>`;
+    return `<div class="moment moment-video-tile"><video class="moment-video" muted loop playsinline preload="none" poster="${m.poster}" data-src="${m.src}"></video><span>${m.label}</span></div>`;
+  }).join("");
+
+  const reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reducedMotion || !("IntersectionObserver" in window)) return;
+
+  const videos = document.querySelectorAll(".moment-video");
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const v = entry.target;
+      if (entry.isIntersecting) {
+        if (!v.src && v.dataset.src) v.src = v.dataset.src;
+        v.play().catch(() => {});
+      } else {
+        v.pause();
+      }
+    });
+  }, { threshold: 0.35 });
+  videos.forEach(v => obs.observe(v));
+}
+
+function renderFaq() {
+  document.getElementById("faqList").innerHTML = FAQS.map(f => `
+    <details class="faq-item"><summary>${f.q}</summary><p>${f.a}</p></details>`).join("");
+}
+
+/* ===================== Event Planner state + wizard ===================== */
+let plannerStep = 1;
+let preselectedPackage = null;
+const plannerState = { location: "", zone: null, eventType: null, size: null, customSize: null, pkg: null };
+
+function detectZone(raw) {
+  const v = raw.trim().toLowerCase();
+  if (!v) return null;
+  if (LOCAL_ZONE_KEYWORDS.some(k => v.includes(k))) return "local";
+  if (v.includes("laguna")) return "extended";
+  return "city";
+}
+
+function goToStep(step) {
+  plannerStep = step;
+  document.querySelectorAll(".planner-step").forEach(el => {
+    el.hidden = Number(el.dataset.step) !== step;
+  });
+  document.getElementById("plannerResult").hidden = true;
+  document.querySelectorAll("#plannerProgress li").forEach(li => {
+    const s = Number(li.dataset.step);
+    li.classList.toggle("is-active", s === step);
+    li.classList.toggle("is-done", s < step);
+  });
+  if (step === 4) renderPackageStep();
+  document.getElementById("plannerCard").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function initPlannerLocation() {
+  const input = document.getElementById("plannerLocation");
+  const hint = document.getElementById("plannerZoneHint");
+  const nextBtn = document.getElementById("step1Next");
+  let started = false;
+
+  function update() {
+    if (!started && input.value.trim()) { started = true; trackEvent("event_planner_started"); }
+    plannerState.location = input.value.trim();
+    plannerState.zone = detectZone(plannerState.location);
+    if (!plannerState.zone) { hint.textContent = ""; nextBtn.disabled = true; return; }
+    const z = SERVICE_ZONES[plannerState.zone];
+    hint.textContent = `${z.label} — ${z.note}`;
+    hint.className = "planner-zone-hint is-visible zone-" + plannerState.zone;
+    nextBtn.disabled = false;
+    trackEvent("location_selected", { zone: plannerState.zone });
+  }
+
+  input.addEventListener("input", update);
+  document.querySelectorAll(".planner-quickpicks button").forEach(btn => {
+    btn.addEventListener("click", () => { input.value = btn.dataset.loc; update(); });
+  });
+  document.getElementById("step1Next").addEventListener("click", () => goToStep(2));
+}
+
+function renderEventTypeGrid() {
+  const grid = document.getElementById("eventTypeGrid");
+  grid.innerHTML = EVENT_TYPES.map(([val, label]) => `<button type="button" class="pill" data-val="${val}">${label}</button>`).join("");
+  grid.querySelectorAll(".pill").forEach(btn => {
+    btn.addEventListener("click", () => {
+      grid.querySelectorAll(".pill").forEach(b => b.classList.remove("is-active"));
+      btn.classList.add("is-active");
+      plannerState.eventType = btn.dataset.val;
+      document.getElementById("step2Next").disabled = false;
+    });
+  });
+  document.getElementById("step2Next").addEventListener("click", () => goToStep(3));
+}
+
+function renderEventSizeGrid() {
+  const grid = document.getElementById("eventSizeGrid");
+  grid.innerHTML = EVENT_SIZES.map(v => `<button type="button" class="pill" data-val="${v}">${v === "custom" ? "Custom" : v}</button>`).join("");
+  const customWrap = document.getElementById("customSizeWrap");
+  const customInput = document.getElementById("customSizeInput");
+  const nextBtn = document.getElementById("step3Next");
+
+  grid.querySelectorAll(".pill").forEach(btn => {
+    btn.addEventListener("click", () => {
+      grid.querySelectorAll(".pill").forEach(b => b.classList.remove("is-active"));
+      btn.classList.add("is-active");
+      plannerState.size = btn.dataset.val;
+      if (plannerState.size === "custom") {
+        customWrap.hidden = false;
+        nextBtn.disabled = !customInput.value;
+      } else {
+        customWrap.hidden = true;
+        plannerState.customSize = null;
+        nextBtn.disabled = false;
+      }
+    });
+  });
+  customInput.addEventListener("input", () => {
+    plannerState.customSize = customInput.value;
+    nextBtn.disabled = !customInput.value;
+  });
+  nextBtn.addEventListener("click", () => goToStep(4));
+}
+
+function priceFor(pkgType, size) {
+  const table = PACKAGE_PRICING[pkgType];
+  if (!table || size === "custom") return null;
+  return table[size] ?? null;
+}
+
+function renderPackageStep() {
+  const grid = document.getElementById("packageStepGrid");
+  const note = document.getElementById("packageZoneNote");
+  const localOnly = plannerState.zone !== "local";
+  const eligible = services.filter(s => !localOnly || s.type === "professional" || s.type === "brand");
+
+  plannerState.pkg = null;
+  document.getElementById("step4Next").disabled = true;
+
+  note.textContent = localOnly
+    ? "Based on your event location, Community Cart and Celebration Cart aren't offered directly here — Signature Cart and Brand Activation are available via custom proposal."
+    : "All four experiences are available for your local event.";
+
+  grid.innerHTML = eligible.map(s => {
+    const price = priceFor(s.type, plannerState.size);
+    const badge = s.type === "brand" ? "Quote only" : (price != null && plannerState.zone === "local" ? "Direct booking" : "Quote");
+    return `<button type="button" class="pkg-pill" data-type="${s.type}"><strong>${s.displayName}</strong><span>${badge}</span></button>`;
+  }).join("");
+
+  grid.querySelectorAll(".pkg-pill").forEach(btn => {
+    btn.addEventListener("click", () => {
+      grid.querySelectorAll(".pkg-pill").forEach(b => b.classList.remove("is-active"));
+      btn.classList.add("is-active");
+      plannerState.pkg = btn.dataset.type;
+      trackEvent("package_selected", { package: plannerState.pkg });
+      document.getElementById("step4Next").disabled = false;
+    });
+  });
+
+  if (preselectedPackage) {
+    const match = grid.querySelector(`.pkg-pill[data-type="${preselectedPackage}"]`);
+    if (match) match.click();
+    preselectedPackage = null;
+  }
+}
+
+function decideBookingPath() {
+  if (plannerState.zone !== "local") return "quote";
+  if (plannerState.pkg === "brand") return "quote";
+  const price = priceFor(plannerState.pkg, plannerState.size);
+  return price == null ? "quote" : "direct";
+}
+
+function eventTypeLabel() {
+  const found = EVENT_TYPES.find(([v]) => v === plannerState.eventType);
+  return found ? found[1] : "Event";
+}
+
+function sizeLabel() {
+  return plannerState.size === "custom" ? `${plannerState.customSize || "Custom"} guests/cups` : `${plannerState.size} cups`;
+}
+
+function renderPlannerResult() {
+  const path = decideBookingPath();
+  const service = services.find(s => s.type === plannerState.pkg);
+  const result = document.getElementById("plannerResult");
+  result.hidden = false;
+  result.dataset.pkg = plannerState.pkg;
+
+  if (path === "direct") {
+    trackEvent("direct_booking_eligible", { package: plannerState.pkg, zone: plannerState.zone });
+    const price = priceFor(plannerState.pkg, plannerState.size);
+    result.innerHTML = `
+      <p class="eyebrow">Great news</p>
+      <h3>You can reserve this date now.</h3>
+      <div class="result-summary">
+        <div><span>Package</span><strong>${service.displayName}</strong></div>
+        <div><span>Guests / cups</span><strong>${sizeLabel()}</strong></div>
+        <div><span>Service area</span><strong>${SERVICE_ZONES[plannerState.zone].note}</strong></div>
+        <div><span>Package price</span><strong>₱${money(price)}</strong></div>
+        <div><span>Estimated total</span><strong>₱${money(price)}</strong></div>
+      </div>
+      <p class="result-inclusions"><strong>Includes:</strong> ${COMMON_INCLUSIONS.join(", ")}.</p>
+      <button type="button" class="button" id="reserveDateBtn">Reserve My Date</button>`;
+
+    document.getElementById("reserveDateBtn").addEventListener("click", () => {
+      trackEvent("reservation_started", { package: plannerState.pkg });
+      const detail = `${service.displayName} — ${sizeLabel()} — ${eventTypeLabel()} — ${plannerState.location} — ${SERVICE_ZONES[plannerState.zone].note}`;
+      const deposit = Math.round(price * 0.2);
+      const url = "cart-checkout.html" +
+        `?label=${encodeURIComponent(service.displayName)}` +
+        `&detail=${encodeURIComponent(detail)}` +
+        `&total=${price}` +
+        `&deposit=${deposit}` +
+        `&location=${encodeURIComponent(plannerState.location)}` +
+        `&eventtype=${encodeURIComponent(eventTypeLabel())}`;
+      window.location.href = url;
+    });
+  } else {
+    trackEvent("quotation_required", { package: plannerState.pkg, zone: plannerState.zone });
+    let reason = "Because of your event's location, scale, or customization requirements, our team will prepare a tailored event proposal.";
+    if (plannerState.pkg === "brand") reason = "Brand Activation experiences are scoped and quoted individually because branding, product development, and event scale vary widely.";
+    else if (plannerState.zone !== "local") reason = "Your event falls outside our local service area, so travel, logistics, and staffing are factored into a custom proposal.";
+
+    result.innerHTML = `
+      <p class="eyebrow">Your event needs a customized plan</p>
+      <h3>Your event needs a customized Coffee Cart plan.</h3>
+      <p class="result-reason">${reason}</p>
+      <div class="result-summary result-summary-compact">
+        <div><span>Package</span><strong>${service ? service.displayName : "—"}</strong></div>
+        <div><span>Guests / cups</span><strong>${sizeLabel()}</strong></div>
+        <div><span>Location</span><strong>${plannerState.location || "—"}</strong></div>
+      </div>
+      <div id="proposalFormWrap"></div>`;
+    renderProposalForm();
+  }
+
+  result.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+document.getElementById("step4Next").addEventListener("click", renderPlannerResult);
+
+/* ===================== Custom Proposal Form ===================== */
+function renderProposalForm() {
+  const wrap = document.getElementById("proposalFormWrap");
+  wrap.innerHTML = `
+    <div id="proposalStatus" class="form-status" role="status"></div>
+    <form id="proposal-form" name="cart-proposal" method="POST" data-netlify="true">
+      <input type="hidden" name="form-name" value="cart-proposal">
+      <div class="honeypot" aria-hidden="true">
+        <label for="proposal-company">Leave this field blank</label>
+        <input type="text" id="proposal-company" name="hp_field" tabindex="-1" autocomplete="off">
+      </div>
+      <input type="hidden" name="package" value="${(services.find(s => s.type === plannerState.pkg) || {}).displayName || ""}">
+      <input type="hidden" name="event-type" value="${eventTypeLabel()}">
+      <input type="hidden" name="guests" value="${sizeLabel()}">
+      <div class="field-row field-row-split">
+        <div><label for="pf-name">Full name</label><input type="text" id="pf-name" name="name" placeholder="Jane Doe"></div>
+        <div><label for="pf-company">Company / organization <span class="opt-flag">(if applicable)</span></label><input type="text" id="pf-company" name="company" placeholder="Optional"></div>
+      </div>
+      <div class="field-row field-row-split">
+        <div><label for="pf-date">Event date</label><input type="date" id="pf-date" name="event-date"></div>
+        <div><label for="pf-venue">Venue / location</label><input type="text" id="pf-venue" name="venue" value="${plannerState.location}" placeholder="Venue name or address"></div>
+      </div>
+      <div class="field-row field-row-split">
+        <div><label for="pf-duration">Estimated service duration</label>
+          <select id="pf-duration" name="duration">
+            <option value="3 hours">3 hours</option><option value="4 hours">4 hours</option><option value="5+ hours">5+ hours</option><option value="Not sure">Not sure yet</option>
+          </select>
+        </div>
+        <div><label for="pf-guests">Expected guests</label><input type="text" id="pf-guests" name="expected-guests" value="${sizeLabel()}"></div>
+      </div>
+      <div class="field-row"><label for="pf-branding">Branding requirements <span class="opt-flag">(optional)</span></label><textarea id="pf-branding" name="branding" placeholder="Logos, colors, co-branded cups, cart branding, etc."></textarea></div>
+      <div class="field-row"><label for="pf-requests">Special requests <span class="opt-flag">(optional)</span></label><textarea id="pf-requests" name="special-requests" placeholder="Anything else we should know?"></textarea></div>
+      <div class="field-row field-row-split">
+        <div><label for="pf-email">Email</label><input type="email" id="pf-email" name="email" placeholder="jane@example.com"></div>
+        <div><label for="pf-phone">Phone</label><input type="tel" id="pf-phone" name="phone" placeholder="09XX XXX XXXX"></div>
+      </div>
+      <button type="submit" class="button button-block">Request Event Proposal</button>
+      <p class="field-note">Submissions are handled by Netlify Forms and arrive in your Netlify dashboard's Forms tab.</p>
+    </form>`;
+
+  const form = document.getElementById("proposal-form");
+  const status = document.getElementById("proposalStatus");
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const honeypot = form.querySelector('input[name="hp_field"]');
+    if (honeypot && honeypot.value.trim() !== "") return;
+
+    const name = form.querySelector("#pf-name");
+    const email = form.querySelector("#pf-email");
+    const phone = form.querySelector("#pf-phone");
+    if (!name.value.trim()) return showStatus(status, "error", "Please enter your full name.");
+    if (!email.value.trim() || !email.value.includes("@")) return showStatus(status, "error", "Please enter a valid email address.");
+    if (!phone.value.trim()) return showStatus(status, "error", "Please enter your phone number.");
+
+    const btn = form.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    fetch("/", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: new URLSearchParams(new FormData(form)).toString() })
+      .then((res) => {
+        if (!res.ok) throw new Error("Submission failed");
+        trackEvent("proposal_requested", { package: plannerState.pkg });
+        showStatus(status, "success", "Thanks — your event brief is in. We'll prepare your proposal and reach out shortly.");
+        form.reset();
+        btn.style.display = "none";
+      })
+      .catch(() => { showStatus(status, "error", "Something went wrong sending this. Please email ptsutare@gmail.com directly instead."); btn.disabled = false; });
   });
 }
 
-function selectService(type) {
-  eventType = type;
-  document.getElementById("event-type").value = type;
-  renderGuestCountOptions();
-  renderResult();
-  document.getElementById("inquire").scrollIntoView({ behavior: "smooth", block: "start" });
+function showStatus(el, type, msg) {
+  el.textContent = msg;
+  el.classList.remove("success", "error");
+  el.classList.add(type, "is-visible");
+  el.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
-function renderAddonPicker() {
-  document.getElementById("addonPicker").innerHTML = "<legend>Optional add-ons</legend>" + addOns.map(a =>
-    `<label><input type="checkbox" data-addon="${a}"> <span>${a}</span></label>`).join("");
-  document.querySelectorAll("#addonPicker input[type=checkbox]").forEach(cb => {
-    cb.addEventListener("change", () => {
-      const addon = cb.dataset.addon;
-      if (cb.checked) { if (!selectedAddOns.includes(addon)) selectedAddOns.push(addon); }
-      else { selectedAddOns = selectedAddOns.filter(a => a !== addon); }
-      renderResult();
-    });
-  });
-}
-
-function renderGuestCountOptions() {
-  const select = document.getElementById("guest-count");
-  const counts = Object.keys(packageRates[eventType]);
-  select.innerHTML = counts.map(c => `<option value="${c}">${c} drinks</option>`).join("");
-  guestCount = counts[0];
-  select.value = guestCount;
-}
-
-function renderResult() {
-  const counts = Object.keys(packageRates[eventType]);
-  const baseRate = packageRates[eventType][guestCount] ?? packageRates[eventType][counts[0]];
-  const formattedRate = money(baseRate);
-  document.getElementById("finderResult").dataset.pkg = eventType;
-  document.getElementById("finderRateLine").textContent = `${packageNames[eventType]} · ₱${formattedRate}${eventType === "brand" ? "+" : ""}`;
-  document.getElementById("finderNote").textContent = `Includes ${guestCount} drinks and three hours of service. ` +
-    (selectedAddOns.length ? `${selectedAddOns.length} selected add-on${selectedAddOns.length > 1 ? "s" : ""} will be priced in the final quote.` : "Choose add-ons above if needed.");
-
-  const mailBody = `Recommended package: ${packageNames[eventType]}%0ADrinks: ${guestCount}%0AEstimated base: ₱${formattedRate}%0AAdd-ons: ${encodeURIComponent(selectedAddOns.join(", ") || "None")}%0AEvent date:%0AVenue:%0AAdditional details:`;
-  document.getElementById("inquiryLink").href = `mailto:?subject=Naz%20Coffee%20Custom%20Package&body=${mailBody}`;
-  document.getElementById("checkoutLink").href = `cart-checkout.html?package=${encodeURIComponent(packageNames[eventType])}&drinks=${guestCount}&rate=${baseRate}`;
-}
-
-document.getElementById("event-type").addEventListener("change", (e) => {
-  eventType = e.target.value;
-  renderGuestCountOptions();
-  renderResult();
-});
-document.getElementById("guest-count").addEventListener("change", (e) => {
-  guestCount = e.target.value;
-  renderResult();
+document.querySelectorAll(".planner-actions [data-back]").forEach(btn => {
+  btn.addEventListener("click", () => goToStep(Number(btn.dataset.back)));
 });
 
+/* ===================== Init ===================== */
 renderClientLogos();
+renderCommonInclusions();
 renderServices();
-renderAddonPicker();
-renderGuestCountOptions();
-renderResult();
+renderCaseStudies();
+renderMoments();
+renderFaq();
+initPlannerLocation();
+renderEventTypeGrid();
+renderEventSizeGrid();
+renderPackageStep();
 </script>
 
 </body>
