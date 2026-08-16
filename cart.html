@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/cart.css?v=20260816d">
+<link rel="stylesheet" href="css/cart.css?v=20260817b">
 <style>
 .nvgh-bar{position:sticky;top:0;z-index:500;background:rgba(247,238,222,.92);backdrop-filter:blur(10px);border-bottom:1px solid #f0dfc4;font-family:'Poppins',Arial,"Helvetica Neue",sans-serif}
 .nvgh-inner{max-width:1180px;margin:0 auto;padding:0 24px;height:76px;display:flex;align-items:center;justify-content:space-between;box-sizing:border-box}
@@ -134,11 +134,11 @@
         </thead>
         <tbody>
           <tr><th scope="row">Menu size</th><td>5</td><td>7</td><td>7 + 1 custom</td><td>7 + up to 3 custom</td></tr>
-          <tr><th scope="row">Client chooses menu</th><td>No</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-          <tr><th scope="row">Custom signature drink</th><td>No</td><td>No</td><td>1</td><td>Up to 3</td></tr>
-          <tr><th scope="row">Taste testing</th><td>No</td><td>No</td><td>Included</td><td>Included</td></tr>
-          <tr><th scope="row">Branded cups</th><td>No</td><td>No</td><td>Included</td><td>Included</td></tr>
-          <tr><th scope="row">Branded cart</th><td>No</td><td>No</td><td>No</td><td>Included</td></tr>
+          <tr><th scope="row">Client chooses menu</th><td><span class="table-x">&mdash;</span></td><td><span class="table-check" aria-label="Yes">&#10003;</span></td><td><span class="table-check" aria-label="Yes">&#10003;</span></td><td><span class="table-check" aria-label="Yes">&#10003;</span></td></tr>
+          <tr><th scope="row">Custom signature drink</th><td><span class="table-x">&mdash;</span></td><td><span class="table-x">&mdash;</span></td><td>1</td><td>Up to 3</td></tr>
+          <tr><th scope="row">Taste testing</th><td><span class="table-x">&mdash;</span></td><td><span class="table-x">&mdash;</span></td><td><span class="table-check" aria-label="Included">&#10003;</span></td><td><span class="table-check" aria-label="Included">&#10003;</span></td></tr>
+          <tr><th scope="row">Branded cups</th><td><span class="table-x">&mdash;</span></td><td><span class="table-x">&mdash;</span></td><td><span class="table-check" aria-label="Included">&#10003;</span></td><td><span class="table-check" aria-label="Included">&#10003;</span></td></tr>
+          <tr><th scope="row">Branded cart</th><td><span class="table-x">&mdash;</span></td><td><span class="table-x">&mdash;</span></td><td><span class="table-x">&mdash;</span></td><td><span class="table-check" aria-label="Included">&#10003;</span></td></tr>
           <tr><th scope="row">Booking path</th><td>Direct</td><td>Direct</td><td>Direct / Quote</td><td>Quote</td></tr>
         </tbody>
       </table>
@@ -152,16 +152,19 @@
 
     <div class="planner-card" id="plannerCard">
       <ol class="planner-progress" id="plannerProgress">
-        <li data-step="1">Location</li>
-        <li data-step="2">Event</li>
-        <li data-step="3">Guests</li>
-        <li data-step="4">Package</li>
+        <li data-step="1"><span class="step-circle">1</span><span class="step-label">Location</span></li>
+        <li data-step="2"><span class="step-circle">2</span><span class="step-label">Event</span></li>
+        <li data-step="3"><span class="step-circle">3</span><span class="step-label">Guests</span></li>
+        <li data-step="4"><span class="step-circle">4</span><span class="step-label">Package</span></li>
       </ol>
 
       <div class="planner-step" data-step="1">
         <p class="planner-step-label">Step 1 &middot; Where will your event be held?</p>
         <label class="config-label" for="plannerLocation">Municipality / city (or full venue address)</label>
-        <input type="text" id="plannerLocation" placeholder="e.g. Pangil, Laguna or your venue address" autocomplete="off">
+        <div class="planner-input-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-7.2 7-12a7 7 0 0 0-14 0c0 4.8 7 12 7 12Z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          <input type="text" id="plannerLocation" placeholder="e.g. Pangil, Laguna or your venue address" autocomplete="off">
+        </div>
         <div class="planner-quickpicks">
           <span>Quick picks:</span>
           <button type="button" data-loc="Pangil, Laguna">Pangil, Laguna</button>
@@ -223,7 +226,7 @@
         <p class="eyebrow">From idea to first pour</p><h2>Easy to plan.<br><em>Effortless to enjoy.</em></h2>
       </div>
       <div class="how-it-works-split">
-        <div>
+        <div class="how-card">
           <p class="how-heading">Direct Reservation</p>
           <div class="steps">
             <div class="step"><span>01</span><h3>Tell us about it</h3><p>Select your location, event type, and guest count.</p></div>
@@ -232,8 +235,8 @@
             <div class="step"><span>04</span><h3>Reserve your date</h3><p>Send your reservation fee and confirm the details.</p></div>
           </div>
         </div>
-        <div>
-          <p class="how-heading">Custom Events</p>
+        <div class="how-card">
+          <p class="how-heading how-heading-alt">Custom Events</p>
           <div class="steps">
             <div class="step"><span>05</span><h3>Send your event brief</h3><p>Give us the core details of your event.</p></div>
             <div class="step"><span>06</span><h3>We prepare your proposal</h3><p>Our team reviews logistics and customization needs.</p></div>
@@ -426,9 +429,8 @@ function renderServices() {
 function renderCaseStudies() {
   document.getElementById("caseGrid").innerHTML = CASE_STUDIES.map(c => `
     <div class="case-card">
-      <div class="case-card-img"><img src="${c.img}" alt="${c.name.replace(/&times;/g, "x")}" loading="lazy"></div>
+      <div class="case-card-img"><img src="${c.img}" alt="${c.name.replace(/&times;/g, "x")}" loading="lazy"><span class="case-card-cat">${c.category}</span></div>
       <div class="case-card-body">
-        <span class="case-card-cat">${c.category}</span>
         <h4>${c.name}</h4>
         <p>${c.desc}</p>
       </div>
@@ -437,10 +439,10 @@ function renderCaseStudies() {
 
 function renderMoments() {
   document.getElementById("momentsVideoGrid").innerHTML = MOMENT_VIDEOS.map(m =>
-    `<div class="moment moment-video-tile"><video class="moment-video" muted loop playsinline preload="none" poster="${m.poster}" data-src="${m.src}"></video><span>${m.label}</span></div>`
+    `<div class="moment moment-video-tile"><video class="moment-video" muted loop playsinline preload="none" poster="${m.poster}" data-src="${m.src}" aria-label="${m.label}"></video></div>`
   ).join("");
   document.getElementById("momentsPhotoGrid").innerHTML = MOMENT_PHOTOS.map(m =>
-    `<div class="moment"><img src="${m.src}" alt="${m.label}" loading="lazy"><span>${m.label}</span></div>`
+    `<div class="moment"><img src="${m.src}" alt="${m.label}" loading="lazy"></div>`
   ).join("");
 
   const reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -770,6 +772,7 @@ initPlannerLocation();
 renderEventTypeGrid();
 renderEventSizeGrid();
 renderPackageStep();
+document.querySelector('#plannerProgress li[data-step="1"]').classList.add("is-active");
 </script>
 
 </body>
