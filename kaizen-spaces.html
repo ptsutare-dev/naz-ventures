@@ -410,10 +410,16 @@ function tierPriceFor(service, pax) {
   return service.tiers[service.tiers.length - 1].price;
 }
 
+const TIME_SLOTS = [
+  { value: "9:00 AM", label: "9:00 AM – 12:00 PM" },
+  { value: "12:00 PM", label: "12:00 PM – 3:00 PM" },
+  { value: "3:00 PM", label: "3:00 PM – 6:00 PM" },
+  { value: "6:00 PM", label: "6:00 PM – 9:00 PM" },
+];
 const SPACE_OPTIONS = [
-  { key: "kaizen", label: "Kaizen Spaces", capacity: "Up to 15 pax", base: 3000, hourly: 1000 },
-  { key: "naz-coffee", label: "Naz Coffee", capacity: "Up to 25 pax", base: 5000, hourly: 1700 },
-  { key: "full-space", label: "Full Space", capacity: "Up to 35 pax", base: 7000, hourly: 2300 },
+  { key: "kaizen", label: "Kaizen Spaces", capacity: "Up to 15 pax", base: 3000, hourly: 1000, timeSlots: TIME_SLOTS },
+  { key: "naz-coffee", label: "Naz Coffee", capacity: "Up to 25 pax", base: 5000, hourly: 1700, timeSlots: TIME_SLOTS },
+  { key: "full-space", label: "Full Space", capacity: "Up to 35 pax", base: 7000, hourly: 2300, timeSlots: TIME_SLOTS },
 ];
 const OCCASIONS = [
   { value: "private-meeting", label: "Private Meeting" },
@@ -431,11 +437,13 @@ const currentPax = {};
 let customChoice = "coffee";
 let selectedSpaceKey = "kaizen";
 let selectedOccasionValue = "private-meeting";
+let selectedTime = SPACE_OPTIONS[0].timeSlots[0].value;
 let extraHoursOn = false;
 let extraHoursCount = 1;
 let outsideFoodOn = false;
 let offsiteOn = false;
 let offsiteAddress = "";
+let customSelectedTime = TIME_SLOTS[0].value;
 
 function inclusionsHtml(list) {
   return `<ul class="session-inclusions">${list.map(i => `<li>${i}</li>`).join("")}</ul>`;
@@ -469,6 +477,11 @@ function renderConfigurator() {
               </button>
             `).join("")}
           </div>
+
+          <label class="config-label" for="configTime">Preferred Time</label>
+          <select id="configTime" class="config-select">
+            ${space.timeSlots.map(slot => `<option value="${slot.value}" ${slot.value === selectedTime ? "selected" : ""}>${slot.label}</option>`).join("")}
+          </select>
 
           <label class="config-label" for="configOccasion">What's the occasion?</label>
           <select id="configOccasion" class="config-select">
@@ -518,7 +531,17 @@ function renderConfigurator() {
     `;
 
     el.querySelectorAll(".space-option").forEach(btn => {
-      btn.addEventListener("click", () => { selectedSpaceKey = btn.dataset.space; renderConfigurator(); });
+      btn.addEventListener("click", () => {
+        selectedSpaceKey = btn.dataset.space;
+        const newSpace = SPACE_OPTIONS.find(s => s.key === selectedSpaceKey);
+        if (!newSpace.timeSlots.some(slot => slot.value === selectedTime)) {
+          selectedTime = newSpace.timeSlots[0].value;
+        }
+        renderConfigurator();
+      });
+    });
+    document.getElementById("configTime").addEventListener("change", function () {
+      selectedTime = this.value;
     });
     document.getElementById("configOccasion").addEventListener("change", function () {
       selectedOccasionValue = this.value;
@@ -568,6 +591,12 @@ function renderConfigurator() {
           <button type="button" id="paxPlus" ${pax >= maxPax ? "disabled" : ""}>+</button>
         </div>
         ${inclusionsHtml(service.inclusions)}
+        ${service.kind === "flat-min" ? `
+          <label class="config-label" for="configCustomTime">Preferred Time</label>
+          <select id="configCustomTime" class="config-select">
+            ${TIME_SLOTS.map(slot => `<option value="${slot.value}" ${slot.value === customSelectedTime ? "selected" : ""}>${slot.label}</option>`).join("")}
+          </select>
+        ` : ""}
         ${service.kind === "tiered" ? `
           <label class="config-checkbox" style="margin-top:16px;">
             <input type="checkbox" id="offsiteToggle" ${offsiteOn ? "checked" : ""}>
@@ -605,6 +634,9 @@ function renderConfigurator() {
   if (service.kind === "flat-min") {
     el.querySelectorAll(".session-coffee-matcha button").forEach(btn => {
       btn.addEventListener("click", () => { customChoice = btn.dataset.choice; renderConfigurator(); });
+    });
+    document.getElementById("configCustomTime").addEventListener("change", function () {
+      customSelectedTime = this.value;
     });
   }
   if (service.kind === "tiered") {
@@ -653,8 +685,10 @@ function proceedToCheckout() {
     total = space.base + extraCost;
     label = "Private Sessions";
     const occasionLabel = OCCASIONS.find(o => o.value === selectedOccasionValue).label;
+    const timeSlot = space.timeSlots.find(s => s.value === selectedTime) || space.timeSlots[0];
     detail = `${space.label} (${space.capacity})` +
       (extraHoursOn ? ` + ${extraHoursCount} extra hr${extraHoursCount > 1 ? "s" : ""}` : "") +
+      ` — Time: ${timeSlot.label}` +
       ` — Occasion: ${occasionLabel}` +
       (outsideFoodOn ? " — Bringing outside food" : "");
   } else {
@@ -664,6 +698,10 @@ function proceedToCheckout() {
     label = service.label;
     if (service.kind === "flat-min") label += ` (${customChoice === "coffee" ? "Coffee" : "Matcha"})`;
     detail = `${pax} pax — ${money(perPerson)} each`;
+    if (service.kind === "flat-min") {
+      const customTimeSlot = TIME_SLOTS.find(s => s.value === customSelectedTime) || TIME_SLOTS[0];
+      detail += ` — Time: ${customTimeSlot.label}`;
+    }
     if (service.kind === "tiered" && offsiteOn) {
       detail += ` — Offsite at: ${offsiteAddress || "(address not provided)"} — Transportation costs shouldered by client`;
     }
