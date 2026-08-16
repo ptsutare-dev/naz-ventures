@@ -1511,7 +1511,7 @@ textarea { resize: vertical; min-height: 130px; }
   gap: 28px;
   align-items: start;
 }
-.session-inclusions { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 8px; }
+.session-inclusions { list-style: none; margin: 14px 0 20px; padding: 0; display: grid; gap: 8px; }
 .session-inclusions li {
   font-size: 0.9rem;
   color: var(--color-text);
@@ -1712,6 +1712,7 @@ textarea { resize: vertical; min-height: 130px; }
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
+  margin-bottom: 20px;
 }
 .space-option {
   display: flex;
