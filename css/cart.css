@@ -74,6 +74,18 @@ a.brand span.brand-tagline{margin-left:20px;padding-left:20px;border-left:2px so
 
 /* ===================== Redesign additions (hybrid booking) ===================== */
 
+/* Centered section headers (Packages/Compare/Planner/FAQ) — matches the Moments section style */
+.section-heading{display:block;text-align:center;max-width:760px;margin:0 auto 60px}
+.section-heading .eyebrow{margin-bottom:20px}
+.section-heading h2{font-size:clamp(48px,5.4vw,74px)}
+.section-heading>p{font:18px/1.55 Georgia,serif;color:#5a534b;max-width:600px;margin:24px auto 0}
+@media(max-width:520px){.section-heading{margin-bottom:40px}}
+
+/* Centered header variant for dark-section / process-section (no side-by-side content) */
+.section-heading-centered{text-align:center;max-width:760px;margin:0 auto}
+.section-heading-centered .eyebrow{margin-bottom:20px}
+.section-heading-centered .muted{max-width:600px;margin:24px auto 0}
+
 /* Brand trust logo section: full color, subtle lift on hover */
 .client-logo{transition:transform .2s ease}
 .client-logo:hover{transform:translateY(-3px)}
