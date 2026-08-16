@@ -113,6 +113,15 @@ p{text-wrap:pretty}
 .featured .best-for{color:#f0ded2;border-top-color:rgba(255,255,255,.35)}
 .service-card{cursor:pointer}
 
+/* Why choose Naz Coffee */
+.why-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:28px 24px}
+.why-item{flex:1 1 calc(33.333% - 16px);min-width:268px;border-top:2px solid var(--orange);padding-top:20px}
+.why-item h3{font:24px Georgia,serif;letter-spacing:-.02em;margin:0 0 10px}
+.why-item p{font-size:15px;line-height:1.6;color:#5b554d;margin:0}
+.why-closing{text-align:center;font:italic 22px/1.5 Georgia,serif;color:var(--espresso);max-width:660px;margin:56px auto 0}
+@media(max-width:850px){.why-item{flex:1 1 calc(50% - 12px)}}
+@media(max-width:600px){.why-item{flex:1 1 100%}.why-closing{font-size:19px;margin-top:40px}}
+
 /* Comparison table */
 .compare-table-wrap{overflow-x:auto;border:1px solid var(--ink);-webkit-overflow-scrolling:touch}
 .compare-table{width:100%;border-collapse:collapse;min-width:620px;font-size:15px;background:#fff}
@@ -130,6 +139,7 @@ p{text-wrap:pretty}
 /* Section color bands — gives each chapter of the page a distinct backdrop */
 .section-band{padding-top:120px;padding-bottom:120px}
 .services-band{background:#fff}
+.why-band{background:#fff}
 .compare-section{background:#eeeae5}
 .planner-band{background:#fff}
 .faq-band{background:#eeeae5}
@@ -162,7 +172,7 @@ p{text-wrap:pretty}
 .planner-zone-hint.is-visible{padding:13px 15px;border-left:3px solid var(--orange);background:#f7f4ef}
 .planner-zone-hint.zone-local{border-left-color:#3d6b32}
 .planner-zone-hint.zone-extended{border-left-color:var(--orange)}
-.planner-zone-hint.zone-city{border-left-color:#a13c3c}
+.planner-zone-hint.zone-city{border-left-color:var(--orange)}
 .planner-pill-grid{display:flex;flex-wrap:wrap;gap:10px}
 .pill{border:1px solid var(--ink);border-radius:999px;background:#fff;padding:13px 21px;font:16px Georgia,serif;cursor:pointer;transition:background .15s,color .15s}
 .pill:hover{background:#f7f4ef}
@@ -208,15 +218,17 @@ p{text-wrap:pretty}
 .form-status.is-visible{display:block}
 .form-status.success{background:#e3f1e0;color:#3d6b32}
 .form-status.error{background:#f8dede;color:#a13c3c}
-#proposalFormWrap{margin-top:26px;padding-top:26px;border-top:1px solid rgba(255,255,255,.25)}
+/* The proposal form sits on its own solid panel so it stays fully legible
+   on every result-card colour (two of the four packages use light cards). */
+#proposalFormWrap{margin-top:26px;padding:28px;background:#fff;border:1px solid var(--ink);color:var(--ink)}
 .field-row{margin-bottom:14px}
 .field-row-split{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.field-row label{display:block;font:700 10px Arial,sans-serif;text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px;color:#cdb7a6}
-.opt-flag{text-transform:none;letter-spacing:0;font-weight:400;opacity:.7}
-.field-row input,.field-row select,.field-row textarea{width:100%;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.06);color:#fff;padding:13px 14px;font:14px Arial,sans-serif}
+.field-row label{display:block;font:700 10px Arial,sans-serif;text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px;color:#5b554d}
+.opt-flag{text-transform:none;letter-spacing:0;font-weight:400;color:#8d837b}
+.field-row input,.field-row select,.field-row textarea{width:100%;border:1px solid var(--ink);background:#fff;color:var(--ink);padding:13px 14px;font:14px Arial,sans-serif}
 .field-row textarea{min-height:80px;resize:vertical}
-.field-row input::placeholder,.field-row textarea::placeholder{color:#a89a90}
-.field-note{font-size:11px;color:#a89a90;margin-top:10px}
+.field-row input::placeholder,.field-row textarea::placeholder{color:#8d837b}
+.field-note{font-size:11px;color:#5b554d;margin-top:10px}
 .button-block{width:100%;border:0;cursor:pointer;margin-top:6px}
 @media(max-width:600px){.field-row-split{grid-template-columns:1fr}}
 

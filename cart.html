@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/cart.css?v=20260817c">
+<link rel="stylesheet" href="css/cart.css?v=20260817e">
 <style>
 .nvgh-bar{position:sticky;top:0;z-index:500;background:rgba(247,238,222,.92);backdrop-filter:blur(10px);border-bottom:1px solid #f0dfc4;font-family:'Poppins',Arial,"Helvetica Neue",sans-serif}
 .nvgh-inner{max-width:1180px;margin:0 auto;padding:0 24px;height:76px;display:flex;align-items:center;justify-content:space-between;box-sizing:border-box}
@@ -104,6 +104,14 @@
     <p class="eyebrow">Trusted for events &amp; brand experiences</p>
     <h2 id="trust-title">Real brands. <em>Real engagements.</em></h2>
     <div class="client-logo-grid" id="clientLogoGrid"></div>
+  </section>
+
+  <section class="section-band why-band" id="why" aria-labelledby="why-title">
+   <div class="shell">
+    <div class="section-heading"><p class="eyebrow">Why choose us</p><h2 id="why-title">Why choose <em>Naz Coffee?</em></h2></div>
+    <div class="why-grid" id="whyGrid"></div>
+    <p class="why-closing">Naz Coffee isn't just a coffee cart — it's a specialty coffee experience for your event.</p>
+   </div>
   </section>
 
   <section class="dark-section" id="inclusions">
@@ -278,6 +286,14 @@ const clientLogos = [
   ["PRU Life UK", "assets/cart/client-logos/pru-life-uk.png"], ["Rapidé", "assets/cart/client-logos/rapide.png"],
 ];
 
+const WHY_POINTS = [
+  { title: "Proven Experience", desc: "With over 5 years of operations, Naz Coffee delivers reliable and professional coffee service for events and brand activations." },
+  { title: "Specialty Coffee Quality", desc: "We use specialty-grade beans and premium ingredients, ensuring café-quality drinks for every guest." },
+  { title: "Skilled Baristas", desc: "Our baristas are trained in specialty coffee and exposed to brewing competitions, bringing expertise into every cup." },
+  { title: "Trusted by Leading Brands", desc: "Naz Coffee has served brands such as ABS-CBN, Guess, Illest, and Pru Life UK." },
+  { title: "Advocates of Coffee Education", desc: "We actively promote coffee appreciation through Coffee 101 workshops and learning experiences." },
+];
+
 const COMMON_INCLUSIONS = [
   "Professional Naz Coffee baristas", "Complete Coffee Cart setup", "Espresso machine and grinder",
   "Quality coffee and ingredients", "Event setup and breakdown", "Pre-event coordination",
@@ -322,12 +338,12 @@ const PACKAGE_PRICING = {
 // OWNER TO CONFIRM: final municipality coverage and the Extended Service Area Rate amount.
 // Until an Extended Service Area Rate is set, Extended-Laguna events safely route to a
 // Custom Quotation instead of guessing a surcharge — update EXTENDED_RATE below once decided.
-const LOCAL_ZONE_KEYWORDS = ["pangil", "candelaria", "baybay", "sta. cruz", "santa cruz"];
+const LOCAL_ZONE_KEYWORDS = ["pangil", "candelaria", "baybay", "sta. cruz", "santa cruz", "paete"];
 const EXTENDED_RATE = null; // e.g. 1500 — leave null until confirmed
 const SERVICE_ZONES = {
   local: { label: "Local Service Area", note: "Local Service Included" },
   extended: { label: "Extended Laguna", note: "Extended Service Area Rate — included in your custom proposal" },
-  city: { label: "City / Out-of-Area", note: "Custom Event Logistics — quoted individually" },
+  city: { label: "City & Destination Events", note: "Custom Event Logistics — tailored and quoted for your venue" },
 };
 
 const EVENT_TYPES = [
@@ -386,6 +402,11 @@ function money(n) { return new Intl.NumberFormat("en-PH").format(n); }
 function renderClientLogos() {
   document.getElementById("clientLogoGrid").innerHTML = clientLogos.map(([name, src]) =>
     `<div class="client-logo"><img src="${src}" alt="${name} logo" loading="lazy"></div>`).join("");
+}
+
+function renderWhyPoints() {
+  document.getElementById("whyGrid").innerHTML = WHY_POINTS.map(w =>
+    `<div class="why-item"><h3>${w.title}</h3><p>${w.desc}</p></div>`).join("");
 }
 
 function renderCommonInclusions() {
@@ -764,6 +785,7 @@ document.querySelectorAll(".planner-actions [data-back]").forEach(btn => {
 
 /* ===================== Init ===================== */
 renderClientLogos();
+renderWhyPoints();
 renderCommonInclusions();
 renderServices();
 renderCaseStudies();
