@@ -218,6 +218,7 @@ const label = params.get("label") || "Kaizen Spaces Booking";
 const detail = params.get("detail") || "";
 const total = Number(params.get("total")) || 0;
 const deposit = Number(params.get("deposit")) || Math.round(total * 0.2);
+const prefilledDate = params.get("date") || "";
 const money = (n) => "₱" + n.toLocaleString("en-PH");
 
 document.title = `Checkout — ${label} — Kaizen Spaces`;
@@ -228,6 +229,7 @@ document.getElementById("summaryDeposit").textContent = money(deposit);
 document.getElementById("summaryTotalNote").textContent = total ? `20% of estimated total ${money(total)}` : "";
 document.getElementById("checkoutSummaryField").value =
   `${label}${detail ? " — " + detail : ""} — Est. total ${money(total)} — Reservation fee due ${money(deposit)}`;
+if (prefilledDate) document.getElementById("checkout-date").value = prefilledDate;
 
 const checkoutForm = document.getElementById("checkout-form");
 const checkoutStatus = document.getElementById("form-status");
