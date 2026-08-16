@@ -115,12 +115,15 @@
     </div>
   </section>
 
-  <section class="section shell" id="services">
+  <section class="section-band services-band" id="services">
+   <div class="shell">
     <div class="section-heading"><div><p class="eyebrow">Choose your experience</p><h2>One cart.<br><em>Four ways to serve.</em></h2></div><p>Community &rarr; Celebration &rarr; Signature &rarr; Brand Activation. Every step up has a clear reason for costing more — pick the level of customization your event needs, then plan your date below.</p></div>
     <div class="services-grid" id="servicesGrid"></div>
+   </div>
   </section>
 
-  <section class="section shell compare-section" id="compare" aria-labelledby="compare-title">
+  <section class="section-band compare-section" id="compare" aria-labelledby="compare-title">
+   <div class="shell">
     <div class="section-heading"><div><p class="eyebrow">Compare packages</p><h2 id="compare-title">See the <em>difference.</em></h2></div><p>A quick side-by-side of what each tier adds.</p></div>
     <div class="compare-table-wrap">
       <table class="compare-table">
@@ -138,9 +141,11 @@
         </tbody>
       </table>
     </div>
+   </div>
   </section>
 
-  <section class="planner-section shell" id="planner" aria-labelledby="planner-title">
+  <section class="section-band planner-band" id="planner" aria-labelledby="planner-title">
+   <div class="planner-section shell">
     <div class="section-heading"><div><p class="eyebrow">Plan your event</p><h2 id="planner-title">Plan Your <em>Coffee Cart.</em></h2></div><p>Four quick steps — location, event, guest count, and package. We'll tell you right away whether you can reserve your date now or need a custom proposal.</p></div>
 
     <div class="planner-card" id="plannerCard">
@@ -190,6 +195,7 @@
 
       <div class="planner-result" id="plannerResult" hidden></div>
     </div>
+   </div>
   </section>
 
   <section class="event-film shell" aria-label="Selected Coffee Cart experiences">
@@ -205,7 +211,8 @@
 
   <section class="moments shell" aria-label="Naz coffee cart at past events">
     <div class="moments-copy"><p class="eyebrow">Seen at real events</p><h2>Built to belong in the <em>moment.</em></h2><p>Polished enough for a launch. Warm enough for a wedding. Reliable enough for a full room.</p></div>
-    <div class="moments-grid" id="momentsGrid"></div>
+    <div class="moments-grid moments-grid-videos" id="momentsVideoGrid"></div>
+    <div class="moments-grid moments-grid-photos" id="momentsPhotoGrid"></div>
   </section>
 
   <section class="process-section" id="how-it-works">
@@ -234,9 +241,11 @@
     </div>
   </section>
 
-  <section class="section shell faq-section" id="faq" aria-labelledby="faq-title">
+  <section class="section-band faq-band" id="faq" aria-labelledby="faq-title">
+   <div class="shell">
     <div class="section-heading"><div><p class="eyebrow">Questions</p><h2 id="faq-title">Good to <em>know.</em></h2></div><p>Can't find your answer? Reach out and we'll help directly.</p></div>
     <div class="faq-list" id="faqList"></div>
+   </div>
   </section>
 
   <footer class="footer shell">
@@ -332,14 +341,16 @@ const CASE_STUDIES = [
     desc: "Full Coffee Cart service for a couple's wedding day, from setup to send-off." },
 ];
 
-const MOMENTS = [
-  { type: "img", src: "assets/cart/events/naz-cart-service.jpg", label: "Made fresh, served well" },
-  { type: "video", src: "assets/cart/events/cart-moment-nightpop.mp4", poster: "assets/cart/events/cart-moment-nightpop-poster.jpg", label: "Event day energy" },
-  { type: "img", src: "assets/cart/events/naz-guest-experience.jpg", label: "Guest moments" },
-  { type: "video", src: "assets/cart/events/cart-moment-instore.mp4", poster: "assets/cart/events/cart-moment-instore-poster.jpg", label: "On location" },
-  { type: "img", src: "assets/cart/events/naz-illest-cup.jpg", label: "Co-branded details" },
-  { type: "video", src: "assets/cart/events/cart-moment-street.mp4", poster: "assets/cart/events/cart-moment-street-poster.jpg", label: "Setup & service" },
-  { type: "video", src: "assets/cart/events/cart-moment-backstage.mp4", poster: "assets/cart/events/cart-moment-backstage-poster.jpg", label: "Behind the scenes" },
+const MOMENT_VIDEOS = [
+  { src: "assets/cart/events/cart-moment-nightpop.mp4", poster: "assets/cart/events/cart-moment-nightpop-poster.jpg", label: "Event day energy" },
+  { src: "assets/cart/events/cart-moment-instore.mp4", poster: "assets/cart/events/cart-moment-instore-poster.jpg", label: "On location" },
+  { src: "assets/cart/events/cart-moment-street.mp4", poster: "assets/cart/events/cart-moment-street-poster.jpg", label: "Setup & service" },
+  { src: "assets/cart/events/cart-moment-backstage.mp4", poster: "assets/cart/events/cart-moment-backstage-poster.jpg", label: "Behind the scenes" },
+];
+const MOMENT_PHOTOS = [
+  { src: "assets/cart/events/naz-cart-service.jpg", label: "Made fresh, served well" },
+  { src: "assets/cart/events/naz-guest-experience.jpg", label: "Guest moments" },
+  { src: "assets/cart/events/naz-illest-cup.jpg", label: "Co-branded details" },
 ];
 
 const FAQS = [
@@ -412,17 +423,21 @@ function renderCaseStudies() {
   document.getElementById("caseGrid").innerHTML = CASE_STUDIES.map(c => `
     <div class="case-card">
       <div class="case-card-img"><img src="${c.img}" alt="${c.name.replace(/&times;/g, "x")}" loading="lazy"></div>
-      <span class="case-card-cat">${c.category}</span>
-      <h4>${c.name}</h4>
-      <p>${c.desc}</p>
+      <div class="case-card-body">
+        <span class="case-card-cat">${c.category}</span>
+        <h4>${c.name}</h4>
+        <p>${c.desc}</p>
+      </div>
     </div>`).join("");
 }
 
 function renderMoments() {
-  document.getElementById("momentsGrid").innerHTML = MOMENTS.map(m => {
-    if (m.type === "img") return `<div class="moment"><img src="${m.src}" alt="${m.label}" loading="lazy"><span>${m.label}</span></div>`;
-    return `<div class="moment moment-video-tile"><video class="moment-video" muted loop playsinline preload="none" poster="${m.poster}" data-src="${m.src}"></video><span>${m.label}</span></div>`;
-  }).join("");
+  document.getElementById("momentsVideoGrid").innerHTML = MOMENT_VIDEOS.map(m =>
+    `<div class="moment moment-video-tile"><video class="moment-video" muted loop playsinline preload="none" poster="${m.poster}" data-src="${m.src}"></video><span>${m.label}</span></div>`
+  ).join("");
+  document.getElementById("momentsPhotoGrid").innerHTML = MOMENT_PHOTOS.map(m =>
+    `<div class="moment"><img src="${m.src}" alt="${m.label}" loading="lazy"><span>${m.label}</span></div>`
+  ).join("");
 
   const reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (reducedMotion || !("IntersectionObserver" in window)) return;
