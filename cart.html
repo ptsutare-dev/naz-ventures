@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/cart.css?v=20260817f">
+<link rel="stylesheet" href="css/cart.css?v=20260817g">
 <style>
 .nvgh-bar{position:sticky;top:0;z-index:500;background:rgba(247,238,222,.92);backdrop-filter:blur(10px);border-bottom:1px solid #f0dfc4;font-family:'Poppins',Arial,"Helvetica Neue",sans-serif}
 .nvgh-inner{max-width:1180px;margin:0 auto;padding:0 24px;height:76px;display:flex;align-items:center;justify-content:space-between;box-sizing:border-box}
@@ -338,12 +338,44 @@ const PACKAGE_PRICING = {
 // OWNER TO CONFIRM: final municipality coverage and the Extended Service Area Rate amount.
 // Until an Extended Service Area Rate is set, Extended-Laguna events safely route to a
 // Custom Quotation instead of guessing a surcharge — update EXTENDED_RATE below once decided.
-const LOCAL_ZONE_KEYWORDS = ["pangil", "candelaria", "baybay", "sta. cruz", "santa cruz", "paete"];
+// Laguna's 4th congressional district (Sta. Cruz, Pangil, Paete already covered above;
+// the rest added here). "Pila", "Kalayaan", and "Magdalena" are common words / street
+// names elsewhere in the Philippines (e.g. Kalayaan Avenue in Metro Manila), so those
+// three require "laguna" alongside them instead of matching as bare words.
+const LOCAL_ZONE_KEYWORDS = [
+  "pangil", "candelaria", "baybay", "sta. cruz", "santa cruz", "paete",
+  "cavinti", "famy", "luisiana", "lumban", "mabitac", "majayjay",
+  "pagsanjan", "pakil", "siniloan",
+  "pila, laguna", "pila laguna",
+  "kalayaan, laguna", "kalayaan laguna",
+  "magdalena, laguna", "magdalena laguna",
+];
 const EXTENDED_RATE = 1000; // flat surcharge added to the local package price for Extended Laguna bookings
+
+// City & Destination is mostly a catch-all ("anything that isn't Local and doesn't say
+// Laguna" — see detectZone below), so it stays quote-only by default. Tagaytay and Metro
+// Manila are the two known, validated routes that make up most real City-zone bookings,
+// so those get a computed price instead. Everything else in this zone still requires
+// a manual quote, same as before.
+const CITY_KNOWN_KEYWORDS = [
+  "tagaytay",
+  "metro manila", "ncr", "manila", "quezon city", "makati", "taguig", "bgc",
+  "bonifacio global city", "pasig", "mandaluyong", "pasay", "paranaque", "parañaque",
+  "las pinas", "las piñas", "muntinlupa", "marikina", "caloocan", "malabon",
+  "navotas", "valenzuela", "san juan", "pateros",
+];
+const CITY_RATE = 4000; // flat surcharge added to the local package price for known City-zone bookings (Tagaytay / Metro Manila)
+const CITY_ESTIMATE_PADDING = 2000; // added on top of CITY_RATE for the high end of the estimated range shown on unknown/far quote requests
+
+function isKnownCityRoute(location) {
+  const v = (location || "").trim().toLowerCase();
+  return CITY_KNOWN_KEYWORDS.some(k => v.includes(k));
+}
+
 const SERVICE_ZONES = {
   local: { label: "Local Service Area", note: "Local Service Included" },
   extended: { label: "Extended Laguna", note: "Extended Service Area Rate included" },
-  city: { label: "City & Destination Events", note: "Custom Event Logistics — tailored and quoted for your venue" },
+  city: { label: "City & Destination Events", note: "City & Destination Rate included" },
 };
 
 const EVENT_TYPES = [
@@ -591,33 +623,35 @@ function priceFor(pkgType, size) {
   return table[size] ?? null;
 }
 
-// Local price plus the Extended Laguna surcharge, when both the package/size
-// has a known local price and EXTENDED_RATE has been set. City & Destination
-// never gets a computed price here — it always routes to a custom quote.
-function priceForZone(pkgType, size, zone) {
+// Local price plus a zone surcharge, when the package/size has a known local price.
+// Extended Laguna always gets a computed price once EXTENDED_RATE is set. City &
+// Destination only gets one for a known route (Tagaytay / Metro Manila) — everything
+// else in that zone still requires a manual quote.
+function priceForZone(pkgType, size, zone, location) {
   const localPrice = priceFor(pkgType, size);
   if (localPrice == null) return null;
   if (zone === "local") return localPrice;
   if (zone === "extended") return EXTENDED_RATE == null ? null : localPrice + EXTENDED_RATE;
+  if (zone === "city") return (isKnownCityRoute(location) && CITY_RATE != null) ? localPrice + CITY_RATE : null;
   return null;
 }
 
 function renderPackageStep() {
   const grid = document.getElementById("packageStepGrid");
   const note = document.getElementById("packageZoneNote");
-  const isCity = plannerState.zone === "city";
+  const isUnknownFar = plannerState.zone === "city" && !isKnownCityRoute(plannerState.location);
 
   plannerState.pkg = null;
   document.getElementById("step4Next").disabled = true;
 
   // Every package is available in every service zone. The zone only decides
   // whether it can be reserved directly or needs a custom proposal.
-  note.textContent = isCity
+  note.textContent = isUnknownFar
     ? "All four experiences are available for your event. Based on your location, these are planned through a custom proposal."
     : "All four experiences are available for your event — each is marked below as direct booking or custom quote.";
 
   grid.innerHTML = services.map(s => {
-    const price = priceForZone(s.type, plannerState.size, plannerState.zone);
+    const price = priceForZone(s.type, plannerState.size, plannerState.zone, plannerState.location);
     const badge = s.type === "brand" ? "Quote only" : (price != null ? "Direct booking" : "Quote");
     return `<button type="button" class="pkg-pill" data-type="${s.type}"><strong>${s.displayName}</strong><span>${badge}</span></button>`;
   }).join("");
@@ -640,9 +674,8 @@ function renderPackageStep() {
 }
 
 function decideBookingPath() {
-  if (plannerState.zone === "city") return "quote";
   if (plannerState.pkg === "brand") return "quote";
-  const price = priceForZone(plannerState.pkg, plannerState.size, plannerState.zone);
+  const price = priceForZone(plannerState.pkg, plannerState.size, plannerState.zone, plannerState.location);
   return price == null ? "quote" : "direct";
 }
 
@@ -664,7 +697,7 @@ function renderPlannerResult() {
 
   if (path === "direct") {
     trackEvent("direct_booking_eligible", { package: plannerState.pkg, zone: plannerState.zone });
-    const price = priceForZone(plannerState.pkg, plannerState.size, plannerState.zone);
+    const price = priceForZone(plannerState.pkg, plannerState.size, plannerState.zone, plannerState.location);
     result.innerHTML = `
       <p class="eyebrow">Great news</p>
       <h3>You can reserve this date now.</h3>
@@ -697,10 +730,20 @@ function renderPlannerResult() {
     if (plannerState.pkg === "brand") reason = "Brand Activation experiences are scoped and quoted individually because branding, product development, and event scale vary widely.";
     else if (plannerState.zone !== "local") reason = "Your event falls outside our local service area, so travel, logistics, and staffing are factored into a custom proposal.";
 
+    // Rough estimate for events that have a known local price but landed on Quote
+    // anyway (unknown/far location, or an Extended/City rate that isn't set) — not
+    // shown for Brand Activation or custom cup counts, since there's no local price
+    // to estimate from in either case.
+    const estimateBase = priceFor(plannerState.pkg, plannerState.size);
+    const estimateNote = estimateBase != null
+      ? `<p class="result-estimate">Similar ${service.displayName} events in this area typically run about ₱${money(estimateBase + CITY_RATE)}–₱${money(estimateBase + CITY_RATE + CITY_ESTIMATE_PADDING)}, depending on exact distance and logistics — your proposal will confirm the final number.</p>`
+      : "";
+
     result.innerHTML = `
       <p class="eyebrow">Your event needs a customized plan</p>
       <h3>Your event needs a customized Coffee Cart plan.</h3>
       <p class="result-reason">${reason}</p>
+      ${estimateNote}
       <div class="result-summary result-summary-compact">
         <div><span>Package</span><strong>${service ? service.displayName : "—"}</strong></div>
         <div><span>Guests / cups</span><strong>${sizeLabel()}</strong></div>
