@@ -708,7 +708,7 @@ function renderPlannerResult() {
         <div><span>Package price</span><strong>₱${money(price)}</strong></div>
         <div><span>Estimated total</span><strong>₱${money(price)}</strong></div>
       </div>
-      <p class="result-inclusions"><strong>Includes:</strong> ${COMMON_INCLUSIONS.join(", ")}.</p>
+      <p class="result-inclusions"><strong>Includes:</strong> ${COMMON_INCLUSIONS.map(item => item.charAt(0).toLowerCase() + item.slice(1)).join(", ")}.</p>
       <button type="button" class="button" id="reserveDateBtn">Reserve My Date</button>`;
 
     document.getElementById("reserveDateBtn").addEventListener("click", () => {
