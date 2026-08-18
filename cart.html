@@ -306,7 +306,7 @@ const services = [
     promise: "A professional Coffee Cart experience with minimal complexity — the menu is curated by Naz Coffee.",
     inclusions: ["5-drink menu (4 coffee, 1 non-coffee)", "Menu curated by Naz Coffee", "Most standardized package"],
     bestFor: ["Community gatherings", "School functions", "Small private events", "Casual celebrations"],
-    price: "From ₱8,500", note: "50 cups &middot; direct booking in local zone" },
+    price: "From ₱9,000", note: "50 cups &middot; direct booking in local zone" },
   { number: "02", type: "social", displayName: "Celebration Cart", audience: "Weddings &amp; private celebrations", tagline: "More choices for your celebration.",
     promise: "More variety and control, chosen from Naz Coffee's approved event menu — without custom product development.",
     inclusions: ["7-drink menu (5 coffee, 2 non-coffee)", "Client chooses the menu", "More variety, no custom drinks"],
@@ -328,7 +328,7 @@ const services = [
 // listed here is genuinely unconfirmed (per owner instruction: do not invent prices) —
 // those combinations automatically route to Custom Quotation instead of a guessed number.
 const PACKAGE_PRICING = {
-  community:   { "50": 8500, "100": 13000 },
+  community:   { "50": 9000, "100": 13000 },
   social:      { "50": 9500, "100": 14500, "150": 18500 },
   professional:{ "100": 16500, "150": 21000 },
   brand:       {}, // Brand Activation is always Custom Proposal / Quotation Only, per spec.
@@ -339,10 +339,10 @@ const PACKAGE_PRICING = {
 // Until an Extended Service Area Rate is set, Extended-Laguna events safely route to a
 // Custom Quotation instead of guessing a surcharge — update EXTENDED_RATE below once decided.
 const LOCAL_ZONE_KEYWORDS = ["pangil", "candelaria", "baybay", "sta. cruz", "santa cruz", "paete"];
-const EXTENDED_RATE = null; // e.g. 1500 — leave null until confirmed
+const EXTENDED_RATE = 1000; // flat surcharge added to the local package price for Extended Laguna bookings
 const SERVICE_ZONES = {
   local: { label: "Local Service Area", note: "Local Service Included" },
-  extended: { label: "Extended Laguna", note: "Extended Service Area Rate — included in your custom proposal" },
+  extended: { label: "Extended Laguna", note: "Extended Service Area Rate included" },
   city: { label: "City & Destination Events", note: "Custom Event Logistics — tailored and quoted for your venue" },
 };
 
@@ -591,23 +591,34 @@ function priceFor(pkgType, size) {
   return table[size] ?? null;
 }
 
+// Local price plus the Extended Laguna surcharge, when both the package/size
+// has a known local price and EXTENDED_RATE has been set. City & Destination
+// never gets a computed price here — it always routes to a custom quote.
+function priceForZone(pkgType, size, zone) {
+  const localPrice = priceFor(pkgType, size);
+  if (localPrice == null) return null;
+  if (zone === "local") return localPrice;
+  if (zone === "extended") return EXTENDED_RATE == null ? null : localPrice + EXTENDED_RATE;
+  return null;
+}
+
 function renderPackageStep() {
   const grid = document.getElementById("packageStepGrid");
   const note = document.getElementById("packageZoneNote");
-  const isLocal = plannerState.zone === "local";
+  const isCity = plannerState.zone === "city";
 
   plannerState.pkg = null;
   document.getElementById("step4Next").disabled = true;
 
   // Every package is available in every service zone. The zone only decides
   // whether it can be reserved directly or needs a custom proposal.
-  note.textContent = isLocal
-    ? "All four experiences are available for your event — each is marked below as direct booking or custom quote."
-    : "All four experiences are available for your event. Based on your location, these are planned through a custom proposal.";
+  note.textContent = isCity
+    ? "All four experiences are available for your event. Based on your location, these are planned through a custom proposal."
+    : "All four experiences are available for your event — each is marked below as direct booking or custom quote.";
 
   grid.innerHTML = services.map(s => {
-    const price = priceFor(s.type, plannerState.size);
-    const badge = s.type === "brand" ? "Quote only" : (price != null && isLocal ? "Direct booking" : "Quote");
+    const price = priceForZone(s.type, plannerState.size, plannerState.zone);
+    const badge = s.type === "brand" ? "Quote only" : (price != null ? "Direct booking" : "Quote");
     return `<button type="button" class="pkg-pill" data-type="${s.type}"><strong>${s.displayName}</strong><span>${badge}</span></button>`;
   }).join("");
 
@@ -629,9 +640,9 @@ function renderPackageStep() {
 }
 
 function decideBookingPath() {
-  if (plannerState.zone !== "local") return "quote";
+  if (plannerState.zone === "city") return "quote";
   if (plannerState.pkg === "brand") return "quote";
-  const price = priceFor(plannerState.pkg, plannerState.size);
+  const price = priceForZone(plannerState.pkg, plannerState.size, plannerState.zone);
   return price == null ? "quote" : "direct";
 }
 
@@ -653,7 +664,7 @@ function renderPlannerResult() {
 
   if (path === "direct") {
     trackEvent("direct_booking_eligible", { package: plannerState.pkg, zone: plannerState.zone });
-    const price = priceFor(plannerState.pkg, plannerState.size);
+    const price = priceForZone(plannerState.pkg, plannerState.size, plannerState.zone);
     result.innerHTML = `
       <p class="eyebrow">Great news</p>
       <h3>You can reserve this date now.</h3>
