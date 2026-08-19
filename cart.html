@@ -278,6 +278,36 @@ function trackEvent(name, params) {
 }
 trackEvent("cart_page_view");
 
+// Submits a set of entry.XXXXX fields into a Google Form via a hidden iframe,
+// so the page never navigates away and doesn't need to read Google's response
+// (Google Forms doesn't allow that cross-origin anyway). Fire-and-forget —
+// same technique already used in production on order.html.
+function submitToGoogleForm(action, entries) {
+  const iframeName = "gform_" + Date.now();
+  const iframe = document.createElement("iframe");
+  iframe.name = iframeName;
+  iframe.style.display = "none";
+  document.body.appendChild(iframe);
+
+  const form = document.createElement("form");
+  form.method = "POST";
+  form.action = action;
+  form.target = iframeName;
+  form.style.display = "none";
+
+  Object.keys(entries).forEach((key) => {
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = key;
+    input.value = entries[key] == null ? "" : String(entries[key]);
+    form.appendChild(input);
+  });
+
+  document.body.appendChild(form);
+  form.submit();
+  setTimeout(() => { form.remove(); iframe.remove(); }, 5000);
+}
+
 /* ===================== Data ===================== */
 const clientLogos = [
   ["ABS-CBN", "assets/cart/client-logos/abs-cbn.png"], ["MYX", "assets/cart/client-logos/myx.png"], ["Cinema One", "assets/cart/client-logos/cinema-one.png"],
@@ -763,8 +793,7 @@ function renderProposalForm() {
   const wrap = document.getElementById("proposalFormWrap");
   wrap.innerHTML = `
     <div id="proposalStatus" class="form-status" role="status"></div>
-    <form id="proposal-form" name="cart-proposal" method="POST" data-netlify="true">
-      <input type="hidden" name="form-name" value="cart-proposal">
+    <form id="proposal-form" name="cart-proposal" method="POST">
       <div class="honeypot" aria-hidden="true">
         <label for="proposal-company">Leave this field blank</label>
         <input type="text" id="proposal-company" name="hp_field" tabindex="-1" autocomplete="off">
@@ -795,7 +824,7 @@ function renderProposalForm() {
         <div><label for="pf-phone">Phone</label><input type="tel" id="pf-phone" name="phone" placeholder="09XX XXX XXXX"></div>
       </div>
       <button type="submit" class="button button-block">Request Event Proposal</button>
-      <p class="field-note">Submissions are handled by Netlify Forms and arrive in your Netlify dashboard's Forms tab.</p>
+      <p class="field-note">We'll review your event brief and follow up with a proposal shortly.</p>
     </form>`;
 
   const form = document.getElementById("proposal-form");
@@ -814,15 +843,28 @@ function renderProposalForm() {
 
     const btn = form.querySelector('button[type="submit"]');
     btn.disabled = true;
-    fetch("/", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: new URLSearchParams(new FormData(form)).toString() })
-      .then((res) => {
-        if (!res.ok) throw new Error("Submission failed");
-        trackEvent("proposal_requested", { package: plannerState.pkg });
-        showStatus(status, "success", "Thanks — your event brief is in. We'll prepare your proposal and reach out shortly.");
-        form.reset();
-        btn.style.display = "none";
-      })
-      .catch(() => { showStatus(status, "error", "Something went wrong sending this. Please email ptsutare@gmail.com directly instead."); btn.disabled = false; });
+
+    submitToGoogleForm("https://docs.google.com/forms/d/e/1FAIpQLScWASJcLEvu7KPzQylwcbktklRmicJv8fqhwRfgWwMO9e9N8Q/formResponse", {
+      "entry.374337376": name.value.trim(),
+      "entry.131546485": form.querySelector("#pf-company").value.trim(),
+      "entry.1344981447": form.querySelector("#pf-date").value,
+      "entry.66343593": form.querySelector("#pf-venue").value.trim(),
+      "entry.756763453": form.querySelector("#pf-duration").value,
+      "entry.1600667213": form.querySelector("#pf-guests").value.trim(),
+      "entry.1656788123": form.querySelector("#pf-branding").value.trim(),
+      "entry.311162735": form.querySelector("#pf-requests").value.trim(),
+      "entry.1864307453": email.value.trim(),
+      "entry.1068227184": phone.value.trim(),
+      "entry.958545406": (services.find(s => s.type === plannerState.pkg) || {}).displayName || "",
+      "entry.1960545567": eventTypeLabel(),
+    });
+
+    trackEvent("proposal_requested", { package: plannerState.pkg });
+    setTimeout(() => {
+      showStatus(status, "success", "Thanks — your event brief is in. We'll prepare your proposal and reach out shortly.");
+      form.reset();
+      btn.style.display = "none";
+    }, 600);
   });
 }
 

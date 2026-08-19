@@ -166,6 +166,38 @@ function trackEvent(name, params) {
   window.dataLayer.push(Object.assign({ event: name }, params || {}));
 }
 
+// Submits a set of entry.XXXXX fields into a Google Form via a hidden iframe,
+// so the page never navigates away and doesn't need to read Google's response
+// (Google Forms doesn't allow that cross-origin anyway). Fire-and-forget —
+// same technique already used in production on order.html. Runs alongside the
+// Netlify submission below, which still handles the proof-of-payment file —
+// Google Forms can't accept a file upload from an external page.
+function submitToGoogleForm(action, entries) {
+  const iframeName = "gform_" + Date.now();
+  const iframe = document.createElement("iframe");
+  iframe.name = iframeName;
+  iframe.style.display = "none";
+  document.body.appendChild(iframe);
+
+  const form = document.createElement("form");
+  form.method = "POST";
+  form.action = action;
+  form.target = iframeName;
+  form.style.display = "none";
+
+  Object.keys(entries).forEach((key) => {
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = key;
+    input.value = entries[key] == null ? "" : String(entries[key]);
+    form.appendChild(input);
+  });
+
+  document.body.appendChild(form);
+  form.submit();
+  setTimeout(() => { form.remove(); iframe.remove(); }, 5000);
+}
+
 const params = new URLSearchParams(window.location.search);
 const packageName = params.get("label") || "Naz Coffee Cart";
 const detail = params.get("detail") || "";
@@ -210,6 +242,18 @@ checkoutForm.addEventListener("submit", function (event) {
 
   const submitBtn = checkoutForm.querySelector('button[type="submit"]');
   submitBtn.disabled = true;
+
+  submitToGoogleForm("https://docs.google.com/forms/d/e/1FAIpQLSfSMBBuX_LK9A-dYlw2aAABcoetj03dJ-k0h5g71mhGyNVOFg/formResponse", {
+    "entry.1521630554": nameField.value.trim(),
+    "entry.1041979390": emailField.value.trim(),
+    "entry.712296417": phoneField.value.trim(),
+    "entry.1326563463": dateField.value,
+    "entry.817198682": checkoutForm.querySelector("#checkout-location").value.trim(),
+    "entry.19438614": checkoutForm.querySelector("#checkout-eventtype").value.trim(),
+    "entry.1118832360": checkoutForm.querySelector("#checkout-requests").value.trim(),
+    "entry.2000102456": checkoutForm.querySelector("#checkout-reference").value.trim(),
+    "entry.1909434768": document.getElementById("checkoutSummaryField").value,
+  });
 
   fetch("/", { method: "POST", body: new FormData(checkoutForm) })
     .then((response) => {
