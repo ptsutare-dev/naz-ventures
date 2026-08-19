@@ -556,6 +556,11 @@ let plannerStep = 1;
 let preselectedPackage = null;
 const plannerState = { location: "", zone: null, eventType: null, size: null, customSize: null, pkg: null };
 
+// Referral partner tracking. A partner shares a link like cart.html?ref=norbert;
+// that code rides along through the whole planner and lands in the Google Sheet
+// on submission, so bookings never need to be manually attributed.
+const referralCode = new URLSearchParams(window.location.search).get("ref") || "";
+
 function detectZone(raw) {
   const v = raw.trim().toLowerCase();
   if (!v) return null;
@@ -751,7 +756,8 @@ function renderPlannerResult() {
         `&total=${price}` +
         `&deposit=${deposit}` +
         `&location=${encodeURIComponent(plannerState.location)}` +
-        `&eventtype=${encodeURIComponent(eventTypeLabel())}`;
+        `&eventtype=${encodeURIComponent(eventTypeLabel())}` +
+        (referralCode ? `&ref=${encodeURIComponent(referralCode)}` : "");
       window.location.href = url;
     });
   } else {
@@ -857,6 +863,7 @@ function renderProposalForm() {
       "entry.1068227184": phone.value.trim(),
       "entry.958545406": (services.find(s => s.type === plannerState.pkg) || {}).displayName || "",
       "entry.1960545567": eventTypeLabel(),
+      "entry.1919506349": referralCode,
     });
 
     trackEvent("proposal_requested", { package: plannerState.pkg });
