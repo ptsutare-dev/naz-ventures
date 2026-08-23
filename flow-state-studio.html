@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flow State Studio — Strategic Consulting for Cafés &amp; Hospitality — Naz Ventures</title>
+<meta name="description" content="Flow State Studio: Evidence-based consulting and strategic planning tools for café and hospitality operators. From opening-day systems to scaling multiple locations.">
+<link rel="icon" href="assets/logos/naz-ventures-mark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=20260816c">
+<style>
+  /* ---------- Flow State Studio — page-scoped additions ---------- */
+  /* The admission gate callout ahead of the four phases */
+  .fss-gate {
+    border-left: 4px solid var(--pilot-gold);
+    margin-bottom: 28px;
+  }
+  .fss-gate-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+    margin: 18px 0 16px;
+  }
+  .fss-gate-item {
+    background: var(--pilot-cream);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+  }
+  .fss-gate-item strong {
+    display: block;
+    font-size: 0.92rem;
+    color: var(--pilot-rust-dark);
+    margin-bottom: 4px;
+  }
+  .fss-gate-item span { font-size: 0.85rem; color: var(--color-text-muted); }
+  .fss-gate-note { font-size: 0.85rem; color: var(--color-text-muted); margin: 0; }
+
+  /* Pricing tiers reuse .card / .card-pilot, with a few additions */
+  .rate-price-lg {
+    font-family: 'Archivo Black', var(--font-heading), sans-serif !important;
+    font-weight: 700;
+    font-size: 1.9rem !important;
+    letter-spacing: -0.01em;
+    color: var(--pilot-rust-dark) !important;
+    display: block;
+  }
+  .card-pilot.is-featured {
+    border-color: var(--pilot-rust-dark) !important;
+    box-shadow: 0 20px 40px rgba(122, 58, 31, 0.18) !important;
+  }
+  .card-pilot .badge-featured {
+    background: var(--pilot-gold) !important;
+    color: var(--pilot-ink) !important;
+  }
+  .fss-includes { list-style: none; margin: 4px 0 14px; padding: 0; display: grid; gap: 6px; }
+  .fss-includes li {
+    font-size: 0.87rem;
+    color: var(--color-text);
+    padding-left: 20px;
+    position: relative;
+  }
+  .fss-includes li:before {
+    content: "+";
+    position: absolute;
+    left: 0;
+    color: var(--pilot-rust-dark);
+    font-weight: 800;
+  }
+  .fss-best-for {
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+    margin: 0 0 16px;
+  }
+  .fss-best-for strong { color: var(--color-text); }
+  .fss-price-block {
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid var(--pilot-cream-deep);
+  }
+  .fss-price-usd { font-size: 0.8rem; color: var(--color-text-muted); margin-top: 2px; }
+  .fss-price-note { text-align: center; font-size: 0.85rem; color: var(--color-text-muted); margin-top: 8px; }
+</style>
+</head>
+<body>
+
+<header class="site-header header-pilot">
+  <nav class="nav container">
+    <a href="index.html" class="brand">
+      <img class="brand-mark" src="assets/logos/naz-ventures-mark.png" alt="Naz Ventures">
+      <span>Naz Ventures<span class="brand-sub">Business Ecosystem</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" data-page="index.html">Home</a>
+      <a href="index.html#businesses">Businesses</a>
+      <a href="about.html" data-page="about.html">About</a>
+      <a href="contact.html" data-page="contact.html">Contact</a>
+      <a href="contact.html?venture=flow-state-studio" class="btn btn-accent btn-sm nav-cta pilot-nav-cta">Get in Touch</a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
+
+<main>
+
+  <!-- Page hero -->
+  <section class="page-hero pilot-page-hero">
+    <div class="container">
+      <img class="page-hero-logo" src="assets/logos/flow-state-studio.png" alt="Flow State Studio">
+      <span class="eyebrow pilot-eyebrow">Flow State Studio</span>
+      <h1>Strategic consulting for operators who want to build lasting businesses.</h1>
+      <p>Hands-on guidance from opening-day systems to scaling multiple locations — grounded in evidence, shaped by real operations.</p>
+    </div>
+  </section>
+
+  <!-- The Framework -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow pilot-eyebrow">Why "Flow State"</span>
+        <h2 class="pilot-h2">The Flow State Framework</h2>
+        <p>Flow state is that sweet spot where you're neither bored nor overwhelmed — focused, productive, and actually moving. Starting a business rarely feels that way: it's either paralysing or aimless. This framework exists to put you in that state on purpose — a starting gate, then four phases, each small enough to keep you going and structured enough to get you somewhere real.</p>
+      </div>
+
+      <!-- Essential Elements — the admission gate -->
+      <div class="story-card pilot-card fss-gate reveal">
+        <span class="eyebrow pilot-eyebrow" style="margin-bottom:6px;">Before Phase 1 — The Admission Gate</span>
+        <h3 class="pilot-card-heading" style="font-size:1.2rem;">Essential Elements</h3>
+        <p style="color:var(--color-text-muted); font-size:0.92rem; max-width:640px;">Three quick starting insights — a sentence each is enough. General is fine; you'll go deeper in Phase 1.</p>
+        <div class="fss-gate-grid">
+          <div class="fss-gate-item">
+            <strong>Problem Insight</strong>
+            <span>What gap or hassle have you noticed?</span>
+          </div>
+          <div class="fss-gate-item">
+            <strong>Customer Insight</strong>
+            <span>Who's affected by this?</span>
+          </div>
+          <div class="fss-gate-item">
+            <strong>Solution Insight</strong>
+            <span>What could help, even roughly?</span>
+          </div>
+        </div>
+        <p class="fss-gate-note">Together these generate a draft <strong>Venture Hypothesis</strong> that carries into Phase 1.</p>
+      </div>
+
+      <!-- Four phases -->
+      <div class="feature-grid">
+        <div class="feature feature-pilot reveal">
+          <div class="feature-num">1</div>
+          <h3>Hypothesis</h3>
+          <p>Dig into the root cause, break your customers into real segments, and map what makes you stand out — the tool drafts each output for you to review.</p>
+        </div>
+        <div class="feature feature-pilot reveal">
+          <div class="feature-num">2</div>
+          <h3>Validation</h3>
+          <p>Testing the riskiest assumptions carried out of Phase 1, before capital is committed.</p>
+        </div>
+        <div class="feature feature-pilot reveal">
+          <div class="feature-num">3</div>
+          <h3>Positioning</h3>
+          <p>Market angle: how you'll compete and who you serve.</p>
+        </div>
+        <div class="feature feature-pilot reveal">
+          <div class="feature-num">4</div>
+          <h3>Execution</h3>
+          <p>Systems: the operational playbook that scales.</p>
+        </div>
+      </div>
+
+      <p style="text-align:center; color:var(--color-text-muted); margin-top:36px; max-width:640px; margin-left:auto; margin-right:auto;">
+        Most operators skip this work or do it haphazardly. The ones who follow this framework make fewer expensive mistakes and scale faster.
+      </p>
+    </div>
+  </section>
+
+  <!-- Interactive Tool CTA -->
+  <section class="section">
+    <div class="container">
+      <div class="cta-banner cta-banner-pilot reveal">
+        <div>
+          <span class="eyebrow pilot-eyebrow" style="color:var(--pilot-gold) !important;">Start Here — No Consultant Required</span>
+          <h2>The Flow State Tool</h2>
+          <p>Built for aspiring entrepreneurs who need the right foundation before they spend a peso — draft your Essential Elements and work through Phase 1: Hypothesis on your own. Track your assumptions, gather evidence, and identify gaps before they become expensive mistakes. Validation, Positioning, and Execution phases are in active development.</p>
+        </div>
+        <div class="cta-actions">
+          <a href="flow-state-tool.html" class="btn btn-accent pilot-btn-primary">
+            Open the Tool
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Use Cases -->
+  <section class="section section-alt section-alt-pilot">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow pilot-eyebrow">In Practice</span>
+        <h2 class="pilot-h2">Who the Flow State Tool is for</h2>
+        <p>Built first for aspiring MSMEs — anyone still shaping an idea into a real, evidence-backed business.</p>
+      </div>
+      <div class="values-grid">
+        <div class="value-card value-card-pilot reveal">
+          <h3>The Aspiring Entrepreneur</h3>
+          <p>Has an idea for a small business — a café, a food stall, a service — and wants to know if it holds up before committing savings to it.</p>
+        </div>
+        <div class="value-card value-card-pilot reveal">
+          <h3>First-Time Café Owner</h3>
+          <p>Ready to sign a lease and wants to pressure-test the concept, the site, and the customer first, on their own timeline.</p>
+        </div>
+        <div class="value-card value-card-pilot reveal">
+          <h3>Existing Business, Stalled Growth</h3>
+          <p>Revenue has plateaued or costs are creeping up, and mapping the assumptions again surfaces what changed.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services / Pricing -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow pilot-eyebrow">Beyond the Tool</span>
+        <h2 class="pilot-h2">When you need more than the tool</h2>
+        <p>The Flow State Tool covers Essential Elements and Phase 1 on your own. When you want a second pair of eyes, or hands-on help executing, these are the ways to bring us in — sized for MSME budgets, not enterprise ones.</p>
+      </div>
+
+      <div class="business-grid">
+
+        <!-- Foundations Session -->
+        <article class="card card-pilot tone-flow reveal">
+          <div class="card-top">
+            <span class="badge pilot-badge" style="background:var(--pilot-cream-deep); color:var(--pilot-rust-dark);">Popular Starting Point</span>
+          </div>
+          <h3>Foundations Session</h3>
+          <p>A single focused session to pressure-test what you've drafted in the tool before you commit capital.</p>
+          <ul class="fss-includes">
+            <li>One 90-minute session</li>
+            <li>Expert review of your Essential Elements &amp; Hypothesis</li>
+            <li>Written summary of gaps &amp; next steps</li>
+          </ul>
+          <p class="fss-best-for"><strong>Best for:</strong> tool users who want an expert sanity check before moving forward.</p>
+          <div class="fss-price-block">
+            <span class="rate-price-lg">₱8,500</span>
+            <span class="fss-price-usd">~$150 USD · single session</span>
+          </div>
+        </article>
+
+        <!-- Launch Sprint -->
+        <article class="card card-pilot tone-flow is-featured reveal">
+          <div class="card-top">
+            <span class="badge pilot-badge badge-featured">Most Popular for Launching</span>
+          </div>
+          <h3>Launch Sprint</h3>
+          <p>Hands-on help turning a validated idea into a real, opening-ready business.</p>
+          <ul class="fss-includes">
+            <li>6 biweekly sessions over 6 weeks</li>
+            <li>Validation &amp; positioning support</li>
+            <li>Opening-day systems &amp; checklists</li>
+          </ul>
+          <p class="fss-best-for"><strong>Best for:</strong> first-time operators ready to commit and launch.</p>
+          <div class="fss-price-block">
+            <span class="rate-price-lg">₱65,000</span>
+            <span class="fss-price-usd">~$1,160 USD · 6 weeks</span>
+          </div>
+        </article>
+
+        <!-- Growth Advisory -->
+        <article class="card card-pilot tone-flow reveal">
+          <div class="card-top">
+            <span class="badge pilot-badge" style="background:var(--pilot-cream-deep); color:var(--pilot-rust-dark);">Ongoing Partnership</span>
+          </div>
+          <h3>Growth Advisory</h3>
+          <p>An ongoing sounding board for operators managing an existing or growing business.</p>
+          <ul class="fss-includes">
+            <li>Monthly strategy call</li>
+            <li>Quarterly deep-dive review</li>
+            <li>Priority access between sessions</li>
+          </ul>
+          <p class="fss-best-for"><strong>Best for:</strong> existing or multi-location operators navigating growth.</p>
+          <div class="fss-price-block">
+            <span class="rate-price-lg">₱12,000<span style="font-size:1rem; color:var(--color-text-muted); font-family:var(--font-body); font-weight:600;">/mo</span></span>
+            <span class="fss-price-usd">~$214 USD/mo · month-to-month</span>
+          </div>
+        </article>
+
+      </div>
+
+      <p class="fss-price-note">💡 Most clients start with the Tool, add a Foundations Session for an expert check, then move to a Launch Sprint when they're ready to commit.</p>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section">
+    <div class="container">
+      <div class="cta-banner cta-banner-pilot reveal">
+        <div>
+          <h2>Start with the tool. Bring us in when you're ready.</h2>
+          <p>Start mapping your business today. Reach out when you want an expert in the room.</p>
+        </div>
+        <div class="cta-actions">
+          <a href="flow-state-tool.html" class="btn btn-accent pilot-btn-primary">Open the Tool</a>
+          <a href="contact.html?venture=flow-state-studio" class="btn btn-ghost pilot-btn-ghost">Contact Naz Ventures</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer footer-pilot">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-brand">
+        <a href="index.html" class="brand"><img class="brand-mark" src="assets/logos/naz-ventures-mark.png" alt="Naz Ventures"><span>Naz Ventures</span></a>
+        <p>A growing ecosystem of cafés, spaces, and ventures built on one operating philosophy: keep improving, one business at a time.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Ventures</h4>
+        <ul>
+          <li><a href="order.html">Naz Coffee</a></li>
+          <li><a href="cart.html">Naz Coffee Cart Service</a></li>
+          <li><a href="kaizen-spaces.html">Kaizen Spaces</a></li>
+          <li><a href="flow-state-studio.html">Flow State Studio</a></li>
+          <li><a href="ally-store.html">Ally Cafe Solutions</a></li>
+          <li><a href="index.html#businesses">Onoy's Cloud Kitchen</a></li>
+          <li><a href="index.html#businesses">DOSE Franchising</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="index.html#businesses">Businesses</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><span>ptsutare@gmail.com</span></li>
+          <li><a href="contact.html">Send a message</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="year"></span> Naz Ventures. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/script.js"></script>
+</body>
+</html>

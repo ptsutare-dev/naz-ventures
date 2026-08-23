@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flow State Entrepreneurship &amp; Business Solutions Tool</title>
+<meta name="description" content="Structured decision-support and evidence-management tool based on the Flow State Entrepreneurship Framework — Essential Elements, Hypothesis, Validation, Positioning, and Execution.">
+<link rel="icon" href="assets/logos/naz-ventures-mark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --fs-bg:#f7f6f3; --fs-paper:#ffffff; --fs-ink:#1c211e; --fs-ink-soft:#5c655e;
+  --fs-line:#e1e4de; --fs-accent:#2f6f6a; --fs-accent-soft:#e3efed; --fs-accent-dark:#1e4a46;
+  --fs-fact:#2f6f6a; --fs-fact-soft:#e3efed;
+  --fs-assumption:#a6720f; --fs-assumption-soft:#faf1de;
+  --fs-inference:#5a5aa6; --fs-inference-soft:#eeeef9;
+  --fs-unknown:#8d837b; --fs-unknown-soft:#f0ede9;
+  --fs-warn:#a6402f; --fs-warn-soft:#f9e6e2;
+  --fs-radius:8px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--fs-bg);color:var(--fs-ink);font-family:'Poppins',Arial,sans-serif;font-size:14.5px;line-height:1.5}
+h1,h2,h3,h4{font-family:'Playfair Display',Georgia,serif;font-weight:700;margin:0;letter-spacing:-0.01em}
+a{color:var(--fs-accent);text-decoration:none}
+button{font-family:inherit;cursor:pointer}
+input,select,textarea{font-family:inherit;font-size:14px}
+
+/* ---------- App shell ---------- */
+.fs-app{display:flex;min-height:100vh}
+.fs-nav{width:230px;flex-shrink:0;background:var(--fs-accent-dark);color:#fff;padding:24px 0;position:sticky;top:0;height:100vh;overflow-y:auto}
+.fs-nav-brand{display:flex;align-items:center;gap:10px;padding:0 20px 22px;border-bottom:1px solid rgba(255,255,255,.15);margin-bottom:18px}
+.fs-nav-brand img{width:34px;height:34px;object-fit:contain;border-radius:6px;background:#fff;padding:3px}
+.fs-nav-brand div{line-height:1.2}
+.fs-nav-brand strong{display:block;font-family:'Playfair Display',serif;font-size:15px}
+.fs-nav-brand small{font-size:10px;opacity:.75;text-transform:uppercase;letter-spacing:.08em}
+.fs-nav-section{padding:0 14px;margin-bottom:4px}
+.fs-nav-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;opacity:.55;padding:10px 10px 6px}
+.fs-nav-item{display:flex;align-items:center;gap:9px;width:100%;text-align:left;background:none;border:none;color:#fff;padding:10px 10px;border-radius:6px;font-size:13.5px;opacity:.82}
+.fs-nav-item:hover{background:rgba(255,255,255,.08);opacity:1}
+.fs-nav-item.is-active{background:rgba(255,255,255,.16);opacity:1;font-weight:600}
+.fs-nav-item[disabled]{opacity:.35;cursor:not-allowed}
+.fs-nav-item .dot{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.6;flex-shrink:0}
+.fs-main{flex:1;min-width:0;padding:34px 40px 80px;max-width:1080px}
+@media(max-width:900px){
+  .fs-app{flex-direction:column}
+  .fs-nav{width:100%;height:auto;position:relative;padding:14px 0}
+  .fs-main{padding:22px 18px 60px}
+}
+
+/* ---------- shared bits ---------- */
+.fs-eyebrow{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--fs-accent);margin:0 0 8px}
+.fs-h1{font-size:28px;margin-bottom:4px}
+.fs-lede{color:var(--fs-ink-soft);max-width:640px;margin:0 0 26px;font-size:14.5px}
+.fs-card{background:var(--fs-paper);border:1px solid var(--fs-line);border-radius:var(--fs-radius);padding:22px 24px;margin-bottom:18px}
+.fs-card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:14px}
+.fs-card-head h3{font-size:17px}
+.fs-btn{display:inline-flex;align-items:center;gap:7px;background:var(--fs-accent);color:#fff;border:none;padding:11px 20px;border-radius:100px;font-size:13.5px;font-weight:600;transition:background .15s}
+.fs-btn:hover{background:var(--fs-accent-dark)}
+.fs-btn.fs-btn-ghost{background:transparent;color:var(--fs-accent);border:1.5px solid var(--fs-accent)}
+.fs-btn.fs-btn-ghost:hover{background:var(--fs-accent-soft)}
+.fs-btn.fs-btn-sm{padding:7px 14px;font-size:12.5px}
+.fs-btn.fs-btn-danger{background:transparent;color:var(--fs-warn);border:1.5px solid var(--fs-warn)}
+.fs-btn.fs-btn-danger:hover{background:var(--fs-warn-soft)}
+.fs-btn[disabled]{opacity:.4;cursor:not-allowed}
+
+.fs-field{margin-bottom:16px}
+.fs-field label{display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--fs-ink-soft);margin-bottom:6px}
+.fs-field input[type="text"],.fs-field input[type="date"],.fs-field input[type="number"],.fs-field select,.fs-field textarea{
+  width:100%;border:1px solid var(--fs-line);border-radius:6px;padding:10px 12px;color:var(--fs-ink);background:#fff;
+}
+.fs-field textarea{min-height:70px;resize:vertical;line-height:1.5}
+.fs-field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.fs-field-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+@media(max-width:640px){.fs-field-row,.fs-field-row-3{grid-template-columns:1fr}}
+.fs-hint{font-size:12px;color:var(--fs-ink-soft);margin:-8px 0 14px;line-height:1.5}
+.fs-example{background:var(--fs-bg);border:1px dashed var(--fs-line);border-radius:6px;padding:10px 13px;font-size:12.5px;color:var(--fs-ink-soft);margin:-6px 0 14px;font-style:italic}
+
+.fs-pill{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:4px 10px;border-radius:100px}
+.fs-pill-fact{background:var(--fs-fact-soft);color:var(--fs-fact)}
+.fs-pill-assumption{background:var(--fs-assumption-soft);color:var(--fs-assumption)}
+.fs-pill-inference{background:var(--fs-inference-soft);color:var(--fs-inference)}
+.fs-pill-unknown{background:var(--fs-unknown-soft);color:var(--fs-unknown)}
+.fs-pill-neutral{background:var(--fs-accent-soft);color:var(--fs-accent-dark)}
+.fs-pill-warn{background:var(--fs-warn-soft);color:var(--fs-warn)}
+
+.fs-status-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.fs-suggest-box{background:var(--fs-accent-soft);border:1px solid #cfe3e0;border-radius:6px;padding:14px 16px;margin-bottom:16px}
+.fs-suggest-box .fs-suggest-label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--fs-accent-dark);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.fs-suggest-box p{margin:0 0 10px;font-size:13.5px;line-height:1.55}
+.fs-suggest-actions{display:flex;gap:8px;flex-wrap:wrap}
+.fs-suggest-actions button{font-size:11.5px;padding:6px 12px;border-radius:100px;border:1px solid var(--fs-accent);background:#fff;color:var(--fs-accent-dark);font-weight:600}
+.fs-suggest-actions button:hover{background:var(--fs-accent);color:#fff}
+
+.fs-table-wrap{overflow-x:auto;border:1px solid var(--fs-line);border-radius:6px}
+table.fs-table{width:100%;border-collapse:collapse;min-width:760px;font-size:13px}
+table.fs-table th{background:var(--fs-bg);text-align:left;padding:9px 11px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--fs-ink-soft);border-bottom:1px solid var(--fs-line);white-space:nowrap}
+table.fs-table td{padding:8px 11px;border-bottom:1px solid var(--fs-line);vertical-align:top}
+table.fs-table input,table.fs-table select,table.fs-table textarea{border:1px solid transparent;background:transparent;width:100%;padding:4px 6px;border-radius:4px}
+table.fs-table input:focus,table.fs-table select:focus,table.fs-table textarea:focus{border-color:var(--fs-accent);background:#fff;outline:none}
+table.fs-table tr:last-child td{border-bottom:none}
+.fs-table-actions{display:flex;gap:4px}
+.fs-icon-btn{background:none;border:1px solid var(--fs-line);border-radius:5px;padding:5px 8px;font-size:11.5px;color:var(--fs-ink-soft)}
+.fs-icon-btn:hover{border-color:var(--fs-warn);color:var(--fs-warn)}
+
+.fs-dash-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.fs-venture-card{background:var(--fs-paper);border:1px solid var(--fs-line);border-radius:var(--fs-radius);padding:20px;cursor:pointer;transition:border-color .15s, transform .15s}
+.fs-venture-card:hover{border-color:var(--fs-accent);transform:translateY(-2px)}
+.fs-venture-card h3{font-size:17px;margin-bottom:3px}
+.fs-venture-card .fs-vc-meta{font-size:12px;color:var(--fs-ink-soft);margin-bottom:12px}
+.fs-venture-card .fs-vc-stats{display:flex;gap:14px;font-size:11.5px;color:var(--fs-ink-soft);border-top:1px solid var(--fs-line);padding-top:10px;margin-top:2px}
+.fs-venture-card .fs-vc-stats b{color:var(--fs-ink);font-weight:700}
+.fs-empty{border:1.5px dashed var(--fs-line);border-radius:var(--fs-radius);padding:44px 24px;text-align:center;color:var(--fs-ink-soft)}
+.fs-empty h3{color:var(--fs-ink);margin-bottom:6px;font-size:18px}
+
+.fs-tabs{display:flex;gap:4px;border-bottom:2px solid var(--fs-line);margin-bottom:22px;flex-wrap:wrap}
+.fs-tab{background:none;border:none;padding:10px 16px;font-size:13px;font-weight:600;color:var(--fs-ink-soft);border-bottom:2px solid transparent;margin-bottom:-2px}
+.fs-tab.is-active{color:var(--fs-accent-dark);border-bottom-color:var(--fs-accent)}
+
+.fs-elem-card{border-left:3px solid var(--fs-line);padding-left:18px}
+.fs-elem-card.is-ready{border-left-color:var(--fs-accent)}
+.fs-elem-card.is-drafted{border-left-color:var(--fs-assumption)}
+
+.fs-gate-banner{display:flex;align-items:center;justify-content:space-between;gap:16px;background:var(--fs-accent-soft);border:1px solid #cfe3e0;border-radius:var(--fs-radius);padding:16px 20px;margin-bottom:24px;flex-wrap:wrap}
+.fs-gate-banner.is-locked{background:var(--fs-unknown-soft);border-color:var(--fs-line)}
+.fs-gate-banner strong{display:block;font-size:14.5px;margin-bottom:2px}
+.fs-gate-banner span{font-size:12.5px;color:var(--fs-ink-soft)}
+
+.fs-back-link{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:var(--fs-ink-soft);margin-bottom:14px}
+.fs-back-link:hover{color:var(--fs-accent-dark)}
+
+.fs-banner-top{background:var(--fs-accent-dark);color:#fff;font-size:12px;text-align:center;padding:7px 14px}
+.fs-banner-top a{color:#fff;text-decoration:underline}
+.fs-toast{position:fixed;bottom:22px;right:22px;background:var(--fs-ink);color:#fff;padding:11px 18px;border-radius:8px;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.2);opacity:0;transform:translateY(8px);transition:opacity .2s,transform .2s;pointer-events:none;z-index:999}
+.fs-toast.show{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<div class="fs-banner-top">Flow State Entrepreneurship &amp; Business Solutions Tool — MVP v0.1 &middot; <a href="index.html">Naz Ventures</a></div>
+
+<div class="fs-app">
+  <nav class="fs-nav" id="fsNav"></nav>
+  <main class="fs-main" id="fsMain"></main>
+</div>
+
+<div class="fs-toast" id="fsToast"></div>
+
+<script>
+/* =========================================================================
+   FLOW STATE ENTREPRENEURSHIP & BUSINESS SOLUTIONS TOOL — MVP v0.1
+   Slice 1: Portfolio Dashboard, Venture Profile, Essential Elements,
+   Phase 1 (Hypothesis): Problem Hypothesis (root-cause), Customer
+   Hypothesis (segmentation), Solution Hypothesis (value drivers +
+   competitors), decision gate, Evidence Library, JSON export/import.
+   Every section synthesizes a suggested output from the user's plain
+   inputs — the user reviews/edits, never writes the articulation cold.
+   Deferred to a later iteration: Validation's 6 domains, Positioning,
+   Execution, Consultant Outcome Documentation, the full 14-report suite,
+   framework-configuration admin area. See the on-page "Roadmap" note.
+   ========================================================================= */
+
+const FRAMEWORK_VERSION = "MVP v0.1";
+const FRAMEWORK_UPDATED = "2026-08-20";
+const STORE_KEY = "flow-state-tool-v1";
+
+/* ---------------- Framework configuration (editable in one place, per
+   the build prompt's requirement that names/labels stay reconfigurable
+   without rebuilding the app) ---------------- */
+const CONFIG = {
+  phases: [
+    { id: "hypothesis", label: "Phase 1: Hypothesis", short: "Hypothesis" },
+    { id: "validation", label: "Phase 2: Validation", short: "Validation" },
+    { id: "positioning", label: "Phase 3: Positioning", short: "Positioning" },
+    { id: "execution", label: "Phase 4: Execution", short: "Execution" },
+  ],
+  ventureModes: [
+    { id: "new-venture", label: "New venture / pre-opening" },
+    { id: "existing-business", label: "Existing business / audit" },
+    { id: "consultant-case", label: "Consultant workspace" },
+  ],
+  evidenceLabels: ["FACT", "ASSUMPTION", "INFERENCE", "UNKNOWN"],
+  evidenceSourceTypes: ["observation", "interview", "transaction", "experiment", "document", "operating data", "third-party research", "other"],
+  elementStatuses: ["Missing", "Drafted", "Evidence Needed", "Ready for Hypothesis Phase"],
+  decisions: ["Not Yet Assessed", "Proceed", "Revise", "Test Further", "Stop"],
+  valueDriverCategories: ["Attraction", "Conversion", "Retention"],
+  starterValueDrivers: ["Accessibility/convenience", "Affordability", "Ambience/aesthetics/design", "Hospitality", "Product/service quality", "Experiences/community"],
+};
+
+/* ---------------- Tiny helpers ---------------- */
+const uid = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
+const todayISO = () => new Date().toISOString().slice(0, 10);
+const esc = (s) => (s == null ? "" : String(s)).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+function toast(msg) {
+  const t = document.getElementById("fsToast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => t.classList.remove("show"), 2600);
+}
+
+/* ---------------- Data model + persistence ---------------- */
+function blankElement() {
+  return { firstDraft: "", evidenceLabel: "ASSUMPTION", supports: "", contradicts: "", riskiestAssumption: "", unknowns: "", validationNeeded: "", revisedDraft: "", lastUpdated: null, status: "Missing" };
+}
+function blankVenture() {
+  return {
+    id: uid(), createdAt: todayISO(), updatedAt: todayISO(), frameworkVersion: FRAMEWORK_VERSION,
+    name: "", owner: "", consultant: "", mode: "new-venture", stage: "", industry: "", location: "",
+    summary: "", businessModel: "", startDate: "", urgentConstraint: "", desiredOutcome: "",
+    scope: "", exclusions: "", ownerField: "", deadline: "", decisionDate: "",
+    existingIntake: { performance: "", traffic: "", conversion: "", avgTransaction: "", repeatBehavior: "", grossMargin: "", fixedCosts: "", ownerDependency: "", auditTrigger: "" },
+    essentialElements: { problem: blankElement(), customer: blankElement(), solution: blankElement() },
+    ventureHypothesis: "",
+    admissionGatePassed: false,
+    hypothesis: {
+      problemId: { whyChain: [""], problemStatement: "" },
+      segments: [],
+      competitors: [],
+      valueDrivers: [],
+      solutionHypothesis: "",
+      riskiestAssumptions: "",
+      decisionGate: { decision: "Not Yet Assessed", date: "", notes: "" },
+    },
+    validation: {
+      problem: blankValidationTest(),
+      customer: blankValidationTest(),
+      solution: { competitiveAnalysis: blankValidationTest(), market: blankValidationTest(), product: blankValidationTest() },
+      futureDirection: { baseline: blankValidationTest(), growth: blankValidationTest() },
+      decisionGate: { decision: "Not Yet Assessed", date: "", notes: "" },
+    },
+    missionVisionValues: { mission: "", vision: "", coreValues: [] },
+    evidence: [],
+  };
+}
+function blankValidationTest() {
+  return {
+    hypothesis: "", evidenceHeld: "", evidenceLabel: "ASSUMPTION",
+    testMethod: "", targetSample: "", metric: "", decisionThreshold: "",
+    testOwner: "", budgetCap: "", deadline: "",
+    actualResult: "", rawEvidence: "", contradictoryResult: "", interpretation: "",
+    decision: "Not Yet Assessed", nextAction: "", decisionOwner: "", decisionDate: "",
+  };
+}
+function blankCoreValue(value) { return { id: uid(), value: value || "", definition: "", evidenceLink: "" }; }
+function blankSegment() {
+  return { id: uid(), name: "", occasion: "", need: "", prioritized: false, description: "" };
+}
+function blankCompetitor() {
+  return { id: uid(), name: "", strength: "", gap: "" };
+}
+function blankValueDriver(name) {
+  return { id: uid(), name: name || "", category: "Attraction", whyMatters: "" };
+}
+function blankEvidence() {
+  return { id: uid(), statement: "", label: "ASSUMPTION", sourceDescription: "", sourceType: "observation", dateGathered: todayISO(), segment: "", occasion: "", fileLink: "", validationNeeded: "Yes", contradictory: "", analystNote: "" };
+}
+
+let DB = { ventures: [] };
+function loadDB() {
+  try {
+    const raw = localStorage.getItem(STORE_KEY);
+    if (raw) DB = JSON.parse(raw);
+  } catch (e) { console.warn("Flow State: could not load saved data", e); }
+  DB.ventures.forEach(migrateVenture);
+}
+function migrateVenture(v) {
+  if (!v.validation) {
+    v.validation = {
+      problem: blankValidationTest(), customer: blankValidationTest(),
+      solution: { competitiveAnalysis: blankValidationTest(), market: blankValidationTest(), product: blankValidationTest() },
+      futureDirection: { baseline: blankValidationTest(), growth: blankValidationTest() },
+      decisionGate: { decision: "Not Yet Assessed", date: "", notes: "" },
+    };
+  }
+  if (!v.missionVisionValues) v.missionVisionValues = { mission: "", vision: "", coreValues: [] };
+}
+function saveDB() {
+  try {
+    localStorage.setItem(STORE_KEY, JSON.stringify(DB));
+    const el = document.getElementById("fsSaveState");
+    if (el) { el.textContent = "Saved " + new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }); }
+  } catch (e) { console.warn("Flow State: could not save", e); }
+}
+function getVenture(id) { return DB.ventures.find(v => v.id === id); }
+function touchVenture(v) { v.updatedAt = todayISO(); saveDB(); }
+
+/* ---------------- Router ---------------- */
+let ROUTE = { screen: "dashboard", ventureId: null, tab: null };
+function go(screen, ventureId, tab) {
+  ROUTE = { screen, ventureId: ventureId || null, tab: tab || null };
+  render();
+  window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
+}
+
+/* ---------------- Evidence counting / gate logic ---------------- */
+function evidenceCounts(v) {
+  const counts = { FACT: 0, ASSUMPTION: 0, INFERENCE: 0, UNKNOWN: 0, contradictions: 0 };
+  v.evidence.forEach(e => { counts[e.label] = (counts[e.label] || 0) + 1; if (e.contradictory && e.contradictory.trim()) counts.contradictions++; });
+  return counts;
+}
+function elementStatus(el) {
+  return el.firstDraft.trim() ? "Ready for Hypothesis Phase" : "Missing";
+}
+function admissionGateReady(v) {
+  const st = ["problem", "customer", "solution"].map(k => elementStatus(v.essentialElements[k]));
+  return st.every(s => s === "Ready for Hypothesis Phase");
+}
+function generateVentureHypothesis(v) {
+  const p = v.essentialElements.problem.firstDraft;
+  const c = v.essentialElements.customer.firstDraft;
+  const s = v.essentialElements.solution.firstDraft;
+  if (!p && !c && !s) return "";
+  return `Problem: ${p || "(not yet written)"}\nWho it affects: ${c || "(not yet written)"}\nPossible solution: ${s || "(not yet written)"}`;
+}
+function generateProblemStatementDraft(v) {
+  const p = v.essentialElements.problem.firstDraft.trim();
+  const whys = v.hypothesis.problemId.whyChain.map(w => w.trim()).filter(Boolean);
+  if (!p) return "";
+  if (!whys.length) return p;
+  const root = whys[whys.length - 1];
+  const rootLower = root.charAt(0).toLowerCase() + root.slice(1);
+  return `${p} Digging deeper: ${whys.join(" → ")}. So at the root, the real issue is that ${rootLower}${/[.!?]$/.test(rootLower) ? "" : "."}`;
+}
+function generateSegmentDescriptionDraft(seg) {
+  if (!seg.name.trim()) return "";
+  let s = seg.name.trim();
+  if (seg.occasion.trim()) s += `, especially when ${seg.occasion.trim()}`;
+  if (seg.need.trim()) s += `. What they want: ${seg.need.trim()}`;
+  return s + (/[.!?]$/.test(s) ? "" : ".");
+}
+function generateSolutionHypothesisDraft(v) {
+  const driverNames = v.hypothesis.valueDrivers.map(d => d.name.trim()).filter(Boolean);
+  const gapNotes = v.hypothesis.competitors.map(c => c.gap.trim()).filter(Boolean);
+  if (!driverNames.length && !gapNotes.length) return "";
+  let s = "";
+  if (driverNames.length) s += `This solution stands out through ${driverNames.join(", ")}`;
+  if (gapNotes.length) s += `${s ? ", " : "This solution "}addressing gaps like: ${gapNotes.join("; ")}`;
+  return s ? s + "." : "";
+}
+function hypothesisGateComplete(v) {
+  const h = v.hypothesis;
+  return h.problemId.problemStatement.trim().length > 0 && h.segments.some(s => s.prioritized) && h.competitors.length > 0 && h.valueDrivers.length > 0;
+}
+const VALIDATION_KEYS = ["problem", "customer", "solution.competitive", "solution.market", "solution.product", "future.baseline", "future.growth"];
+function getValidationCard(v, key) {
+  const map = {
+    "problem": v.validation.problem,
+    "customer": v.validation.customer,
+    "solution.competitive": v.validation.solution.competitiveAnalysis,
+    "solution.market": v.validation.solution.market,
+    "solution.product": v.validation.solution.product,
+    "future.baseline": v.validation.futureDirection.baseline,
+    "future.growth": v.validation.futureDirection.growth,
+  };
+  return map[key];
+}
+function validationTestComplete(t) { return t.actualResult.trim().length > 0 && t.decision !== "Not Yet Assessed"; }
+function validationGateComplete(v) { return VALIDATION_KEYS.every(k => validationTestComplete(getValidationCard(v, k))); }
+function generateMissionDraft(v) {
+  const p = v.validation.problem, c = v.validation.customer;
+  const pText = p.interpretation || p.actualResult;
+  const cText = c.interpretation || c.actualResult;
+  if (!pText && !cText) return "";
+  return `We exist to solve a validated problem — ${pText || "(problem validation not yet interpreted)"} — for a validated customer: ${cText || "(customer validation not yet interpreted)"}.`;
+}
+function generateVisionDraft(v) {
+  const g = v.validation.futureDirection.growth;
+  const gText = g.interpretation || g.actualResult;
+  if (!gText) return "";
+  return `Where this goes, if the baseline holds: ${gText}`;
+}
+function validationContextNote(v, key) {
+  if (key === "problem" && v.hypothesis.problemId.problemStatement) return `From Phase 1: "${v.hypothesis.problemId.problemStatement}"`;
+  if (key === "customer") { const seg = v.hypothesis.segments.find(s => s.prioritized); if (seg) return `From Phase 1 — priority segment: "${seg.name}"`; }
+  return "";
+}
+
+/* ---------------- Guided-input helper block ---------------- */
+function guidedIntro(why, example) {
+  return `<p class="fs-hint">${esc(why)}</p><div class="fs-example">Example: ${esc(example)}</div>`;
+}
+function evidencePill(label) {
+  const cls = { FACT: "fs-pill-fact", ASSUMPTION: "fs-pill-assumption", INFERENCE: "fs-pill-inference", UNKNOWN: "fs-pill-unknown" }[label] || "fs-pill-neutral";
+  return `<span class="fs-pill ${cls}">${esc(label)}</span>`;
+}
+
+/* =========================================================================
+   RENDER: NAV
+   ========================================================================= */
+function renderNav() {
+  const v = ROUTE.ventureId ? getVenture(ROUTE.ventureId) : null;
+  const gateOpen = v ? admissionGateReady(v) : false;
+  const hypGateOpen = v ? hypothesisGateComplete(v) : false;
+  const valGateOpen = v ? validationGateComplete(v) : false;
+  const nav = document.getElementById("fsNav");
+  nav.innerHTML = `
+    <div class="fs-nav-brand">
+      <img src="assets/logos/flow-state-studio.png" alt="Flow State Studio">
+      <div><strong>Flow State</strong><small>Entrepreneurship Tool</small></div>
+    </div>
+    <div class="fs-nav-section">
+      <button class="fs-nav-item ${ROUTE.screen === "dashboard" ? "is-active" : ""}" data-go="dashboard"><span class="dot"></span> Portfolio Dashboard</button>
+    </div>
+    ${v ? `
+    <div class="fs-nav-label">${esc(v.name || "Untitled venture")}</div>
+    <div class="fs-nav-section">
+      <button class="fs-nav-item ${ROUTE.screen === "profile" ? "is-active" : ""}" data-go="profile" data-vid="${v.id}"><span class="dot"></span> Venture / Case Profile</button>
+      <button class="fs-nav-item ${ROUTE.screen === "elements" ? "is-active" : ""}" data-go="elements" data-vid="${v.id}"><span class="dot"></span> Essential Elements</button>
+      <button class="fs-nav-item ${ROUTE.screen === "hypothesis" ? "is-active" : ""}" data-go="hypothesis" data-vid="${v.id}" ${gateOpen ? "" : "disabled"}><span class="dot"></span> Phase 1: Hypothesis</button>
+      <button class="fs-nav-item ${ROUTE.screen === "validation" ? "is-active" : ""}" data-go="validation" data-vid="${v.id}" ${hypGateOpen ? "" : "disabled"}><span class="dot"></span> Phase 2: Validation</button>
+      <button class="fs-nav-item ${ROUTE.screen === "identity" ? "is-active" : ""}" data-go="identity" data-vid="${v.id}" ${valGateOpen ? "" : "disabled"}><span class="dot"></span> Mission, Vision &amp; Values</button>
+      <button class="fs-nav-item" disabled title="Coming in a later iteration"><span class="dot"></span> Phase 3: Positioning</button>
+      <button class="fs-nav-item" disabled title="Coming in a later iteration"><span class="dot"></span> Phase 4: Execution</button>
+      <button class="fs-nav-item ${ROUTE.screen === "evidence" ? "is-active" : ""}" data-go="evidence" data-vid="${v.id}"><span class="dot"></span> Evidence Library</button>
+    </div>` : ""}
+    <div class="fs-nav-section" style="margin-top:auto;padding-top:14px;border-top:1px solid rgba(255,255,255,.15)">
+      <div style="padding:8px 10px;font-size:10.5px;opacity:.6" id="fsSaveState">Not saved yet</div>
+      <div style="padding:0 10px;font-size:10px;opacity:.5">${FRAMEWORK_VERSION} &middot; ${FRAMEWORK_UPDATED}</div>
+    </div>
+  `;
+  nav.querySelectorAll("[data-go]").forEach(btn => btn.addEventListener("click", () => go(btn.dataset.go, btn.dataset.vid || ROUTE.ventureId)));
+}
+
+/* =========================================================================
+   RENDER: DASHBOARD
+   ========================================================================= */
+function renderDashboard() {
+  const main = document.getElementById("fsMain");
+  const cards = DB.ventures.map(v => {
+    const c = evidenceCounts(v);
+    const gate = admissionGateReady(v) ? "Admission gate: passed" : "Admission gate: not yet complete";
+    const phase = v.hypothesis.decisionGate.decision !== "Not Yet Assessed" ? `Hypothesis gate: ${v.hypothesis.decisionGate.decision}` : (admissionGateReady(v) ? "In Hypothesis Phase" : "Essential Elements");
+    return `<div class="fs-venture-card" data-open="${v.id}">
+      <h3>${esc(v.name || "Untitled venture")}</h3>
+      <div class="fs-vc-meta">${esc(CONFIG.ventureModes.find(m => m.id === v.mode)?.label || v.mode)}${v.industry ? " &middot; " + esc(v.industry) : ""}${v.location ? " &middot; " + esc(v.location) : ""}</div>
+      <div class="fs-vc-stats">
+        <span><b>${c.FACT}</b> facts</span>
+        <span><b>${c.ASSUMPTION}</b> assumptions</span>
+        <span><b>${c.UNKNOWN}</b> unknowns</span>
+        ${c.contradictions ? `<span style="color:var(--fs-warn)"><b>${c.contradictions}</b> contradictions</span>` : ""}
+      </div>
+      <div class="fs-vc-meta" style="margin-top:10px">${gate} &middot; ${phase}</div>
+    </div>`;
+  }).join("");
+
+  main.innerHTML = `
+    <p class="fs-eyebrow">Flow State Entrepreneurship &amp; Business Solutions Tool</p>
+    <h1 class="fs-h1">Portfolio Dashboard</h1>
+    <p class="fs-lede">Move a business idea or an existing-business problem toward evidence-based decisions. Every venture here tracks what's known, what's assumed, what's been tested, and what decision the evidence actually supports — not how complete a form looks.</p>
+
+    <div style="display:flex;justify-content:flex-end;margin-bottom:18px;gap:10px">
+      <label class="fs-btn fs-btn-ghost fs-btn-sm" style="cursor:pointer">Import JSON<input type="file" id="fsImportFile" accept="application/json" style="display:none"></label>
+      <button class="fs-btn" id="fsNewVenture">+ New Venture / Case</button>
+    </div>
+
+    ${DB.ventures.length ? `<div class="fs-dash-grid">${cards}</div>` : `
+      <div class="fs-empty">
+        <h3>No ventures or cases yet</h3>
+        <p>Start with whatever's clearest to you — a problem you've noticed, a customer you understand, or a solution idea. You don't need all three figured out to begin.</p>
+        <button class="fs-btn" id="fsNewVenture2" style="margin-top:14px">Start New Case</button>
+      </div>`}
+  `;
+
+  main.querySelectorAll("[data-open]").forEach(c => c.addEventListener("click", () => go("profile", c.dataset.open)));
+  const startNew = () => {
+    const v = blankVenture();
+    DB.ventures.push(v);
+    saveDB();
+    go("profile", v.id);
+  };
+  document.getElementById("fsNewVenture")?.addEventListener("click", startNew);
+  document.getElementById("fsNewVenture2")?.addEventListener("click", startNew);
+  document.getElementById("fsImportFile")?.addEventListener("change", handleImport);
+}
+
+function handleImport(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const data = JSON.parse(reader.result);
+      if (!data || !Array.isArray(data.ventures)) throw new Error("Not a Flow State export file");
+      DB = data;
+      saveDB();
+      toast("Imported " + data.ventures.length + " venture(s)");
+      go("dashboard");
+    } catch (err) { alert("Could not import this file: " + err.message); }
+  };
+  reader.readAsText(file);
+}
+function exportDB() {
+  const blob = new Blob([JSON.stringify(DB, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = "flow-state-export-" + todayISO() + ".json";
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+}
+
+/* =========================================================================
+   RENDER: VENTURE / CASE PROFILE
+   ========================================================================= */
+function renderProfile() {
+  const v = getVenture(ROUTE.ventureId);
+  const main = document.getElementById("fsMain");
+  if (!v) { go("dashboard"); return; }
+
+  main.innerHTML = `
+    <a class="fs-back-link" data-go="dashboard">&#8592; All ventures</a>
+    <p class="fs-eyebrow">Venture / Case Profile</p>
+    <h1 class="fs-h1">${esc(v.name || "Untitled venture")}</h1>
+    <p class="fs-lede">The urgent constraint and desired outcome matter most here — they anchor every recommendation that follows. Everything else can be filled in progressively.</p>
+
+    <div class="fs-card">
+      <div class="fs-field-row">
+        <div class="fs-field"><label>Venture / client name</label><input type="text" id="f_name" value="${esc(v.name)}" placeholder="e.g. Riverside Coffee Kiosk"></div>
+        <div class="fs-field"><label>Mode</label><select id="f_mode">${CONFIG.ventureModes.map(m => `<option value="${m.id}" ${v.mode === m.id ? "selected" : ""}>${m.label}</option>`).join("")}</select></div>
+      </div>
+      <div class="fs-field-row">
+        <div class="fs-field"><label>Owner / founder</label><input type="text" id="f_owner" value="${esc(v.owner)}"></div>
+        <div class="fs-field"><label>Consultant <span style="text-transform:none;font-weight:400">(if applicable)</span></label><input type="text" id="f_consultant" value="${esc(v.consultant)}"></div>
+      </div>
+      <div class="fs-field-row-3">
+        <div class="fs-field"><label>Business stage</label><input type="text" id="f_stage" value="${esc(v.stage)}" placeholder="e.g. Idea, pre-launch, operating 2 yrs"></div>
+        <div class="fs-field"><label>Industry / category</label><input type="text" id="f_industry" value="${esc(v.industry)}"></div>
+        <div class="fs-field"><label>Location / market area</label><input type="text" id="f_location" value="${esc(v.location)}"></div>
+      </div>
+      <div class="fs-field"><label>Venture summary</label><textarea id="f_summary" placeholder="One or two sentences on what this venture is or does.">${esc(v.summary)}</textarea></div>
+      <div class="fs-field-row">
+        <div class="fs-field"><label>Current business model / intended format</label><input type="text" id="f_model" value="${esc(v.businessModel)}"></div>
+        <div class="fs-field"><label>Start / opening date <span style="text-transform:none;font-weight:400">(if applicable)</span></label><input type="date" id="f_start" value="${esc(v.startDate)}"></div>
+      </div>
+      <div class="fs-field"><label>Current urgent constraint</label>${guidedIntro("This is the thing actually forcing a decision right now — budget runway, a lease deadline, a slump in sales. It keeps the rest of the analysis honest and time-bound.", "We have 4 months of cash left before we need to renew or exit the lease.")}<textarea id="f_constraint">${esc(v.urgentConstraint)}</textarea></div>
+      <div class="fs-field"><label>Desired outcome</label><textarea id="f_outcome" placeholder="What decision or result is this case working toward?">${esc(v.desiredOutcome)}</textarea></div>
+      <div class="fs-field-row">
+        <div class="fs-field"><label>Deadline</label><input type="date" id="f_deadline" value="${esc(v.deadline)}"></div>
+        <div class="fs-field"><label>Decision date</label><input type="date" id="f_decisiondate" value="${esc(v.decisionDate)}"></div>
+      </div>
+      <div class="fs-field"><label>Scope / exclusions</label><textarea id="f_scope" placeholder="What's in scope for this case, and what's explicitly out of scope?">${esc(v.scope)}</textarea></div>
+    </div>
+
+    ${v.mode === "existing-business" ? `
+    <div class="fs-card">
+      <div class="fs-card-head"><h3>Existing-business diagnostic intake</h3></div>
+      <p class="fs-hint">This isn't a judgment on how the business started — it's reconstructing the problem, customer, and solution insights from what's actually happening now.</p>
+      <div class="fs-field-row-3">
+        <div class="fs-field"><label>Current performance</label><input type="text" id="ei_performance" value="${esc(v.existingIntake.performance)}" placeholder="e.g. ₱45k/mo revenue"></div>
+        <div class="fs-field"><label>Traffic / inquiries</label><input type="text" id="ei_traffic" value="${esc(v.existingIntake.traffic)}"></div>
+        <div class="fs-field"><label>Conversion</label><input type="text" id="ei_conversion" value="${esc(v.existingIntake.conversion)}"></div>
+      </div>
+      <div class="fs-field-row-3">
+        <div class="fs-field"><label>Average transaction</label><input type="text" id="ei_avgtx" value="${esc(v.existingIntake.avgTransaction)}"></div>
+        <div class="fs-field"><label>Repeat behavior</label><input type="text" id="ei_repeat" value="${esc(v.existingIntake.repeatBehavior)}"></div>
+        <div class="fs-field"><label>Gross margin / contribution</label><input type="text" id="ei_margin" value="${esc(v.existingIntake.grossMargin)}"></div>
+      </div>
+      <div class="fs-field-row">
+        <div class="fs-field"><label>Fixed costs</label><input type="text" id="ei_fixed" value="${esc(v.existingIntake.fixedCosts)}"></div>
+        <div class="fs-field"><label>Owner dependency</label><input type="text" id="ei_ownerdep" value="${esc(v.existingIntake.ownerDependency)}" placeholder="Can it run without the owner present?"></div>
+      </div>
+      <div class="fs-field"><label>What triggered this audit?</label><textarea id="ei_trigger">${esc(v.existingIntake.auditTrigger)}</textarea></div>
+    </div>` : ""}
+
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <button class="fs-btn fs-btn-danger fs-btn-sm" id="fsDeleteVenture">Archive this venture</button>
+      <div style="display:flex;gap:10px">
+        <button class="fs-btn fs-btn-ghost" id="fsSaveProfile">Save</button>
+        <button class="fs-btn" data-go="elements">Continue to Essential Elements &#8594;</button>
+      </div>
+    </div>
+  `;
+
+  main.querySelectorAll("[data-go]").forEach(el => el.addEventListener("click", () => { saveProfileFields(v); go(el.dataset.go, v.id); }));
+  document.getElementById("fsSaveProfile").addEventListener("click", () => { saveProfileFields(v); toast("Saved"); });
+  document.getElementById("fsDeleteVenture").addEventListener("click", () => {
+    if (!confirm(`Archive "${v.name || "this venture"}"? This removes it from the dashboard. This cannot be undone in this MVP.`)) return;
+    DB.ventures = DB.ventures.filter(x => x.id !== v.id);
+    saveDB();
+    go("dashboard");
+  });
+  main.querySelectorAll("input,textarea,select").forEach(el => el.addEventListener("blur", () => saveProfileFields(v)));
+}
+function saveProfileFields(v) {
+  const g = (id) => document.getElementById(id)?.value ?? "";
+  v.name = g("f_name"); v.mode = g("f_mode"); v.owner = g("f_owner"); v.consultant = g("f_consultant");
+  v.stage = g("f_stage"); v.industry = g("f_industry"); v.location = g("f_location"); v.summary = g("f_summary");
+  v.businessModel = g("f_model"); v.startDate = g("f_start"); v.urgentConstraint = g("f_constraint");
+  v.desiredOutcome = g("f_outcome"); v.deadline = g("f_deadline"); v.decisionDate = g("f_decisiondate"); v.scope = g("f_scope");
+  if (v.mode === "existing-business") {
+    v.existingIntake.performance = g("ei_performance"); v.existingIntake.traffic = g("ei_traffic"); v.existingIntake.conversion = g("ei_conversion");
+    v.existingIntake.avgTransaction = g("ei_avgtx"); v.existingIntake.repeatBehavior = g("ei_repeat"); v.existingIntake.grossMargin = g("ei_margin");
+    v.existingIntake.fixedCosts = g("ei_fixed"); v.existingIntake.ownerDependency = g("ei_ownerdep"); v.existingIntake.auditTrigger = g("ei_trigger");
+  }
+  touchVenture(v);
+  renderNav();
+}
+
+/* =========================================================================
+   RENDER: ESSENTIAL ELEMENTS
+   ========================================================================= */
+const ELEMENT_META = {
+  problem: { title: "Problem Insight", why: "What gap or hassle have you noticed?", placeholder: "hal. walang malapit na makainan ang mga manggagawa dito sa amin" },
+  customer: { title: "Customer Insight", why: "Who's affected by this?", placeholder: "hal. mga rider at manggagawa sa paligid" },
+  solution: { title: "Solution Insight", why: "What could help, even roughly?", placeholder: "hal. magtayo ng maliit na karenderya" },
+};
+function renderElements() {
+  const v = getVenture(ROUTE.ventureId);
+  const main = document.getElementById("fsMain");
+  if (!v) { go("dashboard"); return; }
+  const gateReady = admissionGateReady(v);
+  const hyp = generateVentureHypothesis(v);
+  const keys = ["problem", "customer", "solution"];
+
+  main.innerHTML = `
+    <a class="fs-back-link" data-go="profile">&#8592; ${esc(v.name || "Venture")} profile</a>
+    <p class="fs-eyebrow">Essential Elements</p>
+    <h1 class="fs-h1">Your starting idea</h1>
+    <p class="fs-lede">Three quick insights — general is completely fine. A sentence each is enough. You'll go deeper once you're in Phase 1.</p>
+
+    <div class="fs-card">
+      ${keys.map(key => `
+      <div class="fs-field">
+        <label>${esc(ELEMENT_META[key].title)}</label>
+        <p class="fs-hint" style="margin:2px 0 8px">${esc(ELEMENT_META[key].why)}</p>
+        <textarea data-el="${key}" data-f="firstDraft" placeholder="${esc(ELEMENT_META[key].placeholder)}">${esc(v.essentialElements[key].firstDraft)}</textarea>
+      </div>`).join("")}
+    </div>
+
+    <div class="fs-card">
+      <div class="fs-card-head"><h3>Venture Hypothesis</h3></div>
+      <p class="fs-hint">Generated from the three insights above — not a fact, a starting hypothesis to carry into Phase 1.</p>
+      ${hyp ? `<div class="fs-suggest-box"><div class="fs-suggest-label">Suggested draft — confirm before use</div><p style="white-space:pre-line">${esc(hyp)}</p></div>` : `<p class="fs-hint" style="margin:0">Fill in at least one insight above to generate a draft hypothesis.</p>`}
+    </div>
+
+    <div class="fs-gate-banner ${gateReady ? "" : "is-locked"}">
+      <div>
+        <strong>${gateReady ? "Admission gate: ready to pass" : "Admission gate: not yet complete"}</strong>
+        <span>${gateReady ? "All three insights are filled in." : "Fill in a problem, customer, and proposed solution insight — even a general one — to continue."}</span>
+      </div>
+      <button class="fs-btn" data-go="hypothesis" ${gateReady ? "" : "disabled"}>Enter Phase 1: Hypothesis &#8594;</button>
+    </div>
+  `;
+  main.querySelectorAll("[data-go]").forEach(el => el.addEventListener("click", () => { if (!el.disabled) go(el.dataset.go, v.id); }));
+  bindElementCards(v);
+}
+function bindElementCards(v) {
+  document.querySelectorAll("[data-el]").forEach(field => {
+    field.addEventListener("blur", () => {
+      const key = field.dataset.el, f = field.dataset.f;
+      v.essentialElements[key][f] = field.value;
+      v.essentialElements[key].lastUpdated = todayISO();
+      touchVenture(v);
+      renderElements();
+    });
+  });
+}
+
+/* =========================================================================
+   RENDER: PHASE 1 — HYPOTHESIS
+   ========================================================================= */
+function renderHypothesis() {
+  const v = getVenture(ROUTE.ventureId);
+  const main = document.getElementById("fsMain");
+  if (!v) { go("dashboard"); return; }
+  if (!admissionGateReady(v)) { go("elements", v.id); return; }
+  const tab = ROUTE.tab || "problem";
+
+  main.innerHTML = `
+    <a class="fs-back-link" data-go="elements">&#8592; Essential Elements</a>
+    <p class="fs-eyebrow">Phase 1: Hypothesis</p>
+    <h1 class="fs-h1">Explore and refine the opportunity</h1>
+    <p class="fs-lede">Three required outcome areas — order and depth are yours to adapt. This documents a well-reasoned hypothesis, not a validated one.</p>
+    <div class="fs-tabs">
+      <button class="fs-tab ${tab === "problem" ? "is-active" : ""}" data-tab="problem">1. Problem Hypothesis</button>
+      <button class="fs-tab ${tab === "segments" ? "is-active" : ""}" data-tab="segments">2. Customer Hypothesis</button>
+      <button class="fs-tab ${tab === "solution" ? "is-active" : ""}" data-tab="solution">3. Solution Hypothesis</button>
+      <button class="fs-tab ${tab === "gate" ? "is-active" : ""}" data-tab="gate">Decision Gate</button>
+    </div>
+    <div id="fsHypTabBody"></div>
+  `;
+  main.querySelectorAll("[data-go]").forEach(el => el.addEventListener("click", () => go(el.dataset.go, v.id)));
+  main.querySelectorAll("[data-tab]").forEach(el => el.addEventListener("click", () => go("hypothesis", v.id, el.dataset.tab)));
+
+  const body = document.getElementById("fsHypTabBody");
+  if (tab === "problem") body.innerHTML = renderProblemId(v);
+  else if (tab === "segments") body.innerHTML = renderSegments(v);
+  else if (tab === "solution") body.innerHTML = renderSolutionDiscovery(v);
+  else body.innerHTML = renderHypothesisGate(v);
+  bindHypothesisTab(v, tab);
+}
+
+/* --- Step 1: Problem Identification --- */
+function renderProblemId(v) {
+  const p = v.hypothesis.problemId;
+  const essentialProblem = v.essentialElements.problem.firstDraft;
+  const draft = generateProblemStatementDraft(v);
+  return `
+  <div class="fs-card">
+    <div class="fs-card-head"><h3>Problem Hypothesis</h3></div>
+    <p class="fs-hint">Let's dig one level deeper than what you wrote in Essential Elements — what's actually causing this?</p>
+    <div class="fs-example">You said: "${esc(essentialProblem || "(no problem insight yet — go back to Essential Elements)")}"</div>
+    <div class="fs-field"><label>Why does this happen?</label>
+      ${p.whyChain.map((w, i) => `<input type="text" class="fs-why" data-i="${i}" value="${esc(w)}" placeholder="Why ${i + 1}..." style="margin-bottom:8px">`).join("")}
+      ${p.whyChain.length < 3 ? `<button class="fs-btn fs-btn-ghost fs-btn-sm" id="p_addwhy">+ Ask why again</button>` : ""}
+    </div>
+    ${draft ? `<div class="fs-suggest-box"><div class="fs-suggest-label">Suggested draft — confirm before use</div><p>${esc(draft)}</p><div class="fs-suggest-actions"><button id="p_use_sug">Use suggestion</button></div></div>` : ""}
+    <div class="fs-field"><label>Problem Statement</label><textarea id="p_statement" placeholder="Use the suggestion above, or write your own.">${esc(p.problemStatement)}</textarea></div>
+  </div>`;
+}
+
+/* --- Step 2: Customer Hypothesis --- */
+function renderSegments(v) {
+  const segs = v.hypothesis.segments;
+  const essentialCustomer = v.essentialElements.customer.firstDraft;
+  return `
+  <div class="fs-card">
+    <div class="fs-card-head"><h3>Customer Hypothesis</h3><button class="fs-btn fs-btn-sm" id="seg_add">+ Add Segment</button></div>
+    <p class="fs-hint">Break your customer insight into specific groups, if there's more than one.</p>
+    <div class="fs-example">You said: "${esc(essentialCustomer || "(no customer insight yet — go back to Essential Elements)")}"</div>
+    ${segs.length === 0 ? `<p class="fs-hint" style="margin:0">No segments yet — add one to start.</p>` : segs.map(s => renderSegmentCard(s)).join("")}
+  </div>`;
+}
+function renderSegmentCard(s) {
+  const draft = generateSegmentDescriptionDraft(s);
+  return `
+  <div class="fs-card" style="background:var(--fs-bg)" data-seg="${s.id}">
+    <div class="fs-card-head">
+      <input type="text" data-f="name" value="${esc(s.name)}" placeholder="Segment name" style="font-family:'Playfair Display',serif;font-size:16px;border:none;background:transparent;padding:0;font-weight:700">
+      <div style="display:flex;align-items:center;gap:8px">
+        <label style="display:flex;align-items:center;gap:5px;font-size:12px;font-weight:600"><input type="checkbox" data-f="prioritized" ${s.prioritized ? "checked" : ""}> Priority</label>
+        <button class="fs-icon-btn" data-del-seg="${s.id}">Delete</button>
+      </div>
+    </div>
+    <div class="fs-field-row">
+      <div class="fs-field"><label>When/where do they need this?</label><input type="text" data-f="occasion" value="${esc(s.occasion)}"></div>
+      <div class="fs-field"><label>What do they want?</label><input type="text" data-f="need" value="${esc(s.need)}"></div>
+    </div>
+    ${draft ? `<div class="fs-suggest-box"><div class="fs-suggest-label">Suggested description — confirm before use</div><p>${esc(draft)}</p><div class="fs-suggest-actions"><button data-use-seg-sug="${s.id}">Use suggestion</button></div></div>` : ""}
+    <div class="fs-field"><label>Segment Description</label><textarea data-f="description">${esc(s.description)}</textarea></div>
+  </div>`;
+}
+
+/* --- Step 3: Solution Hypothesis --- */
+function renderSolutionDiscovery(v) {
+  const comps = v.hypothesis.competitors;
+  const drivers = v.hypothesis.valueDrivers;
+  const draft = generateSolutionHypothesisDraft(v);
+  return `
+  <div class="fs-card">
+    <div class="fs-card-head"><h3>Value Drivers</h3><button class="fs-btn fs-btn-sm" id="vd_add">+ Add Value Driver</button></div>
+    <p class="fs-hint">What makes people notice you, choose you, and come back? Tap a starter or add your own.</p>
+    <div class="fs-suggest-box"><div class="fs-suggest-label">Starter ideas</div><div class="fs-suggest-actions">${CONFIG.starterValueDrivers.map(d => `<button data-add-starter="${esc(d)}">+ ${esc(d)}</button>`).join("")}</div></div>
+    ${drivers.map(d => renderDriverCard(d)).join("")}
+  </div>
+
+  <div class="fs-card">
+    <div class="fs-card-head"><h3>Competitors &amp; Alternatives</h3><button class="fs-btn fs-btn-sm" id="comp_add">+ Add Competitor</button></div>
+    <p class="fs-hint">How do people currently handle this without you? A quick look, not deep research.</p>
+    ${comps.length === 0 ? `<p class="fs-hint" style="margin:0">None recorded yet.</p>` : comps.map(c => renderCompetitorCard(c)).join("")}
+  </div>
+
+  <div class="fs-card">
+    <div class="fs-card-head"><h3>Solution Hypothesis</h3></div>
+    <p class="fs-hint">Pulled together from your value drivers and competitor gaps above.</p>
+    ${draft ? `<div class="fs-suggest-box"><div class="fs-suggest-label">Suggested draft — confirm before use</div><p>${esc(draft)}</p><div class="fs-suggest-actions"><button id="sol_use_sug">Use suggestion</button></div></div>` : `<p class="fs-hint" style="margin:0">Add at least one value driver or competitor above to generate a draft.</p>`}
+    <div class="fs-field"><label>Solution Hypothesis</label><textarea id="sol_hypothesis">${esc(v.hypothesis.solutionHypothesis)}</textarea></div>
+  </div>`;
+}
+function renderDriverCard(d) {
+  return `
+  <div class="fs-card" style="background:var(--fs-bg)" data-driver="${d.id}">
+    <div class="fs-card-head">
+      <input type="text" data-f="name" value="${esc(d.name)}" placeholder="Driver name" style="font-family:'Playfair Display',serif;font-size:15px;border:none;background:transparent;padding:0;font-weight:700">
+      <button class="fs-icon-btn" data-del-driver="${d.id}">Delete</button>
+    </div>
+    <div class="fs-field-row">
+      <div class="fs-field"><label>Category</label><select data-f="category">${CONFIG.valueDriverCategories.map(c => `<option ${d.category === c ? "selected" : ""}>${c}</option>`).join("")}</select></div>
+      <div class="fs-field"><label>Why this matters</label><input type="text" data-f="whyMatters" value="${esc(d.whyMatters)}"></div>
+    </div>
+  </div>`;
+}
+function renderCompetitorCard(c) {
+  return `
+  <div class="fs-card" style="background:var(--fs-bg)" data-comp="${c.id}">
+    <div class="fs-card-head">
+      <input type="text" data-f="name" value="${esc(c.name)}" placeholder="Competitor / alternative name" style="font-family:'Playfair Display',serif;font-size:15px;border:none;background:transparent;padding:0;font-weight:700">
+      <button class="fs-icon-btn" data-del-comp="${c.id}">Delete</button>
+    </div>
+    <div class="fs-field-row">
+      <div class="fs-field"><label>What they do well</label><input type="text" data-f="strength" value="${esc(c.strength)}"></div>
+      <div class="fs-field"><label>The gap you'd fill</label><input type="text" data-f="gap" value="${esc(c.gap)}"></div>
+    </div>
+  </div>`;
+}
+
+/* --- Hypothesis Phase decision gate --- */
+function renderHypothesisGate(v) {
+  const g = v.hypothesis.decisionGate;
+  const problemDone = v.hypothesis.problemId.problemStatement.trim().length > 0;
+  const segDone = v.hypothesis.segments.some(s => s.prioritized);
+  const compDone = v.hypothesis.competitors.length > 0;
+  const driverDone = v.hypothesis.valueDrivers.length > 0;
+  const checklist = [
+    ["A clear problem hypothesis is documented", problemDone],
+    ["At least one priority customer segment is selected", segDone],
+    ["Current alternatives are recorded", compDone],
+    ["At least one value-driver hypothesis exists", driverDone],
+  ];
+  const allReady = checklist.every(c => c[1]);
+  return `
+  <div class="fs-card">
+    <div class="fs-card-head"><h3>Hypothesis Phase decision gate</h3></div>
+    <p class="fs-hint">Passing this gate means a well-documented hypothesis exists — problem, priority customer, proposed solution, alternatives, value drivers, evidence gaps, and testable assumptions. It does not mean the opportunity is validated.</p>
+    <ul style="padding-left:20px;margin:0 0 18px">
+      ${checklist.map(([label, ok]) => `<li style="margin-bottom:6px;color:${ok ? "var(--fs-accent-dark)" : "var(--fs-ink-soft)"}">${ok ? "&#10003;" : "&#9675;"} ${esc(label)}</li>`).join("")}
+    </ul>
+    <div class="fs-field"><label>Riskiest assumptions to carry into Validation</label><textarea id="g_riskiest">${esc(v.hypothesis.riskiestAssumptions)}</textarea></div>
+    <div class="fs-field-row">
+      <div class="fs-field"><label>Decision</label><select id="g_decision">${CONFIG.decisions.map(d => `<option ${g.decision === d ? "selected" : ""}>${d}</option>`).join("")}</select></div>
+      <div class="fs-field"><label>Decision date</label><input type="date" id="g_date" value="${esc(g.date)}"></div>
+    </div>
+    <div class="fs-field"><label>Notes</label><textarea id="g_notes">${esc(g.notes)}</textarea></div>
+    ${!allReady ? `<p style="color:var(--fs-warn);font-size:13px;margin:0">A few things above are still open — worth finishing those first, so your decision is based on what you actually found rather than a guess.</p>` : `<button class="fs-btn" id="g_save">Save Decision</button>`}
+  </div>`;
+}
+
+function bindHypothesisTab(v, tab) {
+  const p = v.hypothesis.problemId;
+  if (tab === "problem") {
+    document.getElementById("p_statement")?.addEventListener("blur", e => { p.problemStatement = e.target.value; touchVenture(v); });
+    document.querySelectorAll(".fs-why").forEach(inp => inp.addEventListener("blur", e => { p.whyChain[+e.target.dataset.i] = e.target.value; touchVenture(v); go("hypothesis", v.id, "problem"); }));
+    document.getElementById("p_addwhy")?.addEventListener("click", () => { if (p.whyChain.length < 3) p.whyChain.push(""); touchVenture(v); go("hypothesis", v.id, "problem"); });
+    document.getElementById("p_use_sug")?.addEventListener("click", () => { p.problemStatement = generateProblemStatementDraft(v); touchVenture(v); go("hypothesis", v.id, "problem"); });
+  } else if (tab === "segments") {
+    document.getElementById("seg_add")?.addEventListener("click", () => { v.hypothesis.segments.push(blankSegment()); touchVenture(v); go("hypothesis", v.id, "segments"); });
+    document.querySelectorAll("[data-del-seg]").forEach(btn => btn.addEventListener("click", () => { v.hypothesis.segments = v.hypothesis.segments.filter(s => s.id !== btn.dataset.delSeg); touchVenture(v); go("hypothesis", v.id, "segments"); }));
+    document.querySelectorAll("[data-use-seg-sug]").forEach(btn => btn.addEventListener("click", () => {
+      const seg = v.hypothesis.segments.find(s => s.id === btn.dataset.useSegSug);
+      seg.description = generateSegmentDescriptionDraft(seg);
+      touchVenture(v);
+      go("hypothesis", v.id, "segments");
+    }));
+    document.querySelectorAll("[data-seg]").forEach(card => {
+      const seg = v.hypothesis.segments.find(s => s.id === card.dataset.seg);
+      card.querySelectorAll("[data-f]").forEach(inp => {
+        const evt = inp.type === "checkbox" ? "change" : "blur";
+        inp.addEventListener(evt, () => {
+          const path = inp.dataset.f;
+          const val = inp.type === "checkbox" ? inp.checked : inp.value;
+          seg[path] = val;
+          touchVenture(v);
+          go("hypothesis", v.id, "segments");
+        });
+      });
+    });
+  } else if (tab === "solution") {
+    document.getElementById("comp_add")?.addEventListener("click", () => { v.hypothesis.competitors.push(blankCompetitor()); touchVenture(v); go("hypothesis", v.id, "solution"); });
+    document.querySelectorAll("[data-del-comp]").forEach(btn => btn.addEventListener("click", () => { v.hypothesis.competitors = v.hypothesis.competitors.filter(c => c.id !== btn.dataset.delComp); touchVenture(v); go("hypothesis", v.id, "solution"); }));
+    document.querySelectorAll("[data-comp]").forEach(card => {
+      const comp = v.hypothesis.competitors.find(c => c.id === card.dataset.comp);
+      card.querySelectorAll("[data-f]").forEach(inp => inp.addEventListener("blur", () => { comp[inp.dataset.f] = inp.value; touchVenture(v); go("hypothesis", v.id, "solution"); }));
+    });
+    document.getElementById("vd_add")?.addEventListener("click", () => { v.hypothesis.valueDrivers.push(blankValueDriver()); touchVenture(v); go("hypothesis", v.id, "solution"); });
+    document.querySelectorAll("[data-add-starter]").forEach(btn => btn.addEventListener("click", () => { v.hypothesis.valueDrivers.push(blankValueDriver(btn.dataset.addStarter)); touchVenture(v); go("hypothesis", v.id, "solution"); }));
+    document.querySelectorAll("[data-del-driver]").forEach(btn => btn.addEventListener("click", () => { v.hypothesis.valueDrivers = v.hypothesis.valueDrivers.filter(d => d.id !== btn.dataset.delDriver); touchVenture(v); go("hypothesis", v.id, "solution"); }));
+    document.querySelectorAll("[data-driver]").forEach(card => {
+      const d = v.hypothesis.valueDrivers.find(x => x.id === card.dataset.driver);
+      card.querySelectorAll("[data-f]").forEach(inp => inp.addEventListener("blur", () => { d[inp.dataset.f] = inp.value; touchVenture(v); go("hypothesis", v.id, "solution"); }));
+    });
+    document.getElementById("sol_use_sug")?.addEventListener("click", () => { v.hypothesis.solutionHypothesis = generateSolutionHypothesisDraft(v); touchVenture(v); go("hypothesis", v.id, "solution"); });
+  } else if (tab === "gate") {
+    document.getElementById("g_save")?.addEventListener("click", () => {
+      v.hypothesis.riskiestAssumptions = document.getElementById("g_riskiest").value;
+      v.hypothesis.decisionGate.decision = document.getElementById("g_decision").value;
+      v.hypothesis.decisionGate.date = document.getElementById("g_date").value;
+      v.hypothesis.decisionGate.notes = document.getElementById("g_notes").value;
+      touchVenture(v);
+      toast("Decision recorded");
+      go("hypothesis", v.id, "gate");
+    });
+  }
+}
+
+/* =========================================================================
+   RENDER: PHASE 2 — VALIDATION
+   ========================================================================= */
+const VALIDATION_CARD_META = {
+  "problem": {
+    title: "Problem Validation",
+    why: "Phase 1 gave you a problem hypothesis. Here you test whether that problem is real, frequent, and significant enough that people would actually act to solve it.",
+    example: "Timed 12 pickups on-site: average wait was 22 minutes, and 9 of 12 parents stood the entire time with no seating nearby.",
+  },
+  "customer": {
+    title: "Customer Validation",
+    why: "Test whether your priority customer is specific, reachable, present in enough numbers, and actually behaves the way your hypothesis assumed — not just says they would.",
+    example: "Logged 40 pickups over one week: 34 were mothers or yayas, 22 had a second child with them, all arrived 10+ minutes before dismissal.",
+  },
+  "solution.competitive": {
+    title: "Competitive Analysis",
+    why: "Revisit the competitors and alternatives you logged in Phase 1 — does your differentiation claim actually hold up when tested against what customers really compare you to?",
+    example: "Asked 10 parents why they don't just go to the 7-Eleven 400m away — 8 said distance and no seating, 2 said they'd never considered a coffee stop at all.",
+  },
+  "solution.market": {
+    title: "Market Validation",
+    why: "Test whether enough reachable demand exists relative to the alternatives already available — separate from whether one customer likes the idea.",
+    example: "Roughly 180 pickup households pass the gate daily; a 1-week sign-up sheet for a pop-up got 31 interested households, about 17%.",
+  },
+  "solution.product": {
+    title: "Product Validation",
+    why: "Test the actual offer — using the smallest responsible pilot, sample, or pop-up — and track real behavior: did people actually buy, return, and pay the price you proposed?",
+    example: "Ran a 3-day pop-up cart: 46 transactions, 12 repeat customers on day 3, average spend ₱65, two people asked if it would be there permanently.",
+  },
+  "future.baseline": {
+    title: "Future Direction — Baseline Viability",
+    why: "Before asking whether this can grow, confirm it can survive as one instance: does the site get enough traffic, do the unit economics clear breakeven, can it be delivered consistently at the volume you need?",
+    example: "At ₱65 average spend and 60% gross margin, breakeven is 8 transactions/day; the 3-day pilot averaged 15/day, with one supplier delay that pushed opening back 40 minutes.",
+  },
+  "future.growth": {
+    title: "Future Direction — Growth & Scalability Potential",
+    why: "Only once baseline viability holds: does this format have room to grow — a second location, a second school, a second channel — without the core economics or operations breaking down?",
+    example: "Two other elementary schools nearby have similar pickup patterns and no comparable vendor within 300m of either gate.",
+  },
+};
+let VAL_EXPANDED = {};
+let VAL_STEP = {};
+function generateValidationSuggestion(v, key) {
+  const h = v.hypothesis;
+  const seg = h.segments.find(s => s.prioritized);
+  const p = h.problemId;
+  if (key === "problem") return p.problemStatement ? `We believe the problem — "${p.problemStatement}" — actually occurs often enough, and matters enough, that people would act to solve it.` : "";
+  if (key === "customer") return seg ? `We believe "${seg.name}" is a real, reachable customer segment that behaves the way we described: ${seg.description || seg.need || "(not yet drafted in Phase 1)"}.` : "";
+  if (key === "solution.competitive") { const c = h.competitors[0]; return c ? `We believe our approach is meaningfully different from ${c.name || "the leading alternative"} in a way customers actually notice and care about.` : ""; }
+  if (key === "solution.market") return seg ? `We believe enough of "${seg.name}" exists reachably nearby, relative to current alternatives, to sustain this venture.` : "";
+  if (key === "solution.product") { const s = v.essentialElements.solution.firstDraft; return s ? `We believe the proposed offer — ${s} — will get real purchases, not just polite interest.` : ""; }
+  if (key === "future.baseline") return `We believe this venture can cover its costs and be delivered consistently at one location, at the volume we can realistically expect.`;
+  if (key === "future.growth") { const b = v.validation.futureDirection.baseline.interpretation; return b ? `Given baseline viability — ${b} — we believe this format can replicate to a second location or channel.` : ""; }
+  return "";
+}
+function renderNextActionBanner(v) {
+  const nextKey = VALIDATION_KEYS.find(k => !validationTestComplete(getValidationCard(v, k)));
+  if (!nextKey) return `<div class="fs-suggest-box"><div class="fs-suggest-label">All seven domains have a recorded decision</div><p>Head to the Decision Gate tab to record the overall Validation Phase decision.</p></div>`;
+  const meta = VALIDATION_CARD_META[nextKey];
+  const groupTab = nextKey.startsWith("solution.") ? "solution" : nextKey.startsWith("future.") ? "future" : nextKey;
+  const riskiest = v.hypothesis.riskiestAssumptions.trim();
+  return `
+  <div class="fs-suggest-box">
+    <div class="fs-suggest-label">Recommended next</div>
+    <p>${riskiest ? `Your riskiest assumption carried from Phase 1: "${esc(riskiest)}". ` : ""}Start with <strong>${esc(meta.title)}</strong> — it's the least-tested domain right now.</p>
+    <div class="fs-suggest-actions"><button id="vnext_go" data-goto-tab="${groupTab}" data-goto-key="${nextKey}">Go to ${esc(meta.title)} &#8594;</button></div>
+  </div>`;
+}
+function renderValidation() {
+  const v = getVenture(ROUTE.ventureId);
+  const main = document.getElementById("fsMain");
+  if (!v) { go("dashboard"); return; }
+  if (!hypothesisGateComplete(v)) { go("hypothesis", v.id); return; }
+  const tab = ROUTE.tab || "problem";
+
+  main.innerHTML = `
+    <a class="fs-back-link" data-go="hypothesis">&#8592; Phase 1: Hypothesis</a>
+    <p class="fs-eyebrow">Phase 2: Validation</p>
+    <h1 class="fs-h1">Test whether this actually holds up</h1>
+    <p class="fs-lede">Phase 1 documented a well-reasoned hypothesis. Here you gather real evidence — an actual result measured against a threshold set before testing, not a hypothetical.</p>
+    ${renderNextActionBanner(v)}
+    <div class="fs-tabs">
+      <button class="fs-tab ${tab === "problem" ? "is-active" : ""}" data-tab="problem">1. Problem Validation</button>
+      <button class="fs-tab ${tab === "customer" ? "is-active" : ""}" data-tab="customer">2. Customer Validation</button>
+      <button class="fs-tab ${tab === "solution" ? "is-active" : ""}" data-tab="solution">3. Solution Validation</button>
+      <button class="fs-tab ${tab === "future" ? "is-active" : ""}" data-tab="future">4. Future Direction</button>
+      <button class="fs-tab ${tab === "gate" ? "is-active" : ""}" data-tab="gate">Decision Gate</button>
+    </div>
+    <div id="fsValTabBody"></div>
+  `;
+  main.querySelectorAll("[data-go]").forEach(el => el.addEventListener("click", () => go(el.dataset.go, v.id)));
+  main.querySelectorAll("[data-tab]").forEach(el => el.addEventListener("click", () => go("validation", v.id, el.dataset.tab)));
+  document.getElementById("vnext_go")?.addEventListener("click", (e) => {
+    const groupTab = e.currentTarget.dataset.gotoTab, key = e.currentTarget.dataset.gotoKey;
+    if (groupTab === "solution" || groupTab === "future") VAL_EXPANDED[v.id + "." + groupTab] = key;
+    delete VAL_STEP[v.id + "." + key];
+    go("validation", v.id, groupTab);
+  });
+
+  const body = document.getElementById("fsValTabBody");
+  if (tab === "problem") body.innerHTML = renderValidationCard(v, "problem", true);
+  else if (tab === "customer") body.innerHTML = renderValidationCard(v, "customer", true);
+  else if (tab === "solution") body.innerHTML = renderValidationCardGroup(v, "solution", ["solution.competitive", "solution.market", "solution.product"]);
+  else if (tab === "future") body.innerHTML = renderValidationCardGroup(v, "future", ["future.baseline", "future.growth"]);
+  else body.innerHTML = renderValidationGate(v);
+  bindValidationTab(v, tab);
+}
+function renderValidationCardGroup(v, groupKey, keys) {
+  const gKey = v.id + "." + groupKey;
+  if (!VAL_EXPANDED[gKey] || !keys.includes(VAL_EXPANDED[gKey])) {
+    VAL_EXPANDED[gKey] = keys.find(k => !validationTestComplete(getValidationCard(v, k))) || keys[0];
+  }
+  const openKey = VAL_EXPANDED[gKey];
+  return keys.map(k => k === openKey ? renderValidationCard(v, k, false) : renderValidationCardCollapsed(v, k)).join("");
+}
+function renderValidationCardCollapsed(v, key) {
+  const meta = VALIDATION_CARD_META[key];
+  const t = getValidationCard(v, key);
+  const complete = validationTestComplete(t);
+  return `
+  <div class="fs-card" data-vexpand="${key}" role="button" tabindex="0" aria-expanded="false" aria-label="Expand ${esc(meta.title)}" style="cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px">
+    <div>
+      <h3 style="margin-bottom:4px;font-size:15px">${esc(meta.title)}</h3>
+      <p class="fs-hint" style="margin:0">${esc(meta.why)}</p>
+    </div>
+    <span class="fs-pill ${complete ? "fs-pill-fact" : "fs-pill-unknown"}" style="flex-shrink:0">${complete ? "Decision Recorded" : "Tap to open"}</span>
+  </div>`;
+}
+function computeValidationDefaultStep(t) {
+  if (!t.hypothesis.trim()) return 1;
+  if (!t.metric.trim() || !t.decisionThreshold.trim()) return 2;
+  return 3;
+}
+function renderValidationCard(v, key, forceOpen) {
+  const meta = VALIDATION_CARD_META[key];
+  const t = getValidationCard(v, key);
+  const complete = validationTestComplete(t);
+  const stepKey = v.id + "." + key;
+  if (VAL_STEP[stepKey] === undefined) VAL_STEP[stepKey] = computeValidationDefaultStep(t);
+  const step = VAL_STEP[stepKey];
+  const suggestion = !t.hypothesis.trim() ? generateValidationSuggestion(v, key) : "";
+  const canEnterResults = t.metric.trim().length > 0 && t.decisionThreshold.trim().length > 0;
+  const safeId = key.replace(/\./g, "_");
+  const contextText = validationContextNote(v, key);
+  const stepLabels = ["What are you testing?", "How will you test it?", "What happened?"];
+
+  let stepBody;
+  if (step === 1) {
+    stepBody = `
+    ${guidedIntro(meta.why + (contextText ? " " + contextText : ""), meta.example)}
+    ${suggestion ? `<div class="fs-suggest-box"><div class="fs-suggest-label">Suggested draft — confirm before use</div><p>${esc(suggestion)}</p><div class="fs-suggest-actions"><button data-use-sug="${safeId}">Use suggestion</button></div></div>` : ""}
+    <div class="fs-field"><label>Hypothesis being tested</label><textarea data-f="hypothesis" id="vh_${safeId}">${esc(t.hypothesis)}</textarea></div>
+    <div class="fs-field-row">
+      <div class="fs-field"><label>Evidence currently held</label><textarea data-f="evidenceHeld">${esc(t.evidenceHeld)}</textarea></div>
+      <div class="fs-field"><label>Evidence label</label><select data-f="evidenceLabel">${CONFIG.evidenceLabels.map(l => `<option value="${l}" ${t.evidenceLabel === l ? "selected" : ""}>${l}</option>`).join("")}</select></div>
+    </div>`;
+  } else if (step === 2) {
+    stepBody = `
+    <div class="fs-field"><label>Test method</label><textarea data-f="testMethod" placeholder="How will this actually be tested?">${esc(t.testMethod)}</textarea></div>
+    <div class="fs-field"><label>Target participants / sample / context</label><input type="text" data-f="targetSample" value="${esc(t.targetSample)}"></div>
+    <div class="fs-field-row">
+      <div class="fs-field"><label>Metric</label><input type="text" data-f="metric" value="${esc(t.metric)}"></div>
+      <div class="fs-field"><label>Decision threshold <span style="text-transform:none;font-weight:400">(set before testing)</span></label><input type="text" data-f="decisionThreshold" value="${esc(t.decisionThreshold)}"></div>
+    </div>
+    <details>
+      <summary style="cursor:pointer;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--fs-ink-soft)">More details — owner, budget, deadline (optional)</summary>
+      <div class="fs-field-row-3" style="margin-top:12px">
+        <div class="fs-field"><label>Test owner</label><input type="text" data-f="testOwner" value="${esc(t.testOwner)}"></div>
+        <div class="fs-field"><label>Budget cap</label><input type="text" data-f="budgetCap" value="${esc(t.budgetCap)}"></div>
+        <div class="fs-field"><label>Deadline</label><input type="date" data-f="deadline" value="${esc(t.deadline)}"></div>
+      </div>
+    </details>`;
+  } else if (!canEnterResults) {
+    stepBody = `<p class="fs-hint" style="color:var(--fs-warn)">Head back to Step 2 and jot down a metric and a rough threshold first. Deciding what "good" looks like before you see the result is what keeps you honest with yourself — not us checking up on you.</p>`;
+  } else {
+    stepBody = `
+    <div class="fs-field"><label>Actual result</label><textarea data-f="actualResult" placeholder="What actually happened — not a hypothetical.">${esc(t.actualResult)}</textarea></div>
+    <div class="fs-field-row">
+      <div class="fs-field"><label>Raw evidence / source</label><textarea data-f="rawEvidence">${esc(t.rawEvidence)}</textarea></div>
+      <div class="fs-field"><label>Anything that doesn't fit, or another explanation</label><textarea data-f="contradictoryResult">${esc(t.contradictoryResult)}</textarea></div>
+    </div>
+    <div class="fs-field"><label>Interpretation</label><textarea data-f="interpretation">${esc(t.interpretation)}</textarea></div>
+    <div class="fs-field-row-3">
+      <div class="fs-field"><label>Decision</label><select data-f="decision">${CONFIG.decisions.map(d => `<option ${t.decision === d ? "selected" : ""}>${d}</option>`).join("")}</select></div>
+      <div class="fs-field"><label>Decision owner</label><input type="text" data-f="decisionOwner" value="${esc(t.decisionOwner)}"></div>
+      <div class="fs-field"><label>Decision date</label><input type="date" data-f="decisionDate" value="${esc(t.decisionDate)}"></div>
+    </div>
+    <div class="fs-field"><label>Next action</label><textarea data-f="nextAction">${esc(t.nextAction)}</textarea></div>`;
+  }
+
+  return `
+  <div class="fs-card" data-vcard="${key}">
+    <div class="fs-card-head">
+      <h3>${esc(meta.title)}</h3>
+      <span class="fs-pill ${complete ? "fs-pill-fact" : "fs-pill-unknown"}">${complete ? "Decision Recorded" : "Not Yet Assessed"}</span>
+    </div>
+    <div style="display:flex;gap:6px;margin-bottom:14px">
+      ${[1, 2, 3].map(n => `<span style="flex:1;height:4px;border-radius:2px;background:${n <= step ? "var(--fs-accent)" : "var(--fs-line)"}"></span>`).join("")}
+    </div>
+    <p class="fs-eyebrow" style="margin-bottom:14px">Step ${step} of 3 — ${esc(stepLabels[step - 1])}</p>
+    ${stepBody}
+    <div style="display:flex;justify-content:space-between;margin-top:18px">
+      ${step > 1 ? `<button class="fs-btn fs-btn-ghost fs-btn-sm" data-vstep="${stepKey}" data-step="${step - 1}">&#8592; Back</button>` : `<span></span>`}
+      ${step < 3 ? `<button class="fs-btn fs-btn-sm" data-vstep="${stepKey}" data-step="${step + 1}">Next &#8594;</button>` : `<span></span>`}
+    </div>
+  </div>`;
+}
+function renderValidationGate(v) {
+  const g = v.validation.decisionGate;
+  const checklist = VALIDATION_KEYS.map(k => [VALIDATION_CARD_META[k].title, validationTestComplete(getValidationCard(v, k))]);
+  const allReady = checklist.every(c => c[1]);
+  const contradictions = VALIDATION_KEYS.filter(k => getValidationCard(v, k).contradictoryResult.trim()).length;
+  return `
+  <div class="fs-card">
+    <div class="fs-card-head"><h3>Validation Phase decision gate</h3></div>
+    <p class="fs-hint">A great result in one area can quietly mask a real problem in another — worth a quick look across all four before you decide overall.</p>
+    <ul style="padding-left:20px;margin:0 0 18px">
+      ${checklist.map(([label, ok]) => `<li style="margin-bottom:6px;color:${ok ? "var(--fs-accent-dark)" : "var(--fs-ink-soft)"}">${ok ? "&#10003;" : "&#9675;"} ${esc(label)}</li>`).join("")}
+    </ul>
+    ${contradictions ? `<p style="color:var(--fs-warn);font-size:13px;margin:0 0 14px">${contradictions} domain${contradictions === 1 ? "" : "s"} logged a contradictory result — review before deciding.</p>` : ""}
+    <div class="fs-field-row">
+      <div class="fs-field"><label>Decision</label><select id="vg_decision">${CONFIG.decisions.map(d => `<option ${g.decision === d ? "selected" : ""}>${d}</option>`).join("")}</select></div>
+      <div class="fs-field"><label>Decision date</label><input type="date" id="vg_date" value="${esc(g.date)}"></div>
+    </div>
+    <div class="fs-field"><label>Notes</label><textarea id="vg_notes">${esc(g.notes)}</textarea></div>
+    ${!allReady ? `<p style="color:var(--fs-warn);font-size:13px;margin:0">A few domains still need an actual result and a decision — once those are in, you'll be able to record the overall call here.</p>` : `<button class="fs-btn" id="vg_save">Save Decision</button>`}
+  </div>`;
+}
+function bindValidationTab(v, tab) {
+  document.querySelectorAll("[data-vexpand]").forEach(el => {
+    const activate = () => {
+      VAL_EXPANDED[v.id + "." + tab] = el.dataset.vexpand;
+      go("validation", v.id, tab);
+      document.getElementById("vh_" + el.dataset.vexpand.replace(/\./g, "_"))?.focus();
+    };
+    el.addEventListener("click", activate);
+    el.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") { e.preventDefault(); activate(); }
+    });
+  });
+  document.querySelectorAll("[data-use-sug]").forEach(btn => btn.addEventListener("click", () => {
+    const safeId = btn.dataset.useSug;
+    const key = safeId.replace(/_/g, ".");
+    const t = getValidationCard(v, key);
+    t.hypothesis = generateValidationSuggestion(v, key);
+    touchVenture(v);
+    go("validation", v.id, tab);
+  }));
+  document.querySelectorAll("[data-vstep]").forEach(btn => btn.addEventListener("click", () => {
+    VAL_STEP[btn.dataset.vstep] = +btn.dataset.step;
+    go("validation", v.id, tab);
+  }));
+  document.querySelectorAll("[data-vcard]").forEach(card => {
+    const t = getValidationCard(v, card.dataset.vcard);
+    card.querySelectorAll("[data-f]").forEach(inp => inp.addEventListener("blur", () => {
+      t[inp.dataset.f] = inp.value; touchVenture(v);
+      if (inp.dataset.f === "decision" || inp.dataset.f === "metric" || inp.dataset.f === "decisionThreshold") go("validation", v.id, tab);
+    }));
+  });
+  if (tab === "gate") {
+    document.getElementById("vg_save")?.addEventListener("click", () => {
+      v.validation.decisionGate.decision = document.getElementById("vg_decision").value;
+      v.validation.decisionGate.date = document.getElementById("vg_date").value;
+      v.validation.decisionGate.notes = document.getElementById("vg_notes").value;
+      touchVenture(v);
+      toast("Decision recorded");
+      go("validation", v.id, "gate");
+    });
+  }
+}
+
+/* =========================================================================
+   RENDER: MISSION, VISION & CORE VALUES
+   ========================================================================= */
+function renderIdentity() {
+  const v = getVenture(ROUTE.ventureId);
+  const main = document.getElementById("fsMain");
+  if (!v) { go("dashboard"); return; }
+  if (!validationGateComplete(v)) { go("validation", v.id); return; }
+  const mvv = v.missionVisionValues;
+  const missionDraft = generateMissionDraft(v);
+  const visionDraft = generateVisionDraft(v);
+
+  main.innerHTML = `
+    <a class="fs-back-link" data-go="validation">&#8592; Phase 2: Validation</a>
+    <p class="fs-eyebrow">Mission, Vision &amp; Core Values</p>
+    <h1 class="fs-h1">What this venture actually stands for</h1>
+    <p class="fs-lede">Grounded in what you've now validated — not written before you knew anything. Edit freely; nothing here is final until you confirm it.</p>
+
+    <div class="fs-card">
+      <div class="fs-card-head"><h3>Mission</h3></div>
+      <p class="fs-hint">Why this venture exists, right now, for this specific validated customer and problem.</p>
+      ${missionDraft ? `<div class="fs-suggest-box"><div class="fs-suggest-label">Suggested draft — confirm before use</div><p>${esc(missionDraft)}</p><div class="fs-suggest-actions"><button id="mvv_use_mission">Use suggestion</button></div></div>` : `<p class="fs-hint" style="margin:0">Complete the Problem and Customer Validation interpretations to generate a draft.</p>`}
+      <div class="fs-field"><label>Mission statement</label><textarea id="mvv_mission">${esc(mvv.mission)}</textarea></div>
+    </div>
+
+    <div class="fs-card">
+      <div class="fs-card-head"><h3>Vision</h3></div>
+      <p class="fs-hint">Where this goes if it works — grounded in your Future Direction / growth validation, not a fantasy projection.</p>
+      ${visionDraft ? `<div class="fs-suggest-box"><div class="fs-suggest-label">Suggested draft — confirm before use</div><p>${esc(visionDraft)}</p><div class="fs-suggest-actions"><button id="mvv_use_vision">Use suggestion</button></div></div>` : `<p class="fs-hint" style="margin:0">Complete the Growth &amp; Scalability interpretation to generate a draft.</p>`}
+      <div class="fs-field"><label>Vision statement</label><textarea id="mvv_vision">${esc(mvv.vision)}</textarea></div>
+    </div>
+
+    <div class="fs-card">
+      <div class="fs-card-head"><h3>Core Values</h3><button class="fs-btn fs-btn-sm" id="mvv_add_value">+ Add Core Value</button></div>
+      <p class="fs-hint">The operating principles that make your validated differentiation real — not generic virtues copied from another business.</p>
+      ${mvv.coreValues.length === 0 ? `<p class="fs-hint" style="margin:0">No core values yet — add one to start.</p>` : mvv.coreValues.map(cv => `
+      <div class="fs-card" style="background:var(--fs-bg)" data-cv="${cv.id}">
+        <div class="fs-card-head">
+          <input type="text" data-f="value" value="${esc(cv.value)}" placeholder="Value name" style="font-family:'Playfair Display',serif;font-size:16px;border:none;background:transparent;padding:0;font-weight:700">
+          <button class="fs-icon-btn" data-del-cv="${cv.id}">Delete</button>
+        </div>
+        <div class="fs-field"><label>What this means in practice</label><textarea data-f="definition">${esc(cv.definition)}</textarea></div>
+        <div class="fs-field"><label>Evidence link <span style="text-transform:none;font-weight:400">(which validation result grounds this?)</span></label><input type="text" data-f="evidenceLink" value="${esc(cv.evidenceLink)}"></div>
+      </div>`).join("")}
+    </div>
+
+    <button class="fs-btn fs-btn-ghost" id="mvv_save">Save</button>
+  `;
+  main.querySelectorAll("[data-go]").forEach(el => el.addEventListener("click", () => go(el.dataset.go, v.id)));
+  document.getElementById("mvv_use_mission")?.addEventListener("click", () => { document.getElementById("mvv_mission").value = missionDraft; });
+  document.getElementById("mvv_use_vision")?.addEventListener("click", () => { document.getElementById("mvv_vision").value = visionDraft; });
+  document.getElementById("mvv_add_value")?.addEventListener("click", () => { mvv.coreValues.push(blankCoreValue()); touchVenture(v); go("identity", v.id); });
+  document.querySelectorAll("[data-del-cv]").forEach(btn => btn.addEventListener("click", () => { mvv.coreValues = mvv.coreValues.filter(c => c.id !== btn.dataset.delCv); touchVenture(v); go("identity", v.id); }));
+  document.querySelectorAll("[data-cv]").forEach(card => {
+    const cv = mvv.coreValues.find(c => c.id === card.dataset.cv);
+    card.querySelectorAll("[data-f]").forEach(inp => inp.addEventListener("blur", () => { cv[inp.dataset.f] = inp.value; touchVenture(v); }));
+  });
+  document.getElementById("mvv_save").addEventListener("click", () => {
+    mvv.mission = document.getElementById("mvv_mission").value;
+    mvv.vision = document.getElementById("mvv_vision").value;
+    touchVenture(v);
+    toast("Saved");
+  });
+}
+
+/* =========================================================================
+   RENDER: EVIDENCE LIBRARY
+   ========================================================================= */
+function renderEvidence() {
+  const v = getVenture(ROUTE.ventureId);
+  const main = document.getElementById("fsMain");
+  if (!v) { go("dashboard"); return; }
+  const counts = evidenceCounts(v);
+
+  main.innerHTML = `
+    <a class="fs-back-link" data-go="profile">&#8592; ${esc(v.name || "Venture")}</a>
+    <p class="fs-eyebrow">Evidence Library</p>
+    <h1 class="fs-h1">Every claim, in one place</h1>
+    <p class="fs-lede">${counts.FACT} fact${counts.FACT === 1 ? "" : "s"} &middot; ${counts.ASSUMPTION} assumption${counts.ASSUMPTION === 1 ? "" : "s"} &middot; ${counts.INFERENCE} inference${counts.INFERENCE === 1 ? "" : "s"} &middot; ${counts.UNKNOWN} unknown${counts.UNKNOWN === 1 ? "" : "s"}${counts.contradictions ? ` &middot; <span style="color:var(--fs-warn);font-weight:600">${counts.contradictions} unresolved contradiction${counts.contradictions === 1 ? "" : "s"}</span>` : ""}</p>
+
+    <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
+      <button class="fs-btn fs-btn-sm" id="ev_add">+ Add Evidence</button>
+    </div>
+
+    ${v.evidence.length === 0 ? `<div class="fs-empty"><h3>No evidence recorded yet</h3><p>Evidence can be added here directly, or logged as you fill in Essential Elements and the Hypothesis Phase.</p></div>` : v.evidence.map(e => renderEvidenceCard(e)).join("")}
+  `;
+  main.querySelectorAll("[data-go]").forEach(el => el.addEventListener("click", () => go(el.dataset.go, v.id)));
+  document.getElementById("ev_add").addEventListener("click", () => { v.evidence.unshift(blankEvidence()); touchVenture(v); go("evidence", v.id); });
+  document.querySelectorAll("[data-ev]").forEach(card => {
+    const e = v.evidence.find(x => x.id === card.dataset.ev);
+    card.querySelectorAll("[data-f]").forEach(inp => inp.addEventListener("blur", () => { e[inp.dataset.f] = inp.value; touchVenture(v); if (inp.dataset.f === "label") go("evidence", v.id); }));
+    card.querySelector("[data-del-ev]")?.addEventListener("click", () => { v.evidence = v.evidence.filter(x => x.id !== e.id); touchVenture(v); go("evidence", v.id); });
+  });
+}
+function renderEvidenceCard(e) {
+  return `
+  <div class="fs-card" data-ev="${e.id}">
+    <div class="fs-card-head">
+      <div style="flex:1"><input type="text" data-f="statement" value="${esc(e.statement)}" placeholder="The statement or claim" style="width:100%;border:none;background:transparent;padding:0;font-size:15px;font-weight:600"></div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <select data-f="label">${CONFIG.evidenceLabels.map(l => `<option ${e.label === l ? "selected" : ""}>${l}</option>`).join("")}</select>
+        <button class="fs-icon-btn" data-del-ev>Delete</button>
+      </div>
+    </div>
+    <div class="fs-field-row-3">
+      <div class="fs-field"><label>Source type</label><select data-f="sourceType">${CONFIG.evidenceSourceTypes.map(t => `<option ${e.sourceType === t ? "selected" : ""}>${t}</option>`).join("")}</select></div>
+      <div class="fs-field"><label>Date gathered</label><input type="date" data-f="dateGathered" value="${esc(e.dateGathered)}"></div>
+      <div class="fs-field"><label>Validation needed?</label><select data-f="validationNeeded"><option ${e.validationNeeded === "Yes" ? "selected" : ""}>Yes</option><option ${e.validationNeeded === "No" ? "selected" : ""}>No</option></select></div>
+    </div>
+    <div class="fs-field"><label>Evidence / source description</label><textarea data-f="sourceDescription">${esc(e.sourceDescription)}</textarea></div>
+    <div class="fs-field-row">
+      <div class="fs-field"><label>Customer segment</label><input type="text" data-f="segment" value="${esc(e.segment)}"></div>
+      <div class="fs-field"><label>Customer occasion</label><input type="text" data-f="occasion" value="${esc(e.occasion)}"></div>
+    </div>
+    <div class="fs-field"><label>File / link / reference</label><input type="text" data-f="fileLink" value="${esc(e.fileLink)}"></div>
+    <div class="fs-field"><label>Contradictory evidence, if any</label><textarea data-f="contradictory">${esc(e.contradictory)}</textarea></div>
+    <div class="fs-field"><label>Analyst note</label><textarea data-f="analystNote">${esc(e.analystNote)}</textarea></div>
+  </div>`;
+}
+
+/* =========================================================================
+   MAIN RENDER DISPATCH
+   ========================================================================= */
+function render() {
+  renderNav();
+  const screen = ROUTE.screen;
+  if (screen === "dashboard") renderDashboard();
+  else if (screen === "profile") renderProfile();
+  else if (screen === "elements") renderElements();
+  else if (screen === "hypothesis") renderHypothesis();
+  else if (screen === "validation") renderValidation();
+  else if (screen === "identity") renderIdentity();
+  else if (screen === "evidence") renderEvidence();
+  else renderDashboard();
+  saveDB();
+}
+
+/* ---------------- Init ---------------- */
+loadDB();
+if (DB.ventures.length === 0) {
+  // Seeded fictional demo venture so first-time users see a real, honest example —
+  // including a deliberate contradiction and an inconclusive item, per spec.
+  const demo = blankVenture();
+  demo.name = "DEMO — Riverside Coffee Kiosk (fictional example)";
+  demo.owner = "Demo data";
+  demo.mode = "new-venture";
+  demo.stage = "Idea, pre-launch";
+  demo.industry = "Food & beverage kiosk";
+  demo.location = "Fictional — Riverside Elementary School area";
+  demo.summary = "This is a sample case included to demonstrate the workflow. Nothing in it is validated — it exists to show what an honest, in-progress case looks like, including an unresolved contradiction.";
+  demo.urgentConstraint = "Sample data only.";
+  demo.desiredOutcome = "Demonstrate the Essential Elements → Hypothesis Phase → decision gate flow.";
+  demo.essentialElements.problem = { ...blankElement(), firstDraft: "Parents waiting to pick up kids have nowhere comfortable to wait for 15–30 minutes.", status: "Ready for Hypothesis Phase", lastUpdated: todayISO() };
+  demo.essentialElements.customer = { ...blankElement(), firstDraft: "Parents and yayas doing school pickup.", status: "Ready for Hypothesis Phase", lastUpdated: todayISO() };
+  demo.essentialElements.solution = { ...blankElement(), firstDraft: "A small coffee and snack kiosk near the school gate.", status: "Ready for Hypothesis Phase", lastUpdated: todayISO() };
+  demo.hypothesis.problemId.whyChain = ["No small business has ever set up right at the pickup point.", "The school gate area was never zoned or offered for small vendors before."];
+  demo.hypothesis.problemId.problemStatement = "Parents/yayas on school pickup lack a comfortable, nearby place to wait. Digging deeper: no small business has ever set up right at the pickup point → the school gate area was never zoned or offered for small vendors before. So at the root, the real issue is that the gate area was never zoned or offered for small vendors before.";
+  demo.hypothesis.segments.push({ ...blankSegment(), name: "Regular pickup parents", occasion: "3–4pm daily school pickup", need: "A comfortable place to sit and maybe grab a coffee while waiting", prioritized: true, description: "Regular pickup parents, especially when 3–4pm daily school pickup. What they want: a comfortable place to sit and maybe grab a coffee while waiting." });
+  demo.hypothesis.competitors.push({ ...blankCompetitor(), name: "7-Eleven, 400m away", strength: "Already trusted, cheap", gap: "No seating, too far to walk with kids in tow" });
+  demo.hypothesis.valueDrivers.push({ ...blankValueDriver("Accessibility/convenience"), category: "Attraction", whyMatters: "Being close enough to walk to without missing pickup is the biggest reason people would choose this over the 7-Eleven." });
+  demo.hypothesis.solutionHypothesis = "This solution stands out through Accessibility/convenience, addressing gaps like: No seating, too far to walk with kids in tow.";
+  demo.evidence.push({ ...blankEvidence(), statement: "Most observed parents stayed within 50m of the gate rather than walking to the 7-Eleven.", label: "FACT", sourceType: "observation", sourceDescription: "3 days of direct field observation at pickup time.", contradictory: "One parent said she'd walk further for better coffee — logged as contradictory evidence, not resolved.", analystNote: "Deliberately left as an open contradiction to demonstrate that the tool surfaces disagreement rather than smoothing it over." });
+  DB.ventures.push(demo);
+  saveDB();
+}
+render();
+</script>
+</body>
+</html>
