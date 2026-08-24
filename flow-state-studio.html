@@ -12,10 +12,40 @@
 <link rel="stylesheet" href="css/style.css?v=20260816c">
 <style>
   /* ---------- Flow State Studio — page-scoped additions ---------- */
-  /* The admission gate callout ahead of the four phases */
+  /* The three Essential Elements — the framework's permanent foundation,
+     not a gate you have to pass before you are allowed to start. */
   .fss-gate {
     border-left: 4px solid var(--pilot-gold);
     margin-bottom: 28px;
+  }
+  /* Assumption -> Hypothesis -> Insight */
+  .fss-ladder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0 0 26px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-text-muted);
+  }
+  .fss-ladder b {
+    background: var(--pilot-cream);
+    color: var(--pilot-rust-dark);
+    border-radius: 100px;
+    padding: 6px 14px;
+    font-weight: 700;
+  }
+  .fss-ladder i { font-style: normal; opacity: 0.5; }
+  .fss-ladder-note {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    max-width: 620px;
+    margin: -14px auto 30px;
   }
   .fss-gate-grid {
     display: grid;
@@ -122,42 +152,46 @@
       <div class="section-head">
         <span class="eyebrow pilot-eyebrow">Why "Flow State"</span>
         <h2 class="pilot-h2">The Flow State Framework</h2>
-        <p>Flow state is that sweet spot where you're neither bored nor overwhelmed — focused, productive, and actually moving. Starting a business rarely feels that way: it's either paralysing or aimless. This framework exists to put you in that state on purpose — a starting gate, then four phases, each small enough to keep you going and structured enough to get you somewhere real.</p>
+        <p>Flow state is that sweet spot where you're neither bored nor overwhelmed — focused, productive, and actually moving. Starting a business rarely feels that way: it's either paralysing or aimless. This framework exists to put you in that state on purpose — four phases, each small enough to keep you going and structured enough to get you somewhere real.</p>
       </div>
 
-      <!-- Essential Elements — the admission gate -->
+      <!-- The three Essential Elements: the permanent foundation -->
       <div class="story-card pilot-card fss-gate reveal">
-        <span class="eyebrow pilot-eyebrow" style="margin-bottom:6px;">Before Phase 1 — The Admission Gate</span>
-        <h3 class="pilot-card-heading" style="font-size:1.2rem;">Essential Elements</h3>
-        <p style="color:var(--color-text-muted); font-size:0.92rem; max-width:640px;">Three quick starting insights — a sentence each is enough. General is fine; you'll go deeper in Phase 1.</p>
+        <span class="eyebrow pilot-eyebrow" style="margin-bottom:6px;">The Foundation — Present in Every Phase</span>
+        <h3 class="pilot-card-heading" style="font-size:1.2rem;">The Three Essential Elements</h3>
+        <p style="color:var(--color-text-muted); font-size:0.92rem; max-width:640px;">Every venture comes down to these three. They aren't a stage you finish and leave behind — you keep developing them right through Hypothesis and Validation.</p>
         <div class="fss-gate-grid">
           <div class="fss-gate-item">
-            <strong>Problem Insight</strong>
-            <span>What gap or hassle have you noticed?</span>
+            <strong>Problem</strong>
+            <span>What gap, difficulty, or undesirable situation have you noticed?</span>
           </div>
           <div class="fss-gate-item">
-            <strong>Customer Insight</strong>
-            <span>Who's affected by this?</span>
+            <strong>Customer</strong>
+            <span>Who do you currently think experiences this?</span>
           </div>
           <div class="fss-gate-item">
-            <strong>Solution Insight</strong>
-            <span>What could help, even roughly?</span>
+            <strong>Solution</strong>
+            <span>What do you currently think could help?</span>
           </div>
         </div>
-        <p class="fss-gate-note">Together these generate a draft <strong>Venture Hypothesis</strong> that carries into Phase 1.</p>
+        <p class="fss-gate-note">You don't need all three figured out to begin. Start with whichever is clearest — the tool helps you develop the ones that aren't, and <strong>"not sure yet"</strong> is a perfectly good answer.</p>
       </div>
+
+      <!-- The progression that governs the whole framework -->
+      <p class="fss-ladder reveal"><b>Assumption</b><i>&rarr;</i><b>Hypothesis</b><i>&rarr;</i><b>Insight</b></p>
+      <p class="fss-ladder-note reveal">Each Essential Element travels the same road. An <strong>assumption</strong> is your best starting answer. A <strong>hypothesis</strong> is that answer sharpened into something you could actually test. An <strong>insight</strong> is what real evidence turns out to support — and nothing earns that word before the evidence is in.</p>
 
       <!-- Four phases -->
       <div class="feature-grid">
         <div class="feature feature-pilot reveal">
           <div class="feature-num">1</div>
           <h3>Hypothesis</h3>
-          <p>Dig into the root cause, break your customers into real segments, and map what makes you stand out — the tool drafts each output for you to review.</p>
+          <p>Start with an Opportunity Snapshot of your three assumptions, explore what <em>might</em> be causing the problem — competing explanations included — then sharpen each element into a testable hypothesis. Phase 1 produces propositions, not proof.</p>
         </div>
         <div class="feature feature-pilot reveal">
           <div class="feature-num">2</div>
           <h3>Validation</h3>
-          <p>Testing the riskiest assumptions carried out of Phase 1, before capital is committed.</p>
+          <p>Test the riskiest hypotheses against real evidence, before capital is committed. Each result is classified honestly — supported, partly, not, or inconclusive — and only a supported one becomes an insight.</p>
         </div>
         <div class="feature feature-pilot reveal">
           <div class="feature-num">3</div>
@@ -184,7 +218,7 @@
         <div>
           <span class="eyebrow pilot-eyebrow" style="color:var(--pilot-gold) !important;">Start Here — No Consultant Required</span>
           <h2>The Flow State Tool</h2>
-          <p>Built for aspiring entrepreneurs who need the right foundation before they spend a peso — draft your Essential Elements and work through Phase 1: Hypothesis on your own. Track your assumptions, gather evidence, and identify gaps before they become expensive mistakes. Validation, Positioning, and Execution phases are in active development.</p>
+          <p>Built for aspiring entrepreneurs and operators who need the right foundation before they spend a peso. Work through Phase 1: Hypothesis and Phase 2: Validation on your own — track what's assumed, gather evidence, and find the gaps before they turn into expensive mistakes. Available in <strong>English and Filipino</strong>, and it works whether you're starting something new or examining a business you already run. Positioning and Execution are in active development.</p>
         </div>
         <div class="cta-actions">
           <a href="flow-state-tool.html" class="btn btn-accent pilot-btn-primary">
@@ -227,7 +261,7 @@
       <div class="section-head">
         <span class="eyebrow pilot-eyebrow">Beyond the Tool</span>
         <h2 class="pilot-h2">When you need more than the tool</h2>
-        <p>The Flow State Tool covers Essential Elements and Phase 1 on your own. When you want a second pair of eyes, or hands-on help executing, these are the ways to bring us in — sized for MSME budgets, not enterprise ones.</p>
+        <p>The Flow State Tool covers Phase 1 and Phase 2 on your own. When you want a second pair of eyes, or hands-on help executing, these are the ways to bring us in — sized for MSME budgets, not enterprise ones.</p>
       </div>
 
       <div class="business-grid">
@@ -241,7 +275,7 @@
           <p>A single focused session to pressure-test what you've drafted in the tool before you commit capital.</p>
           <ul class="fss-includes">
             <li>One 90-minute session</li>
-            <li>Expert review of your Essential Elements &amp; Hypothesis</li>
+            <li>Expert review of your Opportunity Snapshot &amp; Phase 1 hypotheses</li>
             <li>Written summary of gaps &amp; next steps</li>
           </ul>
           <p class="fss-best-for"><strong>Best for:</strong> tool users who want an expert sanity check before moving forward.</p>
