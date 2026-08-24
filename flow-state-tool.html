@@ -606,6 +606,30 @@ const ELEMENT_META = {
   customer: { title: "Customer Insight", why: "Who's affected by this?", placeholder: "hal. mga rider at manggagawa sa paligid" },
   solution: { title: "Solution Insight", why: "What could help, even roughly?", placeholder: "hal. magtayo ng maliit na karenderya" },
 };
+/* Reverse-assist: many operators already know who they sell to and what they
+   sell, but have never had to name the underlying problem — that's a
+   validated real-world gap, not a hypothetical one. Only "problem" has a
+   worked-out assist for now; the same mechanism could extend to the other
+   two combinations later if we see that gap too. */
+const ELEMENT_REVERSE_ASSIST = {
+  problem: {
+    intro: "Alam mo na kung sino ang customer mo at ano ang ibinebenta mo — normal lang na mahirap sabihin kung anong problema ang sinosolusyunan nito. Subukan nating balikan.",
+    questions: [
+      "Bakit sila bumibili sa'yo imbes na wag na lang, o gawin na lang nila mismo?",
+      "Ano ang madalas sabihin ng mga customer mo kapag bumabalik sila o nagre-recommend?",
+    ],
+  },
+};
+function generateReverseInsight(v, key) {
+  const el = v.essentialElements;
+  if (key === "problem") {
+    const c = el.customer.firstDraft.trim();
+    const s = el.solution.firstDraft.trim();
+    if (!c || !s) return "";
+    return `Maaaring ito ang problema: hindi madali para kay/sa "${c}" na makakuha ng katulad ng "${s}" nang mag-isa — kaya sila bumibili o sumasali.`;
+  }
+  return "";
+}
 function renderElements() {
   const v = getVenture(ROUTE.ventureId);
   const main = document.getElementById("fsMain");
@@ -618,15 +642,30 @@ function renderElements() {
     <a class="fs-back-link" data-go="profile">&#8592; ${esc(v.name || "Venture")} profile</a>
     <p class="fs-eyebrow">Essential Elements</p>
     <h1 class="fs-h1">Your starting idea</h1>
-    <p class="fs-lede">Three quick insights — general is completely fine. A sentence each is enough. You'll go deeper once you're in Phase 1.</p>
+    <p class="fs-lede">Three quick insights — general is completely fine. A sentence each is enough. You'll go deeper once you're in Phase 1. Alam mo na ba ang paninda at customer mo pero hindi masabi ang problema? Normal lang 'yan — sagot na rin ng tool 'yan sa'yo.</p>
 
     <div class="fs-card">
-      ${keys.map(key => `
+      ${keys.map(key => {
+        const el = v.essentialElements[key];
+        const others = keys.filter(k => k !== key);
+        const othersFilled = others.every(k => v.essentialElements[k].firstDraft.trim());
+        const assist = ELEMENT_REVERSE_ASSIST[key];
+        const showReverse = !el.firstDraft.trim() && othersFilled && assist;
+        const reverseDraft = showReverse ? generateReverseInsight(v, key) : "";
+        return `
       <div class="fs-field">
         <label>${esc(ELEMENT_META[key].title)}</label>
-        <p class="fs-hint" style="margin:2px 0 8px">${esc(ELEMENT_META[key].why)}</p>
-        <textarea data-el="${key}" data-f="firstDraft" placeholder="${esc(ELEMENT_META[key].placeholder)}">${esc(v.essentialElements[key].firstDraft)}</textarea>
-      </div>`).join("")}
+        ${showReverse ? `
+        <p class="fs-hint" style="margin:2px 0 8px">${esc(assist.intro)}</p>
+        <div class="fs-suggest-box" style="margin-bottom:10px">
+          <div class="fs-suggest-label">Subukan mo munang sagutin</div>
+          <ul style="margin:0;padding-left:18px">${assist.questions.map(q => `<li style="margin-bottom:4px;font-size:13.5px">${esc(q)}</li>`).join("")}</ul>
+        </div>
+        ${reverseDraft ? `<div class="fs-suggest-box" style="margin-bottom:10px"><div class="fs-suggest-label">Suggested draft — confirm before use</div><p>${esc(reverseDraft)}</p><div class="fs-suggest-actions"><button data-use-reverse="${key}">Use suggestion</button></div></div>` : ""}
+        ` : `<p class="fs-hint" style="margin:2px 0 8px">${esc(ELEMENT_META[key].why)}</p>`}
+        <textarea data-el="${key}" data-f="firstDraft" placeholder="${esc(ELEMENT_META[key].placeholder)}">${esc(el.firstDraft)}</textarea>
+      </div>`;
+      }).join("")}
     </div>
 
     <div class="fs-card">
@@ -647,6 +686,13 @@ function renderElements() {
   bindElementCards(v);
 }
 function bindElementCards(v) {
+  document.querySelectorAll("[data-use-reverse]").forEach(btn => btn.addEventListener("click", () => {
+    const key = btn.dataset.useReverse;
+    v.essentialElements[key].firstDraft = generateReverseInsight(v, key);
+    v.essentialElements[key].lastUpdated = todayISO();
+    touchVenture(v);
+    renderElements();
+  }));
   document.querySelectorAll("[data-el]").forEach(field => {
     field.addEventListener("blur", () => {
       const key = field.dataset.el, f = field.dataset.f;
