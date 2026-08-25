@@ -175,6 +175,19 @@ table.fs-table tr:last-child td{border-bottom:none}
 .fs-insight-chip.is-insight{border-color:var(--fs-fact);background:var(--fs-fact-soft);color:var(--fs-fact);font-weight:600}
 .fs-demo-flag{background:var(--fs-assumption-soft);border:1px solid #ecd9ae;border-radius:var(--fs-radius);padding:11px 15px;margin-bottom:20px;font-size:12.5px;line-height:1.55;color:#7a5409}
 .fs-status-line{display:inline-block;font-size:12px;font-weight:600;color:var(--fs-accent-dark);background:var(--fs-accent-soft);border-radius:100px;padding:4px 12px}
+.fs-sample-block{margin-top:34px;padding-top:22px;border-top:1px dashed #e0cba6}
+.fs-sample-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+.fs-sample-head strong{display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--fs-ink-soft)}
+.fs-sample-head span{display:block;font-size:12.5px;color:var(--fs-ink-soft);max-width:520px;line-height:1.55;margin-top:3px}
+.fs-sample-block .fs-venture-card{opacity:.82}
+.fs-sample-block .fs-venture-card:hover{opacity:1}
+.fs-coverage{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 0 14px}
+@media(max-width:560px){.fs-coverage{grid-template-columns:1fr}}
+.fs-coverage-cell{border:1.5px dashed #e0cba6;border-radius:var(--fs-radius-sm);padding:10px 12px;background:var(--fs-bg)}
+.fs-coverage-cell.is-on{border-style:solid;border-color:var(--fs-fact);background:var(--fs-fact-soft)}
+.fs-coverage-cell strong{display:block;font-size:12.5px;color:var(--fs-ink)}
+.fs-coverage-cell span{font-size:11.5px;color:var(--fs-ink-soft)}
+.fs-coverage-cell.is-on span{color:var(--fs-fact);font-weight:600}
 .fs-coach{background:var(--fs-assumption-soft);border:1px solid #ecd9ae;border-left:3px solid var(--fs-assumption);border-radius:6px;padding:14px 16px;margin-bottom:18px}
 .fs-coach-head{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#7a5409;margin-bottom:10px}
 .fs-coach-item{margin-bottom:11px}
@@ -282,6 +295,16 @@ const CONFIG = {
   nextMoves: ["", "Refine", "Retest", "Replace", "Reject"],
   ventureStatuses: ["Opportunity Snapshot not started", "Opportunity Snapshot in progress", "Hypotheses in development", "Ready for validation", "Validation in progress", "Insights sufficiently supported"],
   valueDriverCategories: ["Attraction", "Conversion", "Retention"],
+  /* The alternatives that actually beat most new ventures are not shops.
+     They are inertia, self-service and substitution — so the tool seeds
+     those by name rather than waiting for the user to think of them. */
+  alternativeStarters: [
+    { id: "nothing", name: "Doing nothing / putting up with it", strength: "Costs nothing, needs no decision, and never disappoints them." },
+    { id: "self", name: "Doing it themselves", strength: "Already a habit, and feels free even when it is not." },
+    { id: "further", name: "Going somewhere further away", strength: "Known, trusted, and already part of another trip they make." },
+    { id: "ask", name: "Asking family, a neighbour or a workmate", strength: "Free, immediate, and comes with no risk of a bad purchase." },
+    { id: "substitute", name: "A rough substitute", strength: "Not ideal, but good enough that the problem stops being urgent." },
+  ],
   starterValueDrivers: ["Accessibility/convenience", "Affordability", "Ambience/aesthetics/design", "Hospitality", "Product/service quality", "Experiences/community"],
 };
 
@@ -530,6 +553,7 @@ function blankVenture() {
       segments: [],
       competitors: [],
       valueDrivers: [],
+      smallestTest: "",
       solutionHypothesis: "",
       riskiestAssumptions: "",
       decisionGate: { decision: "Not Yet Assessed", date: "", notes: "" },
@@ -559,11 +583,15 @@ function blankCoreValue(value) { return { id: uid(), value: value || "", definit
 function blankSegment() {
   return { id: uid(), name: "", occasion: "", need: "", prioritized: false, description: "" };
 }
-function blankCompetitor() {
-  return { id: uid(), name: "", strength: "", gap: "" };
+function blankCompetitor(name, strength, kind) {
+  /* "kind" records whether this is a business or the status quo, so the tool
+     can tell the difference without guessing from the name. */
+  return { id: uid(), name: name || "", strength: strength || "", gap: "", whyStay: "", kind: kind || "" };
 }
 function blankValueDriver(name) {
-  return { id: uid(), name: name || "", category: "Attraction", whyMatters: "" };
+  /* "beats" ties a driver to the alternative it is supposed to win against.
+     A driver that beats nothing in particular is a compliment, not a claim. */
+  return { id: uid(), name: name || "", category: "Attraction", whyMatters: "", beats: "" };
 }
 function blankEvidence() {
   return { id: uid(), statement: "", label: "ASSUMPTION", sourceDescription: "", sourceType: "observation", dateGathered: todayISO(), segment: "", occasion: "", fileLink: "", validationNeeded: "Yes", contradictory: "", analystNote: "" };
@@ -651,6 +679,12 @@ function migrateVenture(v) {
   if (typeof pid.frequency !== "string") pid.frequency = "";
   if (typeof pid.consequence !== "string") pid.consequence = "";
   if (typeof pid.problemStatement !== "string") pid.problemStatement = "";
+  if (typeof v.hypothesis.smallestTest !== "string") v.hypothesis.smallestTest = "";
+  (v.hypothesis.competitors || []).forEach(c => {
+    if (typeof c.whyStay !== "string") c.whyStay = "";
+    if (typeof c.kind !== "string") c.kind = "";
+  });
+  (v.hypothesis.valueDrivers || []).forEach(d => { if (typeof d.beats !== "string") d.beats = ""; });
 
   /* Phase 2 outcome classification. */
   VALIDATION_KEYS.forEach(k => {
@@ -958,18 +992,132 @@ function generateSegmentDescriptionDraft(seg) {
   if (seg.need.trim()) s += t(". What they want: %1", seg.need.trim());
   return s + (/[.!?]$/.test(s) ? "" : ".");
 }
-function generateSolutionHypothesisDraft(v) {
-  const driverNames = v.hypothesis.valueDrivers.map(d => d.name.trim()).filter(Boolean);
-  const gapNotes = v.hypothesis.competitors.map(c => c.gap.trim()).filter(Boolean);
-  if (!driverNames.length && !gapNotes.length) return "";
-  let s = "";
-  if (driverNames.length) s += t("This solution stands out through %1", driverNames.join(", "));
-  if (gapNotes.length) {
-    s += s ? ", " + t("addressing gaps like: %1", gapNotes.join("; "))
-           : t("This solution addresses gaps like: %1", gapNotes.join("; "));
-  }
-  return s ? s + "." : "";
+/* =========================================================================
+   SOLUTION STRATEGY CHECKS
+   Three failure modes a solution can have, and the tool should name them:
+   a differentiator nobody would switch for, an alternative you never
+   counted (usually inertia), and a claim too abstract to test.
+   ========================================================================= */
+
+/* Manually typed alternatives get keyword-matched; ones added from a starter
+   carry kind:"status-quo" and need no guessing. */
+const STATUS_QUO_HINTS = [
+  /\bnothing\b/i, /\bthemselves\b/i, /\bown\b/i, /\bhome\b/i, /\bput up\b/i, /\bskip\b/i, /\bwithout\b/i,
+  /\bwala\b/i, /\bsarili\b/i, /\bbahay\b/i, /\btiis\b/i, /\bhindi na lang\b/i,
+];
+function countsAsStatusQuo(c) {
+  return c.kind === "status-quo" || STATUS_QUO_HINTS.some(re => re.test(c.name || ""));
 }
+function namedCompetitors(v) { return v.hypothesis.competitors.filter(c => (c.name || "").trim()); }
+function namedDrivers(v) { return v.hypothesis.valueDrivers.filter(d => (d.name || "").trim()); }
+
+/* Attraction / Conversion / Retention are three different ways to fail, not
+   three labels. Missing one has a specific consequence worth naming. */
+const COVERAGE_CONSEQUENCE = {
+  "Attraction": "Nothing here explains why anyone would notice you in the first place.",
+  "Conversion": "Nothing here explains why someone who turns up actually buys. Traffic without conversion is a busy shop losing money.",
+  "Retention": "Nothing here explains why anyone comes back. Without repeat custom you pay to win every peso of revenue, forever.",
+};
+function driverCoverage(v) {
+  const counts = {};
+  CONFIG.valueDriverCategories.forEach(c => { counts[c] = 0; });
+  namedDrivers(v).forEach(d => { if (counts[d.category] !== undefined) counts[d.category]++; });
+  return counts;
+}
+
+function solutionGaps(v) {
+  const h = v.hypothesis;
+  const comps = namedCompetitors(v);
+  const drivers = namedDrivers(v);
+  const gaps = [];
+
+  if (!comps.length) {
+    gaps.push({
+      label: "Nothing recorded for what people do today",
+      why: "You cannot claim to be better than an alternative you have not named. Start with what happens if you never open.",
+      example: "\"Doing nothing / putting up with it\" is a real competitor, and usually the strongest one.",
+    });
+  } else if (!comps.some(countsAsStatusQuo)) {
+    gaps.push({
+      label: "Every alternative you listed is a business",
+      why: "Most new ventures do not lose to a rival shop. They lose to people carrying on exactly as they are, which costs nothing and disappoints nobody.",
+      example: "Add \"Doing nothing / putting up with it\" and write honestly what makes that comfortable.",
+    });
+  }
+
+  const unbacked = drivers.filter(d => !(d.whyMatters || "").trim());
+  if (unbacked.length) {
+    gaps.push({
+      label: "\"%1\" has no reason anyone would switch for it",
+      labelArgs: [unbacked[0].name.trim()],
+      why: "Every operator believes they have good service and good products. A driver only counts if it would move someone off what they already do.",
+      example: "Not \"our coffee is good\" but \"they would walk past the 7-Eleven for it\".",
+    });
+  }
+
+  const untied = drivers.filter(d => !(d.beats || "").trim());
+  if (comps.length && untied.length) {
+    gaps.push({
+      label: "\"%1\" is not pointed at anything",
+      labelArgs: [untied[0].name.trim()],
+      why: "A differentiator has to beat something specific. Pick the alternative it wins against, or it is a compliment rather than a claim.",
+      example: "\"Being at the gate\" beats \"going somewhere further away\" — not everything at once.",
+    });
+  }
+
+  const noSwitchCost = comps.filter(c => !(c.whyStay || "").trim());
+  if (comps.length && noSwitchCost.length === comps.length) {
+    gaps.push({
+      label: "No reason recorded why anyone would stay put",
+      why: "The reasons people do not switch are usually stronger than the reasons they would. Writing them down is what stops a hypothesis being wishful.",
+      example: "\"It is free, and they are already standing there anyway.\"",
+    });
+  }
+
+  if (!(h.smallestTest || "").trim()) {
+    gaps.push({
+      label: "No smallest version named",
+      why: "Phase 2 tests an offer, not a concept. If you cannot say what you would put in front of someone next week, there is nothing to validate.",
+      example: "A 3-day pop-up cart at the gate, 3–4pm, one drink and one snack, ₱65.",
+    });
+  }
+  return gaps;
+}
+
+/* Two parts, both testable: what you would actually put in front of someone,
+   and the comparative bet that says why they would take it. */
+function generateSolutionHypothesisDraft(v) {
+  const h = v.hypothesis;
+  const drivers = namedDrivers(v);
+  const comps = namedCompetitors(v);
+  const frag = (x) => (x || "").trim().replace(/[.!?;,]+$/, "");
+  const stop = (x) => /[.!?]$/.test(x) ? x : x + ".";
+  const lower = (x) => x.charAt(0).toLowerCase() + x.slice(1);
+  const gap = (key) => "[" + t(key) + "]";
+
+  const offer = frag(h.smallestTest) || frag(assumptionText(v, "solution"));
+  if (!offer && !drivers.length && !comps.length) return "";
+
+  const who = frag(assumptionText(v, "customer")) || gap("who exactly?");
+  const lines = [];
+  lines.push(t("The offer: %1", stop(offer || gap("what exactly is the offer?"))));
+
+  const reasons = drivers.map(d => frag(d.whyMatters) || frag(d.name)).filter(Boolean);
+  const beaten = drivers.map(d => comps.find(c => c.id === d.beats)).filter(Boolean)
+    .map(c => frag(c.name)).filter((x, k, a) => a.indexOf(x) === k);
+  if (reasons.length) {
+    lines.push(beaten.length
+      ? t("%1 would choose it over %2 because %3", who, beaten.join(", "), stop(lower(reasons.join("; "))))
+      : t("%1 would choose it because %2", who, stop(lower(reasons.join("; ")))));
+  }
+
+  const hardest = comps.filter(c => (c.whyStay || "").trim())[0];
+  if (hardest) lines.push(t("The hardest alternative to beat is %1 — %2", frag(hardest.name), stop(lower(frag(hardest.whyStay)))));
+
+  lines.push(t("Untested: whether that difference is enough to actually change what they do."));
+  return lines.join("\n");
+}
+
 function hypothesisGateComplete(v) {
   const h = v.hypothesis;
   return h.problemId.problemStatement.trim().length > 0 && h.segments.some(s => s.prioritized) && h.competitors.length > 0 && h.valueDrivers.length > 0;
@@ -1203,7 +1351,7 @@ function renderNav() {
       <div><strong>Flow State</strong><small>${esc(t("Entrepreneurship Tool"))}</small></div>
     </div>
     <div class="fs-nav-section">
-      <button class="fs-nav-item ${ROUTE.screen === "dashboard" ? "is-active" : ""}" data-go="dashboard"><span class="dot"></span> ${esc(t("Portfolio Dashboard"))}</button>
+      <button class="fs-nav-item ${ROUTE.screen === "dashboard" ? "is-active" : ""}" data-go="dashboard"><span class="dot"></span> ${esc(workspaceTitle())}</button>
     </div>
     ${v ? `
     <div class="fs-nav-label">${esc(v.name || t("Untitled venture"))}</div>
@@ -1235,6 +1383,16 @@ function renderNav() {
 /* =========================================================================
    RENDER: DASHBOARD
    ========================================================================= */
+/* The tool has no backend and no accounts: everything lives in this
+   browser's localStorage, so a user only ever sees their own work. The
+   framing should say so — "portfolio" is consultant language and reads as
+   somebody else's filing cabinet when you own one small business. */
+function ownVentures() { return DB.ventures.filter(v => !isSeededDemo(v)); }
+function sampleVentures() { return DB.ventures.filter(isSeededDemo); }
+function workspaceTitle() {
+  if (DB.settings.defaultMode === "consultant-case") return t("Portfolio Dashboard");
+  return ownVentures().length > 1 ? t("My Ventures") : t("My Business");
+}
 function renderDashboard() {
   const main = document.getElementById("fsMain");
   const cards = DB.ventures.map(v => {
@@ -1252,12 +1410,17 @@ function renderDashboard() {
       </div>
       <div class="fs-vc-meta" style="margin-top:10px"><span class="fs-status-line">${esc(status)}</span>${gateNote}</div>
     </div>`;
-  }).join("");
+  });
+  const mine = ownVentures();
+  const samples = sampleVentures();
+  const cardFor = (v) => cards[DB.ventures.indexOf(v)];
+  const mineCards = mine.map(cardFor).join("");
+  const sampleCards = samples.map(cardFor).join("");
 
   main.innerHTML = `
     <p class="fs-eyebrow">${esc(t("Flow State Entrepreneurship & Business Solutions Tool"))}</p>
-    <h1 class="fs-h1">${esc(t("Portfolio Dashboard"))}</h1>
-    <p class="fs-lede">${esc(t("Move a business idea or an existing-business problem toward evidence-based decisions. Every venture travels the same road — starting assumptions become testable hypotheses, and only evidence turns a hypothesis into an insight."))}</p>
+    <h1 class="fs-h1">${esc(workspaceTitle())}</h1>
+    <p class="fs-lede">${esc(t("Everything here is yours alone — it is saved in this browser, not sent anywhere, and nobody else can see it."))}</p>
     ${ladder("Assumption")}
 
     <div style="display:flex;justify-content:flex-end;margin-bottom:18px;gap:10px">
@@ -1265,12 +1428,24 @@ function renderDashboard() {
       <button class="fs-btn" id="fsNewVenture">${esc(t("+ New Venture / Case"))}</button>
     </div>
 
-    ${DB.ventures.length ? `<div class="fs-dash-grid">${cards}</div>` : `
+    ${mine.length ? `<div class="fs-dash-grid">${mineCards}</div>` : `
       <div class="fs-empty">
-        <h3>${esc(t("No ventures or cases yet"))}</h3>
+        <h3>${esc(t("Nothing of your own yet"))}</h3>
         <p>${esc(t("Start with whatever is clearest to you — a problem you have noticed, a customer you understand, or a solution idea. You do not need all three figured out to begin."))}</p>
         <button class="fs-btn" id="fsNewVenture2" style="margin-top:14px">${esc(t("Start New Case"))}</button>
       </div>`}
+
+    ${samples.length ? `
+    <div class="fs-sample-block">
+      <div class="fs-sample-head">
+        <div>
+          <strong>${esc(t("Sample case"))}</strong>
+          <span>${esc(t("Ours, not yours — a worked fictional example you can poke at. Remove it whenever you like."))}</span>
+        </div>
+        <button class="fs-btn fs-btn-ghost fs-btn-sm" id="fsRemoveSample">${esc(t("Remove sample"))}</button>
+      </div>
+      <div class="fs-dash-grid">${sampleCards}</div>
+    </div>` : ""}
   `;
 
   main.querySelectorAll("[data-open]").forEach(c => c.addEventListener("click", () => go("profile", c.dataset.open)));
@@ -1281,6 +1456,13 @@ function renderDashboard() {
     saveDB();
     go("profile", v.id);
   };
+  document.getElementById("fsRemoveSample")?.addEventListener("click", () => {
+    if (!confirm(t("Remove the sample case? It is only an example — none of your own work is affected."))) return;
+    DB.ventures = DB.ventures.filter(v => !isSeededDemo(v));
+    DB.settings.sampleRemoved = true;
+    saveDB();
+    go("dashboard");
+  });
   document.getElementById("fsNewVenture")?.addEventListener("click", startNew);
   document.getElementById("fsNewVenture2")?.addEventListener("click", startNew);
   document.getElementById("fsImportFile")?.addEventListener("change", handleImport);
@@ -1320,6 +1502,77 @@ function exportDB() {
    RENDER: VENTURE / CASE PROFILE
    ========================================================================= */
 addFil({
+  /* --- personal workspace --- */
+  "My Business": "Ang Negosyo Ko",
+  "My Ventures": "Ang Mga Negosyo Ko",
+  "Everything here is yours alone — it is saved in this browser, not sent anywhere, and nobody else can see it.": "Sa'yo lang lahat ng nandito — naka-save ito sa browser na ito, hindi ipinapadala kahit saan, at walang ibang makakakita nito.",
+  "Nothing of your own yet": "Wala ka pang sarili mong kaso",
+  "Sample case": "Halimbawang kaso",
+  "Ours, not yours — a worked fictional example you can poke at. Remove it whenever you like.": "Sa amin ito, hindi sa'yo — kathang-isip na halimbawang pwede mong galugarin. Alisin mo kahit kailan.",
+  "Remove sample": "Alisin ang halimbawa",
+  "Remove the sample case? It is only an example — none of your own work is affected.": "Alisin ang halimbawang kaso? Halimbawa lang ito — walang maaapektuhan sa sarili mong ginawa.",
+
+  /* --- solution strategy --- */
+  "What people do today": "Ang ginagawa nila ngayon",
+  "+ Add Alternative": "+ Magdagdag ng Alternatibo",
+  "Every alternative here is something you have to beat — including the option of carrying on exactly as they are. Start with the ones people rarely write down.": "Bawat alternatibo dito ay kailangan mong talunin — kasama ang opsyong magpatuloy lang sila sa ginagawa nila. Magsimula sa mga bihirang isulat.",
+  "The alternatives most people forget": "Ang mga alternatibong madalas makalimutan",
+  "Doing nothing / putting up with it": "Walang gagawin / titiisin na lang",
+  "Costs nothing, needs no decision, and never disappoints them.": "Walang gastos, walang desisyong kailangan, at hindi sila nabibigo kailanman.",
+  "Doing it themselves": "Gagawin nila mismo",
+  "Already a habit, and feels free even when it is not.": "Nakasanayan na, at parang libre kahit hindi naman talaga.",
+  "Going somewhere further away": "Pupunta sa mas malayo",
+  "Known, trusted, and already part of another trip they make.": "Kilala, pinagkakatiwalaan, at bahagi na ng ibang lakad nila.",
+  "Asking family, a neighbour or a workmate": "Hihingi sa pamilya, kapitbahay o katrabaho",
+  "Free, immediate, and comes with no risk of a bad purchase.": "Libre, agad, at walang panganib na masayang ang pera.",
+  "A rough substitute": "Isang pansamantalang kapalit",
+  "Not ideal, but good enough that the problem stops being urgent.": "Hindi perpekto, pero sapat na para hindi na madalian ang problema.",
+  "Why might they stick with this anyway?": "Bakit kaya sila mananatili pa rin dito?",
+  "e.g. it is free, and they are already standing there": "hal. libre ito, at nandoon na naman sila nakatayo",
+
+  "A value driver is a reason someone picks you over what they do today — not a quality you would claim about yourself. Every operator thinks their coffee is good; the question is who would change their routine for it.": "Ang value driver ay dahilan kung bakit ka pipiliin kaysa sa ginagawa nila ngayon — hindi isang katangiang sasabihin mo tungkol sa sarili mo. Lahat ng may negosyo ay naniniwalang masarap ang kape nila; ang tanong ay sino ang magbabago ng nakagawian para dito.",
+  "Which alternative does this beat?": "Aling alternatibo ang tinatalo nito?",
+  "— not pointed at anything yet —": "— wala pang tinuturo —",
+  "Why would someone switch for this?": "Bakit magpapalit ang isang tao para dito?",
+  "e.g. they would walk past the 7-Eleven for it": "hal. lalampasan nila ang 7-Eleven para dito",
+  "%1 recorded": "%1 ang naitala",
+  "none yet": "wala pa",
+  "Nothing here explains why anyone would notice you in the first place.": "Wala ritong nagpapaliwanag kung bakit ka mapapansin sa simula pa lang.",
+  "Nothing here explains why someone who turns up actually buys. Traffic without conversion is a busy shop losing money.": "Wala ritong nagpapaliwanag kung bakit bibili ang dumating. Ang daming tao na walang bumibili ay abalang tindahan na nalulugi.",
+  "Nothing here explains why anyone comes back. Without repeat custom you pay to win every peso of revenue, forever.": "Wala ritong nagpapaliwanag kung bakit sila babalik. Kung walang bumabalik, magbabayad ka para sa bawat pisong kita, habambuhay.",
+
+  "Where this claim is currently weak": "Saan mahina ang pahayag na ito ngayon",
+  "Nothing recorded for what people do today": "Walang naitala kung ano ang ginagawa nila ngayon",
+  "You cannot claim to be better than an alternative you have not named. Start with what happens if you never open.": "Hindi mo masasabing mas maganda ka kaysa sa alternatibong hindi mo pa napapangalanan. Magsimula sa kung ano ang mangyayari kung hindi ka magbukas.",
+  "\"Doing nothing / putting up with it\" is a real competitor, and usually the strongest one.": "Tunay na kakumpitensya ang \"walang gagawin / titiisin na lang\", at madalas ito ang pinakamalakas.",
+  "Every alternative you listed is a business": "Puro negosyo ang mga alternatibong nailista mo",
+  "Most new ventures do not lose to a rival shop. They lose to people carrying on exactly as they are, which costs nothing and disappoints nobody.": "Karamihan sa bagong negosyo ay hindi natatalo ng karibal na tindahan. Natatalo sila ng mga taong nagpapatuloy lang sa ginagawa nila — walang gastos, walang nabibigo.",
+  "Add \"Doing nothing / putting up with it\" and write honestly what makes that comfortable.": "Idagdag ang \"walang gagawin / titiisin na lang\" at isulat nang tapat kung bakit ito komportable.",
+  "\"%1\" has no reason anyone would switch for it": "Walang dahilan ang \"%1\" para may magpalit",
+  "Every operator believes they have good service and good products. A driver only counts if it would move someone off what they already do.": "Lahat ng may negosyo ay naniniwalang maganda ang serbisyo at produkto nila. Bibilang lang ang driver kung maiaalis nito ang tao sa ginagawa na nila.",
+  "Not \"our coffee is good\" but \"they would walk past the 7-Eleven for it\".": "Hindi \"masarap ang kape namin\" kundi \"lalampasan nila ang 7-Eleven para dito\".",
+  "\"%1\" is not pointed at anything": "Walang tinuturo ang \"%1\"",
+  "A differentiator has to beat something specific. Pick the alternative it wins against, or it is a compliment rather than a claim.": "Kailangang may tiyak na tinatalo ang pagkakaiba. Pumili ng alternatibong pinapanalunan nito, kung hindi ay papuri lang ito at hindi pahayag.",
+  "\"Being at the gate\" beats \"going somewhere further away\" — not everything at once.": "Ang \"nasa gate\" ay tinatalo ang \"pupunta sa mas malayo\" — hindi lahat nang sabay.",
+  "No reason recorded why anyone would stay put": "Walang naitalang dahilan kung bakit mananatili sila",
+  "The reasons people do not switch are usually stronger than the reasons they would. Writing them down is what stops a hypothesis being wishful.": "Mas malakas kadalasan ang dahilan ng hindi pagpapalit kaysa sa dahilan ng pagpapalit. Ang pagsulat nito ang pumipigil sa hipotesis na maging pangarap lang.",
+  "\"It is free, and they are already standing there anyway.\"": "\"Libre ito, at nandoon na naman sila nakatayo.\"",
+  "No smallest version named": "Walang napangalanang pinakamaliit na bersyon",
+  "Phase 2 tests an offer, not a concept. If you cannot say what you would put in front of someone next week, there is nothing to validate.": "Alok ang sinusubok ng Yugto 2, hindi konsepto. Kung hindi mo masabi kung ano ang ilalagay mo sa harap ng tao sa susunod na linggo, walang mapapatunayan.",
+  "A 3-day pop-up cart at the gate, 3–4pm, one drink and one snack, ₱65.": "3-araw na pop-up cart sa gate, 3–4pm, isang inumin at isang meryenda, ₱65.",
+
+  "Two parts, both testable: what you would actually put in front of someone, and why they would take it instead of their current option.": "Dalawang bahagi, pareho masusubok: kung ano talaga ang ilalagay mo sa harap ng tao, at kung bakit nila ito kukunin sa halip na ang meron sila ngayon.",
+  "The smallest version you could test within a week": "Ang pinakamaliit na bersyong kaya mong subukan sa loob ng isang linggo",
+  "No lease, no loan, no hiring. If you cannot name one, Phase 2 has nothing to validate — and that is worth knowing now rather than after you sign something.": "Walang upa, walang utang, walang kukuning tao. Kung wala kang maisip, walang mapapatunayan ang Yugto 2 — at mas mabuting malaman ito ngayon kaysa pagkatapos mong pumirma ng kahit ano.",
+  "e.g. a 3-day pop-up cart at the gate, 3-4pm, one drink and one snack": "hal. 3-araw na pop-up cart sa gate, 3-4pm, isang inumin at isang meryenda",
+  "Add an alternative or a value driver above to generate a draft.": "Magdagdag ng alternatibo o value driver sa itaas para makabuo ng draft.",
+  "The offer: %1": "Ang alok: %1",
+  "what exactly is the offer?": "ano nga ba talaga ang alok?",
+  "%1 would choose it over %2 because %3": "Pipiliin ito ng %1 kaysa sa %2 dahil %3",
+  "%1 would choose it because %2": "Pipiliin ito ng %1 dahil %2",
+  "The hardest alternative to beat is %1 — %2": "Ang pinakamahirap talunin na alternatibo ay ang %1 — %2",
+  "Untested: whether that difference is enough to actually change what they do.": "Hindi pa nasusubok: kung sapat ba ang pagkakaibang iyon para talagang magbago ang ginagawa nila.",
+
   /* --- specificity coach --- */
   "Make this sharper before you test it": "Hasain muna ito bago subukan",
   "Sharpen who this is": "Linawin kung sino ito",
@@ -1908,7 +2161,7 @@ function coachPanel(gaps, heading) {
     <div class="fs-coach-head">${esc(t(heading))}</div>
     ${gaps.map(g => `
       <div class="fs-coach-item">
-        <strong>${esc(t(g.label))}</strong>
+        <strong>${esc(g.labelArgs ? t(g.label, ...g.labelArgs) : t(g.label))}</strong>
         ${g.why ? `<p>${esc(t(g.why))}</p>` : ""}
         <span>${esc(t(g.example))}</span>
       </div>`).join("")}
@@ -2022,29 +2275,54 @@ function renderSolutionDiscovery(v) {
   const comps = v.hypothesis.competitors;
   const drivers = v.hypothesis.valueDrivers;
   const draft = generateSolutionHypothesisDraft(v);
+  const coverage = driverCoverage(v);
+  const named = namedCompetitors(v);
   return `
-  <div class="fs-card">
-    <div class="fs-card-head"><h3>${esc(t("Value Drivers"))}</h3><button class="fs-btn fs-btn-sm" id="vd_add">${esc(t("+ Add Value Driver"))}</button></div>
-    <p class="fs-hint">${esc(t("What makes people notice you, choose you, and come back? Tap a starter or add your own."))}</p>
-    <div class="fs-suggest-box"><div class="fs-suggest-label">${esc(t("Starter ideas"))}</div><div class="fs-suggest-actions">${CONFIG.starterValueDrivers.map(d => `<button data-add-starter="${esc(t(d))}">+ ${esc(t(d))}</button>`).join("")}</div></div>
-    ${drivers.map(d => renderDriverCard(d)).join("")}
-  </div>
+  ${coachPanel(solutionGaps(v), "Where this claim is currently weak")}
 
   <div class="fs-card">
-    <div class="fs-card-head"><h3>${esc(t("Competitors & Alternatives"))}</h3><button class="fs-btn fs-btn-sm" id="comp_add">${esc(t("+ Add Competitor"))}</button></div>
-    <p class="fs-hint">${esc(t("How do people currently handle this without you? A quick look, not deep research."))}</p>
+    <div class="fs-card-head"><h3>${esc(t("What people do today"))}</h3><button class="fs-btn fs-btn-sm" id="comp_add">${esc(t("+ Add Alternative"))}</button></div>
+    <p class="fs-hint">${esc(t("Every alternative here is something you have to beat — including the option of carrying on exactly as they are. Start with the ones people rarely write down."))}</p>
+    <div class="fs-suggest-box">
+      <div class="fs-suggest-label">${esc(t("The alternatives most people forget"))}</div>
+      <div class="fs-suggest-actions">${CONFIG.alternativeStarters.map(a => `<button data-add-alt="${a.id}">${esc(t(a.name))}</button>`).join("")}</div>
+    </div>
     ${comps.length === 0 ? `<p class="fs-hint" style="margin:0">${esc(t("None recorded yet."))}</p>` : comps.map(c => renderCompetitorCard(c)).join("")}
   </div>
 
   <div class="fs-card">
+    <div class="fs-card-head"><h3>${esc(t("Value Drivers"))}</h3><button class="fs-btn fs-btn-sm" id="vd_add">${esc(t("+ Add Value Driver"))}</button></div>
+    <p class="fs-hint">${esc(t("A value driver is a reason someone picks you over what they do today — not a quality you would claim about yourself. Every operator thinks their coffee is good; the question is who would change their routine for it."))}</p>
+    <div class="fs-suggest-box"><div class="fs-suggest-label">${esc(t("Starter ideas"))}</div><div class="fs-suggest-actions">${CONFIG.starterValueDrivers.map(d => `<button data-add-starter="${esc(t(d))}">+ ${esc(t(d))}</button>`).join("")}</div></div>
+
+    <div class="fs-coverage">
+      ${CONFIG.valueDriverCategories.map(c => `
+        <div class="fs-coverage-cell ${coverage[c] ? "is-on" : ""}">
+          <strong>${esc(t(c))}</strong>
+          <span>${coverage[c] ? esc(t("%1 recorded", coverage[c])) : esc(t("none yet"))}</span>
+        </div>`).join("")}
+    </div>
+    ${CONFIG.valueDriverCategories.filter(c => !coverage[c]).map(c => `<p class="fs-hint" style="margin:0 0 6px"><strong>${esc(t(c))}:</strong> ${esc(t(COVERAGE_CONSEQUENCE[c]))}</p>`).join("")}
+
+    ${drivers.map(d => renderDriverCard(d, named)).join("")}
+  </div>
+
+  <div class="fs-card">
     <div class="fs-card-head"><h3>${esc(t("Solution Hypothesis"))}</h3><span class="fs-pill fs-pill-assumption">${esc(t("Not yet tested"))}</span></div>
-    <p class="fs-hint">${esc(t("Pulled together from your value drivers and competitor gaps above. This is a proposition about what would help — Phase 2 decides whether it actually does."))}</p>
+    <p class="fs-hint">${esc(t("Two parts, both testable: what you would actually put in front of someone, and why they would take it instead of their current option."))}</p>
     <div class="fs-example">${esc(t('Your solution assumption: "%1"', assumptionEcho(v, "solution")))}</div>
-    ${draft ? suggestBox(draft, `<button id="sol_use_sug">${esc(t("Use suggestion"))}</button>`) : `<p class="fs-hint" style="margin:0">${esc(t("Add at least one value driver or competitor above to generate a draft."))}</p>`}
-    <div class="fs-field"><label>${esc(t("Solution Hypothesis"))}</label><textarea id="sol_hypothesis">${esc(v.hypothesis.solutionHypothesis)}</textarea></div>
+
+    <div class="fs-field">
+      <label>${esc(t("The smallest version you could test within a week"))}</label>
+      <p class="fs-hint" style="margin:2px 0 9px">${esc(t("No lease, no loan, no hiring. If you cannot name one, Phase 2 has nothing to validate — and that is worth knowing now rather than after you sign something."))}</p>
+      <input type="text" id="sol_smallest" value="${esc(v.hypothesis.smallestTest)}" placeholder="${esc(t("e.g. a 3-day pop-up cart at the gate, 3-4pm, one drink and one snack"))}">
+    </div>
+
+    ${draft ? suggestBox(draft, `<button id="sol_use_sug">${esc(t("Use suggestion"))}</button>`) : `<p class="fs-hint" style="margin:0">${esc(t("Add an alternative or a value driver above to generate a draft."))}</p>`}
+    <div class="fs-field"><label>${esc(t("Solution Hypothesis"))}</label><textarea id="sol_hypothesis" style="min-height:120px">${esc(v.hypothesis.solutionHypothesis)}</textarea></div>
   </div>`;
 }
-function renderDriverCard(d) {
+function renderDriverCard(d, alternatives) {
   return `
   <div class="fs-card" style="background:var(--fs-bg)" data-driver="${d.id}">
     <div class="fs-card-head">
@@ -2053,8 +2331,15 @@ function renderDriverCard(d) {
     </div>
     <div class="fs-field-row">
       <div class="fs-field"><label>${esc(t("Category"))}</label><select data-f="category">${CONFIG.valueDriverCategories.map(c => `<option value="${esc(c)}" ${d.category === c ? "selected" : ""}>${esc(t(c))}</option>`).join("")}</select></div>
-      <div class="fs-field"><label>${esc(t("Why this matters"))}</label><input type="text" data-f="whyMatters" value="${esc(d.whyMatters)}"></div>
+      <div class="fs-field">
+        <label>${esc(t("Which alternative does this beat?"))}</label>
+        <select data-f="beats">
+          <option value="">${esc(t("— not pointed at anything yet —"))}</option>
+          ${(alternatives || []).map(c => `<option value="${esc(c.id)}" ${d.beats === c.id ? "selected" : ""}>${esc(c.name)}</option>`).join("")}
+        </select>
+      </div>
     </div>
+    <div class="fs-field"><label>${esc(t("Why would someone switch for this?"))}</label><input type="text" data-f="whyMatters" value="${esc(d.whyMatters)}" placeholder="${esc(t("e.g. they would walk past the 7-Eleven for it"))}"></div>
   </div>`;
 }
 function renderCompetitorCard(c) {
@@ -2068,6 +2353,7 @@ function renderCompetitorCard(c) {
       <div class="fs-field"><label>${esc(t("What they do well"))}</label><input type="text" data-f="strength" value="${esc(c.strength)}"></div>
       <div class="fs-field"><label>${esc(t("The gap you would fill"))}</label><input type="text" data-f="gap" value="${esc(c.gap)}"></div>
     </div>
+    <div class="fs-field"><label>${esc(t("Why might they stick with this anyway?"))}</label><input type="text" data-f="whyStay" value="${esc(c.whyStay)}" placeholder="${esc(t("e.g. it is free, and they are already standing there"))}"></div>
   </div>`;
 }
 
@@ -2166,6 +2452,21 @@ function bindHypothesisTab(v, tab) {
     });
   } else if (tab === "solution") {
     document.getElementById("comp_add")?.addEventListener("click", () => { v.hypothesis.competitors.push(blankCompetitor()); touchVenture(v); go("hypothesis", v.id, "solution"); });
+    document.querySelectorAll("[data-add-alt]").forEach(btn => btn.addEventListener("click", () => {
+      const a = CONFIG.alternativeStarters.find(x => x.id === btn.dataset.addAlt);
+      if (!a) return;
+      /* Skip one that is already on the board rather than duplicating it. */
+      if (v.hypothesis.competitors.some(c => c.kind === "status-quo" && c.name === t(a.name))) return;
+      v.hypothesis.competitors.push(blankCompetitor(t(a.name), t(a.strength), "status-quo"));
+      touchVenture(v);
+      go("hypothesis", v.id, "solution");
+    }));
+    document.getElementById("sol_smallest")?.addEventListener("blur", e => {
+      if (v.hypothesis.smallestTest === e.target.value) return;
+      v.hypothesis.smallestTest = e.target.value;
+      touchVenture(v);
+      refresh();
+    });
     document.querySelectorAll("[data-del-comp]").forEach(btn => btn.addEventListener("click", () => { v.hypothesis.competitors = v.hypothesis.competitors.filter(c => c.id !== btn.dataset.delComp); touchVenture(v); go("hypothesis", v.id, "solution"); }));
     document.querySelectorAll("[data-comp]").forEach(card => {
       const comp = v.hypothesis.competitors.find(c => c.id === card.dataset.comp);
@@ -2381,7 +2682,7 @@ function generateValidationSuggestion(v, key) {
   if (key === "customer") return seg ? t('We believe "%1" is a real, reachable customer segment that behaves the way we described: %2.', seg.name, seg.description || seg.need || t("(not yet drafted in Phase 1)")) : "";
   if (key === "solution.competitive") { const c = h.competitors[0]; return c ? t("We believe our approach is meaningfully different from %1 in a way customers actually notice and care about.", c.name || t("the leading alternative")) : ""; }
   if (key === "solution.market") return seg ? t('We believe enough of "%1" exists reachably nearby, relative to current alternatives, to sustain this venture.', seg.name) : "";
-  if (key === "solution.product") { const s = v.hypothesis.solutionHypothesis.trim() || assumptionText(v, "solution"); return s ? t("We believe the proposed offer — %1 — will get real purchases, not just polite interest.", s) : ""; }
+  if (key === "solution.product") { const s = v.hypothesis.smallestTest.trim() || v.hypothesis.solutionHypothesis.trim() || assumptionText(v, "solution"); return s ? t("We believe the proposed offer — %1 — will get real purchases, not just polite interest.", s) : ""; }
   if (key === "future.baseline") return t("We believe this venture can cover its costs and be delivered consistently at one location, at the volume we can realistically expect.");
   if (key === "future.growth") { const b = v.validation.futureDirection.baseline.interpretation; return b ? t("Given baseline viability — %1 — we believe this format can replicate to a second location or channel.", b) : ""; }
   return "";
@@ -3030,7 +3331,7 @@ function seedDemoVenture(v, lang) {
 
 /* ---------------- Init ---------------- */
 loadDB();
-if (DB.ventures.length === 0) {
+if (DB.ventures.length === 0 && !DB.settings.sampleRemoved) {
   const demo = blankVenture();
   seedDemoVenture(demo);
   DB.ventures.push(demo);
@@ -3041,6 +3342,9 @@ if (DB.ventures.length === 0) {
 if (!DB.settings.onboarded) {
   WELCOME = { lang: DB.settings.lang || null, mode: DB.settings.defaultMode || null };
   ROUTE = { screen: "welcome", ventureId: null, tab: null };
+} else if (ownVentures().length === 1) {
+  /* One business of your own means the list screen is a detour. Open it. */
+  ROUTE = { screen: "profile", ventureId: ownVentures()[0].id, tab: null };
 }
 render();
 </script>
