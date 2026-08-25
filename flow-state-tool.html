@@ -1808,9 +1808,9 @@ addFil({
   /* --- venture profile, trimmed --- */
   "Two things anchor everything that follows: what is forcing a decision, and what you want out of this. Everything else can wait until it actually matters.": "Dalawang bagay ang pundasyon ng lahat ng susunod: kung ano ang pumipilit sa'yong magdesisyon, at kung ano ang gusto mong makuha dito. Ang iba ay pwedeng hintayin hanggang sa may saysay na ito.",
   "What should we call this?": "Ano ang itatawag natin dito?",
-  "What is forcing a decision right now?": "Ano ang pumipilit sa'yong magdesisyon ngayon?",
+  "What is making this urgent?": "Ano ang dahilan kung bakit ito kailangan agad?",
   "Budget running out, a lease deadline, a slump in sales — the thing that makes this urgent. It keeps the rest of the work honest and time-bound.": "Nauubos na pondo, deadline sa upa, bumabagsak na benta — ang dahilan kung bakit ito madalian. Ito ang nagpapanatiling makatotohanan at may takdang panahon sa lahat ng gagawin.",
-  "What do you want to walk away with?": "Ano ang gusto mong makuha sa huli?",
+  "What do you want to get out of this?": "Ano ang gusto mong makuha sa huli?",
   "A decision, a plan, a go or no-go — what would make this worth your time?": "Isang desisyon, isang plano, isang tuloy o hindi — ano ang magpapasulit sa oras mo?",
   "A clear go or no-go on signing the lease.": "Malinaw na tuloy o hindi sa pagpirma ng kontrata sa upa.",
   "What kind of case is this?": "Anong uri ng kaso ito?",
@@ -1907,13 +1907,13 @@ function renderProfile() {
       </div>
 
       <div class="fs-field">
-        <label>${esc(t("What is forcing a decision right now?"))}</label>
+        <label>${esc(t("What is making this urgent?"))}</label>
         ${guidedIntro(t("Budget running out, a deadline, a slump in sales — the thing that makes this urgent. It keeps the rest of the work honest and time-bound."), t(profileExample(v, "constraint")))}
         <textarea id="f_constraint">${esc(v.urgentConstraint)}</textarea>
       </div>
 
       <div class="fs-field">
-        <label>${esc(t("What do you want to walk away with?"))}</label>
+        <label>${esc(t("What do you want to get out of this?"))}</label>
         ${guidedIntro(t("A decision, a plan, a go or no-go — what would make this worth your time?"), t(profileExample(v, "outcome")))}
         <textarea id="f_outcome">${esc(v.desiredOutcome)}</textarea>
       </div>
