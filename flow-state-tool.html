@@ -489,6 +489,12 @@ const FIL_CHROME = {
   "Current urgent constraint": "Kasalukuyang kagyat na hadlang",
   "This is the thing actually forcing a decision right now — budget runway, a lease deadline, a slump in sales. It keeps the rest of the analysis honest and time-bound.": "Ito ang tunay na dahilan kung bakit kailangan mong magdesisyon ngayon — nauubos na pondo, deadline sa upa, o bumabagsak na benta. Ito ang nagpapanatiling makatotohanan at may takdang panahon sa buong pagsusuri.",
   "We have 4 months of cash left before we need to renew or exit the lease.": "May natitira pa kaming 4 na buwang pondo bago namin kailangang mag-renew o umalis sa inuupahan.",
+  "We have savings for 4 more months before we need to decide whether to sign the lease.": "May natitira pa kaming ipon para sa 4 na buwan bago namin kailangang magdesisyon kung pipirmahan ang kontrata sa upa.",
+  "A clear go or no-go on opening this.": "Malinaw na tuloy o hindi sa pagbubukas nito.",
+  "A clear decision on whether to keep, fix, or close this.": "Malinaw na desisyon kung ipagpapatuloy, aayusin, o isasara ito.",
+  "The client needs a recommendation before the board meets next month.": "Kailangan ng kliyente ng rekomendasyon bago magpulong ang lupon sa susunod na buwan.",
+  "A clear recommendation, with the reasoning behind it.": "Malinaw na rekomendasyon, kasama ang katwiran sa likod nito.",
+  "Budget running out, a deadline, a slump in sales — the thing that makes this urgent. It keeps the rest of the work honest and time-bound.": "Nauubos na budget, deadline, o bumabagsak na benta — ang dahilan kung bakit ito kailangan agad. Ito ang nagpapanatiling makatotohanan at may takdang panahon sa lahat ng gagawin.",
   "Desired outcome": "Ninanais na resulta",
   "What decision or result is this case working toward?": "Anong desisyon o resulta ang pinupuntahan ng kasong ito?",
   "Deadline": "Deadline",
@@ -1851,6 +1857,28 @@ function retiredProfileValues(v) {
   return out;
 }
 
+/* The two starting-questions' examples used to be fixed to one scenario
+   (a lease renewal), which only makes sense for a business that already
+   exists. Each mode gets its own pair so the example never contradicts the
+   case type the user just picked. */
+const PROFILE_EXAMPLES = {
+  "new-venture": {
+    constraint: "We have savings for 4 more months before we need to decide whether to sign the lease.",
+    outcome: "A clear go or no-go on opening this.",
+  },
+  "existing-business": {
+    constraint: "We have 4 months of cash left before we need to renew or exit the lease.",
+    outcome: "A clear decision on whether to keep, fix, or close this.",
+  },
+  "consultant-case": {
+    constraint: "The client needs a recommendation before the board meets next month.",
+    outcome: "A clear recommendation, with the reasoning behind it.",
+  },
+};
+function profileExample(v, key) {
+  return (PROFILE_EXAMPLES[v.mode] || PROFILE_EXAMPLES["new-venture"])[key];
+}
+
 function renderProfile() {
   const v = getVenture(ROUTE.ventureId);
   const main = document.getElementById("fsMain");
@@ -1880,13 +1908,13 @@ function renderProfile() {
 
       <div class="fs-field">
         <label>${esc(t("What is forcing a decision right now?"))}</label>
-        ${guidedIntro(t("Budget running out, a lease deadline, a slump in sales — the thing that makes this urgent. It keeps the rest of the work honest and time-bound."), t("We have 4 months of cash left before we need to renew or exit the lease."))}
+        ${guidedIntro(t("Budget running out, a deadline, a slump in sales — the thing that makes this urgent. It keeps the rest of the work honest and time-bound."), t(profileExample(v, "constraint")))}
         <textarea id="f_constraint">${esc(v.urgentConstraint)}</textarea>
       </div>
 
       <div class="fs-field">
         <label>${esc(t("What do you want to walk away with?"))}</label>
-        ${guidedIntro(t("A decision, a plan, a go or no-go — what would make this worth your time?"), t("A clear go or no-go on signing the lease."))}
+        ${guidedIntro(t("A decision, a plan, a go or no-go — what would make this worth your time?"), t(profileExample(v, "outcome")))}
         <textarea id="f_outcome">${esc(v.desiredOutcome)}</textarea>
       </div>
     </div>
