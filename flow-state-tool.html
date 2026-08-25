@@ -175,6 +175,8 @@ table.fs-table tr:last-child td{border-bottom:none}
 .fs-insight-chip.is-insight{border-color:var(--fs-fact);background:var(--fs-fact-soft);color:var(--fs-fact);font-weight:600}
 .fs-demo-flag{background:var(--fs-assumption-soft);border:1px solid #ecd9ae;border-radius:var(--fs-radius);padding:11px 15px;margin-bottom:20px;font-size:12.5px;line-height:1.55;color:#7a5409}
 .fs-status-line{display:inline-block;font-size:12px;font-weight:600;color:var(--fs-accent-dark);background:var(--fs-accent-soft);border-radius:100px;padding:4px 12px}
+.fs-linkbtn{background:none;border:none;padding:0 0 0 4px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--fs-ink-soft);text-decoration:underline}
+.fs-linkbtn:hover{color:var(--fs-accent)}
 .fs-sample-block{margin-top:34px;padding-top:22px;border-top:1px dashed #e0cba6}
 .fs-sample-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px;flex-wrap:wrap}
 .fs-sample-head strong{display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--fs-ink-soft)}
@@ -435,7 +437,7 @@ const FIL_CHROME = {
   "Insights sufficiently supported": "Sapat nang suportado ang mga kabatiran",
 
   /* --- welcome screen --- */
-  "Two quick questions before we start": "Dalawang mabilis na tanong bago tayo magsimula",
+  "First, a few quick things": "Una, ilang mabilis na bagay",
   "This tool turns a business hunch into decisions you can back with evidence. There are no wrong answers here, and you can change either one later.": "Ginagawang desisyong may batayan ng tool na ito ang kutob mo sa negosyo. Walang maling sagot dito, at pwede mong palitan ang alinman sa mga ito mamaya.",
   "Which language do you want to use?": "Anong wika ang gusto mong gamitin?",
   "The tool, prompts and examples in English.": "Ang tool, mga tanong at halimbawa ay nasa English.",
@@ -449,6 +451,7 @@ const FIL_CHROME = {
   "Skip — take me to the portfolio": "Laktawan — dalhin ako sa portfolio",
   "You can change the language any time from the sidebar.": "Pwede mong palitan ang wika kahit kailan mula sa sidebar.",
   "Pick a language and a starting point to continue.": "Pumili ng wika at panimulang punto para makapagpatuloy.",
+  "Skip for now": "Laktawan muna",
 
   /* --- dashboard --- */
   "Flow State Entrepreneurship & Business Solutions Tool": "Flow State Entrepreneurship & Business Solutions Tool",
@@ -518,6 +521,84 @@ const FIL_CHROME = {
 const DICT = { fil: {} };
 function addFil(obj) { Object.assign(DICT.fil, obj); }
 addFil(FIL_CHROME);
+
+/* =========================================================================
+   PROFILE SIGN-IN SHEET
+   Same mechanism the Coffee Cart pages already use: a hidden form POST into
+   a Google Form, which lands in a Sheet. No server, no CORS, no library.
+
+   What gets sent: who they are and what they are working on. What never
+   gets sent: their venture content — the problem, customer, competitors,
+   evidence and numbers. That stays on their device. Sending someone's
+   business plan to a spreadsheet is a different promise entirely, and not
+   one this tool makes.
+
+   Until PROFILE_SHEET.url and the entry IDs are filled in, this is inert
+   and the interface says nothing is sent. Paste the real values in and it
+   starts working, and the wording changes to match.
+   ========================================================================= */
+const PROFILE_SHEET = {
+  url: "",              // https://docs.google.com/forms/d/e/XXXX/formResponse
+  fields: {
+    name: "",           // entry.0000000000  — What should we call you?
+    business: "",       // entry.0000000000  — What are you working on?
+    startingPoint: "",  // entry.0000000000  — New business / existing business / consultant
+    language: "",       // entry.0000000000  — English or Filipino
+    startedAt: "",      // entry.0000000000  — Date they first opened the tool
+  },
+};
+function profileSheetReady() {
+  return !!PROFILE_SHEET.url && !!PROFILE_SHEET.fields.name;
+}
+/* Fire and forget, exactly like the Coffee Cart checkout. */
+function submitToGoogleForm(action, entries) {
+  const iframeName = "gform_" + Date.now();
+  const iframe = document.createElement("iframe");
+  iframe.name = iframeName;
+  iframe.style.display = "none";
+  document.body.appendChild(iframe);
+
+  const form = document.createElement("form");
+  form.method = "POST";
+  form.action = action;
+  form.target = iframeName;
+  form.style.display = "none";
+
+  Object.keys(entries).forEach((key) => {
+    if (!key) return;
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = key;
+    input.value = entries[key] == null ? "" : String(entries[key]);
+    form.appendChild(input);
+  });
+
+  document.body.appendChild(form);
+  form.submit();
+  setTimeout(() => { form.remove(); iframe.remove(); }, 5000);
+}
+/* Sent once, when they finish the welcome screen. Never re-sent on every
+   visit — the sheet is a record of who started, not a usage log. */
+function recordProfile() {
+  if (!profileSheetReady()) return;
+  if (DB.settings.profileSent) return;
+  const modeLabel = (CONFIG.ventureModes.find(m => m.id === DB.settings.defaultMode) || {}).label || DB.settings.defaultMode || "";
+  const f = PROFILE_SHEET.fields;
+  const entries = {};
+  entries[f.name] = DB.settings.userName || "";
+  entries[f.business] = DB.settings.startingBusiness || "";
+  entries[f.startingPoint] = modeLabel;
+  entries[f.language] = DB.settings.lang === "fil" ? "Filipino" : "English";
+  entries[f.startedAt] = todayISO();
+  try {
+    submitToGoogleForm(PROFILE_SHEET.url, entries);
+    DB.settings.profileSent = true;
+    saveDB();
+  } catch (e) {
+    /* A failed send must never block someone from using the tool. */
+    console.warn("Flow State: could not record profile", e);
+  }
+}
 
 /* ---------------- Tiny helpers ---------------- */
 const uid = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
@@ -597,7 +678,7 @@ function blankEvidence() {
   return { id: uid(), statement: "", label: "ASSUMPTION", sourceDescription: "", sourceType: "observation", dateGathered: todayISO(), segment: "", occasion: "", fileLink: "", validationNeeded: "Yes", contradictory: "", analystNote: "" };
 }
 
-let DB = { ventures: [], settings: { lang: null, defaultMode: null, onboarded: false } };
+let DB = { ventures: [], settings: { lang: null, defaultMode: null, onboarded: false, userName: "" } };
 function loadDB() {
   try {
     const raw = localStorage.getItem(STORE_KEY);
@@ -607,6 +688,7 @@ function loadDB() {
   /* Settings arrived with the bilingual build; records saved before it have
      none, and are treated as not-yet-onboarded. */
   if (!DB.settings) DB.settings = { lang: null, defaultMode: null, onboarded: false };
+  if (typeof DB.settings.userName !== "string") DB.settings.userName = "";
   if (DB.settings.lang && LANGS.some(l => l.id === DB.settings.lang)) LANG = DB.settings.lang;
   DB.ventures.forEach(migrateVenture);
 }
@@ -1264,7 +1346,19 @@ function evidencePill(label) {
    language from the sidebar, the mode from the venture profile — so this
    screen commits the user to nothing.
    ========================================================================= */
-let WELCOME = { lang: null, mode: null };
+let WELCOME = { lang: null, mode: null, name: "", biz: "" };
+/* The label changes with the starting point they picked, so the question
+   sounds like it was written for them rather than for everyone. */
+function welcomeBizLabel() {
+  if (WELCOME.mode === "existing-business") return "What is your business called?";
+  if (WELCOME.mode === "consultant-case") return "What case are you starting?";
+  return "What are you working on?";
+}
+function welcomeBizPlaceholder() {
+  if (WELCOME.mode === "existing-business") return "e.g. Aling Nena Karinderya";
+  if (WELCOME.mode === "consultant-case") return "e.g. Riverside Coffee Kiosk";
+  return "e.g. a coffee kiosk near the school";
+}
 function renderWelcome() {
   const main = document.getElementById("fsMain");
   const ready = !!WELCOME.lang && !!WELCOME.mode;
@@ -1279,7 +1373,7 @@ function renderWelcome() {
         <img src="assets/logos/flow-state-studio.png" alt="Flow State Studio">
         <div><strong>Flow State</strong><small>${esc(t("Entrepreneurship Tool"))}</small></div>
       </div>
-      <h1>${esc(t("Two quick questions before we start"))}</h1>
+      <h1>${esc(t("First, a few quick things"))}</h1>
       <p class="fs-welcome-lede">${esc(t("This tool turns a business hunch into decisions you can back with evidence. There are no wrong answers here, and you can change either one later."))}</p>
 
       <p class="fs-welcome-q">${esc(t("Which language do you want to use?"))}</p>
@@ -1296,6 +1390,19 @@ function renderWelcome() {
         ${modeChoice("existing-business", "I already have a business", "Something already running that you want to examine or fix.")}
       </div>
 
+      <p class="fs-welcome-q">${esc(t("A little about you"))}</p>
+      <div class="fs-field">
+        <label>${esc(t("What should we call you?"))}</label>
+        <input type="text" id="w_name" value="${esc(WELCOME.name)}" placeholder="${esc(t("Your first name is enough"))}">
+      </div>
+      <div class="fs-field" style="margin-bottom:4px">
+        <label>${esc(t(welcomeBizLabel()))}</label>
+        <input type="text" id="w_biz" value="${esc(WELCOME.biz)}" placeholder="${esc(t(welcomeBizPlaceholder()))}">
+        <p class="fs-hint" style="margin:8px 0 0">${esc(profileSheetReady()
+          ? t("Both are optional. Your name and what you are working on are shared with Naz Ventures so we know who is using the tool — your actual work stays on this device and is never sent.")
+          : t("Both are optional, and you can change them later. Nothing is sent anywhere — this just saves you typing it again."))}</p>
+      </div>
+
       <div class="fs-welcome-actions">
         <button class="fs-welcome-skip" id="w_skip">${esc(t("Skip — take me to the portfolio"))}</button>
         <button class="fs-btn" id="w_start" ${ready ? "" : "disabled"}>${esc(t("Start my case"))} &#8594;</button>
@@ -1307,24 +1414,35 @@ function renderWelcome() {
 
   /* Picking a language re-renders this screen in it immediately — the choice
      shows its own result before anything is committed. */
+  const holdTyped = () => {
+    WELCOME.name = (document.getElementById("w_name") || {}).value || "";
+    WELCOME.biz = (document.getElementById("w_biz") || {}).value || "";
+  };
+  main.querySelectorAll("#w_name, #w_biz").forEach(el => el.addEventListener("input", holdTyped));
   main.querySelectorAll("[data-lang]").forEach(b => b.addEventListener("click", () => {
+    holdTyped();
     WELCOME.lang = b.dataset.lang;
     LANG = WELCOME.lang;
     renderWelcome();
   }));
   main.querySelectorAll("[data-mode]").forEach(b => b.addEventListener("click", () => {
+    holdTyped();
     WELCOME.mode = b.dataset.mode;
     renderWelcome();
   }));
   document.getElementById("w_skip").addEventListener("click", () => {
+    holdTyped();
     finishWelcome(WELCOME.lang || "en", WELCOME.mode || "new-venture");
     go("dashboard");
   });
   document.getElementById("w_start").addEventListener("click", () => {
+    holdTyped();
     if (!WELCOME.lang || !WELCOME.mode) return;
     finishWelcome(WELCOME.lang, WELCOME.mode);
     const v = blankVenture();
     v.mode = WELCOME.mode;
+    /* What they typed here is the venture name, so they never type it twice. */
+    v.name = WELCOME.biz.trim();
     DB.ventures.push(v);
     saveDB();
     go("profile", v.id);
@@ -1333,8 +1451,11 @@ function renderWelcome() {
 function finishWelcome(lang, mode) {
   setLanguage(lang);
   DB.settings.defaultMode = mode;
+  DB.settings.userName = (WELCOME.name || "").trim();
+  DB.settings.startingBusiness = (WELCOME.biz || "").trim();
   DB.settings.onboarded = true;
   saveDB();
+  recordProfile();
 }
 
 /* =========================================================================
@@ -1389,10 +1510,15 @@ function renderNav() {
    somebody else's filing cabinet when you own one small business. */
 function ownVentures() { return DB.ventures.filter(v => !isSeededDemo(v)); }
 function sampleVentures() { return DB.ventures.filter(isSeededDemo); }
+function userName() { return (DB.settings.userName || "").trim(); }
 function workspaceTitle() {
-  if (DB.settings.defaultMode === "consultant-case") return t("Portfolio Dashboard");
-  return ownVentures().length > 1 ? t("My Ventures") : t("My Business");
+  const who = userName();
+  if (DB.settings.defaultMode === "consultant-case") return who ? t("%1's Portfolio", who) : t("Portfolio Dashboard");
+  const many = ownVentures().length > 1;
+  if (who) return many ? t("%1's Ventures", who) : t("%1's Business", who);
+  return many ? t("My Ventures") : t("My Business");
 }
+let EDIT_NAME = false;
 function renderDashboard() {
   const main = document.getElementById("fsMain");
   const cards = DB.ventures.map(v => {
@@ -1418,9 +1544,22 @@ function renderDashboard() {
   const sampleCards = samples.map(cardFor).join("");
 
   main.innerHTML = `
-    <p class="fs-eyebrow">${esc(t("Flow State Entrepreneurship & Business Solutions Tool"))}</p>
+    ${EDIT_NAME ? `
+      <div class="fs-field" style="max-width:340px">
+        <label>${esc(t("What should we call you?"))}</label>
+        <input type="text" id="fsUserName" value="${esc(userName())}" placeholder="${esc(t("Your first name is enough"))}">
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button class="fs-btn fs-btn-sm" id="fsSaveName">${esc(t("Save"))}</button>
+          <button class="fs-btn fs-btn-ghost fs-btn-sm" id="fsCancelName">${esc(t("Cancel"))}</button>
+        </div>
+      </div>` : `
+      <p class="fs-eyebrow">${userName()
+        ? `${esc(t("Hi, %1", userName()))} <button class="fs-linkbtn" id="fsEditName">${esc(t("change"))}</button>`
+        : `${esc(t("Flow State Entrepreneurship & Business Solutions Tool"))} <button class="fs-linkbtn" id="fsEditName">${esc(t("add your name"))}</button>`}</p>`}
     <h1 class="fs-h1">${esc(workspaceTitle())}</h1>
-    <p class="fs-lede">${esc(t("Everything here is yours alone — it is saved in this browser, not sent anywhere, and nobody else can see it."))}</p>
+    <p class="fs-lede">${esc(profileSheetReady()
+      ? t("Your work is yours alone — it is saved in this browser and nobody else can see it. Only your name and what you are working on were shared with Naz Ventures.")
+      : t("Everything here is yours alone — it is saved in this browser, not sent anywhere, and nobody else can see it."))}</p>
     ${ladder("Assumption")}
 
     <div style="display:flex;justify-content:flex-end;margin-bottom:18px;gap:10px">
@@ -1456,6 +1595,14 @@ function renderDashboard() {
     saveDB();
     go("profile", v.id);
   };
+  document.getElementById("fsEditName")?.addEventListener("click", () => { EDIT_NAME = true; go("dashboard"); });
+  document.getElementById("fsCancelName")?.addEventListener("click", () => { EDIT_NAME = false; go("dashboard"); });
+  document.getElementById("fsSaveName")?.addEventListener("click", () => {
+    DB.settings.userName = document.getElementById("fsUserName").value.trim();
+    EDIT_NAME = false;
+    saveDB();
+    go("dashboard");
+  });
   document.getElementById("fsRemoveSample")?.addEventListener("click", () => {
     if (!confirm(t("Remove the sample case? It is only an example — none of your own work is affected."))) return;
     DB.ventures = DB.ventures.filter(v => !isSeededDemo(v));
@@ -1502,6 +1649,27 @@ function exportDB() {
    RENDER: VENTURE / CASE PROFILE
    ========================================================================= */
 addFil({
+  /* --- personal profile --- */
+  "A little about you": "Kaunti tungkol sa'yo",
+  "What should we call you?": "Ano ang itatawag namin sa'yo?",
+  "Your first name is enough": "Sapat na ang pangalan mo",
+  "What are you working on?": "Ano ang ginagawa mo ngayon?",
+  "e.g. a coffee kiosk near the school": "hal. maliit na kiosk ng kape malapit sa eskwelahan",
+  "What is your business called?": "Ano ang pangalan ng negosyo mo?",
+  "e.g. Aling Nena Karinderya": "hal. Karinderya ni Aling Nena",
+  "What case are you starting?": "Anong kaso ang sisimulan mo?",
+  "e.g. Riverside Coffee Kiosk": "hal. Riverside Coffee Kiosk",
+  "Both are optional, and you can change them later. Nothing is sent anywhere — this just saves you typing it again.": "Opsyonal ang dalawa, at pwede mong palitan mamaya. Walang ipinapadala kahit saan — nakakatipid lang ito sa muling pag-type.",
+  "Both are optional. Your name and what you are working on are shared with Naz Ventures so we know who is using the tool — your actual work stays on this device and is never sent.": "Opsyonal ang dalawa. Ang pangalan mo at ang ginagawa mo ay ibinabahagi sa Naz Ventures para malaman namin kung sino ang gumagamit ng tool — ang aktwal mong ginawa ay nananatili sa device na ito at hindi kailanman ipinapadala.",
+  "Your work is yours alone — it is saved in this browser and nobody else can see it. Only your name and what you are working on were shared with Naz Ventures.": "Sa'yo lang ang ginawa mo — naka-save ito sa browser na ito at walang ibang makakakita. Ang pangalan mo lang at ang ginagawa mo ang ibinahagi sa Naz Ventures.",
+  "Hi, %1": "Kumusta, %1",
+  "change": "palitan",
+  "add your name": "idagdag ang pangalan mo",
+  "Cancel": "Kanselahin",
+  "%1's Business": "Negosyo ni %1",
+  "%1's Ventures": "Mga Negosyo ni %1",
+  "%1's Portfolio": "Portfolio ni %1",
+
   /* --- personal workspace --- */
   "My Business": "Ang Negosyo Ko",
   "My Ventures": "Ang Mga Negosyo Ko",
