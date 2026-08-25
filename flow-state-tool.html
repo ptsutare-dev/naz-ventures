@@ -456,7 +456,6 @@ const FIL_CHROME = {
   /* --- dashboard --- */
   "Flow State Entrepreneurship & Business Solutions Tool": "Flow State Entrepreneurship & Business Solutions Tool",
   "Move a business idea or an existing-business problem toward evidence-based decisions. Every venture travels the same road — starting assumptions become testable hypotheses, and only evidence turns a hypothesis into an insight.": "Dalhin ang isang ideya sa negosyo o problema ng umiiral nang negosyo tungo sa mga desisyong nakabatay sa ebidensya. Iisa ang dinaraanan ng bawat negosyo — ang mga panimulang palagay ay nagiging hipotesis na kayang subukan, at ang ebidensya lang ang makakagawa nito na kabatiran.",
-  "Import JSON": "Mag-import ng JSON",
   "+ New Venture / Case": "+ Bagong Negosyo / Kaso",
   "No ventures or cases yet": "Wala pang negosyo o kaso",
   "Start with whatever is clearest to you — a problem you have noticed, a customer you understand, or a solution idea. You do not need all three figured out to begin.": "Magsimula sa kung ano ang pinakamalinaw sa'yo — isang problemang napansin mo, isang customer na kilala mo, o isang ideya ng solusyon. Hindi kailangang kumpleto ang tatlo bago ka magsimula.",
@@ -466,9 +465,6 @@ const FIL_CHROME = {
   "unknowns": "hindi alam",
   "contradictions": "magkasalungat",
   "Phase 1 decision: %1": "Desisyon sa Yugto 1: %1",
-  "Imported %1 venture(s)": "Na-import ang %1 na tala",
-  "Could not import this file: %1": "Hindi ma-import ang file na ito: %1",
-  "Not a Flow State export file": "Hindi ito Flow State export file",
 
   /* --- venture profile --- */
   "All ventures": "Lahat ng negosyo",
@@ -1568,7 +1564,6 @@ function renderDashboard() {
     ${ladder("Assumption")}
 
     <div style="display:flex;justify-content:flex-end;margin-bottom:18px;gap:10px">
-      <label class="fs-btn fs-btn-ghost fs-btn-sm" style="cursor:pointer">${esc(t("Import JSON"))}<input type="file" id="fsImportFile" accept="application/json" style="display:none"></label>
       <button class="fs-btn" id="fsNewVenture">${esc(t("+ New Venture / Case"))}</button>
     </div>
 
@@ -1617,37 +1612,6 @@ function renderDashboard() {
   });
   document.getElementById("fsNewVenture")?.addEventListener("click", startNew);
   document.getElementById("fsNewVenture2")?.addEventListener("click", startNew);
-  document.getElementById("fsImportFile")?.addEventListener("change", handleImport);
-}
-
-function handleImport(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = () => {
-    try {
-      const data = JSON.parse(reader.result);
-      if (!data || !Array.isArray(data.ventures)) throw new Error(t("Not a Flow State export file"));
-      const keepSettings = DB.settings;
-      DB = data;
-      /* An export carries ventures, not preferences — keep the language and
-         onboarding state this browser already has. */
-      DB.settings = keepSettings;
-      DB.ventures.forEach(migrateVenture);
-      saveDB();
-      toast(t("Imported %1 venture(s)", data.ventures.length));
-      go("dashboard");
-    } catch (err) { alert(t("Could not import this file: %1", err.message)); }
-  };
-  reader.readAsText(file);
-}
-function exportDB() {
-  const blob = new Blob([JSON.stringify(DB, null, 2)], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url; a.download = "flow-state-export-" + todayISO() + ".json";
-  document.body.appendChild(a); a.click(); a.remove();
-  URL.revokeObjectURL(url);
 }
 
 /* =========================================================================
