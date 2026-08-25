@@ -8,29 +8,38 @@
 <link rel="icon" href="assets/logos/naz-ventures-mark.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --fs-bg:#f7f6f3; --fs-paper:#ffffff; --fs-ink:#1c211e; --fs-ink-soft:#5c655e;
-  --fs-line:#e1e4de; --fs-accent:#2f6f6a; --fs-accent-soft:#e3efed; --fs-accent-dark:#1e4a46;
-  --fs-fact:#2f6f6a; --fs-fact-soft:#e3efed;
-  --fs-assumption:#a6720f; --fs-assumption-soft:#faf1de;
+  /* Naz Ventures / Flow State Studio brand — the tool now reads as the same
+     product as the page that introduces it, instead of a cold admin panel. */
+  --fs-bg:#faf5ec; --fs-paper:#ffffff; --fs-ink:#2a1810; --fs-ink-soft:#6f5a4a;
+  --fs-line:#ecdec8; --fs-line-soft:#f5ebdb;
+  --fs-accent:#7a3a1f; --fs-accent-soft:#f8ecd9; --fs-accent-dark:#5c2b16;
+  --fs-gold:#e0a030; --fs-gold-soft:#fdf2dc;
+  --fs-fact:#416b46; --fs-fact-soft:#e8f0e6;
+  --fs-assumption:#a6720f; --fs-assumption-soft:#fdf2dc;
   --fs-inference:#5a5aa6; --fs-inference-soft:#eeeef9;
-  --fs-unknown:#8d837b; --fs-unknown-soft:#f0ede9;
-  --fs-warn:#a6402f; --fs-warn-soft:#f9e6e2;
-  --fs-radius:8px;
+  --fs-unknown:#8d837b; --fs-unknown-soft:#f2ebe1;
+  --fs-warn:#a6402f; --fs-warn-soft:#fae8e2;
+  --fs-radius:12px; --fs-radius-sm:8px;
+  --fs-shadow:0 1px 2px rgba(42,24,16,.04), 0 6px 20px rgba(42,24,16,.05);
+  --fs-shadow-lg:0 16px 44px rgba(42,24,16,.12);
+  --fs-display:'Archivo Black','Playfair Display',Georgia,serif;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--fs-bg);color:var(--fs-ink);font-family:'Poppins',Arial,sans-serif;font-size:14.5px;line-height:1.5}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--fs-bg);color:var(--fs-ink);font-family:'Poppins',Arial,sans-serif;font-size:15px;line-height:1.5}
 h1,h2,h3,h4{font-family:'Playfair Display',Georgia,serif;font-weight:700;margin:0;letter-spacing:-0.01em}
+::selection{background:var(--fs-gold-soft)}
 a{color:var(--fs-accent);text-decoration:none}
 button{font-family:inherit;cursor:pointer}
 input,select,textarea{font-family:inherit;font-size:14px}
 
 /* ---------- App shell ---------- */
 .fs-app{display:flex;min-height:100vh}
-.fs-nav{width:230px;flex-shrink:0;background:var(--fs-accent-dark);color:#fff;padding:24px 0;position:sticky;top:0;height:100vh;overflow-y:auto}
+.fs-nav{width:248px;flex-shrink:0;background:var(--fs-ink);color:#fff;padding:24px 0;position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
 .fs-nav-brand{display:flex;align-items:center;gap:10px;padding:0 20px 22px;border-bottom:1px solid rgba(255,255,255,.15);margin-bottom:18px}
 .fs-nav-brand img{width:34px;height:34px;object-fit:contain;border-radius:6px;background:#fff;padding:3px}
 .fs-nav-brand div{line-height:1.2}
@@ -40,25 +49,29 @@ input,select,textarea{font-family:inherit;font-size:14px}
 .fs-nav-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;opacity:.55;padding:10px 10px 6px}
 .fs-nav-item{display:flex;align-items:center;gap:9px;width:100%;text-align:left;background:none;border:none;color:#fff;padding:10px 10px;border-radius:6px;font-size:13.5px;opacity:.82}
 .fs-nav-item:hover{background:rgba(255,255,255,.08);opacity:1}
-.fs-nav-item.is-active{background:rgba(255,255,255,.16);opacity:1;font-weight:600}
+.fs-nav-item.is-active{background:rgba(224,160,48,.18);opacity:1;font-weight:600;box-shadow:inset 3px 0 0 var(--fs-gold)}
+.fs-nav-item.is-active .dot{background:var(--fs-gold);opacity:1}
 .fs-nav-item[disabled]{opacity:.35;cursor:not-allowed}
 .fs-nav-item .dot{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.6;flex-shrink:0}
-.fs-main{flex:1;min-width:0;padding:34px 40px 80px;max-width:1080px}
+.fs-main{flex:1;min-width:0;padding:40px 48px 96px;max-width:1000px}
 @media(max-width:900px){
   .fs-app{flex-direction:column}
-  .fs-nav{width:100%;height:auto;position:relative;padding:14px 0}
+  .fs-nav{width:100%;height:auto;position:relative;padding:14px 0;display:block}
   .fs-main{padding:22px 18px 60px}
 }
 
 /* ---------- shared bits ---------- */
-.fs-eyebrow{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--fs-accent);margin:0 0 8px}
-.fs-h1{font-size:28px;margin-bottom:4px}
-.fs-lede{color:var(--fs-ink-soft);max-width:640px;margin:0 0 26px;font-size:14.5px}
-.fs-card{background:var(--fs-paper);border:1px solid var(--fs-line);border-radius:var(--fs-radius);padding:22px 24px;margin-bottom:18px}
+.fs-eyebrow{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--fs-accent);margin:0 0 8px}
+.fs-h1{font-family:var(--fs-display);font-size:31px;line-height:1.15;letter-spacing:-0.015em;margin-bottom:10px;color:var(--fs-accent-dark)}
+@media(max-width:640px){.fs-h1{font-size:25px}}
+.fs-lede{color:var(--fs-ink-soft);max-width:660px;margin:0 0 28px;font-size:15px;line-height:1.65}
+.fs-card{background:var(--fs-paper);border:1px solid var(--fs-line);border-radius:var(--fs-radius);box-shadow:var(--fs-shadow);padding:26px 28px;margin-bottom:18px}
 .fs-card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:14px}
-.fs-card-head h3{font-size:17px}
-.fs-btn{display:inline-flex;align-items:center;gap:7px;background:var(--fs-accent);color:#fff;border:none;padding:11px 20px;border-radius:100px;font-size:13.5px;font-weight:600;transition:background .15s}
-.fs-btn:hover{background:var(--fs-accent-dark)}
+.fs-card-head h3{font-size:18px;color:var(--fs-accent-dark)}
+.fs-card .fs-card{box-shadow:none;background:var(--fs-bg)}
+.fs-btn{display:inline-flex;align-items:center;gap:7px;background:var(--fs-accent);color:#fff;border:none;box-shadow:0 2px 8px rgba(122,58,31,.22);padding:12px 20px;border-radius:100px;font-size:13.5px;font-weight:600;transition:background .15s}
+.fs-btn:hover{background:var(--fs-accent-dark);box-shadow:0 4px 14px rgba(122,58,31,.28);transform:translateY(-1px)}
+.fs-btn{transition:background .15s,box-shadow .15s,transform .15s}
 .fs-btn.fs-btn-ghost{background:transparent;color:var(--fs-accent);border:1.5px solid var(--fs-accent)}
 .fs-btn.fs-btn-ghost:hover{background:var(--fs-accent-soft)}
 .fs-btn.fs-btn-sm{padding:7px 14px;font-size:12.5px}
@@ -67,16 +80,19 @@ input,select,textarea{font-family:inherit;font-size:14px}
 .fs-btn[disabled]{opacity:.4;cursor:not-allowed}
 
 .fs-field{margin-bottom:16px}
-.fs-field label{display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--fs-ink-soft);margin-bottom:6px}
+.fs-field label{display:block;font-size:13.5px;font-weight:700;text-transform:none;letter-spacing:0;color:var(--fs-ink-soft);margin-bottom:6px}
 .fs-field input[type="text"],.fs-field input[type="date"],.fs-field input[type="number"],.fs-field select,.fs-field textarea{
-  width:100%;border:1px solid var(--fs-line);border-radius:6px;padding:10px 12px;color:var(--fs-ink);background:#fff;
+  width:100%;border:1.5px solid var(--fs-line);border-radius:var(--fs-radius-sm);padding:12px 14px;color:var(--fs-ink);background:#fff;
+  transition:border-color .15s, box-shadow .15s;
 }
-.fs-field textarea{min-height:70px;resize:vertical;line-height:1.5}
+.fs-field textarea{min-height:84px;resize:vertical;line-height:1.6}
+.fs-field input:focus,.fs-field textarea:focus,.fs-field select:focus{outline:none;border-color:var(--fs-accent);box-shadow:0 0 0 3px var(--fs-accent-soft)}
+.fs-field input::placeholder,.fs-field textarea::placeholder{color:#b6a493}
 .fs-field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .fs-field-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
 @media(max-width:640px){.fs-field-row,.fs-field-row-3{grid-template-columns:1fr}}
-.fs-hint{font-size:12px;color:var(--fs-ink-soft);margin:-8px 0 14px;line-height:1.5}
-.fs-example{background:var(--fs-bg);border:1px dashed var(--fs-line);border-radius:6px;padding:10px 13px;font-size:12.5px;color:var(--fs-ink-soft);margin:-6px 0 14px;font-style:italic}
+.fs-hint{font-size:13px;color:var(--fs-ink-soft);margin:-4px 0 14px;line-height:1.6}
+.fs-example{background:var(--fs-gold-soft);border:1px dashed #e5cf9f;border-radius:var(--fs-radius-sm);padding:11px 14px;font-size:12.5px;color:var(--fs-ink-soft);margin:-6px 0 14px;font-style:italic}
 
 .fs-pill{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:4px 10px;border-radius:100px}
 .fs-pill-fact{background:var(--fs-fact-soft);color:var(--fs-fact)}
@@ -87,11 +103,11 @@ input,select,textarea{font-family:inherit;font-size:14px}
 .fs-pill-warn{background:var(--fs-warn-soft);color:var(--fs-warn)}
 
 .fs-status-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
-.fs-suggest-box{background:var(--fs-accent-soft);border:1px solid #cfe3e0;border-radius:6px;padding:14px 16px;margin-bottom:16px}
+.fs-suggest-box{background:var(--fs-accent-soft);border:1px solid #e6d3b4;border-left:3px solid var(--fs-gold);border-radius:var(--fs-radius-sm);padding:15px 17px;margin-bottom:18px}
 .fs-suggest-box .fs-suggest-label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--fs-accent-dark);margin-bottom:6px;display:flex;align-items:center;gap:6px}
 .fs-suggest-box p{margin:0 0 10px;font-size:13.5px;line-height:1.55}
 .fs-suggest-actions{display:flex;gap:8px;flex-wrap:wrap}
-.fs-suggest-actions button{font-size:11.5px;padding:6px 12px;border-radius:100px;border:1px solid var(--fs-accent);background:#fff;color:var(--fs-accent-dark);font-weight:600}
+.fs-suggest-actions button{font-size:12px;padding:7px 14px;border-radius:100px;border:1.5px solid #dcc39c;background:#fff;color:var(--fs-accent-dark);font-weight:600;transition:background .15s,border-color .15s,color .15s}
 .fs-suggest-actions button:hover{background:var(--fs-accent);color:#fff}
 
 .fs-table-wrap{overflow-x:auto;border:1px solid var(--fs-line);border-radius:6px}
@@ -106,18 +122,19 @@ table.fs-table tr:last-child td{border-bottom:none}
 .fs-icon-btn:hover{border-color:var(--fs-warn);color:var(--fs-warn)}
 
 .fs-dash-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
-.fs-venture-card{background:var(--fs-paper);border:1px solid var(--fs-line);border-radius:var(--fs-radius);padding:20px;cursor:pointer;transition:border-color .15s, transform .15s}
-.fs-venture-card:hover{border-color:var(--fs-accent);transform:translateY(-2px)}
-.fs-venture-card h3{font-size:17px;margin-bottom:3px}
+.fs-venture-card{background:var(--fs-paper);border:1px solid var(--fs-line);border-radius:var(--fs-radius);box-shadow:var(--fs-shadow);padding:24px;cursor:pointer;transition:border-color .15s, transform .15s, box-shadow .15s}
+.fs-venture-card:hover{border-color:var(--fs-gold);transform:translateY(-3px);box-shadow:var(--fs-shadow-lg)}
+.fs-venture-card h3{font-size:18px;margin-bottom:4px;color:var(--fs-accent-dark)}
 .fs-venture-card .fs-vc-meta{font-size:12px;color:var(--fs-ink-soft);margin-bottom:12px}
 .fs-venture-card .fs-vc-stats{display:flex;gap:14px;font-size:11.5px;color:var(--fs-ink-soft);border-top:1px solid var(--fs-line);padding-top:10px;margin-top:2px}
 .fs-venture-card .fs-vc-stats b{color:var(--fs-ink);font-weight:700}
-.fs-empty{border:1.5px dashed var(--fs-line);border-radius:var(--fs-radius);padding:44px 24px;text-align:center;color:var(--fs-ink-soft)}
+.fs-empty{border:1.5px dashed #e0cba6;background:var(--fs-paper);border-radius:var(--fs-radius);padding:48px 26px;text-align:center;color:var(--fs-ink-soft)}
 .fs-empty h3{color:var(--fs-ink);margin-bottom:6px;font-size:18px}
 
-.fs-tabs{display:flex;gap:4px;border-bottom:2px solid var(--fs-line);margin-bottom:22px;flex-wrap:wrap}
-.fs-tab{background:none;border:none;padding:10px 16px;font-size:13px;font-weight:600;color:var(--fs-ink-soft);border-bottom:2px solid transparent;margin-bottom:-2px}
-.fs-tab.is-active{color:var(--fs-accent-dark);border-bottom-color:var(--fs-accent)}
+.fs-tabs{display:flex;gap:2px;border-bottom:2px solid var(--fs-line);margin-bottom:26px;flex-wrap:wrap}
+.fs-tab{background:none;border:none;padding:11px 16px;font-size:13.5px;font-weight:600;color:var(--fs-ink-soft);border-bottom:3px solid transparent;margin-bottom:-2px;border-radius:6px 6px 0 0;transition:color .15s,background .15s}
+.fs-tab:hover{color:var(--fs-accent-dark);background:var(--fs-accent-soft)}
+.fs-tab.is-active{color:var(--fs-accent-dark);border-bottom-color:var(--fs-gold);font-weight:700}
 
 .fs-elem-card{border-left:3px solid var(--fs-line);padding-left:18px}
 .fs-elem-card.is-ready{border-left-color:var(--fs-accent)}
@@ -131,7 +148,7 @@ table.fs-table tr:last-child td{border-bottom:none}
 .fs-back-link{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:var(--fs-ink-soft);margin-bottom:14px}
 .fs-back-link:hover{color:var(--fs-accent-dark)}
 
-.fs-banner-top{background:var(--fs-accent-dark);color:#fff;font-size:12px;text-align:center;padding:7px 14px}
+.fs-banner-top{background:var(--fs-accent-dark);color:var(--fs-gold-soft);font-size:12px;text-align:center;padding:8px 14px;letter-spacing:.01em}
 .fs-banner-top a{color:#fff;text-decoration:underline}
 .fs-toast{position:fixed;bottom:22px;right:22px;background:var(--fs-ink);color:#fff;padding:11px 18px;border-radius:8px;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.2);opacity:0;transform:translateY(8px);transition:opacity .2s,transform .2s;pointer-events:none;z-index:999}
 .fs-toast.show{opacity:1;transform:translateY(0)}
@@ -158,16 +175,27 @@ table.fs-table tr:last-child td{border-bottom:none}
 .fs-insight-chip.is-insight{border-color:var(--fs-fact);background:var(--fs-fact-soft);color:var(--fs-fact);font-weight:600}
 .fs-demo-flag{background:var(--fs-assumption-soft);border:1px solid #ecd9ae;border-radius:var(--fs-radius);padding:11px 15px;margin-bottom:20px;font-size:12.5px;line-height:1.55;color:#7a5409}
 .fs-status-line{display:inline-block;font-size:12px;font-weight:600;color:var(--fs-accent-dark);background:var(--fs-accent-soft);border-radius:100px;padding:4px 12px}
+.fs-coach{background:var(--fs-assumption-soft);border:1px solid #ecd9ae;border-left:3px solid var(--fs-assumption);border-radius:6px;padding:14px 16px;margin-bottom:18px}
+.fs-coach-head{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#7a5409;margin-bottom:10px}
+.fs-coach-item{margin-bottom:11px}
+.fs-coach-item:last-child{margin-bottom:0}
+.fs-coach-item strong{display:block;font-size:13.5px;color:var(--fs-ink);margin-bottom:2px}
+.fs-coach-item p{margin:0 0 3px;font-size:12.5px;line-height:1.55;color:var(--fs-ink-soft)}
+.fs-coach-item span{display:block;font-size:12.5px;line-height:1.55;color:#7a5409;font-style:italic}
+.fs-segmented{display:flex;gap:6px;flex-wrap:wrap}
+.fs-segment{flex:1;min-width:150px;border:1.5px solid var(--fs-line);background:var(--fs-paper);color:var(--fs-ink-soft);border-radius:8px;padding:10px 14px;font-size:13px;font-weight:600;text-align:left}
+.fs-segment:hover{border-color:var(--fs-accent)}
+.fs-segment.is-on{border-color:var(--fs-accent);background:var(--fs-accent-soft);color:var(--fs-accent-dark)}
 
 /* ---------- Language + starting-point welcome screen ---------- */
 .fs-app.is-welcome .fs-main{max-width:none;display:flex;align-items:center;justify-content:center;padding:36px 20px 60px}
 .fs-welcome{max-width:640px;width:100%}
-.fs-welcome-card{background:var(--fs-paper);border:1px solid var(--fs-line);border-radius:14px;padding:36px 38px;box-shadow:0 10px 40px rgba(0,0,0,.05)}
+.fs-welcome-card{background:var(--fs-paper);border:1px solid var(--fs-line);border-radius:18px;padding:38px 40px;box-shadow:var(--fs-shadow-lg)}
 .fs-welcome-brand{display:flex;align-items:center;gap:12px;margin-bottom:22px}
 .fs-welcome-brand img{width:44px;height:44px;object-fit:contain;border-radius:8px;background:#fff;padding:3px;border:1px solid var(--fs-line)}
 .fs-welcome-brand strong{display:block;font-family:'Playfair Display',serif;font-size:17px}
 .fs-welcome-brand small{font-size:10px;text-transform:uppercase;letter-spacing:.09em;color:var(--fs-ink-soft)}
-.fs-welcome h1{font-size:25px;margin-bottom:8px;line-height:1.25}
+.fs-welcome h1{font-family:var(--fs-display);font-size:27px;margin-bottom:10px;line-height:1.18;letter-spacing:-0.015em;color:var(--fs-accent-dark)}
 .fs-welcome-lede{color:var(--fs-ink-soft);font-size:14px;margin:0 0 4px;line-height:1.6}
 .fs-welcome-q{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--fs-accent);margin:24px 0 10px}
 .fs-choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -498,7 +526,7 @@ function blankVenture() {
        Phase 1 as the Opportunity Snapshot — there is no separate page. */
     opportunitySnapshot: { problem: blankAssumption(), customer: blankAssumption(), solution: blankAssumption() },
     hypothesis: {
-      problemId: { causeExploration: [""], alternativeExplanations: [""], problemStatement: "" },
+      problemId: { causeExploration: [""], alternativeExplanations: [""], frequency: "", consequence: "", problemStatement: "" },
       segments: [],
       competitors: [],
       valueDrivers: [],
@@ -620,6 +648,8 @@ function migrateVenture(v) {
   }
   delete pid.whyChain;
   if (!Array.isArray(pid.alternativeExplanations) || !pid.alternativeExplanations.length) pid.alternativeExplanations = [""];
+  if (typeof pid.frequency !== "string") pid.frequency = "";
+  if (typeof pid.consequence !== "string") pid.consequence = "";
   if (typeof pid.problemStatement !== "string") pid.problemStatement = "";
 
   /* Phase 2 outcome classification. */
@@ -646,10 +676,71 @@ function touchVenture(v) { v.updatedAt = todayISO(); saveDB(); }
 
 /* ---------------- Router ---------------- */
 let ROUTE = { screen: "dashboard", ventureId: null, tab: null };
+function sameView(a, b) {
+  return a.screen === b.screen && a.ventureId === b.ventureId && a.tab === b.tab;
+}
+/* Where the caret was, expressed as a selector that survives a re-render. */
+function focusSignature(el) {
+  if (!el || el === document.body || !el.tagName) return null;
+  const q = (s) => (window.CSS && CSS.escape) ? CSS.escape(s) : s;
+  if (el.id) return "#" + q(el.id);
+  const own = ["data-el", "data-notsure", "data-f"].filter(a => el.hasAttribute(a))
+    .map(a => `[${a}="${q(el.getAttribute(a))}"]`).join("");
+  /* Cause / alternative inputs are identified by class + index, not data-f. */
+  const indexed = el.classList.contains("fs-why") || el.classList.contains("fs-alt");
+  if (!own && !indexed) return null;
+  /* data-f repeats across cards, so scope it to the card it lives in. */
+  const owners = ["data-seg", "data-comp", "data-driver", "data-vcard", "data-ev", "data-cv"];
+  const card = el.closest(owners.map(a => `[${a}]`).join(","));
+  let prefix = "";
+  if (card) {
+    const a = owners.find(x => card.hasAttribute(x));
+    if (a) prefix = `[${a}="${q(card.getAttribute(a))}"] `;
+  }
+  let cls = "";
+  if (el.classList.contains("fs-why")) cls = ".fs-why";
+  else if (el.classList.contains("fs-alt")) cls = ".fs-alt";
+  const idx = el.hasAttribute("data-i") ? `[data-i="${q(el.getAttribute("data-i"))}"]` : "";
+  return prefix + cls + idx + own;
+}
+function restoreFocus(sig, sel) {
+  if (!sig) return;
+  const el = document.querySelector(sig);
+  if (!el) return;
+  el.focus({ preventScroll: true });
+  if (sel && el.setSelectionRange) {
+    try { el.setSelectionRange(sel[0], sel[1]); } catch (e) { /* not a text field */ }
+  }
+}
 function go(screen, ventureId, tab) {
-  ROUTE = { screen, ventureId: ventureId || null, tab: tab || null };
+  const next = { screen, ventureId: ventureId || null, tab: tab || null };
+  const inPlace = sameView(ROUTE, next);
+  const y = window.scrollY;
+  const sig = inPlace ? focusSignature(document.activeElement) : null;
+  const el = document.activeElement;
+  const sel = (inPlace && el && el.setSelectionRange) ? [el.selectionStart, el.selectionEnd] : null;
+  ROUTE = next;
   render();
-  window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
+  if (inPlace) {
+    /* Re-rendering the screen you are already on must not throw you back to
+       the top or lose your place mid-sentence. */
+    window.scrollTo({ top: y });
+    restoreFocus(sig, sel);
+  } else {
+    window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
+  }
+}
+/* A blur handler that re-renders immediately destroys the element the user is
+   in the middle of clicking, so the click never lands and they have to click
+   twice. Deferring by a tick lets the click finish first. */
+let REFRESH_QUEUED = false;
+function refresh() {
+  if (REFRESH_QUEUED) return;
+  REFRESH_QUEUED = true;
+  setTimeout(() => {
+    REFRESH_QUEUED = false;
+    go(ROUTE.screen, ROUTE.ventureId, ROUTE.tab);
+  }, 0);
 }
 
 /* ---------------- Evidence counting / gate logic ---------------- */
@@ -731,28 +822,135 @@ const LEGACY_ROOTCAUSE_PATTERNS = [/so at the root,? the real issue is/i, /the a
 function hasLegacyRootCausePhrasing(text) {
   return LEGACY_ROOTCAUSE_PATTERNS.some(re => re.test(text || ""));
 }
+/* =========================================================================
+   SPECIFICITY COACH + CAUSE LIBRARY
+   The old suggestions just echoed the user's own words back at them, which
+   is why they read as vague. These two pieces do the work instead: name
+   exactly what is missing from a statement, and offer concrete candidate
+   causes drawn from the ways situations actually get hard for customers.
+   None of it invents evidence — every line is an editable suggestion.
+   ========================================================================= */
+
+/* A subject this broad cannot be found, counted, or interviewed. */
+const VAGUE_SUBJECTS = [
+  /\beveryone\b/i, /\bpeople\b/i, /\banyone\b/i, /\bthe public\b/i, /\bcustomers?\b/i,
+  /\bmga tao\b/i, /\blahat\b/i, /\bkahit sino\b/i, /\btaga-?rito\b/i,
+];
+const TIME_MARKERS = [
+  /\b(morning|afternoon|evening|night|weekend|weekday|daily|weekly|every|during|when|while|before|after|rush|peak|am|pm)\b/i,
+  /\b(umaga|tanghali|hapon|gabi|araw-araw|linggo|tuwing|habang|bago|pagkatapos)\b/i,
+  /\d/,
+];
+const CONSEQUENCE_MARKERS = [
+  /\b(so they|which means|as a result|leads to|ends up|so that|cost|costs|lose|loses|losing|waste|wastes|skip|skips|give up|gives up|walk away|go without)\b/i,
+  /\b(kaya|dahil dito|napipilitan|nasasayang|natatagalan|tumitigil|sumusuko|hindi na)\b/i,
+];
+const PLACE_MARKERS = [
+  /\b(near|beside|outside|inside|at the|along|around|within|street|gate|market|station|office|school|site|barangay)\b/i,
+  /\b(malapit|tabi|labas|loob|sa may|kalye|gate|palengke|opisina|eskwelahan|barangay)\b/i,
+];
+function hits(patterns, text) { return patterns.some(re => re.test(text || "")); }
+function wordCount(s) { return (s || "").trim().split(/\s+/).filter(Boolean).length; }
+
+/* What is missing from the problem picture, in the order worth fixing. */
+function problemGaps(v) {
+  const pid = v.hypothesis.problemId;
+  const problem = assumptionText(v, "problem");
+  const customer = assumptionText(v, "customer");
+  const gaps = [];
+  if (!problem) {
+    gaps.push({ id: "problem", label: "What the difficulty actually is", why: "Nothing to sharpen yet — write a problem assumption in the Opportunity Snapshot first.", example: "Parents waiting at pickup have nowhere comfortable to stand." });
+  }
+  if (!customer || hits(VAGUE_SUBJECTS, customer) || wordCount(customer) < 3) {
+    gaps.push({ id: "who", label: "Who exactly", why: "A group this broad cannot be found, counted, or interviewed — and Phase 2 will need to do all three.", example: "Parents and yayas doing the 3pm pickup at one specific school — not \"customers\"." });
+  }
+  if (!pid.frequency.trim() && !hits(TIME_MARKERS, problem)) {
+    gaps.push({ id: "when", label: "How often, and when", why: "A difficulty that happens twice a year is a different business from one that happens daily.", example: "Every school day, roughly 3:00–4:00pm, about 180 households." });
+  }
+  if (!pid.consequence.trim() && !hits(CONSEQUENCE_MARKERS, problem)) {
+    gaps.push({ id: "cost", label: "What it costs them", why: "A problem with no consequence is an annoyance, and people do not pay to remove annoyances.", example: "They stand for 20+ minutes in the heat, so they leave straight after and buy nothing nearby." });
+  }
+  return gaps;
+}
+function customerGaps(v) {
+  const customer = assumptionText(v, "customer");
+  const gaps = [];
+  if (!customer) return gaps;
+  if (hits(VAGUE_SUBJECTS, customer) || wordCount(customer) < 3) {
+    gaps.push({ id: "narrow", label: "Narrow it to a group you could stand in front of", example: "\"Parents and yayas on the 3pm pickup run\" beats \"parents\"." });
+  }
+  if (!hits(TIME_MARKERS, customer) && !hits(PLACE_MARKERS, customer)) {
+    gaps.push({ id: "occasion", label: "Add the occasion or the place", example: "Same person behaves differently on a school run than on a weekend errand." });
+  }
+  return gaps;
+}
+
+/* Candidate explanations for why a situation is hard, drawn from the ways
+   things actually get hard for people. Deliberately excludes "the thing I
+   want to sell does not exist yet" — that restates the solution and explains
+   nothing, which is exactly the trap the framework warns about. */
+const CAUSE_PATTERNS = [
+  { id: "access",  label: "Distance or access",      starter: "Reaching the nearest option takes more time or effort than %1 can spare." },
+  { id: "timing",  label: "Timing",                  starter: "The moment %1 need this does not line up with when the options are actually open." },
+  { id: "cost",    label: "Cost",                    starter: "The options that exist cost more than %1 judge the result to be worth." },
+  { id: "hassle",  label: "Too much hassle",         starter: "The current way takes too many steps for %1 to go through every time." },
+  { id: "supply",  label: "Runs out or unavailable", starter: "What %1 need has run out, or is not offered at the moment they need it." },
+  { id: "comfort", label: "The place itself",        starter: "Where %1 have to wait or stand is uncomfortable — seating, heat, noise, or shelter." },
+  { id: "info",    label: "They do not know",        starter: "%1 do not know a better option exists, or cannot tell which one would suit them." },
+  { id: "trust",   label: "Trust or risk",           starter: "%1 are not confident it would be worth it, so they stay with what they already know." },
+];
+function causeStarter(v, pattern) {
+  const who = assumptionText(v, "customer") || t("the people affected");
+  return t(pattern.starter, who);
+}
+
+/* Builds the hypothesis in the shape Phase 2 can actually test — who, when,
+   what difficulty, what it costs, and a candidate cause held loosely — and
+   shows any missing piece as a visible prompt rather than quietly papering
+   over it. That visible gap is the point: it tells the user what to go and
+   find out. */
 function generateProblemStatementDraft(v) {
   const pid = v.hypothesis.problemId;
-  const p = assumptionText(v, "problem");
-  const causes = (pid.causeExploration || []).map(w => (w || "").trim()).filter(Boolean);
-  const alts = (pid.alternativeExplanations || []).map(w => (w || "").trim()).filter(Boolean);
-  if (!p && !causes.length) return "";
-  const lower = (s) => s.charAt(0).toLowerCase() + s.slice(1);
-  const stop = (s) => /[.!?]$/.test(s) ? s : s + ".";
-  let out = p ? stop(p) : "";
-  if (causes.length) {
-    out += " " + t("One possible explanation is that %1", stop(lower(causes[causes.length - 1])));
-    if (causes.length > 1) {
-      const trail = causes.join(" → ");
-      out += " " + t("(Cause exploration so far: %1)", trail + (/[.!?]$/.test(trail) ? "" : "."));
-    }
-  }
-  if (alts.length) {
-    out += " " + t("A competing explanation that has not been ruled out: %1", stop(lower(alts[0])));
-  }
-  out += " " + t("This is a possible underlying cause that still needs validation.");
-  return out.trim();
+  const problem = assumptionText(v, "problem");
+  const customer = assumptionText(v, "customer");
+  const causes = (pid.causeExploration || []).map(x => (x || "").trim()).filter(Boolean);
+  const alts = (pid.alternativeExplanations || []).map(x => (x || "").trim()).filter(Boolean);
+  if (!problem && !causes.length) return "";
+
+  const lower = (x) => x.charAt(0).toLowerCase() + x.slice(1);
+  const stop = (x) => /[.!?]$/.test(x) ? x : x + ".";
+  /* Fragments get spliced mid-sentence, so their own end punctuation has to
+     go — otherwise you get "...pickup. run into this:". */
+  const frag = (x) => (x || "").trim().replace(/[.!?;,]+$/, "");
+  const gap = (key) => "[" + t(key) + "]";
+
+  /* A vague subject keeps the user's own word but still shows the gap, so
+     they can see the imprecision rather than have it read back as fine. */
+  const vagueWho = !customer || hits(VAGUE_SUBJECTS, customer) || wordCount(customer) < 3;
+  const who = !customer ? gap("who exactly?") : vagueWho ? frag(customer) + " " + gap("who exactly?") : frag(customer);
+  const when = frag(pid.frequency) || (hits(TIME_MARKERS, problem) ? "" : gap("how often, and when?"));
+  const cost = frag(pid.consequence) || (hits(CONSEQUENCE_MARKERS, problem) ? "" : gap("what does it cost them?"));
+
+  /* One short sentence per idea, on its own line — a single run-on paragraph
+     is what made the old draft unreadable. */
+  /* English opens the sentence with the subject; Filipino puts it mid-clause
+     ("Nararanasan ito ng ..."), where a capital reads wrong. Decide from the
+     template that will actually be used. */
+  const subjectFor = (key) => {
+    const tmpl = (LANG !== "en" && DICT[LANG] && DICT[LANG][key]) ? DICT[LANG][key] : key;
+    return tmpl.trim().indexOf("%1") === 0 ? who : lower(who);
+  };
+  const lines = [];
+  lines.push(when
+    ? t("%1 run into this %2: %3", subjectFor("%1 run into this %2: %3"), lower(when), stop(problem || gap("what is the difficulty?")))
+    : t("%1 run into this: %2", subjectFor("%1 run into this: %2"), stop(problem || gap("what is the difficulty?"))));
+  if (cost) lines.push(t("When it happens, %1", stop(lower(frag(cost)))));
+  if (causes.length) lines.push(t("One possible explanation is that %1", stop(lower(causes[causes.length - 1]))));
+  if (alts.length) lines.push(t("A competing explanation that has not been ruled out: %1", stop(lower(alts[0]))));
+  lines.push(t("This is a possible underlying cause that still needs validation."));
+  return lines.join("\n");
 }
+
 function generateSegmentDescriptionDraft(seg) {
   if (!seg.name.trim()) return "";
   let s = seg.name.trim();
@@ -1121,69 +1319,192 @@ function exportDB() {
 /* =========================================================================
    RENDER: VENTURE / CASE PROFILE
    ========================================================================= */
+addFil({
+  /* --- specificity coach --- */
+  "Make this sharper before you test it": "Hasain muna ito bago subukan",
+  "Sharpen who this is": "Linawin kung sino ito",
+  "What the difficulty actually is": "Ano talaga ang hirap",
+  "Nothing to sharpen yet — write a problem assumption in the Opportunity Snapshot first.": "Wala pang mahahasa — magsulat muna ng palagay sa problema sa Snapshot ng Oportunidad.",
+  "Parents waiting at pickup have nowhere comfortable to stand.": "Walang komportableng matayuan ang mga magulang na naghihintay sa sunduan.",
+  "Who exactly": "Sino nga ba",
+  "A group this broad cannot be found, counted, or interviewed — and Phase 2 will need to do all three.": "Ang ganitong kalawak na grupo ay hindi mahahanap, mabibilang, o makakapanayam — at kailangan ng Yugto 2 ang lahat ng tatlo.",
+  "Parents and yayas doing the 3pm pickup at one specific school — not \"customers\".": "Mga magulang at yaya sa 3pm na sundo sa isang tiyak na eskwelahan — hindi basta \"customers\".",
+  "How often, and when": "Gaano kadalas, at kailan",
+  "A difficulty that happens twice a year is a different business from one that happens daily.": "Ibang negosyo ang hirap na nangyayari dalawang beses sa isang taon kumpara sa nangyayari araw-araw.",
+  "Every school day, roughly 3:00–4:00pm, about 180 households.": "Bawat araw ng pasok, humigit-kumulang 3:00–4:00pm, mga 180 sambahayan.",
+  "What it costs them": "Ano ang halaga nito sa kanila",
+  "A problem with no consequence is an annoyance, and people do not pay to remove annoyances.": "Ang problemang walang bunga ay inis lang, at hindi nagbabayad ang tao para alisin ang inis.",
+  "They stand for 20+ minutes in the heat, so they leave straight after and buy nothing nearby.": "Nakatayo sila nang 20+ minuto sa init, kaya umaalis sila agad at walang binibili sa paligid.",
+  "Narrow it to a group you could stand in front of": "Paliitin sa grupong kaya mong tayuan nang harapan",
+  "\"Parents and yayas on the 3pm pickup run\" beats \"parents\".": "Mas maganda ang \"mga magulang at yaya sa 3pm na sundo\" kaysa \"mga magulang\".",
+  "Add the occasion or the place": "Idagdag ang okasyon o ang lugar",
+  "Same person behaves differently on a school run than on a weekend errand.": "Iba ang kilos ng parehong tao sa sundo sa eskwelahan kaysa sa lakad tuwing weekend.",
+
+  /* --- cause library --- */
+  "Common reasons things get hard — tap one to start a line": "Karaniwang dahilan kung bakit nahihirapan — pumindot para magsimula ng linya",
+  "Each of these explains something about the customer's situation. None of them is \"my idea does not exist yet\" — that explains nothing.": "Bawat isa dito ay may ipinapaliwanag tungkol sa sitwasyon ng customer. Wala dito ang \"wala pa ang ideya ko\" — wala iyong ipinapaliwanag.",
+  "the people affected": "ang mga apektado",
+  "Distance or access": "Layo o access",
+  "Reaching the nearest option takes more time or effort than %1 can spare.": "Ang pagpunta sa pinakamalapit na opsyon ay mas matagal o mas mahirap kaysa kayang ilaan ng %1.",
+  "Timing": "Oras",
+  "The moment %1 need this does not line up with when the options are actually open.": "Ang oras na kailangan ito ng %1 ay hindi tugma sa kung kailan bukas ang mga opsyon.",
+  "Cost": "Gastos",
+  "The options that exist cost more than %1 judge the result to be worth.": "Ang mga opsyong meron ay mas mahal kaysa sa halagang nakikita ng %1 na sulit.",
+  "Too much hassle": "Sobrang abala",
+  "The current way takes too many steps for %1 to go through every time.": "Masyadong maraming hakbang ang kasalukuyang paraan para pagdaanan ng %1 sa tuwina.",
+  "Runs out or unavailable": "Naubos o walang stock",
+  "What %1 need has run out, or is not offered at the moment they need it.": "Ang kailangan ng %1 ay naubos na, o hindi inaalok sa oras na kailangan nila ito.",
+  "The place itself": "Ang lugar mismo",
+  "Where %1 have to wait or stand is uncomfortable — seating, heat, noise, or shelter.": "Hindi komportable ang paghihintayan o tayuan ng %1 — upuan, init, ingay, o silong.",
+  "They do not know": "Hindi nila alam",
+  "%1 do not know a better option exists, or cannot tell which one would suit them.": "Hindi alam ng %1 na may mas magandang opsyon, o hindi nila matukoy kung alin ang bagay sa kanila.",
+  "Trust or risk": "Tiwala o panganib",
+  "%1 are not confident it would be worth it, so they stay with what they already know.": "Hindi kumpiyansa ang %1 na sulit ito, kaya nananatili sila sa kung ano ang alam na nila.",
+
+  /* --- problem specificity fields + structured draft --- */
+  "How often does this happen?": "Gaano kadalas ito nangyayari?",
+  "e.g. every school day, about 180 households": "hal. bawat araw ng pasok, mga 180 sambahayan",
+  "What does it cost them?": "Ano ang nawawala sa kanila dahil dito?",
+  "e.g. they stand 20+ minutes and leave straight after": "hal. nakatayo sila 20+ minuto at umaalis agad pagkatapos",
+  "%1 run into this %2: %3": "Nararanasan ito ng %1 %2: %3",
+  "%1 run into this: %2": "Nararanasan ito ng %1: %2",
+  "When it happens, %1": "Kapag nangyari, %1",
+  "who exactly?": "sino nga ba?",
+  "how often, and when?": "gaano kadalas, at kailan?",
+  "what does it cost them?": "ano ang nawawala sa kanila?",
+  "what is the difficulty?": "ano ang hirap?",
+  "Before \"%1\" existed, how did \"%2\" handle this — and what was annoying, slow, or costly about that way? Describe that difficulty; it is the problem.": "Bago pa man magkaroon ng \"%1\", paano ito hinaharap ng \"%2\" — at ano ang nakakainis, matagal, o magastos sa paraang iyon? Ilarawan ang hirap na iyon; iyon ang problema.",
+  "Who runs into this most often, and where would you physically go to find twenty of them this week? Name that group and that place — for example \"%1\".": "Sino ang pinakamadalas makaranas nito, at saan ka pupunta para makahanap ng dalawampu sa kanila ngayong linggo? Pangalanan ang grupo at ang lugar — halimbawa \"%1\".",
+  "parents at the 3pm pickup gate, weekdays": "mga magulang sa gate tuwing 3pm na sundo, araw ng pasok",
+  "What is the smallest thing that would take this difficulty away for \"%1\" — something you could try within a week, without a lease or a loan?": "Ano ang pinakamaliit na bagay na makakaalis sa hirap na ito para sa \"%1\" — isang bagay na kaya mong subukan sa loob ng isang linggo, walang upa o utang?",
+
+  /* --- venture profile, trimmed --- */
+  "Two things anchor everything that follows: what is forcing a decision, and what you want out of this. Everything else can wait until it actually matters.": "Dalawang bagay ang pundasyon ng lahat ng susunod: kung ano ang pumipilit sa'yong magdesisyon, at kung ano ang gusto mong makuha dito. Ang iba ay pwedeng hintayin hanggang sa may saysay na ito.",
+  "What should we call this?": "Ano ang itatawag natin dito?",
+  "What is forcing a decision right now?": "Ano ang pumipilit sa'yong magdesisyon ngayon?",
+  "Budget running out, a lease deadline, a slump in sales — the thing that makes this urgent. It keeps the rest of the work honest and time-bound.": "Nauubos na pondo, deadline sa upa, bumabagsak na benta — ang dahilan kung bakit ito madalian. Ito ang nagpapanatiling makatotohanan at may takdang panahon sa lahat ng gagawin.",
+  "What do you want to walk away with?": "Ano ang gusto mong makuha sa huli?",
+  "A decision, a plan, a go or no-go — what would make this worth your time?": "Isang desisyon, isang plano, isang tuloy o hindi — ano ang magpapasulit sa oras mo?",
+  "A clear go or no-go on signing the lease.": "Malinaw na tuloy o hindi sa pagpirma ng kontrata sa upa.",
+  "What kind of case is this?": "Anong uri ng kaso ito?",
+  "What made you look into this?": "Ano ang nagtulak sa'yo para tingnan ito?",
+  "Sales dropped for three months straight and I do not know why.": "Tatlong buwan nang bumababa ang benta at hindi ko alam kung bakit.",
+  "Roughly how is it doing now?": "Halos paano na ito ngayon?",
+  "A rough figure is fine — this is a starting point, not an audit.": "Sapat na ang tantiya — panimula ito, hindi audit.",
+  "Other details you have already recorded": "Iba pang detalyeng naitala mo na",
+  "These came from an earlier version of the tool. Nothing here is required — it is kept so you do not lose it.": "Galing ito sa mas lumang bersyon ng tool. Walang kailangan dito — itinabi lang para hindi mo ito mawala.",
+  "Owner / founder": "May-ari / nagtatag",
+  "Nothing else is needed to start. You can come back and add detail whenever it earns its place.": "Wala nang kailangan para makapagsimula. Pwede kang bumalik at magdagdag ng detalye kapag may saysay na ito.",
+});
+
+/* Fields the tool still asks for. Everything else that used to be on this
+   screen — stage, industry, location, summary, business model, dates, and
+   seven lines of financial intake — was removed rather than tucked into an
+   accordion: none of it changes what the framework does next, and a wall of
+   optional boxes is exactly what stops people finishing this screen.
+   Values already saved in those fields are never destroyed; they surface in
+   a collapsed block below so nothing is lost. */
+const RETIRED_PROFILE_FIELDS = [
+  ["owner", "Owner / founder"],
+  ["stage", "Business stage"],
+  ["industry", "Industry / category"],
+  ["location", "Location / market area"],
+  ["summary", "Venture summary"],
+  ["businessModel", "Current business model / intended format"],
+  ["startDate", "Start / opening date"],
+  ["decisionDate", "Decision date"],
+];
+const RETIRED_INTAKE_FIELDS = [
+  ["traffic", "Traffic / inquiries"],
+  ["conversion", "Conversion"],
+  ["avgTransaction", "Average transaction"],
+  ["repeatBehavior", "Repeat behavior"],
+  ["grossMargin", "Gross margin / contribution"],
+  ["fixedCosts", "Fixed costs"],
+  ["ownerDependency", "Owner dependency"],
+];
+function retiredProfileValues(v) {
+  const out = [];
+  RETIRED_PROFILE_FIELDS.forEach(([k, label]) => { if ((v[k] || "").trim()) out.push(["f_old_" + k, label, v[k]]); });
+  RETIRED_INTAKE_FIELDS.forEach(([k, label]) => { if (((v.existingIntake || {})[k] || "").trim()) out.push(["ei_old_" + k, label, v.existingIntake[k]]); });
+  return out;
+}
+
 function renderProfile() {
   const v = getVenture(ROUTE.ventureId);
   const main = document.getElementById("fsMain");
   if (!v) { go("dashboard"); return; }
+  const legacy = retiredProfileValues(v);
 
   main.innerHTML = `
     <a class="fs-back-link" data-go="dashboard">&#8592; ${esc(t("All ventures"))}</a>
     <p class="fs-eyebrow">${esc(t("Venture / Case Profile"))}</p>
     <h1 class="fs-h1">${esc(v.name || t("Untitled venture"))}</h1>
-    <p class="fs-lede">${esc(t("The urgent constraint and desired outcome matter most here — they anchor every recommendation that follows. Everything else can be filled in progressively."))}</p>
+    <p class="fs-lede">${esc(t("Two things anchor everything that follows: what is forcing a decision, and what you want out of this. Everything else can wait until it actually matters."))}</p>
     ${demoFlag(v)}
     <div class="fs-status-row"><span class="fs-status-line">${esc(ventureStatus(v))}</span></div>
 
     <div class="fs-card">
-      <div class="fs-field-row">
-        <div class="fs-field"><label>${esc(t("Venture / client name"))}</label><input type="text" id="f_name" value="${esc(v.name)}" placeholder="${esc(t("e.g. Riverside Coffee Kiosk"))}"></div>
-        <div class="fs-field"><label>${esc(t("Mode"))}</label><select id="f_mode">${CONFIG.ventureModes.map(m => `<option value="${m.id}" ${v.mode === m.id ? "selected" : ""}>${esc(t(m.label))}</option>`).join("")}</select></div>
+      <div class="fs-field">
+        <label>${esc(t("What should we call this?"))}</label>
+        <input type="text" id="f_name" value="${esc(v.name)}" placeholder="${esc(t("e.g. Riverside Coffee Kiosk"))}">
       </div>
-      <div class="fs-field-row">
-        <div class="fs-field"><label>${esc(t("Owner / founder"))}</label><input type="text" id="f_owner" value="${esc(v.owner)}"></div>
-        <div class="fs-field"><label>${esc(t("Consultant"))} <span style="text-transform:none;font-weight:400">${esc(t("(if applicable)"))}</span></label><input type="text" id="f_consultant" value="${esc(v.consultant)}"></div>
+
+      <div class="fs-field">
+        <label>${esc(t("What kind of case is this?"))}</label>
+        <div class="fs-segmented" id="f_mode_group">
+          ${CONFIG.ventureModes.map(m => `<button type="button" class="fs-segment ${v.mode === m.id ? "is-on" : ""}" data-mode="${m.id}">${esc(t(m.label))}</button>`).join("")}
+        </div>
       </div>
-      <div class="fs-field-row-3">
-        <div class="fs-field"><label>${esc(t("Business stage"))}</label><input type="text" id="f_stage" value="${esc(v.stage)}" placeholder="${esc(t("e.g. Idea, pre-launch, operating 2 yrs"))}"></div>
-        <div class="fs-field"><label>${esc(t("Industry / category"))}</label><input type="text" id="f_industry" value="${esc(v.industry)}"></div>
-        <div class="fs-field"><label>${esc(t("Location / market area"))}</label><input type="text" id="f_location" value="${esc(v.location)}"></div>
+
+      <div class="fs-field">
+        <label>${esc(t("What is forcing a decision right now?"))}</label>
+        ${guidedIntro(t("Budget running out, a lease deadline, a slump in sales — the thing that makes this urgent. It keeps the rest of the work honest and time-bound."), t("We have 4 months of cash left before we need to renew or exit the lease."))}
+        <textarea id="f_constraint">${esc(v.urgentConstraint)}</textarea>
       </div>
-      <div class="fs-field"><label>${esc(t("Venture summary"))}</label><textarea id="f_summary" placeholder="${esc(t("One or two sentences on what this venture is or does."))}">${esc(v.summary)}</textarea></div>
-      <div class="fs-field-row">
-        <div class="fs-field"><label>${esc(t("Current business model / intended format"))}</label><input type="text" id="f_model" value="${esc(v.businessModel)}"></div>
-        <div class="fs-field"><label>${esc(t("Start / opening date"))} <span style="text-transform:none;font-weight:400">${esc(t("(if applicable)"))}</span></label><input type="date" id="f_start" value="${esc(v.startDate)}"></div>
+
+      <div class="fs-field">
+        <label>${esc(t("What do you want to walk away with?"))}</label>
+        ${guidedIntro(t("A decision, a plan, a go or no-go — what would make this worth your time?"), t("A clear go or no-go on signing the lease."))}
+        <textarea id="f_outcome">${esc(v.desiredOutcome)}</textarea>
       </div>
-      <div class="fs-field"><label>${esc(t("Current urgent constraint"))}</label>${guidedIntro(t("This is the thing actually forcing a decision right now — budget runway, a lease deadline, a slump in sales. It keeps the rest of the analysis honest and time-bound."), t("We have 4 months of cash left before we need to renew or exit the lease."))}<textarea id="f_constraint">${esc(v.urgentConstraint)}</textarea></div>
-      <div class="fs-field"><label>${esc(t("Desired outcome"))}</label><textarea id="f_outcome" placeholder="${esc(t("What decision or result is this case working toward?"))}">${esc(v.desiredOutcome)}</textarea></div>
-      <div class="fs-field-row">
-        <div class="fs-field"><label>${esc(t("Deadline"))}</label><input type="date" id="f_deadline" value="${esc(v.deadline)}"></div>
-        <div class="fs-field"><label>${esc(t("Decision date"))}</label><input type="date" id="f_decisiondate" value="${esc(v.decisionDate)}"></div>
-      </div>
-      <div class="fs-field"><label>${esc(t("Scope / exclusions"))}</label><textarea id="f_scope" placeholder="${esc(t("What is in scope for this case, and what is explicitly out of scope?"))}">${esc(v.scope)}</textarea></div>
     </div>
 
     ${v.mode === "existing-business" ? `
     <div class="fs-card">
-      <div class="fs-card-head"><h3>${esc(t("Existing-business diagnostic intake"))}</h3></div>
-      <p class="fs-hint">${esc(t("This is not a judgment on how the business started — it is reconstructing the problem, customer, and solution assumptions from what is actually happening now. They still have to be tested like any other assumption."))}</p>
-      <div class="fs-field-row-3">
-        <div class="fs-field"><label>${esc(t("Current performance"))}</label><input type="text" id="ei_performance" value="${esc(v.existingIntake.performance)}" placeholder="${esc(t("e.g. P45k/mo revenue"))}"></div>
-        <div class="fs-field"><label>${esc(t("Traffic / inquiries"))}</label><input type="text" id="ei_traffic" value="${esc(v.existingIntake.traffic)}"></div>
-        <div class="fs-field"><label>${esc(t("Conversion"))}</label><input type="text" id="ei_conversion" value="${esc(v.existingIntake.conversion)}"></div>
+      <div class="fs-field">
+        <label>${esc(t("What made you look into this?"))}</label>
+        ${guidedIntro(t("This is not a judgment on how the business started — it is reconstructing the problem, customer, and solution assumptions from what is actually happening now. They still have to be tested like any other assumption."), t("Sales dropped for three months straight and I do not know why."))}
+        <textarea id="ei_trigger">${esc(v.existingIntake.auditTrigger)}</textarea>
       </div>
-      <div class="fs-field-row-3">
-        <div class="fs-field"><label>${esc(t("Average transaction"))}</label><input type="text" id="ei_avgtx" value="${esc(v.existingIntake.avgTransaction)}"></div>
-        <div class="fs-field"><label>${esc(t("Repeat behavior"))}</label><input type="text" id="ei_repeat" value="${esc(v.existingIntake.repeatBehavior)}"></div>
-        <div class="fs-field"><label>${esc(t("Gross margin / contribution"))}</label><input type="text" id="ei_margin" value="${esc(v.existingIntake.grossMargin)}"></div>
+      <div class="fs-field">
+        <label>${esc(t("Roughly how is it doing now?"))}</label>
+        <p class="fs-hint" style="margin:2px 0 9px">${esc(t("A rough figure is fine — this is a starting point, not an audit."))}</p>
+        <input type="text" id="ei_performance" value="${esc(v.existingIntake.performance)}" placeholder="${esc(t("e.g. P45k/mo revenue"))}">
       </div>
-      <div class="fs-field-row">
-        <div class="fs-field"><label>${esc(t("Fixed costs"))}</label><input type="text" id="ei_fixed" value="${esc(v.existingIntake.fixedCosts)}"></div>
-        <div class="fs-field"><label>${esc(t("Owner dependency"))}</label><input type="text" id="ei_ownerdep" value="${esc(v.existingIntake.ownerDependency)}" placeholder="${esc(t("Can it run without the owner present?"))}"></div>
-      </div>
-      <div class="fs-field"><label>${esc(t("What triggered this audit?"))}</label><textarea id="ei_trigger">${esc(v.existingIntake.auditTrigger)}</textarea></div>
     </div>` : ""}
 
-    <div style="display:flex;justify-content:space-between;align-items:center">
+    ${v.mode === "consultant-case" ? `
+    <div class="fs-card">
+      <div class="fs-field-row">
+        <div class="fs-field"><label>${esc(t("Consultant"))}</label><input type="text" id="f_consultant" value="${esc(v.consultant)}"></div>
+        <div class="fs-field"><label>${esc(t("Deadline"))}</label><input type="date" id="f_deadline" value="${esc(v.deadline)}"></div>
+      </div>
+      <div class="fs-field"><label>${esc(t("Scope / exclusions"))}</label><textarea id="f_scope" placeholder="${esc(t("What is in scope for this case, and what is explicitly out of scope?"))}">${esc(v.scope)}</textarea></div>
+    </div>` : ""}
+
+    ${legacy.length ? `
+    <details class="fs-glossary" style="margin-bottom:20px">
+      <summary>${esc(t("Other details you have already recorded"))} (${legacy.length}) &darr;</summary>
+      <div style="padding:16px 18px;background:var(--fs-bg);border:1px solid var(--fs-line);border-radius:var(--fs-radius);margin-top:10px">
+        <p class="fs-hint">${esc(t("These came from an earlier version of the tool. Nothing here is required — it is kept so you do not lose it."))}</p>
+        ${legacy.map(([id, label, val]) => `<div class="fs-field"><label>${esc(t(label))}</label><input type="text" id="${id}" value="${esc(val)}"></div>`).join("")}
+      </div>
+    </details>` : ""}
+
+    <p class="fs-hint">${esc(t("Nothing else is needed to start. You can come back and add detail whenever it earns its place."))}</p>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
       <button class="fs-btn fs-btn-danger fs-btn-sm" id="fsDeleteVenture">${esc(t("Archive this venture"))}</button>
       <div style="display:flex;gap:10px">
         <button class="fs-btn fs-btn-ghost" id="fsSaveProfile">${esc(t("Save"))}</button>
@@ -1193,6 +1514,13 @@ function renderProfile() {
   `;
 
   main.querySelectorAll("[data-go]").forEach(el => el.addEventListener("click", () => { saveProfileFields(v); go(el.dataset.go, v.id); }));
+  main.querySelectorAll("[data-mode]").forEach(btn => btn.addEventListener("click", () => {
+    if (v.mode === btn.dataset.mode) return;
+    saveProfileFields(v);
+    v.mode = btn.dataset.mode;
+    touchVenture(v);
+    refresh();
+  }));
   document.getElementById("fsSaveProfile").addEventListener("click", () => { saveProfileFields(v); toast(t("Saved")); });
   document.getElementById("fsDeleteVenture").addEventListener("click", () => {
     if (!confirm(t('Archive "%1"? This removes it from the dashboard. This cannot be undone in this MVP.', v.name || t("this venture")))) return;
@@ -1200,19 +1528,23 @@ function renderProfile() {
     saveDB();
     go("dashboard");
   });
-  main.querySelectorAll("input,textarea,select").forEach(el => el.addEventListener("blur", () => saveProfileFields(v)));
+  main.querySelectorAll("input,textarea").forEach(el => el.addEventListener("blur", () => saveProfileFields(v)));
 }
+/* Only writes fields that are actually on screen. A field the current mode
+   does not render keeps whatever the venture already had — switching modes
+   must never silently wipe data. */
 function saveProfileFields(v) {
-  const g = (id) => document.getElementById(id)?.value ?? "";
-  v.name = g("f_name"); v.mode = g("f_mode"); v.owner = g("f_owner"); v.consultant = g("f_consultant");
-  v.stage = g("f_stage"); v.industry = g("f_industry"); v.location = g("f_location"); v.summary = g("f_summary");
-  v.businessModel = g("f_model"); v.startDate = g("f_start"); v.urgentConstraint = g("f_constraint");
-  v.desiredOutcome = g("f_outcome"); v.deadline = g("f_deadline"); v.decisionDate = g("f_decisiondate"); v.scope = g("f_scope");
-  if (v.mode === "existing-business") {
-    v.existingIntake.performance = g("ei_performance"); v.existingIntake.traffic = g("ei_traffic"); v.existingIntake.conversion = g("ei_conversion");
-    v.existingIntake.avgTransaction = g("ei_avgtx"); v.existingIntake.repeatBehavior = g("ei_repeat"); v.existingIntake.grossMargin = g("ei_margin");
-    v.existingIntake.fixedCosts = g("ei_fixed"); v.existingIntake.ownerDependency = g("ei_ownerdep"); v.existingIntake.auditTrigger = g("ei_trigger");
-  }
+  const set = (id, apply) => { const el = document.getElementById(id); if (el) apply(el.value); };
+  set("f_name", x => { v.name = x; });
+  set("f_constraint", x => { v.urgentConstraint = x; });
+  set("f_outcome", x => { v.desiredOutcome = x; });
+  set("f_consultant", x => { v.consultant = x; });
+  set("f_deadline", x => { v.deadline = x; });
+  set("f_scope", x => { v.scope = x; });
+  set("ei_trigger", x => { v.existingIntake.auditTrigger = x; });
+  set("ei_performance", x => { v.existingIntake.performance = x; });
+  RETIRED_PROFILE_FIELDS.forEach(([k]) => set("f_old_" + k, x => { v[k] = x; }));
+  RETIRED_INTAKE_FIELDS.forEach(([k]) => set("ei_old_" + k, x => { v.existingIntake[k] = x; }));
   touchVenture(v);
   renderNav();
 }
@@ -1326,13 +1658,14 @@ function generateAssumptionSuggestion(v, key) {
   const cu = assumptionText(v, "customer");
   const so = assumptionText(v, "solution");
   if (key === "problem" && cu && so) {
-    return t('This might be the problem: it is not easy for "%1" to get something like "%2" on their own — which is why they buy or join.', cu, so);
+    /* Point at the gap the offer implies rather than restating the offer. */
+    return t('Before "%1" existed, how did "%2" handle this — and what was annoying, slow, or costly about that way? Describe that difficulty; it is the problem.', so, cu);
   }
   if (key === "customer" && pr) {
-    return t('The customer may be the people who directly experience this: "%1". Replace this with a more specific group — age, job, place, or occasion.', pr);
+    return t('Who runs into this most often, and where would you physically go to find twenty of them this week? Name that group and that place — for example "%1".', t("parents at the 3pm pickup gate, weekdays"));
   }
   if (key === "solution" && pr && cu) {
-    return t('Something that directly reduces this hassle for "%1" might help — even a small step to begin with. Replace this once your idea is clearer.', cu);
+    return t('What is the smallest thing that would take this difficulty away for "%1" — something you could try within a week, without a lease or a loan?', cu);
   }
   return "";
 }
@@ -1413,7 +1746,7 @@ function bindSnapshot(v) {
     v.opportunitySnapshot[key].notSure = box.checked;
     v.opportunitySnapshot[key].lastUpdated = todayISO();
     touchVenture(v);
-    go("hypothesis", v.id, "snapshot");
+    refresh();
   }));
   document.querySelectorAll("[data-el]").forEach(field => field.addEventListener("blur", () => {
     const key = field.dataset.el;
@@ -1421,7 +1754,7 @@ function bindSnapshot(v) {
     v.opportunitySnapshot[key].assumption = field.value;
     v.opportunitySnapshot[key].lastUpdated = todayISO();
     touchVenture(v);
-    go("hypothesis", v.id, "snapshot");
+    refresh();
   }));
 }
 
@@ -1449,7 +1782,7 @@ function renderHypothesis() {
       <button class="fs-tab ${tab === "problem" ? "is-active" : ""}" data-tab="problem">${esc(t("1. Problem Hypothesis"))}</button>
       <button class="fs-tab ${tab === "segments" ? "is-active" : ""}" data-tab="segments">${esc(t("2. Customer Hypothesis"))}</button>
       <button class="fs-tab ${tab === "solution" ? "is-active" : ""}" data-tab="solution">${esc(t("3. Solution Hypothesis"))}</button>
-      <button class="fs-tab ${tab === "gate" ? "is-active" : ""}" data-tab="gate">${esc(t("Phase 1 Decision Gate"))}</button>
+      <button class="fs-tab ${tab === "gate" ? "is-active" : ""}" data-tab="gate">${esc(t("Decision Gate"))}</button>
     </div>
     <div id="fsHypTabBody"></div>
   `;
@@ -1475,6 +1808,7 @@ addFil({
   "2. Customer Hypothesis": "2. Hipotesis sa Customer",
   "3. Solution Hypothesis": "3. Hipotesis sa Solusyon",
   "Phase 1 Decision Gate": "Desisyon sa Yugto 1",
+  "Decision Gate": "Desisyon sa Yugto",
 
   /* --- Problem Hypothesis --- */
   "Not yet tested": "Hindi pa nasusubok",
@@ -1566,6 +1900,21 @@ addFil({
   "A few things above are still open — worth finishing those first, so your decision is based on what you actually found rather than a guess.": "May ilang bagay sa itaas na bukas pa — sulit tapusin muna ang mga iyon, para ang desisyon mo ay batay sa aktwal mong natuklasan at hindi sa hula.",
 });
 
+/* Renders "here is precisely what is missing", not "please write more". */
+function coachPanel(gaps, heading) {
+  if (!gaps.length) return "";
+  return `
+  <div class="fs-coach">
+    <div class="fs-coach-head">${esc(t(heading))}</div>
+    ${gaps.map(g => `
+      <div class="fs-coach-item">
+        <strong>${esc(t(g.label))}</strong>
+        ${g.why ? `<p>${esc(t(g.why))}</p>` : ""}
+        <span>${esc(t(g.example))}</span>
+      </div>`).join("")}
+  </div>`;
+}
+
 /* --- Step 1: Problem Hypothesis ---
    Cause Exploration deliberately does NOT converge on a root cause. Phase 1
    produces possible explanations; only Phase 2 evidence can promote any of
@@ -1583,9 +1932,27 @@ function renderProblemId(v) {
     <p class="fs-hint">${esc(t("Take the problem you assumed and make it sharper and testable. You are looking for possible explanations here — not the answer."))}</p>
     <div class="fs-example">${esc(t('Your problem assumption: "%1"', assumptionEcho(v, "problem")))}</div>
 
+    ${coachPanel(problemGaps(v), "Make this sharper before you test it")}
+
+    <div class="fs-field-row">
+      <div class="fs-field">
+        <label>${esc(t("How often does this happen?"))}</label>
+        <input type="text" id="p_frequency" value="${esc(p.frequency)}" placeholder="${esc(t("e.g. every school day, about 180 households"))}">
+      </div>
+      <div class="fs-field">
+        <label>${esc(t("What does it cost them?"))}</label>
+        <input type="text" id="p_consequence" value="${esc(p.consequence)}" placeholder="${esc(t("e.g. they stand 20+ minutes and leave straight after"))}">
+      </div>
+    </div>
+
     <div class="fs-field">
       <label>${esc(t("Cause Exploration — what might be causing this?"))}</label>
       <p class="fs-hint" style="margin:2px 0 9px">${esc(t("Each line is one possible explanation. Going a level deeper often helps, but the last line you write is not automatically the root cause — it is just your current best guess until evidence says otherwise."))}</p>
+      <div class="fs-suggest-box">
+        <div class="fs-suggest-label">${esc(t("Common reasons things get hard — tap one to start a line"))}</div>
+        <p style="margin:0 0 9px">${esc(t("Each of these explains something about the customer's situation. None of them is \"my idea does not exist yet\" — that explains nothing."))}</p>
+        <div class="fs-suggest-actions">${CAUSE_PATTERNS.map(c => `<button data-cause="${c.id}">${esc(t(c.label))}</button>`).join("")}</div>
+      </div>
       ${p.causeExploration.map((w, i) => `<input type="text" class="fs-why" data-i="${i}" value="${esc(w)}" placeholder="${esc(t("Possible cause %1...", i + 1))}" style="margin-bottom:8px">`).join("")}
       ${p.causeExploration.length < 3 ? `<button class="fs-btn fs-btn-ghost fs-btn-sm" id="p_addwhy">${esc(t("+ Explore one level deeper"))}</button>` : ""}
     </div>
@@ -1613,7 +1980,7 @@ function renderProblemId(v) {
       <p>${esc(t("Your wording has not been altered. If you want the cautious version, use the suggested draft below, or edit the text yourself."))}</p>
     </div>` : ""}
     ${draft ? suggestBox(draft, `<button id="p_use_sug">${esc(t("Use suggestion"))}</button>`) : ""}
-    <div class="fs-field"><label>${esc(t("Problem Hypothesis"))}</label><textarea id="p_statement" placeholder="${esc(t("Use the suggestion above, or write your own — phrased as something that could turn out to be wrong."))}">${esc(p.problemStatement)}</textarea></div>
+    <div class="fs-field"><label>${esc(t("Problem Hypothesis"))}</label><textarea id="p_statement" style="min-height:130px" placeholder="${esc(t("Use the suggestion above, or write your own — phrased as something that could turn out to be wrong."))}">${esc(p.problemStatement)}</textarea></div>
     <p class="fs-hint" style="margin:0">${esc(t("This stays a hypothesis until Phase 2 evidence supports it. Only then does it become a Problem Insight."))}</p>
   </div>`;
 }
@@ -1626,6 +1993,7 @@ function renderSegments(v) {
     <div class="fs-card-head"><h3>${esc(t("Customer Hypothesis"))}</h3><button class="fs-btn fs-btn-sm" id="seg_add">${esc(t("+ Add Segment"))}</button></div>
     <p class="fs-hint">${esc(t("Sharpen your customer assumption into one or more specific groups you could actually go and find. Who you name here is a proposition to be tested, not a finding."))}</p>
     <div class="fs-example">${esc(t('Your customer assumption: "%1"', assumptionEcho(v, "customer")))}</div>
+    ${coachPanel(customerGaps(v), "Sharpen who this is")}
     ${segs.length === 0 ? `<p class="fs-hint" style="margin:0">${esc(t("No segments yet — add one to start."))}</p>` : segs.map(s => renderSegmentCard(s)).join("")}
   </div>`;
 }
@@ -1748,12 +2116,26 @@ function bindHypothesisTab(v, tab) {
       if (p.causeExploration[i] === e.target.value) return;
       p.causeExploration[i] = e.target.value;
       touchVenture(v);
-      go("hypothesis", v.id, "problem");
+      refresh();
     }));
     document.querySelectorAll(".fs-alt").forEach(inp => inp.addEventListener("blur", e => {
       const i = +e.target.dataset.i;
       if (p.alternativeExplanations[i] === e.target.value) return;
       p.alternativeExplanations[i] = e.target.value;
+      touchVenture(v);
+      refresh();
+    }));
+    document.getElementById("p_frequency")?.addEventListener("blur", e => { if (p.frequency === e.target.value) return; p.frequency = e.target.value; touchVenture(v); refresh(); });
+    document.getElementById("p_consequence")?.addEventListener("blur", e => { if (p.consequence === e.target.value) return; p.consequence = e.target.value; touchVenture(v); refresh(); });
+    /* A cause chip fills the first empty line, or adds one if all are used. */
+    document.querySelectorAll("[data-cause]").forEach(btn => btn.addEventListener("click", () => {
+      const pattern = CAUSE_PATTERNS.find(c => c.id === btn.dataset.cause);
+      if (!pattern) return;
+      const text = causeStarter(v, pattern);
+      const slot = p.causeExploration.findIndex(x => !(x || "").trim());
+      if (slot >= 0) p.causeExploration[slot] = text;
+      else if (p.causeExploration.length < 3) p.causeExploration.push(text);
+      else p.causeExploration[p.causeExploration.length - 1] = text;
       touchVenture(v);
       go("hypothesis", v.id, "problem");
     }));
@@ -1778,7 +2160,7 @@ function bindHypothesisTab(v, tab) {
           const val = inp.type === "checkbox" ? inp.checked : inp.value;
           seg[path] = val;
           touchVenture(v);
-          go("hypothesis", v.id, "segments");
+          refresh();
         });
       });
     });
@@ -1787,14 +2169,14 @@ function bindHypothesisTab(v, tab) {
     document.querySelectorAll("[data-del-comp]").forEach(btn => btn.addEventListener("click", () => { v.hypothesis.competitors = v.hypothesis.competitors.filter(c => c.id !== btn.dataset.delComp); touchVenture(v); go("hypothesis", v.id, "solution"); }));
     document.querySelectorAll("[data-comp]").forEach(card => {
       const comp = v.hypothesis.competitors.find(c => c.id === card.dataset.comp);
-      card.querySelectorAll("[data-f]").forEach(inp => inp.addEventListener("blur", () => { comp[inp.dataset.f] = inp.value; touchVenture(v); go("hypothesis", v.id, "solution"); }));
+      card.querySelectorAll("[data-f]").forEach(inp => inp.addEventListener("blur", () => { if (comp[inp.dataset.f] === inp.value) return; comp[inp.dataset.f] = inp.value; touchVenture(v); refresh(); }));
     });
     document.getElementById("vd_add")?.addEventListener("click", () => { v.hypothesis.valueDrivers.push(blankValueDriver()); touchVenture(v); go("hypothesis", v.id, "solution"); });
     document.querySelectorAll("[data-add-starter]").forEach(btn => btn.addEventListener("click", () => { v.hypothesis.valueDrivers.push(blankValueDriver(btn.dataset.addStarter)); touchVenture(v); go("hypothesis", v.id, "solution"); }));
     document.querySelectorAll("[data-del-driver]").forEach(btn => btn.addEventListener("click", () => { v.hypothesis.valueDrivers = v.hypothesis.valueDrivers.filter(d => d.id !== btn.dataset.delDriver); touchVenture(v); go("hypothesis", v.id, "solution"); }));
     document.querySelectorAll("[data-driver]").forEach(card => {
       const d = v.hypothesis.valueDrivers.find(x => x.id === card.dataset.driver);
-      card.querySelectorAll("[data-f]").forEach(inp => inp.addEventListener("blur", () => { d[inp.dataset.f] = inp.value; touchVenture(v); go("hypothesis", v.id, "solution"); }));
+      card.querySelectorAll("[data-f]").forEach(inp => inp.addEventListener("blur", () => { if (d[inp.dataset.f] === inp.value) return; d[inp.dataset.f] = inp.value; touchVenture(v); refresh(); }));
     });
     document.getElementById("sol_use_sug")?.addEventListener("click", () => { v.hypothesis.solutionHypothesis = generateSolutionHypothesisDraft(v); touchVenture(v); go("hypothesis", v.id, "solution"); });
   } else if (tab === "gate") {
@@ -2046,7 +2428,7 @@ function renderValidation() {
       <button class="fs-tab ${tab === "customer" ? "is-active" : ""}" data-tab="customer">${esc(t("2. Customer Validation"))}</button>
       <button class="fs-tab ${tab === "solution" ? "is-active" : ""}" data-tab="solution">${esc(t("3. Solution Validation"))}</button>
       <button class="fs-tab ${tab === "future" ? "is-active" : ""}" data-tab="future">${esc(t("4. Future Direction"))}</button>
-      <button class="fs-tab ${tab === "gate" ? "is-active" : ""}" data-tab="gate">${esc(t("Phase 2 Decision Gate"))}</button>
+      <button class="fs-tab ${tab === "gate" ? "is-active" : ""}" data-tab="gate">${esc(t("Decision Gate"))}</button>
     </div>
     <div id="fsValTabBody"></div>
   `;
@@ -2249,7 +2631,7 @@ function bindValidationTab(v, tab) {
         if (target[inp.dataset.f] === inp.value) return;
         target[inp.dataset.f] = inp.value;
         touchVenture(v);
-        if (inp.dataset.f === "decision" || inp.dataset.f === "outcome" || inp.dataset.f === "metric" || inp.dataset.f === "decisionThreshold") go("validation", v.id, tab);
+        if (inp.dataset.f === "decision" || inp.dataset.f === "outcome" || inp.dataset.f === "metric" || inp.dataset.f === "decisionThreshold") refresh();
       };
       inp.addEventListener("blur", commit);
       if (inp.tagName === "SELECT") inp.addEventListener("change", commit);
@@ -2429,7 +2811,7 @@ function renderEvidence() {
   document.getElementById("ev_add").addEventListener("click", () => { v.evidence.unshift(blankEvidence()); touchVenture(v); go("evidence", v.id); });
   document.querySelectorAll("[data-ev]").forEach(card => {
     const e = v.evidence.find(x => x.id === card.dataset.ev);
-    card.querySelectorAll("[data-f]").forEach(inp => inp.addEventListener("blur", () => { e[inp.dataset.f] = inp.value; touchVenture(v); if (inp.dataset.f === "label") go("evidence", v.id); }));
+    card.querySelectorAll("[data-f]").forEach(inp => inp.addEventListener("blur", () => { if (e[inp.dataset.f] === inp.value) return; e[inp.dataset.f] = inp.value; touchVenture(v); if (inp.dataset.f === "label") refresh(); }));
     card.querySelector("[data-del-ev]")?.addEventListener("click", () => { v.evidence = v.evidence.filter(x => x.id !== e.id); touchVenture(v); go("evidence", v.id); });
   });
 }
