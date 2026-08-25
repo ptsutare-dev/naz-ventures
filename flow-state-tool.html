@@ -1148,7 +1148,7 @@ function solutionGaps(v) {
     gaps.push({
       label: "\"%1\" is not pointed at anything",
       labelArgs: [untied[0].name.trim()],
-      why: "A differentiator has to beat something specific. Pick the alternative it wins against, or it is a compliment rather than a claim.",
+      why: "What makes you different has to beat something specific. Pick the alternative it wins against, or it is just a compliment, not a real claim.",
       example: "\"Being at the gate\" beats \"going somewhere further away\" — not everything at once.",
     });
   }
@@ -1726,7 +1726,7 @@ addFil({
   "Every operator believes they have good service and good products. A driver only counts if it would move someone off what they already do.": "Lahat ng may negosyo ay naniniwalang maganda ang serbisyo at produkto nila. Bibilang lang ang driver kung maiaalis nito ang tao sa ginagawa na nila.",
   "Not \"our coffee is good\" but \"they would walk past the 7-Eleven for it\".": "Hindi \"masarap ang kape namin\" kundi \"lalampasan nila ang 7-Eleven para dito\".",
   "\"%1\" is not pointed at anything": "Walang tinuturo ang \"%1\"",
-  "A differentiator has to beat something specific. Pick the alternative it wins against, or it is a compliment rather than a claim.": "Kailangang may tiyak na tinatalo ang pagkakaiba. Pumili ng alternatibong pinapanalunan nito, kung hindi ay papuri lang ito at hindi pahayag.",
+  "What makes you different has to beat something specific. Pick the alternative it wins against, or it is just a compliment, not a real claim.": "Kailangang may tiyak na tinatalo ang pagkakaiba. Pumili ng alternatibong pinapanalunan nito, kung hindi ay papuri lang ito at hindi pahayag.",
   "\"Being at the gate\" beats \"going somewhere further away\" — not everything at once.": "Ang \"nasa gate\" ay tinatalo ang \"pupunta sa mas malayo\" — hindi lahat nang sabay.",
   "No reason recorded why anyone would stay put": "Walang naitalang dahilan kung bakit mananatili sila",
   "The reasons people do not switch are usually stronger than the reasons they would. Writing them down is what stops a hypothesis being wishful.": "Mas malakas kadalasan ang dahilan ng hindi pagpapalit kaysa sa dahilan ng pagpapalit. Ang pagsulat nito ang pumipigil sa hipotesis na maging pangarap lang.",
@@ -1806,7 +1806,7 @@ addFil({
   "What is the smallest thing that would take this difficulty away for \"%1\" — something you could try within a week, without a lease or a loan?": "Ano ang pinakamaliit na bagay na makakaalis sa hirap na ito para sa \"%1\" — isang bagay na kaya mong subukan sa loob ng isang linggo, walang upa o utang?",
 
   /* --- venture profile, trimmed --- */
-  "Two things anchor everything that follows: what is forcing a decision, and what you want out of this. Everything else can wait until it actually matters.": "Dalawang bagay ang pundasyon ng lahat ng susunod: kung ano ang pumipilit sa'yong magdesisyon, at kung ano ang gusto mong makuha dito. Ang iba ay pwedeng hintayin hanggang sa may saysay na ito.",
+  "Two things matter most here: why this is urgent, and what you want out of it. Everything else can wait.": "Dalawang bagay ang pinakamahalaga dito: bakit ito kailangan agad, at ano ang gusto mong makuha. Ang iba ay pwedeng hintayin.",
   "What should we call this?": "Ano ang itatawag natin dito?",
   "What is making this urgent?": "Ano ang dahilan kung bakit ito kailangan agad?",
   "Budget running out, a lease deadline, a slump in sales — the thing that makes this urgent. It keeps the rest of the work honest and time-bound.": "Nauubos na pondo, deadline sa upa, bumabagsak na benta — ang dahilan kung bakit ito madalian. Ito ang nagpapanatiling makatotohanan at may takdang panahon sa lahat ng gagawin.",
@@ -1889,7 +1889,7 @@ function renderProfile() {
     <a class="fs-back-link" data-go="dashboard">&#8592; ${esc(t("All ventures"))}</a>
     <p class="fs-eyebrow">${esc(t("Venture / Case Profile"))}</p>
     <h1 class="fs-h1">${esc(v.name || t("Untitled venture"))}</h1>
-    <p class="fs-lede">${esc(t("Two things anchor everything that follows: what is forcing a decision, and what you want out of this. Everything else can wait until it actually matters."))}</p>
+    <p class="fs-lede">${esc(t("Two things matter most here: why this is urgent, and what you want out of it. Everything else can wait."))}</p>
     ${demoFlag(v)}
     <div class="fs-status-row"><span class="fs-status-line">${esc(ventureStatus(v))}</span></div>
 
@@ -2728,7 +2728,7 @@ addFil({
   "Are the segment and the context specific enough to find and reach?": "Sapat bang tiyak ang segment at konteksto para mahanap at maabot?",
   "Do consistent patterns show up within that segment?": "May lumalabas bang pare-parehong pattern sa loob ng segment na iyon?",
   "Logged 40 pickups over one week: 34 were mothers or yayas, 22 had a second child with them, all arrived 10+ minutes before dismissal.": "Naitala ang 40 sundo sa loob ng isang linggo: 34 ay ina o yaya, 22 ay may kasamang pangalawang bata, lahat ay dumating 10+ minuto bago ang uwian.",
-  "Revisit the competitors and alternatives you logged in Phase 1 — does your differentiation claim actually hold up when tested against what customers really compare you to?": "Balikan ang mga kakumpitensya at alternatibong naitala mo sa Yugto 1 — totoo ba ang sinasabi mong pagkakaiba kapag isinukat sa kung ano talaga ang ipinapantay sa'yo ng mga customer?",
+  "Revisit the competitors and alternatives you logged in Phase 1 — does what makes you different actually hold up against what customers really compare you to?": "Balikan ang mga kakumpitensya at alternatibong naitala mo sa Yugto 1 — totoo ba ang sinasabi mong pagkakaiba kapag isinukat sa kung ano talaga ang ipinapantay sa'yo ng mga customer?",
   "Asked 10 parents why they don't just go to the 7-Eleven 400m away — 8 said distance and no seating, 2 said they'd never considered a coffee stop at all.": "Tinanong ang 10 magulang kung bakit hindi na lang sila pumunta sa 7-Eleven na 400m ang layo — 8 ang nagsabing layo at walang maupuan, 2 ang nagsabing hindi nila naisip kailanman ang huminto para sa kape.",
   "Test whether enough reachable demand exists relative to the alternatives already available — separate from whether one customer likes the idea.": "Subukin kung may sapat na maaabot na demand kumpara sa mga alternatibong meron na — hiwalay sa kung nagustuhan ng isang customer ang ideya.",
   "Roughly 180 pickup households pass the gate daily; a 1-week sign-up sheet for a pop-up got 31 interested households, about 17%.": "Mga 180 sambahayan ang dumadaan sa gate araw-araw; ang 1-linggong sign-up sheet para sa pop-up ay nakakuha ng 31 interesadong sambahayan, mga 17%.",
@@ -2837,7 +2837,7 @@ const VALIDATION_CARD_META = {
   "solution.competitive": {
     title: "Competitive Analysis",
     element: "solution",
-    why: "Revisit the competitors and alternatives you logged in Phase 1 — does your differentiation claim actually hold up when tested against what customers really compare you to?",
+    why: "Revisit the competitors and alternatives you logged in Phase 1 — does what makes you different actually hold up against what customers really compare you to?",
     example: "Asked 10 parents why they don't just go to the 7-Eleven 400m away — 8 said distance and no seating, 2 said they'd never considered a coffee stop at all.",
   },
   "solution.market": {
@@ -3164,7 +3164,7 @@ addFil({
   "Vision statement": "Pahayag ng bisyon",
   "Core Values": "Pangunahing Pagpapahalaga",
   "+ Add Core Value": "+ Magdagdag ng Pagpapahalaga",
-  "The operating principles that make your differentiation real — not generic virtues copied from another business.": "Ang mga prinsipyo sa pagpapatakbo na nagpapatotoo sa pagkakaiba mo — hindi pangkaraniwang kabutihang kinopya sa ibang negosyo.",
+  "The day-to-day habits that make what is different about you real — not generic virtues copied from another business.": "Ang mga pang-araw-araw na gawi na nagpapatotoo sa pagkakaiba mo — hindi pangkaraniwang kabutihang kinopya sa ibang negosyo.",
   "No core values yet — add one to start.": "Wala pang pagpapahalaga — magdagdag ng isa para makapagsimula.",
   "Value name": "Pangalan ng pagpapahalaga",
   "What this means in practice": "Ano ang ibig sabihin nito sa aktwal",
@@ -3251,7 +3251,7 @@ function renderIdentity() {
 
     <div class="fs-card">
       <div class="fs-card-head"><h3>${esc(t("Core Values"))}</h3><button class="fs-btn fs-btn-sm" id="mvv_add_value">${esc(t("+ Add Core Value"))}</button></div>
-      <p class="fs-hint">${esc(t("The operating principles that make your differentiation real — not generic virtues copied from another business."))}</p>
+      <p class="fs-hint">${esc(t("The day-to-day habits that make what is different about you real — not generic virtues copied from another business."))}</p>
       ${mvv.coreValues.length === 0 ? `<p class="fs-hint" style="margin:0">${esc(t("No core values yet — add one to start."))}</p>` : mvv.coreValues.map(cv => `
       <div class="fs-card" style="background:var(--fs-bg)" data-cv="${cv.id}">
         <div class="fs-card-head">
