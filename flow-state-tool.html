@@ -175,6 +175,45 @@ table.fs-table tr:last-child td{border-bottom:none}
 .fs-insight-chip.is-insight{border-color:var(--fs-fact);background:var(--fs-fact-soft);color:var(--fs-fact);font-weight:600}
 .fs-demo-flag{background:var(--fs-assumption-soft);border:1px solid #ecd9ae;border-radius:var(--fs-radius);padding:11px 15px;margin-bottom:20px;font-size:12.5px;line-height:1.55;color:#7a5409}
 .fs-status-line{display:inline-block;font-size:12px;font-weight:600;color:var(--fs-accent-dark);background:var(--fs-accent-soft);border-radius:100px;padding:4px 12px}
+/* ---------- Progress, tally and milestone ---------- */
+.fs-journey{margin:0 0 18px}
+.fs-journey-bar{height:5px;background:var(--fs-line-soft);border-radius:100px;overflow:hidden}
+.fs-journey-bar span{display:block;height:100%;background:var(--fs-gold);border-radius:100px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.fs-journey-stages{display:flex;justify-content:space-between;gap:6px;margin-top:7px}
+.fs-journey-stages span{font-size:10px;font-weight:600;color:var(--fs-unknown);text-align:center;flex:1;line-height:1.3}
+.fs-journey-stages span.is-done{color:var(--fs-fact)}
+.fs-journey-stages span.is-now{color:var(--fs-accent-dark);font-weight:700}
+@media(max-width:640px){.fs-journey-stages span{font-size:9px}}
+
+.fs-tally{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 22px}
+@media(max-width:560px){.fs-tally{grid-template-columns:repeat(2,1fr)}}
+.fs-tally-cell{border:1px solid var(--fs-line);border-radius:var(--fs-radius-sm);padding:11px 12px;background:var(--fs-paper);text-align:center}
+.fs-tally-cell.is-on{border-color:var(--fs-gold);background:var(--fs-gold-soft)}
+.fs-tally-cell strong{display:block;font-family:var(--fs-display);font-size:21px;color:var(--fs-unknown);line-height:1.1}
+.fs-tally-cell.is-on strong{color:var(--fs-accent-dark)}
+.fs-tally-cell span{display:block;font-size:10.5px;color:var(--fs-ink-soft);margin-top:3px;line-height:1.35}
+
+.fs-milestone{background:linear-gradient(180deg,var(--fs-gold-soft),var(--fs-paper));border:1px solid #e5cf9f;border-left:4px solid var(--fs-gold);border-radius:var(--fs-radius);padding:22px 24px;margin-bottom:22px;box-shadow:var(--fs-shadow)}
+.fs-milestone-eyebrow{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--fs-assumption);margin:0 0 6px}
+.fs-milestone h2{font-family:var(--fs-display);font-size:20px;line-height:1.25;color:var(--fs-accent-dark);margin:0 0 8px}
+.fs-milestone p{font-size:13.5px;line-height:1.6;color:var(--fs-ink-soft);margin:0 0 14px;max-width:560px}
+
+.fs-card-journey{height:4px;background:var(--fs-line-soft);border-radius:100px;overflow:hidden;margin-top:12px}
+.fs-card-journey span{display:block;height:100%;background:var(--fs-gold);border-radius:100px}
+
+/* ---------- One-question-per-page wizard ---------- */
+.fs-wizard{max-width:620px;margin:0 auto;padding:8px 0 40px}
+.fs-wizard-progress{margin-bottom:26px}
+.fs-wizard-bar{height:6px;background:var(--fs-line-soft);border-radius:100px;overflow:hidden}
+.fs-wizard-bar span{display:block;height:100%;background:var(--fs-gold);border-radius:100px;transition:width .35s cubic-bezier(.4,0,.2,1)}
+.fs-wizard-progress p{margin:8px 0 0;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--fs-ink-soft)}
+.fs-wizard-card{background:var(--fs-paper);border:1px solid var(--fs-line);border-radius:var(--fs-radius);box-shadow:var(--fs-shadow);padding:30px 32px;margin-bottom:22px}
+.fs-wizard-q{font-family:var(--fs-display);font-size:25px;line-height:1.25;letter-spacing:-0.015em;color:var(--fs-accent-dark);margin:0 0 12px}
+.fs-wizard-nav{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.fs-wizard-skip{display:block;margin:18px auto 0;background:none;border:none;font-size:12.5px;color:var(--fs-ink-soft);text-decoration:underline;cursor:pointer}
+.fs-wizard-skip:hover{color:var(--fs-accent)}
+@media(max-width:640px){.fs-wizard-card{padding:24px 20px}.fs-wizard-q{font-size:21px}}
+
 .fs-linkbtn{background:none;border:none;padding:0 0 0 4px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--fs-ink-soft);text-decoration:underline}
 .fs-linkbtn:hover{color:var(--fs-accent)}
 .fs-sample-block{margin-top:34px;padding-top:22px;border-top:1px dashed #e0cba6}
@@ -417,6 +456,37 @@ const FIL_CHROME = {
   "Untitled venture": "Walang pangalang negosyo",
   "Not saved yet": "Hindi pa nase-save",
   "Back up or restore": "Mag-backup o magbalik ng file",
+
+  /* --- wizard --- */
+  "Question %1 of %2": "Tanong %1 sa %2",
+  "Finish": "Tapusin",
+  "Skip this for now": "Laktawan muna ito",
+
+  /* --- journey stages --- */
+  "Getting started": "Nagsisimula pa lang",
+  "First answers down": "May mga unang sagot na",
+  "Building hypotheses": "Binubuo ang hipotesis",
+  "Ready to test": "Handa nang subukan",
+  "Gathering evidence": "Nangangalap ng ebidensya",
+  "Evidence-backed": "May batayang ebidensya",
+
+  /* --- progress tally --- */
+  "starting assumption": "panimulang palagay",
+  "starting assumptions": "panimulang palagay",
+  "testable hypothesis": "masusubok na hipotesis",
+  "testable hypotheses": "masusubok na hipotesis",
+  "piece of evidence": "piraso ng ebidensya",
+  "pieces of evidence": "piraso ng ebidensya",
+  "evidence-backed insight": "kabatirang may ebidensya",
+  "evidence-backed insights": "kabatirang may ebidensya",
+
+  /* --- milestone --- */
+  "Worth stopping for": "Sulit na huminto",
+  "All three now hold up against real evidence.": "Ang tatlo ay may batayan na ngayong tunay na ebidensya.",
+  "Your problem, your customer and your solution started as guesses. You tested them and they survived. Most people never get this far — they open, and find out afterwards.": "Ang problema, customer at solusyon mo ay hula lang noong una. Sinubukan mo sila at tumagal sila. Karamihan ay hindi nakakarating dito — nagbubukas sila, tapos saka na lang nalalaman.",
+  "Continue": "Magpatuloy",
+  "Phase 1 done — three hypotheses ready to test.": "Tapos na ang Yugto 1 — tatlong hipotesis na handang subukan.",
+  "Phase 2 done — your decision is on the record.": "Tapos na ang Yugto 2 — nakatala na ang desisyon mo.",
   "Download a backup": "I-download ang backup",
   "Restore from a backup": "Ibalik mula sa backup",
   "This does not look like a Flow State backup file.": "Mukhang hindi ito Flow State backup file.",
@@ -654,6 +724,10 @@ function blankVenture() {
     },
     missionVisionValues: { mission: "", vision: "", coreValues: [] },
     evidence: [],
+    /* Shown once per venture. See migrateVenture for how existing ventures
+       are exempted from seeing the wizard retroactively. */
+    profileOnboarded: false,
+    insightCelebrationShown: false,
   };
 }
 function blankValidationTest() {
@@ -781,6 +855,17 @@ function migrateVenture(v) {
     if (c.outcome === undefined) c.outcome = LEGACY_DECISION_TO_OUTCOME[c.decision] || "Not Yet Assessed";
     if (c.nextMove === undefined) c.nextMove = "";
   });
+
+  /* Anyone who already has real profile content came through the old
+     single-page form — never make them repeat that as a wizard. Only a
+     genuinely untouched venture gets the new guided flow. */
+  if (typeof v.profileOnboarded !== "boolean") {
+    v.profileOnboarded = !!(v.name || v.urgentConstraint || v.desiredOutcome);
+  }
+  /* Don't retroactively "celebrate" work that finished before this existed. */
+  if (typeof v.insightCelebrationShown !== "boolean") {
+    v.insightCelebrationShown = insightsSufficientlySupported(v);
+  }
 
   /* The shipped demo is ours to correct; a user's own ventures are not. */
   if (isStaleSeededDemo(v)) seedDemoVenture(v);
@@ -1323,6 +1408,68 @@ function ventureStatusKey(v) {
   return "Opportunity Snapshot not started";
 }
 function ventureStatus(v) { return t(ventureStatusKey(v)); }
+
+/* =========================================================================
+   PROGRESS / MILESTONES
+   Deliberately not points, streaks or badges. The people using this are
+   making real decisions about their livelihood; scoring that would cheapen
+   it and undercut the credibility the tool depends on. What is rewarding
+   here is evidence of your own progress — how far along you are, what you
+   have actually built, and being told plainly when you cross something most
+   people never reach.
+
+   The stages are the ladder the tool already tracks, not new invented ones.
+   ========================================================================= */
+const JOURNEY_STAGES = [
+  { key: "Opportunity Snapshot not started",  short: "Getting started" },
+  { key: "Opportunity Snapshot in progress",  short: "First answers down" },
+  { key: "Hypotheses in development",         short: "Building hypotheses" },
+  { key: "Ready for validation",              short: "Ready to test" },
+  { key: "Validation in progress",            short: "Gathering evidence" },
+  { key: "Insights sufficiently supported",   short: "Evidence-backed" },
+];
+function journeyIndex(v) {
+  const k = ventureStatusKey(v);
+  const i = JOURNEY_STAGES.findIndex(s => s.key === k);
+  return i < 0 ? 0 : i;
+}
+/* A count of what the person has actually produced — not a score. Every
+   number here points at something real they can go and look at. */
+function progressTally(v) {
+  const answered = ELEMENT_KEYS.filter(k => assumptionAnswered(v, k)).length;
+  const hypotheses = ELEMENT_KEYS.filter(k => elementHypothesisWritten(v, k)).length;
+  const insights = ELEMENT_KEYS.filter(k => hasInsight(v, k)).length;
+  const tested = VALIDATION_KEYS.filter(k => validationTestComplete(getValidationCard(v, k))).length;
+  return { answered, hypotheses, insights, tested, evidence: (v.evidence || []).length };
+}
+/* The journey bar: where you are on the road, and what is left. */
+function journeyBar(v) {
+  const idx = journeyIndex(v);
+  const pct = Math.round((idx / (JOURNEY_STAGES.length - 1)) * 100);
+  return `
+  <div class="fs-journey">
+    <div class="fs-journey-bar"><span style="width:${pct}%"></span></div>
+    <div class="fs-journey-stages">
+      ${JOURNEY_STAGES.map((s, i) => `<span class="${i < idx ? "is-done" : i === idx ? "is-now" : ""}">${esc(t(s.short))}</span>`).join("")}
+    </div>
+  </div>`;
+}
+/* What you have built so far, in plain counts. Only shows once there is
+   something in it — an all-zeroes scoreboard on day one is discouraging,
+   which is the opposite of the point. */
+function progressTallyStrip(v) {
+  const c = progressTally(v);
+  if (!c.answered && !c.hypotheses && !c.insights && !c.evidence) return "";
+  const cell = (n, one, many, on) =>
+    `<div class="fs-tally-cell ${on ? "is-on" : ""}"><strong>${n}</strong><span>${esc(t(n === 1 ? one : many))}</span></div>`;
+  return `
+  <div class="fs-tally">
+    ${cell(c.answered, "starting assumption", "starting assumptions", c.answered > 0)}
+    ${cell(c.hypotheses, "testable hypothesis", "testable hypotheses", c.hypotheses > 0)}
+    ${cell(c.evidence, "piece of evidence", "pieces of evidence", c.evidence > 0)}
+    ${cell(c.insights, "evidence-backed insight", "evidence-backed insights", c.insights > 0)}
+  </div>`;
+}
 function generateMissionDraft(v) {
   const p = v.validation.problem, c = v.validation.customer;
   const pText = p.interpretation || p.actualResult;
@@ -1596,6 +1743,7 @@ function renderDashboard() {
         ${c.contradictions ? `<span style="color:var(--fs-warn)"><b>${c.contradictions}</b> ${esc(t("contradictions"))}</span>` : ""}
       </div>
       <div class="fs-vc-meta" style="margin-top:10px"><span class="fs-status-line">${esc(status)}</span>${gateNote}</div>
+      <div class="fs-card-journey"><span style="width:${Math.round((journeyIndex(v) / (JOURNEY_STAGES.length - 1)) * 100)}%"></span></div>
     </div>`;
   });
   const mine = ownVentures();
@@ -1900,10 +2048,139 @@ function profileExample(v, key) {
   return (PROFILE_EXAMPLES[v.mode] || PROFILE_EXAMPLES["new-venture"])[key];
 }
 
+/* =========================================================================
+   PROFILE WIZARD — one question per screen
+   The single-question form pattern. It trades "everything visible at once"
+   for "only one thing to think about", which is the right trade here: the
+   profile is already down to a handful of real questions, so this is not
+   hiding a long list behind folds — it is pacing a short one.
+
+   The cost is more taps. Two things pay that back: a visible step counter
+   (people push harder as a finish line gets closer) and an explicit
+   acknowledgement at the end, so the extra taps end in something rather
+   than just stopping.
+   ========================================================================= */
+function profileSteps(v) {
+  const steps = [
+    { id: "name", label: "What should we call this?",
+      hint: "", example: "",
+      placeholder: "e.g. Riverside Coffee Kiosk",
+      get: () => v.name, set: (x) => { v.name = x; }, kind: "text" },
+    { id: "mode", label: "What kind of case is this?",
+      hint: "", example: "", kind: "mode" },
+    { id: "constraint", label: "What is making this urgent?",
+      hint: "Savings running out, rent going up, sales dropping — whatever is pushing you to decide now instead of later.",
+      example: profileExample(v, "constraint"),
+      get: () => v.urgentConstraint, set: (x) => { v.urgentConstraint = x; }, kind: "textarea" },
+    { id: "outcome", label: "What do you want to get out of this?",
+      hint: "A decision, a plan, a clear yes or no — what would make this worth your time?",
+      example: profileExample(v, "outcome"),
+      get: () => v.desiredOutcome, set: (x) => { v.desiredOutcome = x; }, kind: "textarea" },
+  ];
+  if (v.mode === "existing-business") {
+    steps.push({ id: "trigger", label: "What made you look into this?",
+      hint: "This is not a judgment on how the business started — it is reconstructing the problem, customer, and solution assumptions from what is actually happening now.",
+      example: "I am working every day but there is nothing left at the end of the month.",
+      get: () => v.existingIntake.auditTrigger, set: (x) => { v.existingIntake.auditTrigger = x; }, kind: "textarea" });
+    steps.push({ id: "performance", label: "Roughly how is it doing now?",
+      hint: "A rough figure is fine — this is a starting point, not an audit.",
+      example: "", placeholder: "e.g. ₱45k/mo revenue",
+      get: () => v.existingIntake.performance, set: (x) => { v.existingIntake.performance = x; }, kind: "text" });
+  }
+  return steps;
+}
+let PROFILE_STEP = 0;
+
+function renderProfileWizard(v) {
+  const main = document.getElementById("fsMain");
+  const steps = profileSteps(v);
+  if (PROFILE_STEP >= steps.length) PROFILE_STEP = steps.length - 1;
+  if (PROFILE_STEP < 0) PROFILE_STEP = 0;
+  const step = steps[PROFILE_STEP];
+  const isLast = PROFILE_STEP === steps.length - 1;
+  const pct = Math.round(((PROFILE_STEP + 1) / steps.length) * 100);
+
+  let field;
+  if (step.kind === "mode") {
+    field = `<div class="fs-segmented" id="f_mode_group">
+      ${CONFIG.ventureModes.map(m => `<button type="button" class="fs-segment ${v.mode === m.id ? "is-on" : ""}" data-mode="${m.id}">${esc(t(m.label))}</button>`).join("")}
+    </div>`;
+  } else if (step.kind === "textarea") {
+    field = `<textarea id="wz_field" style="min-height:110px">${esc(step.get() || "")}</textarea>`;
+  } else {
+    field = `<input type="text" id="wz_field" value="${esc(step.get() || "")}" placeholder="${esc(t(step.placeholder || ""))}">`;
+  }
+
+  main.innerHTML = `
+  <div class="fs-wizard">
+    <div class="fs-wizard-progress">
+      <div class="fs-wizard-bar"><span style="width:${pct}%"></span></div>
+      <p>${esc(t("Question %1 of %2", PROFILE_STEP + 1, steps.length))}</p>
+    </div>
+
+    <div class="fs-wizard-card">
+      <h1 class="fs-wizard-q">${esc(t(step.label))}</h1>
+      ${step.hint ? `<p class="fs-hint">${esc(t(step.hint))}</p>` : ""}
+      ${step.example ? `<div class="fs-example">${esc(t("Example: %1", t(step.example)))}</div>` : ""}
+      <div class="fs-field" style="margin-bottom:0">${field}</div>
+    </div>
+
+    <div class="fs-wizard-nav">
+      ${PROFILE_STEP > 0 ? `<button class="fs-btn fs-btn-ghost" id="wz_back">&#8592; ${esc(t("Back"))}</button>` : `<span></span>`}
+      <button class="fs-btn" id="wz_next">${esc(isLast ? t("Finish") : t("Next"))} &#8594;</button>
+    </div>
+    <button class="fs-wizard-skip" id="wz_skip">${esc(t("Skip this for now"))}</button>
+  </div>`;
+
+  const commit = () => {
+    const el = document.getElementById("wz_field");
+    if (el && step.set) step.set(el.value);
+    touchVenture(v);
+  };
+  document.getElementById("wz_field")?.focus();
+  main.querySelectorAll("[data-mode]").forEach(btn => btn.addEventListener("click", () => {
+    v.mode = btn.dataset.mode;
+    touchVenture(v);
+    renderProfileWizard(v);
+  }));
+  document.getElementById("wz_back")?.addEventListener("click", () => { commit(); PROFILE_STEP--; renderProfileWizard(v); });
+  document.getElementById("wz_next").addEventListener("click", () => {
+    commit();
+    if (isLast) { finishProfileWizard(v); return; }
+    PROFILE_STEP++;
+    renderProfileWizard(v);
+  });
+  document.getElementById("wz_skip").addEventListener("click", () => { commit(); finishProfileWizard(v); });
+}
+function finishProfileWizard(v) {
+  v.profileOnboarded = true;
+  PROFILE_STEP = 0;
+  touchVenture(v);
+  go("profile", v.id);
+}
+
+/* The one moment worth marking: a hypothesis has survived real evidence.
+   Shown once, then dismissed for good — a banner that reappears forever
+   stops meaning anything. */
+function milestoneBanner(v) {
+  if (!insightsSufficientlySupported(v)) return "";
+  if (v.insightCelebrationShown) return "";
+  return `
+  <div class="fs-milestone">
+    <p class="fs-milestone-eyebrow">${esc(t("Worth stopping for"))}</p>
+    <h2>${esc(t("All three now hold up against real evidence."))}</h2>
+    <p>${esc(t("Your problem, your customer and your solution started as guesses. You tested them and they survived. Most people never get this far — they open, and find out afterwards."))}</p>
+    <button class="fs-btn fs-btn-ghost fs-btn-sm" id="fsMilestoneDone">${esc(t("Continue"))}</button>
+  </div>`;
+}
+
 function renderProfile() {
   const v = getVenture(ROUTE.ventureId);
   const main = document.getElementById("fsMain");
   if (!v) { go("dashboard"); return; }
+  /* A brand-new venture gets the guided one-question flow; after that this
+     screen behaves as the normal editable summary it always was. */
+  if (!v.profileOnboarded) { renderProfileWizard(v); return; }
   const legacy = retiredProfileValues(v);
 
   main.innerHTML = `
@@ -1912,7 +2189,10 @@ function renderProfile() {
     <h1 class="fs-h1">${esc(v.name || t("Untitled venture"))}</h1>
     <p class="fs-lede">${esc(t("Two things matter most here: why this is urgent, and what you want out of it. Everything else can wait."))}</p>
     ${demoFlag(v)}
+    ${milestoneBanner(v)}
     <div class="fs-status-row"><span class="fs-status-line">${esc(ventureStatus(v))}</span></div>
+    ${journeyBar(v)}
+    ${progressTallyStrip(v)}
 
     <div class="fs-card">
       <div class="fs-field">
@@ -1991,6 +2271,11 @@ function renderProfile() {
     touchVenture(v);
     refresh();
   }));
+  document.getElementById("fsMilestoneDone")?.addEventListener("click", () => {
+    v.insightCelebrationShown = true;
+    touchVenture(v);
+    go("profile", v.id);
+  });
   document.getElementById("fsSaveProfile").addEventListener("click", () => { saveProfileFields(v); toast(t("Saved")); });
   document.getElementById("fsDeleteVenture").addEventListener("click", () => {
     if (!confirm(t('Archive "%1"? This removes it from the dashboard. This cannot be undone in this MVP.', v.name || t("this venture")))) return;
@@ -2704,7 +2989,8 @@ function bindHypothesisTab(v, tab) {
       v.hypothesis.decisionGate.date = document.getElementById("g_date").value;
       v.hypothesis.decisionGate.notes = document.getElementById("g_notes").value;
       touchVenture(v);
-      toast(t("Decision recorded"));
+      /* Name what they finished, rather than confirming a save. */
+      toast(t("Phase 1 done — three hypotheses ready to test."));
       go("hypothesis", v.id, "gate");
     });
   }
@@ -3161,7 +3447,7 @@ function bindValidationTab(v, tab) {
       v.validation.decisionGate.date = document.getElementById("vg_date").value;
       v.validation.decisionGate.notes = document.getElementById("vg_notes").value;
       touchVenture(v);
-      toast(t("Decision recorded"));
+      toast(t("Phase 2 done — your decision is on the record."));
       go("validation", v.id, "gate");
     });
   }
@@ -3542,6 +3828,11 @@ function seedDemoVenture(v, lang) {
   v.missionVisionValues = fresh.missionVisionValues;
 
   v.evidence = [{ ...blankEvidence(), statement: d.evidenceStatement, label: "FACT", sourceType: "observation", sourceDescription: d.evidenceSource, contradictory: d.evidenceContradictory, analystNote: d.evidenceNote }];
+  /* The demo is a finished worked example — never walk someone through the
+     onboarding wizard for a case that is already filled in, and never
+     congratulate them for work the sample did. */
+  v.profileOnboarded = true;
+  v.insightCelebrationShown = insightsSufficientlySupported(v);
   v.updatedAt = todayISO();
   return v;
 }
