@@ -201,6 +201,17 @@ table.fs-table tr:last-child td{border-bottom:none}
 .fs-card-journey{height:4px;background:var(--fs-line-soft);border-radius:100px;overflow:hidden;margin-top:12px}
 .fs-card-journey span{display:block;height:100%;background:var(--fs-gold);border-radius:100px}
 
+/* ---------- Step flow (one focused task per screen) ---------- */
+.fs-flow{max-width:640px}
+.fs-flow-progress{margin-bottom:20px}
+.fs-flow-bar{height:5px;background:var(--fs-line-soft);border-radius:100px;overflow:hidden}
+.fs-flow-bar span{display:block;height:100%;background:var(--fs-gold);border-radius:100px;transition:width .35s cubic-bezier(.4,0,.2,1)}
+.fs-flow-progress p{margin:7px 0 0;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--fs-ink-soft)}
+.fs-flow-card{background:var(--fs-paper);border:1px solid var(--fs-line);border-radius:var(--fs-radius);box-shadow:var(--fs-shadow);padding:26px 28px;margin-bottom:18px}
+.fs-flow-q{font-family:var(--fs-display);font-size:22px;line-height:1.28;letter-spacing:-0.015em;color:var(--fs-accent-dark);margin:0 0 14px}
+.fs-flow-nav{display:flex;justify-content:space-between;align-items:center;gap:12px}
+@media(max-width:640px){.fs-flow-card{padding:22px 18px}.fs-flow-q{font-size:19px}}
+
 /* ---------- One-question-per-page wizard ---------- */
 .fs-wizard{max-width:620px;margin:0 auto;padding:8px 0 40px}
 .fs-wizard-progress{margin-bottom:26px}
@@ -459,6 +470,15 @@ const FIL_CHROME = {
 
   /* --- wizard --- */
   "Question %1 of %2": "Tanong %1 sa %2",
+  "Done": "Tapos na",
+  "Here is what you have so far": "Narito ang mayroon ka na sa ngayon",
+  "How often does this happen, and what does it cost them?": "Gaano kadalas ito nangyayari, at ano ang nawawala sa kanila?",
+  "Every school day, about 180 households — they stand 20+ minutes and leave straight after.": "Bawat araw ng pasok, mga 180 sambahayan — nakatayo sila 20+ minuto at umaalis agad pagkatapos.",
+  "What might be causing this?": "Ano kaya ang nagdudulot nito?",
+  "The last line you write is not automatically the root cause — it is your best guess until evidence says otherwise.": "Ang huling linyang isusulat mo ay hindi awtomatikong ugat ng problema — hula mo lang ito hangga't walang ebidensyang magsasabi ng iba.",
+  "One competing explanation is the cheapest protection against testing only the answer you were hoping for.": "Ang isang katunggaling paliwanag ang pinakamurang proteksyon laban sa pagsubok lang sa sagot na inaasahan mo.",
+  "Write it as one testable hypothesis": "Isulat ito bilang isang masusubok na hipotesis",
+  "These are assumptions, not conclusions. Next you turn each one into something you can test.": "Mga palagay ito, hindi konklusyon. Susunod, gagawin mong masusubok ang bawat isa.",
   "Finish": "Tapusin",
   "Skip this for now": "Laktawan muna ito",
 
@@ -2049,6 +2069,76 @@ function profileExample(v, key) {
 }
 
 /* =========================================================================
+   STEP FLOW ENGINE
+   One thing to think about per screen, reusable by any section.
+
+   "One question per page" here means one focused task, not literally one
+   input — a step that asks "who are your customers?" can hold the list of
+   segments, because that is still one thing to think about. Splitting a
+   single task across pages would add taps without reducing load.
+
+   Each step: { id, question, hint?, example?, body(), bind?(), skippable? }
+   Position is tracked per venture per flow, so leaving and returning lands
+   you where you were rather than back at the start.
+   ========================================================================= */
+const FLOW_POS = {};
+function flowKey(v, flowId) { return v.id + "." + flowId; }
+function flowIndex(v, flowId, total) {
+  const k = flowKey(v, flowId);
+  let i = FLOW_POS[k] || 0;
+  if (i >= total) i = total - 1;
+  if (i < 0) i = 0;
+  FLOW_POS[k] = i;
+  return i;
+}
+function setFlowIndex(v, flowId, i) { FLOW_POS[flowKey(v, flowId)] = i; }
+
+/* Renders one step of a flow. `onFinish` runs when the last step is passed —
+   usually moving to the next section. */
+function renderStepFlow(v, flowId, steps, onFinish) {
+  if (!steps.length) return "";
+  const idx = flowIndex(v, flowId, steps.length);
+  const step = steps[idx];
+  const isLast = idx === steps.length - 1;
+  const pct = Math.round(((idx + 1) / steps.length) * 100);
+  return `
+  <div class="fs-flow" data-flow="${esc(flowId)}">
+    <div class="fs-flow-progress">
+      <div class="fs-flow-bar"><span style="width:${pct}%"></span></div>
+      <p>${esc(t("Step %1 of %2", idx + 1, steps.length))}</p>
+    </div>
+    <div class="fs-flow-card">
+      <h2 class="fs-flow-q">${esc(t(step.question))}</h2>
+      ${step.hint ? `<p class="fs-hint">${esc(t(step.hint))}</p>` : ""}
+      ${step.example ? `<div class="fs-example">${esc(t("Example: %1", t(step.example)))}</div>` : ""}
+      ${step.body()}
+    </div>
+    <div class="fs-flow-nav">
+      ${idx > 0 ? `<button class="fs-btn fs-btn-ghost" data-flowback="${esc(flowId)}">&#8592; ${esc(t("Back"))}</button>` : `<span></span>`}
+      <button class="fs-btn" data-flownext="${esc(flowId)}">${esc(isLast ? t("Done") : t("Next"))} &#8594;</button>
+    </div>
+  </div>`;
+}
+/* Wires Back/Next for a flow and runs the current step's own bindings. */
+function bindStepFlow(v, flowId, steps, onFinish) {
+  if (!steps.length) return;
+  const idx = flowIndex(v, flowId, steps.length);
+  const step = steps[idx];
+  if (step.bind) step.bind();
+  document.querySelector(`[data-flowback="${flowId}"]`)?.addEventListener("click", () => {
+    if (step.commit) step.commit();
+    setFlowIndex(v, flowId, idx - 1);
+    refresh();
+  });
+  document.querySelector(`[data-flownext="${flowId}"]`)?.addEventListener("click", () => {
+    if (step.commit) step.commit();
+    if (idx === steps.length - 1) { if (onFinish) onFinish(); return; }
+    setFlowIndex(v, flowId, idx + 1);
+    refresh();
+  });
+}
+
+/* =========================================================================
    PROFILE WIZARD — one question per screen
    The single-question form pattern. It trades "everything visible at once"
    for "only one thing to think about", which is the right trade here: the
@@ -2431,15 +2521,17 @@ function assistVisible(v, key) {
   return assist.needs.every(k => assumptionText(v, k));
 }
 
-function renderSnapshotField(v, key) {
+function renderSnapshotField(v, key, solo) {
   const meta = ELEMENT_META[key];
   const a = assumptionOf(v, key);
   const showAssist = assistVisible(v, key);
   const draft = showAssist ? generateAssumptionSuggestion(v, key) : "";
+  /* In a step flow the question is already the page heading — repeating the
+     label and prompt underneath it is the exact clutter we are removing. */
   return `
   <div class="fs-field">
-    <label>${esc(t(meta.title))}</label>
-    <p class="fs-hint" style="margin:2px 0 9px">${esc(t(meta.prompt))}</p>
+    ${solo ? "" : `<label>${esc(t(meta.title))}</label>
+    <p class="fs-hint" style="margin:2px 0 9px">${esc(t(meta.prompt))}</p>`}
     ${showAssist ? `
       <p class="fs-hint" style="margin:2px 0 8px">${esc(t(ELEMENT_ASSIST[key].intro))}</p>
       <div class="fs-suggest-box">
@@ -2454,60 +2546,65 @@ function renderSnapshotField(v, key) {
   </div>`;
 }
 
+/* One element per screen. The framework explanation that used to sit above
+   these fields is gone: it taught vocabulary the glossary already covers,
+   and it was the densest block on the first screen anyone reaches. */
+function snapshotSteps(v) {
+  const steps = ELEMENT_KEYS.map(k => ({
+    id: k,
+    question: ELEMENT_META[k].prompt,
+    body: () => renderSnapshotField(v, k, true),
+    bind: () => bindSnapshotField(v, k),
+    commit: () => {
+      const el = document.querySelector(`[data-el="${k}"]`);
+      if (el && v.opportunitySnapshot[k].assumption !== el.value) {
+        v.opportunitySnapshot[k].assumption = el.value;
+        v.opportunitySnapshot[k].lastUpdated = todayISO();
+        touchVenture(v);
+      }
+    },
+  }));
+  steps.push({
+    id: "summary",
+    question: "Here is what you have so far",
+    body: () => {
+      const summary = generateSnapshotSummary(v);
+      return summary
+        ? `<div class="fs-suggest-box"><p style="white-space:pre-line;margin:0">${esc(summary)}</p></div>
+           <p class="fs-hint" style="margin:12px 0 0">${esc(t("These are assumptions, not conclusions. Next you turn each one into something you can test."))}</p>`
+        : `<p class="fs-hint" style="margin:0">${esc(t("Answer at least one element above to see the summary."))}</p>`;
+    },
+  });
+  return steps;
+}
 function renderSnapshot(v) {
-  const summary = generateSnapshotSummary(v);
-  return `
-  <div class="fs-card">
-    <div class="fs-card-head">
-      <h3>${esc(t("Opportunity Snapshot"))}</h3>
-      <span class="fs-pill fs-pill-assumption">${esc(t("Assumptions"))}</span>
-    </div>
-    <p class="fs-hint">${esc(t("Begin with your three starting assumptions. These are your best current answers—not proven conclusions. General or incomplete answers are acceptable, and you can revise them as you learn."))}</p>
-    <p class="fs-hint" style="margin-top:-6px">${esc(t("Problem, Customer and Solution are the three Essential Elements of the framework. You keep developing them all the way through Phase 1 and Phase 2 — you do not need them figured out to start."))}</p>
-
-    <details style="margin:0 0 20px">
-      <summary style="cursor:pointer;font-size:13px;font-weight:700;color:var(--fs-accent-dark)">${esc(t("Why this first, before the signage, the supplier, or the menu?"))} &darr;</summary>
-      <div style="margin-top:10px;padding:14px 16px;background:var(--fs-bg);border-radius:var(--fs-radius);font-size:13px;line-height:1.65;color:var(--fs-ink-soft)">
-        <p style="margin:0 0 8px">${esc(t("Most businesses that close did not fail because they were run badly — they failed because there was no real need being answered. Signage, menu, pricing, suppliers all matter, but they only get paid for if there is a real problem you are solving."))}</p>
-        <p style="margin:0 0 8px">${esc(t("The time you spend clarifying this now is free. Finding it out after you have already paid for rent, equipment and stock is what gets expensive."))}</p>
-        <p style="margin:0">${esc(t("Your answer does not have to be perfect right now. This is a starting guess — we will test it later."))}</p>
-      </div>
-    </details>
-
-    ${ELEMENT_KEYS.map(k => renderSnapshotField(v, k)).join("")}
-  </div>
-
-  <div class="fs-card">
-    <div class="fs-card-head"><h3>${esc(t("Your starting assumptions, in one view"))}</h3></div>
-    <p class="fs-hint">${esc(t("These are assumptions, not conclusions. The next three steps turn each one into a hypothesis you can actually test."))}</p>
-    ${summary ? `<div class="fs-suggest-box"><div class="fs-suggest-label">${esc(t("Assembled from your answers above"))}</div><p style="white-space:pre-line">${esc(summary)}</p></div>` : `<p class="fs-hint" style="margin:0">${esc(t("Answer at least one element above to see the summary."))}</p>`}
-  </div>
-
-  <div style="display:flex;justify-content:flex-end">
-    <button class="fs-btn" data-hyptab="problem">${esc(t("Continue to Problem Hypothesis"))} &#8594;</button>
-  </div>`;
+  return renderStepFlow(v, "snapshot", snapshotSteps(v), () => go("hypothesis", v.id, "problem"));
 }
 
 function bindSnapshot(v) {
+  bindStepFlow(v, "snapshot", snapshotSteps(v), () => go("hypothesis", v.id, "problem"));
+}
+/* Bindings for a single element's field, used by its step. */
+function bindSnapshotField(v, key) {
   document.querySelectorAll("[data-use-assumption]").forEach(btn => btn.addEventListener("click", () => {
-    const key = btn.dataset.useAssumption;
-    v.opportunitySnapshot[key].assumption = generateAssumptionSuggestion(v, key);
-    v.opportunitySnapshot[key].lastUpdated = todayISO();
+    const k = btn.dataset.useAssumption;
+    v.opportunitySnapshot[k].assumption = generateAssumptionSuggestion(v, k);
+    v.opportunitySnapshot[k].lastUpdated = todayISO();
     touchVenture(v);
-    go("hypothesis", v.id, "snapshot");
+    refresh();
   }));
   document.querySelectorAll("[data-notsure]").forEach(box => box.addEventListener("change", () => {
-    const key = box.dataset.notsure;
-    v.opportunitySnapshot[key].notSure = box.checked;
-    v.opportunitySnapshot[key].lastUpdated = todayISO();
+    const k = box.dataset.notsure;
+    v.opportunitySnapshot[k].notSure = box.checked;
+    v.opportunitySnapshot[k].lastUpdated = todayISO();
     touchVenture(v);
     refresh();
   }));
   document.querySelectorAll("[data-el]").forEach(field => field.addEventListener("blur", () => {
-    const key = field.dataset.el;
-    if (v.opportunitySnapshot[key].assumption === field.value) return;
-    v.opportunitySnapshot[key].assumption = field.value;
-    v.opportunitySnapshot[key].lastUpdated = todayISO();
+    const k = field.dataset.el;
+    if (v.opportunitySnapshot[k].assumption === field.value) return;
+    v.opportunitySnapshot[k].assumption = field.value;
+    v.opportunitySnapshot[k].lastUpdated = todayISO();
     touchVenture(v);
     refresh();
   }));
@@ -2528,10 +2625,7 @@ function renderHypothesis() {
     <a class="fs-back-link" data-go="profile">&#8592; ${esc(t("%1 profile", v.name || t("Venture")))}</a>
     <p class="fs-eyebrow">${esc(t("Phase 1: Hypothesis"))}</p>
     <h1 class="fs-h1">${esc(t("Turn your starting assumptions into testable hypotheses"))}</h1>
-    <p class="fs-lede">${esc(t("Start with what you currently believe about the Problem, the Customer and the Solution, then sharpen each one into a clear proposition you could actually check. Phase 1 ends with three hypotheses — not conclusions, and not yet insights."))}</p>
     ${demoFlag(v)}
-    ${ladder("Hypothesis")}
-    ${termsGlossary()}
     <div class="fs-tabs">
       <button class="fs-tab ${tab === "snapshot" ? "is-active" : ""}" data-tab="snapshot">${esc(t("Opportunity Snapshot"))}</button>
       <button class="fs-tab ${tab === "problem" ? "is-active" : ""}" data-tab="problem">${esc(t("1. Problem Hypothesis"))}</button>
@@ -2540,6 +2634,7 @@ function renderHypothesis() {
       <button class="fs-tab ${tab === "gate" ? "is-active" : ""}" data-tab="gate">${esc(t("Decision Gate"))}</button>
     </div>
     <div id="fsHypTabBody"></div>
+    <div style="margin-top:26px">${termsGlossary()}</div>
   `;
   main.querySelectorAll("[data-go]").forEach(el => el.addEventListener("click", () => go(el.dataset.go, v.id)));
   main.querySelectorAll("[data-tab]").forEach(el => el.addEventListener("click", () => go("hypothesis", v.id, el.dataset.tab)));
@@ -2675,69 +2770,141 @@ function coachPanel(gaps, heading) {
    produces possible explanations; only Phase 2 evidence can promote any of
    them. The absence-of-solution check keeps "nobody sells X here" from
    passing itself off as an explanation of the customer's difficulty. */
-function renderProblemId(v) {
+/* Four focused steps instead of one page carrying five explanation blocks.
+   Text that only restated its own header is gone; the two warnings that
+   teach something the user cannot get elsewhere (root cause, and mistaking
+   the absence of your solution for a cause) are kept. */
+function problemSteps(v) {
   const p = v.hypothesis.problemId;
-  const draft = generateProblemStatementDraft(v);
-  const flagged = absenceFlaggedCauses(v);
-  const alts = p.alternativeExplanations;
-  const hasAlt = alts.some(a => (a || "").trim());
-  return `
-  <div class="fs-card">
-    <div class="fs-card-head"><h3>${esc(t("Problem Hypothesis"))}</h3><span class="fs-pill fs-pill-assumption">${esc(t("Not yet tested"))}</span></div>
-    <p class="fs-hint">${esc(t("Take the problem you assumed and make it sharper and testable. You are looking for possible explanations here — not the answer."))}</p>
-    <div class="fs-example">${esc(t('Your problem assumption: "%1"', assumptionEcho(v, "problem")))}</div>
-
-    ${coachPanel(problemGaps(v), "Make this sharper before you test it")}
-
-    <div class="fs-field-row">
-      <div class="fs-field">
-        <label>${esc(t("How often does this happen?"))}</label>
-        <input type="text" id="p_frequency" value="${esc(p.frequency)}" placeholder="${esc(t("e.g. every school day, about 180 households"))}">
-      </div>
-      <div class="fs-field">
-        <label>${esc(t("What does it cost them?"))}</label>
-        <input type="text" id="p_consequence" value="${esc(p.consequence)}" placeholder="${esc(t("e.g. they stand 20+ minutes and leave straight after"))}">
-      </div>
-    </div>
-
-    <div class="fs-field">
-      <label>${esc(t("Cause Exploration — what might be causing this?"))}</label>
-      <p class="fs-hint" style="margin:2px 0 9px">${esc(t("Each line is one possible explanation. Going a level deeper often helps, but the last line you write is not automatically the root cause — it is just your current best guess until evidence says otherwise."))}</p>
-      <div class="fs-suggest-box">
-        <div class="fs-suggest-label">${esc(t("Common reasons things get hard — tap one to start a line"))}</div>
-        <p style="margin:0 0 9px">${esc(t("Each of these explains something about the customer's situation. None of them is \"my idea does not exist yet\" — that explains nothing."))}</p>
-        <div class="fs-suggest-actions">${CAUSE_PATTERNS.map(c => `<button data-cause="${c.id}">${esc(t(c.label))}</button>`).join("")}</div>
-      </div>
-      ${p.causeExploration.map((w, i) => `<input type="text" class="fs-why" data-i="${i}" value="${esc(w)}" placeholder="${esc(t("Possible cause %1...", i + 1))}" style="margin-bottom:8px">`).join("")}
-      ${p.causeExploration.length < 3 ? `<button class="fs-btn fs-btn-ghost fs-btn-sm" id="p_addwhy">${esc(t("+ Explore one level deeper"))}</button>` : ""}
-    </div>
-
-    ${flagged.length ? `
-    <div class="fs-caution">
-      <strong>${esc(t("That reads like the absence of your solution, not a cause."))}</strong>
-      <p>${esc(t('You wrote: "%1"', flagged[0]))}</p>
-      <p>${esc(t("Nothing existing yet explains why you could sell something — it does not explain why the situation is difficult for the customer. If no coffee kiosk exists near a school, that still does not tell you why parents are uncomfortable: it could be a lack of seating, no shade, unpredictable dismissal times, access restrictions, or something else entirely."))}</p>
-      <p>${esc(t("Try describing what the customer actually experiences, and add a competing explanation below."))}</p>
-    </div>` : ""}
-
-    <div class="fs-field">
-      <label>${esc(t("What else might explain this situation?"))}</label>
-      <p class="fs-hint" style="margin:2px 0 9px">${esc(t("At least one competing explanation is worth writing down — it is the cheapest protection against testing only the answer you were hoping for. Optional, but recommended."))}</p>
-      ${alts.map((a, i) => `<input type="text" class="fs-alt" data-i="${i}" value="${esc(a)}" placeholder="${esc(t("Another possible explanation %1...", i + 1))}" style="margin-bottom:8px">`).join("")}
-      ${alts.length < 3 ? `<button class="fs-btn fs-btn-ghost fs-btn-sm" id="p_addalt">${esc(t("+ Add another explanation"))}</button>` : ""}
-      ${!hasAlt ? `<p class="fs-hint" style="margin:6px 0 0">${esc(t("None written yet. You can continue without one, but a single alternative here makes Phase 2 considerably more useful."))}</p>` : ""}
-    </div>
-
-    ${hasLegacyRootCausePhrasing(p.problemStatement) ? `
-    <div class="fs-caution">
-      <strong>${esc(t("This was written under an earlier version of the framework."))}</strong>
-      <p>${esc(t("Your hypothesis below states a root cause as settled. Phase 1 cannot establish a root cause — only Phase 2 evidence can support one."))}</p>
-      <p>${esc(t("Your wording has not been altered. If you want the cautious version, use the suggested draft below, or edit the text yourself."))}</p>
-    </div>` : ""}
-    ${draft ? suggestBox(draft, `<button id="p_use_sug">${esc(t("Use suggestion"))}</button>`) : ""}
-    <div class="fs-field"><label>${esc(t("Problem Hypothesis"))}</label><textarea id="p_statement" style="min-height:130px" placeholder="${esc(t("Use the suggestion above, or write your own — phrased as something that could turn out to be wrong."))}">${esc(p.problemStatement)}</textarea></div>
-    <p class="fs-hint" style="margin:0">${esc(t("This stays a hypothesis until Phase 2 evidence supports it. Only then does it become a Problem Insight."))}</p>
-  </div>`;
+  return [
+    {
+      id: "detail",
+      question: "How often does this happen, and what does it cost them?",
+      example: "Every school day, about 180 households — they stand 20+ minutes and leave straight after.",
+      body: () => `
+        <div class="fs-example" style="margin-bottom:14px">${esc(t('Your problem assumption: "%1"', assumptionEcho(v, "problem")))}</div>
+        ${coachPanel(problemGaps(v), "Make this sharper before you test it")}
+        <div class="fs-field">
+          <label>${esc(t("How often does this happen?"))}</label>
+          <input type="text" id="p_frequency" value="${esc(p.frequency)}" placeholder="${esc(t("e.g. every school day, about 180 households"))}">
+        </div>
+        <div class="fs-field" style="margin-bottom:0">
+          <label>${esc(t("What does it cost them?"))}</label>
+          <input type="text" id="p_consequence" value="${esc(p.consequence)}" placeholder="${esc(t("e.g. they stand 20+ minutes and leave straight after"))}">
+        </div>`,
+      bind: () => {
+        document.getElementById("p_frequency")?.addEventListener("blur", e => { if (p.frequency === e.target.value) return; p.frequency = e.target.value; touchVenture(v); refresh(); });
+        document.getElementById("p_consequence")?.addEventListener("blur", e => { if (p.consequence === e.target.value) return; p.consequence = e.target.value; touchVenture(v); refresh(); });
+      },
+      commit: () => {
+        const f = document.getElementById("p_frequency"); if (f) p.frequency = f.value;
+        const c = document.getElementById("p_consequence"); if (c) p.consequence = c.value;
+        touchVenture(v);
+      },
+    },
+    {
+      id: "causes",
+      question: "What might be causing this?",
+      hint: "The last line you write is not automatically the root cause — it is your best guess until evidence says otherwise.",
+      body: () => {
+        const flagged = absenceFlaggedCauses(v);
+        return `
+        <div class="fs-suggest-box">
+          <div class="fs-suggest-label">${esc(t("Common reasons things get hard — tap one to start a line"))}</div>
+          <div class="fs-suggest-actions">${CAUSE_PATTERNS.map(c => `<button data-cause="${c.id}">${esc(t(c.label))}</button>`).join("")}</div>
+        </div>
+        <div class="fs-field" style="margin-bottom:0">
+          ${p.causeExploration.map((w, i) => `<input type="text" class="fs-why" data-i="${i}" value="${esc(w)}" placeholder="${esc(t("Possible cause %1...", i + 1))}" style="margin-bottom:8px">`).join("")}
+          ${p.causeExploration.length < 3 ? `<button class="fs-btn fs-btn-ghost fs-btn-sm" id="p_addwhy">${esc(t("+ Explore one level deeper"))}</button>` : ""}
+        </div>
+        ${flagged.length ? `
+        <div class="fs-caution" style="margin-top:16px;margin-bottom:0">
+          <strong>${esc(t("That reads like the absence of your solution, not a cause."))}</strong>
+          <p>${esc(t('You wrote: "%1"', flagged[0]))}</p>
+          <p>${esc(t("Nothing existing yet explains why you could sell something — it does not explain why the situation is difficult for the customer. If no coffee kiosk exists near a school, that still does not tell you why parents are uncomfortable: it could be a lack of seating, no shade, unpredictable dismissal times, access restrictions, or something else entirely."))}</p>
+        </div>` : ""}`;
+      },
+      bind: () => bindProblemCauses(v),
+    },
+    {
+      id: "alternatives",
+      question: "What else might explain this situation?",
+      hint: "One competing explanation is the cheapest protection against testing only the answer you were hoping for.",
+      body: () => {
+        const alts = p.alternativeExplanations;
+        return `
+        <div class="fs-field" style="margin-bottom:0">
+          ${alts.map((a, i) => `<input type="text" class="fs-alt" data-i="${i}" value="${esc(a)}" placeholder="${esc(t("Another possible explanation %1...", i + 1))}" style="margin-bottom:8px">`).join("")}
+          ${alts.length < 3 ? `<button class="fs-btn fs-btn-ghost fs-btn-sm" id="p_addalt">${esc(t("+ Add another explanation"))}</button>` : ""}
+        </div>`;
+      },
+      bind: () => bindProblemAlternatives(v),
+    },
+    {
+      id: "statement",
+      question: "Write it as one testable hypothesis",
+      body: () => {
+        const draft = generateProblemStatementDraft(v);
+        return `
+        ${hasLegacyRootCausePhrasing(p.problemStatement) ? `
+        <div class="fs-caution">
+          <strong>${esc(t("This was written under an earlier version of the framework."))}</strong>
+          <p>${esc(t("Your hypothesis below states a root cause as settled. Phase 1 cannot establish a root cause — only Phase 2 evidence can support one."))}</p>
+        </div>` : ""}
+        ${draft ? suggestBox(draft, `<button id="p_use_sug">${esc(t("Use suggestion"))}</button>`) : ""}
+        <div class="fs-field" style="margin-bottom:0">
+          <textarea id="p_statement" style="min-height:130px" placeholder="${esc(t("Use the suggestion above, or write your own — phrased as something that could turn out to be wrong."))}">${esc(p.problemStatement)}</textarea>
+        </div>`;
+      },
+      bind: () => {
+        document.getElementById("p_statement")?.addEventListener("blur", e => { p.problemStatement = e.target.value; touchVenture(v); });
+        document.getElementById("p_use_sug")?.addEventListener("click", () => { p.problemStatement = generateProblemStatementDraft(v); touchVenture(v); refresh(); });
+      },
+      commit: () => {
+        const el = document.getElementById("p_statement"); if (el) p.problemStatement = el.value;
+        touchVenture(v);
+      },
+    },
+  ];
+}
+function renderProblemId(v) {
+  return renderStepFlow(v, "problem", problemSteps(v), () => go("hypothesis", v.id, "segments"));
+}
+function bindProblemCauses(v) {
+  const p = v.hypothesis.problemId;
+  document.querySelectorAll(".fs-why").forEach(inp => inp.addEventListener("blur", e => {
+    const i = +e.target.dataset.i;
+    if (p.causeExploration[i] === e.target.value) return;
+    p.causeExploration[i] = e.target.value;
+    touchVenture(v); refresh();
+  }));
+  document.querySelectorAll("[data-cause]").forEach(btn => btn.addEventListener("click", () => {
+    const pattern = CAUSE_PATTERNS.find(c => c.id === btn.dataset.cause);
+    if (!pattern) return;
+    const text = causeStarter(v, pattern);
+    const slot = p.causeExploration.findIndex(x => !(x || "").trim());
+    if (slot >= 0) p.causeExploration[slot] = text;
+    else if (p.causeExploration.length < 3) p.causeExploration.push(text);
+    else p.causeExploration[p.causeExploration.length - 1] = text;
+    touchVenture(v); refresh();
+  }));
+  document.getElementById("p_addwhy")?.addEventListener("click", () => {
+    if (p.causeExploration.length < 3) p.causeExploration.push("");
+    touchVenture(v); refresh();
+  });
+}
+function bindProblemAlternatives(v) {
+  const p = v.hypothesis.problemId;
+  document.querySelectorAll(".fs-alt").forEach(inp => inp.addEventListener("blur", e => {
+    const i = +e.target.dataset.i;
+    if (p.alternativeExplanations[i] === e.target.value) return;
+    p.alternativeExplanations[i] = e.target.value;
+    touchVenture(v); refresh();
+  }));
+  document.getElementById("p_addalt")?.addEventListener("click", () => {
+    if (p.alternativeExplanations.length < 3) p.alternativeExplanations.push("");
+    touchVenture(v); refresh();
+  });
 }
 
 /* --- Step 2: Customer Hypothesis --- */
@@ -2893,43 +3060,11 @@ function renderHypothesisGate(v) {
 }
 
 function bindHypothesisTab(v, tab) {
-  const p = v.hypothesis.problemId;
   document.querySelectorAll("[data-hyptab]").forEach(btn => btn.addEventListener("click", () => go("hypothesis", v.id, btn.dataset.hyptab)));
   if (tab === "snapshot") {
     bindSnapshot(v);
   } else if (tab === "problem") {
-    document.getElementById("p_statement")?.addEventListener("blur", e => { p.problemStatement = e.target.value; touchVenture(v); });
-    document.querySelectorAll(".fs-why").forEach(inp => inp.addEventListener("blur", e => {
-      const i = +e.target.dataset.i;
-      if (p.causeExploration[i] === e.target.value) return;
-      p.causeExploration[i] = e.target.value;
-      touchVenture(v);
-      refresh();
-    }));
-    document.querySelectorAll(".fs-alt").forEach(inp => inp.addEventListener("blur", e => {
-      const i = +e.target.dataset.i;
-      if (p.alternativeExplanations[i] === e.target.value) return;
-      p.alternativeExplanations[i] = e.target.value;
-      touchVenture(v);
-      refresh();
-    }));
-    document.getElementById("p_frequency")?.addEventListener("blur", e => { if (p.frequency === e.target.value) return; p.frequency = e.target.value; touchVenture(v); refresh(); });
-    document.getElementById("p_consequence")?.addEventListener("blur", e => { if (p.consequence === e.target.value) return; p.consequence = e.target.value; touchVenture(v); refresh(); });
-    /* A cause chip fills the first empty line, or adds one if all are used. */
-    document.querySelectorAll("[data-cause]").forEach(btn => btn.addEventListener("click", () => {
-      const pattern = CAUSE_PATTERNS.find(c => c.id === btn.dataset.cause);
-      if (!pattern) return;
-      const text = causeStarter(v, pattern);
-      const slot = p.causeExploration.findIndex(x => !(x || "").trim());
-      if (slot >= 0) p.causeExploration[slot] = text;
-      else if (p.causeExploration.length < 3) p.causeExploration.push(text);
-      else p.causeExploration[p.causeExploration.length - 1] = text;
-      touchVenture(v);
-      go("hypothesis", v.id, "problem");
-    }));
-    document.getElementById("p_addwhy")?.addEventListener("click", () => { if (p.causeExploration.length < 3) p.causeExploration.push(""); touchVenture(v); go("hypothesis", v.id, "problem"); });
-    document.getElementById("p_addalt")?.addEventListener("click", () => { if (p.alternativeExplanations.length < 3) p.alternativeExplanations.push(""); touchVenture(v); go("hypothesis", v.id, "problem"); });
-    document.getElementById("p_use_sug")?.addEventListener("click", () => { p.problemStatement = generateProblemStatementDraft(v); touchVenture(v); go("hypothesis", v.id, "problem"); });
+    bindStepFlow(v, "problem", problemSteps(v), () => go("hypothesis", v.id, "segments"));
   } else if (tab === "segments") {
     document.getElementById("seg_add")?.addEventListener("click", () => { v.hypothesis.segments.push(blankSegment()); touchVenture(v); go("hypothesis", v.id, "segments"); });
     document.querySelectorAll("[data-del-seg]").forEach(btn => btn.addEventListener("click", () => { v.hypothesis.segments = v.hypothesis.segments.filter(s => s.id !== btn.dataset.delSeg); touchVenture(v); go("hypothesis", v.id, "segments"); }));
@@ -3221,11 +3356,8 @@ function renderValidation() {
     <a class="fs-back-link" data-go="hypothesis">&#8592; ${esc(t("Phase 1: Hypothesis"))}</a>
     <p class="fs-eyebrow">${esc(t("Phase 2: Validation"))}</p>
     <h1 class="fs-h1">${esc(t("Test whether this actually holds up"))}</h1>
-    <p class="fs-lede">${esc(t("Phase 1 produced three hypotheses. Here you gather real evidence — an actual result measured against a threshold you set before testing. A hypothesis only becomes an insight when the evidence supports it."))}</p>
     ${demoFlag(v)}
-    ${ladder("Insight")}
     ${insightChips(v)}
-    ${termsGlossary()}
     ${renderNextActionBanner(v)}
     <div class="fs-tabs">
       <button class="fs-tab ${tab === "problem" ? "is-active" : ""}" data-tab="problem">${esc(t("1. Problem Validation"))}</button>
