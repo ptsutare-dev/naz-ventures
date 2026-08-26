@@ -201,6 +201,12 @@ table.fs-table tr:last-child td{border-bottom:none}
 .fs-card-journey{height:4px;background:var(--fs-line-soft);border-radius:100px;overflow:hidden;margin-top:12px}
 .fs-card-journey span{display:block;height:100%;background:var(--fs-gold);border-radius:100px}
 
+/* ---------- Starting-point picker ---------- */
+.fs-startpoint{display:flex;flex-direction:column;gap:10px}
+.fs-startpoint-card{width:100%;text-align:left;border:1.5px solid var(--fs-line);background:var(--fs-paper);border-radius:var(--fs-radius-sm);padding:16px 18px;font-family:inherit;font-size:15px;font-weight:600;color:var(--fs-ink);transition:border-color .15s,background .15s}
+.fs-startpoint-card:hover{border-color:var(--fs-accent)}
+.fs-startpoint-card.is-on{border-color:var(--fs-accent);background:var(--fs-accent-soft);color:var(--fs-accent-dark)}
+
 /* ---------- Step flow (one focused task per screen) ---------- */
 .fs-flow{max-width:640px}
 .fs-flow-progress{margin-bottom:20px}
@@ -472,6 +478,38 @@ const FIL_CHROME = {
   "Question %1 of %2": "Tanong %1 sa %2",
   "Done": "Tapos na",
   "Here is what you have so far": "Narito ang mayroon ka na sa ngayon",
+
+  /* --- starting point + quick pick --- */
+  "Where are you starting from?": "Saan ka nagsisimula?",
+  "I have a business idea": "May ideya ako para sa negosyo",
+  "I want to serve a specific customer": "Gusto kong paglingkuran ang tiyak na customer",
+  "I found a problem": "May napansin akong problema",
+  "Whichever you pick, you can develop the other two right after — none of them need to be figured out yet.": "Kahit alin ang piliin mo, madedevelop mo pa ang dalawa pang iba pagkatapos — wala sa mga ito ang kailangan nang malaman agad.",
+  "— choose one —": "— pumili ng isa —",
+  "Type your own": "Isulat ang sarili mong sagot",
+  "What kind of business is it?": "Anong uri ng negosyo ito?",
+  "Sari-sari store or small retail shop": "Sari-sari store o maliit na tindahan",
+  "Food cart, karinderya, or eatery": "Food cart, karinderya, o kainan",
+  "Online reselling or online shop": "Online reselling o online shop",
+  "Services — repair, laundry, salon, and similar": "Serbisyo — pagkukumpuni, laundry, salon, at katulad",
+  "Farming or agri-business": "Pagsasaka o agri-business",
+  "Delivery, transport, or logistics": "Delivery, transportasyon, o logistics",
+  "Something else": "Iba pa",
+  "Business name": "Pangalan ng negosyo",
+  "Who are you selling to?": "Kanino ka magbebenta?",
+  "People in my neighborhood or community": "Mga tao sa aming komunidad o kapitbahayan",
+  "Students": "Mga estudyante",
+  "Commuters or workers nearby": "Mga commuter o manggagawa sa paligid",
+  "Online buyers": "Mga bumibili online",
+  "Other small businesses": "Ibang maliliit na negosyo",
+  "Which of these sounds like you?": "Alin dito ang pinakabagay sa'yo?",
+  "I don't want this anymore.": "Ayoko na nito.",
+  "Pain point — something actively bothering you or your customers.": "Abala — may aktibong nakakainis sa'yo o sa mga customer mo.",
+  "I need this.": "Kailangan ko ito.",
+  "Need — something you or your customers are missing.": "Pangangailangan — may kulang sa'yo o sa mga customer mo.",
+  "I want this.": "Gusto ko ito.",
+  "Gap — something nobody nearby offers yet.": "Puwang — may wala pang nag-aalok nito sa malapit.",
+  "In a few words, what is happening?": "Sa ilang salita, ano ang nangyayari?",
   "How often does this happen, and what does it cost them?": "Gaano kadalas ito nangyayari, at ano ang nawawala sa kanila?",
   "Every school day, about 180 households — they stand 20+ minutes and leave straight after.": "Bawat araw ng pasok, mga 180 sambahayan — nakatayo sila 20+ minuto at umaalis agad pagkatapos.",
   "What might be causing this?": "Ano kaya ang nagdudulot nito?",
@@ -748,6 +786,11 @@ function blankVenture() {
        are exempted from seeing the wizard retroactively. */
     profileOnboarded: false,
     insightCelebrationShown: false,
+    /* Which Essential Element the user already had clarity on when they
+       started — decides the order the Opportunity Snapshot asks about the
+       other two. "" means not chosen (existing ventures default to the
+       original problem-first order). */
+    startingPoint: "",
   };
 }
 function blankValidationTest() {
@@ -882,6 +925,10 @@ function migrateVenture(v) {
   if (typeof v.profileOnboarded !== "boolean") {
     v.profileOnboarded = !!(v.name || v.urgentConstraint || v.desiredOutcome);
   }
+  if (typeof v.startingPoint !== "string") v.startingPoint = "";
+  ["problem", "customer", "solution"].forEach(k => {
+    if (typeof v.opportunitySnapshot[k].pick !== "string") v.opportunitySnapshot[k].pick = "";
+  });
   /* Don't retroactively "celebrate" work that finished before this existed. */
   if (typeof v.insightCelebrationShown !== "boolean") {
     v.insightCelebrationShown = insightsSufficientlySupported(v);
@@ -2447,123 +2494,243 @@ addFil({
   "Something that directly reduces this hassle for \"%1\" might help — even a small step to begin with. Replace this once your idea is clearer.": "Maaaring makatulong ang isang bagay na direktang bumabawas sa abalang ito para sa \"%1\" — kahit maliit na hakbang muna. Palitan kapag mas malinaw na ang ideya mo.",
 });
 
-const ELEMENT_META = {
-  problem: {
-    title: "Problem Assumption",
-    prompt: "What problem or hassle have you noticed?",
-    placeholder: "e.g. there is nowhere nearby for the workers around here to eat",
-  },
-  customer: {
-    title: "Customer Assumption",
-    prompt: "Who deals with this the most?",
-    placeholder: "e.g. delivery riders and workers around the area",
-  },
-  solution: {
-    title: "Solution Assumption",
-    prompt: "What do you think could fix it?",
-    placeholder: "e.g. put up a small eatery",
-  },
-};
-
-/* People arrive at this tool from different directions: with a solution but
-   no articulated problem, with a problem but no idea who has it, or with a
-   customer they know well and nothing to sell them yet. Each assist fires
-   only when the other elements are filled in and this one is not — it helps
-   the user develop the missing answer instead of demanding it up front. */
-const ELEMENT_ASSIST = {
-  problem: {
-    needs: ["customer", "solution"],
-    intro: "You already know who your customer is and what you sell — it is completely normal to find it hard to say what problem this solves. Let us work backwards.",
-    questions: [
-      "Why do they buy from you instead of skipping it, or just doing it themselves?",
-      "What do your customers usually say when they come back or recommend you?",
-    ],
-  },
-  customer: {
-    needs: ["problem"],
-    intro: "You can see the problem but you are not sure yet who feels it most. That is normal — this is where many people start.",
-    questions: [
-      "Who do you most often see running into this?",
-      "For whom is this most expensive, most inconvenient, or most time-consuming when it happens?",
-    ],
-  },
-  solution: {
-    needs: ["problem", "customer"],
-    intro: "You have a problem and a customer but no clear solution yet. That is better than a solution with no problem to answer.",
-    questions: [
-      "How do they cope with it now, even if the way is roundabout or unpleasant?",
-      "What is the smallest thing that would immediately reduce the hassle?",
-    ],
-  },
-};
-/* Suggested drafts only — they are labelled as such wherever they appear and
-   the user must accept them explicitly before they become their own words. */
-function generateAssumptionSuggestion(v, key) {
-  const pr = assumptionText(v, "problem");
-  const cu = assumptionText(v, "customer");
-  const so = assumptionText(v, "solution");
-  if (key === "problem" && cu && so) {
-    /* Point at the gap the offer implies rather than restating the offer. */
-    return t('Before "%1" existed, how did "%2" handle this — and what was annoying, slow, or costly about that way? Describe that difficulty; it is the problem.', so, cu);
-  }
-  if (key === "customer" && pr) {
-    return t('Who runs into this most often, and where would you physically go to find twenty of them this week? Name that group and that place — for example "%1".', t("parents at the 3pm pickup gate, weekdays"));
-  }
-  if (key === "solution" && pr && cu) {
-    return t('What is the smallest thing that would take this difficulty away for "%1" — something you could try within a week, without a lease or a loan?', cu);
-  }
-  return "";
-}
-function assistVisible(v, key) {
-  const assist = ELEMENT_ASSIST[key];
-  if (!assist) return false;
-  if (assumptionText(v, key)) return false;
-  return assist.needs.every(k => assumptionText(v, k));
-}
-
-function renderSnapshotField(v, key, solo) {
-  const meta = ELEMENT_META[key];
-  const a = assumptionOf(v, key);
-  const showAssist = assistVisible(v, key);
-  const draft = showAssist ? generateAssumptionSuggestion(v, key) : "";
-  /* In a step flow the question is already the page heading — repeating the
-     label and prompt underneath it is the exact clutter we are removing. */
-  return `
-  <div class="fs-field">
-    ${solo ? "" : `<label>${esc(t(meta.title))}</label>
-    <p class="fs-hint" style="margin:2px 0 9px">${esc(t(meta.prompt))}</p>`}
-    ${showAssist ? `
-      <p class="fs-hint" style="margin:2px 0 8px">${esc(t(ELEMENT_ASSIST[key].intro))}</p>
-      <div class="fs-suggest-box">
-        <div class="fs-suggest-label">${esc(t("Try answering these first"))}</div>
-        <ul style="margin:0;padding-left:18px">${ELEMENT_ASSIST[key].questions.map(q => `<li style="margin-bottom:4px;font-size:13.5px">${esc(t(q))}</li>`).join("")}</ul>
-      </div>
-      ${draft ? suggestBox(draft, `<button data-use-assumption="${key}">${esc(t("Use suggestion"))}</button>`) : ""}
-    ` : ""}
-    <label class="fs-notsure"><input type="checkbox" data-notsure="${key}" ${a.notSure ? "checked" : ""}> ${esc(t("Not sure yet"))}</label>
-    ${a.notSure ? `<p class="fs-notsure-note">${esc(t('Marked "not sure yet" — that is a perfectly good answer for now. Phase 1 and Phase 2 are where this gets developed. You can come back and change it any time.'))}</p>` : ""}
-    <textarea data-el="${key}" placeholder="${esc(t(meta.placeholder))}">${esc(a.assumption)}</textarea>
-  </div>`;
-}
-
 /* One element per screen. The framework explanation that used to sit above
    these fields is gone: it taught vocabulary the glossary already covers,
    and it was the densest block on the first screen anyone reaches. */
-function snapshotSteps(v) {
-  const steps = ELEMENT_KEYS.map(k => ({
-    id: k,
-    question: ELEMENT_META[k].prompt,
-    body: () => renderSnapshotField(v, k, true),
-    bind: () => bindSnapshotField(v, k),
-    commit: () => {
-      const el = document.querySelector(`[data-el="${k}"]`);
-      if (el && v.opportunitySnapshot[k].assumption !== el.value) {
-        v.opportunitySnapshot[k].assumption = el.value;
-        v.opportunitySnapshot[k].lastUpdated = todayISO();
-        touchVenture(v);
-      }
-    },
+/* =========================================================================
+   QUICK-PICK ENTRY
+   The very first thing anyone sees. A blank paragraph box is the single
+   biggest reason someone closes the tab before they've told it anything —
+   so the first touch is a tap, not an essay. Options are written for MSME
+   reality specifically (a food cart, a sari-sari store) rather than a
+   generic startup taxonomy (Retail / Technology / Finance) that a small
+   business owner would not recognise themselves in.
+
+   The picked option still lands in opportunitySnapshot[key].assumption as
+   an ordinary string, so every downstream coach, generator and gate that
+   already reads assumptionText() keeps working unchanged — only the input
+   widget got lighter, not the data shape.
+   ========================================================================= */
+const STARTING_POINTS = [
+  { id: "idea", label: "I have a business idea", order: ["solution", "customer", "problem"] },
+  { id: "customer", label: "I want to serve a specific customer", order: ["customer", "problem", "solution"] },
+  { id: "problem", label: "I found a problem", order: ["problem", "customer", "solution"] },
+];
+function snapshotOrder(v) {
+  const sp = STARTING_POINTS.find(s => s.id === v.startingPoint);
+  return sp ? sp.order : ["problem", "customer", "solution"];
+}
+const INDUSTRY_OPTIONS = [
+  ["sari-sari", "Sari-sari store or small retail shop"],
+  ["foodcart", "Food cart, karinderya, or eatery"],
+  ["reselling", "Online reselling or online shop"],
+  ["services", "Services — repair, laundry, salon, and similar"],
+  ["agri", "Farming or agri-business"],
+  ["delivery", "Delivery, transport, or logistics"],
+  ["other", "Something else"],
+];
+const CUSTOMER_SEGMENT_OPTIONS = [
+  ["neighbors", "People in my neighborhood or community"],
+  ["students", "Students"],
+  ["commuters", "Commuters or workers nearby"],
+  ["online", "Online buyers"],
+  ["b2b", "Other small businesses"],
+  ["other", "Something else"],
+];
+/* Category names alone (pain point / need / gap) are the right idea but the
+   wrong words — a category is still a category, not a feeling someone
+   recognises in themselves. Each one is now the sentence a person would
+   actually think, in either language, with the category as a quiet label
+   underneath rather than the headline. */
+const PROBLEM_TYPE_OPTIONS = [
+  ["pain-point", "I don't want this anymore.", "Pain point — something actively bothering you or your customers."],
+  ["need", "I need this.", "Need — something you or your customers are missing."],
+  ["gap", "I want this.", "Gap — something nobody nearby offers yet."],
+];
+function problemTypeLabel(id) {
+  const found = PROBLEM_TYPE_OPTIONS.find(o => o[0] === id);
+  return found ? found[1] : "";
+}
+function optionLabel(options, id) {
+  const found = options.find(o => o[0] === id);
+  return found ? found[1] : "";
+}
+
+/* Renders a labelled <select>, with an "Other" text box that reveals only
+   when needed — never two widgets fighting for attention at once.
+   `pick` and `text` are passed separately (not inferred from one value) so
+   a value typed into "Other" survives a revisit intact, and an assumption
+   written before this picker existed — free text that matches no option —
+   still shows up as "Other" with its original wording, rather than
+   silently vanishing behind a blank "choose one". */
+function quickPickSelect(id, options, pick, text) {
+  const effectivePick = pick || (text ? "other" : "");
+  return `
+    <select id="${id}" data-quickpick-select>
+      <option value="">${esc(t("— choose one —"))}</option>
+      ${options.map(([val, label]) => `<option value="${esc(val)}" ${effectivePick === val ? "selected" : ""}>${esc(t(label))}</option>`).join("")}
+    </select>
+    <input type="text" id="${id}_other" style="margin-top:8px;display:${effectivePick === "other" ? "block" : "none"}"
+           placeholder="${esc(t("Type your own"))}" value="${esc(effectivePick === "other" ? (text || "") : "")}">`;
+}
+function bindQuickPickSelect(id) {
+  const sel = document.getElementById(id);
+  const other = document.getElementById(id + "_other");
+  sel?.addEventListener("change", () => {
+    other.style.display = sel.value === "other" ? "block" : "none";
+    if (sel.value === "other") other.focus();
+  });
+}
+function quickPickValue(id, options) {
+  const sel = document.getElementById(id);
+  if (!sel) return null;
+  if (sel.value === "other") {
+    const other = document.getElementById(id + "_other");
+    return (other?.value || "").trim();
+  }
+  return sel.value ? optionLabel(options, sel.value) : "";
+}
+function quickPickRawId(id) {
+  const sel = document.getElementById(id);
+  return sel ? sel.value : "";
+}
+
+function renderSolutionQuickPick(v) {
+  const a = assumptionOf(v, "solution");
+  return `
+  <div class="fs-field">
+    <label>${esc(t("What kind of business is it?"))}</label>
+    ${quickPickSelect("qp_solution", INDUSTRY_OPTIONS, a.pick, a.assumption)}
+  </div>
+  <div class="fs-field">
+    <label>${esc(t("Business name"))} <span style="text-transform:none;font-weight:400">${esc(t("(optional)"))}</span></label>
+    <input type="text" id="qp_solution_name" value="${esc(v.name || "")}" placeholder="${esc(t("e.g. Aling Nena Karinderya"))}">
+  </div>
+  ${notSureRow(a, "solution")}`;
+}
+function renderCustomerQuickPick(v) {
+  const a = assumptionOf(v, "customer");
+  return `
+  <div class="fs-field">
+    <label>${esc(t("Who are you selling to?"))}</label>
+    ${quickPickSelect("qp_customer", CUSTOMER_SEGMENT_OPTIONS, a.pick, a.assumption)}
+  </div>
+  ${notSureRow(a, "customer")}`;
+}
+function renderProblemQuickPick(v) {
+  const a = assumptionOf(v, "problem");
+  return `
+  <div class="fs-field">
+    <label>${esc(t("Which of these sounds like you?"))}</label>
+    <div class="fs-startpoint">
+      ${PROBLEM_TYPE_OPTIONS.map(([id, headline, sub]) => `
+        <button type="button" class="fs-startpoint-card ${a.pick === id ? "is-on" : ""}" data-problemtype="${id}">
+          <strong style="display:block">${esc(t(headline))}</strong>
+          <span style="display:block;font-size:12.5px;font-weight:400;color:var(--fs-ink-soft);margin-top:3px">${esc(t(sub))}</span>
+        </button>`).join("")}
+    </div>
+  </div>
+  <div class="fs-field">
+    <label>${esc(t("In a few words, what is happening?"))} <span style="text-transform:none;font-weight:400">${esc(t("(optional)"))}</span></label>
+    <input type="text" id="qp_problem_detail" value="${esc((a.assumption || "").trim())}" placeholder="${esc(t("e.g. walang malapit na makainan ang mga manggagawa dito sa amin"))}">
+  </div>
+  ${notSureRow(a, "problem")}`;
+}
+function bindProblemTypeCards(v) {
+  document.querySelectorAll("[data-problemtype]").forEach(btn => btn.addEventListener("click", () => {
+    v.opportunitySnapshot.problem.pick = btn.dataset.problemtype;
+    touchVenture(v);
+    refresh();
   }));
+}
+function notSureRow(a, key) {
+  return `
+  <label class="fs-notsure"><input type="checkbox" data-notsure="${key}" ${a.notSure ? "checked" : ""}> ${esc(t("Not sure yet"))}</label>
+  ${a.notSure ? `<p class="fs-notsure-note">${esc(t('Marked "not sure yet" — that is a perfectly good answer for now. Phase 1 and Phase 2 are where this gets developed. You can come back and change it any time.'))}</p>` : ""}`;
+}
+function bindNotSure(v, key) {
+  document.querySelectorAll("[data-notsure]").forEach(box => box.addEventListener("change", () => {
+    const k = box.dataset.notsure;
+    v.opportunitySnapshot[k].notSure = box.checked;
+    v.opportunitySnapshot[k].lastUpdated = todayISO();
+    touchVenture(v);
+    refresh();
+  }));
+}
+
+function snapshotSteps(v) {
+  const startStep = {
+    id: "start",
+    question: "Where are you starting from?",
+    body: () => `
+      <div class="fs-startpoint">
+        ${STARTING_POINTS.map(s => `<button type="button" class="fs-startpoint-card ${v.startingPoint === s.id ? "is-on" : ""}" data-startpoint="${s.id}">${esc(t(s.label))}</button>`).join("")}
+      </div>
+      <p class="fs-hint" style="margin:14px 0 0">${esc(t("Whichever you pick, you can develop the other two right after — none of them need to be figured out yet."))}</p>`,
+    bind: () => {
+      document.querySelectorAll("[data-startpoint]").forEach(btn => btn.addEventListener("click", () => {
+        v.startingPoint = btn.dataset.startpoint;
+        touchVenture(v);
+        refresh();
+      }));
+    },
+  };
+
+  const stepFor = (key) => {
+    if (key === "solution") {
+      return {
+        id: "solution",
+        question: "What do you currently think could help?",
+        body: () => renderSolutionQuickPick(v),
+        bind: () => { bindQuickPickSelect("qp_solution"); bindNotSure(v, "solution"); },
+        commit: () => {
+          const name = document.getElementById("qp_solution_name")?.value.trim();
+          if (name) v.name = name;
+          const picked = quickPickRawId("qp_solution");
+          const text = quickPickValue("qp_solution", INDUSTRY_OPTIONS);
+          if (text === null) return;
+          const a = v.opportunitySnapshot.solution;
+          if (a.pick === picked && a.assumption === text) return;
+          a.pick = picked; a.assumption = text; a.lastUpdated = todayISO();
+          touchVenture(v);
+        },
+      };
+    }
+    if (key === "customer") {
+      return {
+        id: "customer",
+        question: "Who deals with this the most?",
+        body: () => renderCustomerQuickPick(v),
+        bind: () => { bindQuickPickSelect("qp_customer"); bindNotSure(v, "customer"); },
+        commit: () => {
+          const picked = quickPickRawId("qp_customer");
+          const text = quickPickValue("qp_customer", CUSTOMER_SEGMENT_OPTIONS);
+          if (text === null) return;
+          const a = v.opportunitySnapshot.customer;
+          if (a.pick === picked && a.assumption === text) return;
+          a.pick = picked; a.assumption = text; a.lastUpdated = todayISO();
+          touchVenture(v);
+        },
+      };
+    }
+    return {
+      id: "problem",
+      question: "What problem or hassle have you noticed?",
+      body: () => renderProblemQuickPick(v),
+      bind: () => { bindProblemTypeCards(v); bindNotSure(v, "problem"); },
+      commit: () => {
+        const a = v.opportunitySnapshot.problem;
+        const typeLabel = a.pick ? problemTypeLabel(a.pick) : "";
+        const detail = document.getElementById("qp_problem_detail")?.value.trim() || "";
+        const text = detail || typeLabel;
+        if (a.assumption === text) return;
+        a.assumption = text; a.lastUpdated = todayISO();
+        touchVenture(v);
+      },
+    };
+  };
+
+  const steps = [startStep, ...snapshotOrder(v).map(stepFor)];
   steps.push({
     id: "summary",
     question: "Here is what you have so far",
@@ -2577,6 +2744,7 @@ function snapshotSteps(v) {
   });
   return steps;
 }
+
 function renderSnapshot(v) {
   return renderStepFlow(v, "snapshot", snapshotSteps(v), () => go("hypothesis", v.id, "problem"));
 }
@@ -2584,32 +2752,6 @@ function renderSnapshot(v) {
 function bindSnapshot(v) {
   bindStepFlow(v, "snapshot", snapshotSteps(v), () => go("hypothesis", v.id, "problem"));
 }
-/* Bindings for a single element's field, used by its step. */
-function bindSnapshotField(v, key) {
-  document.querySelectorAll("[data-use-assumption]").forEach(btn => btn.addEventListener("click", () => {
-    const k = btn.dataset.useAssumption;
-    v.opportunitySnapshot[k].assumption = generateAssumptionSuggestion(v, k);
-    v.opportunitySnapshot[k].lastUpdated = todayISO();
-    touchVenture(v);
-    refresh();
-  }));
-  document.querySelectorAll("[data-notsure]").forEach(box => box.addEventListener("change", () => {
-    const k = box.dataset.notsure;
-    v.opportunitySnapshot[k].notSure = box.checked;
-    v.opportunitySnapshot[k].lastUpdated = todayISO();
-    touchVenture(v);
-    refresh();
-  }));
-  document.querySelectorAll("[data-el]").forEach(field => field.addEventListener("blur", () => {
-    const k = field.dataset.el;
-    if (v.opportunitySnapshot[k].assumption === field.value) return;
-    v.opportunitySnapshot[k].assumption = field.value;
-    v.opportunitySnapshot[k].lastUpdated = todayISO();
-    touchVenture(v);
-    refresh();
-  }));
-}
-
 /* =========================================================================
    RENDER: PHASE 1 — HYPOTHESIS
    ========================================================================= */
