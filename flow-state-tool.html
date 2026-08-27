@@ -205,6 +205,18 @@ table.fs-table tr:last-child td{border-bottom:none}
 .fs-startpoint{display:flex;flex-direction:column;gap:10px}
 .fs-startpoint-card{width:100%;text-align:left;border:1.5px solid var(--fs-line);background:var(--fs-paper);border-radius:var(--fs-radius-sm);padding:16px 18px;font-family:inherit;font-size:15px;font-weight:600;color:var(--fs-ink);transition:border-color .15s,background .15s}
 .fs-startpoint-card:hover{border-color:var(--fs-accent)}
+.fs-typecard{display:flex;flex-direction:column;align-items:flex-start;gap:9px}
+.fs-typecard .fs-pill{font-size:11.5px;padding:5px 12px}
+.fs-typecard.is-on .fs-pill{background:var(--fs-accent);color:var(--fs-paper)}
+.fs-typecard-phrase{font-size:14.5px;font-weight:400;color:var(--fs-ink-soft)}
+.fs-typecard.is-on .fs-typecard-phrase{color:var(--fs-accent-dark)}
+.fs-element-block{padding-bottom:20px;margin-bottom:20px;border-bottom:1px solid var(--fs-line-soft)}
+.fs-basestate{background:var(--fs-accent-soft);border:1px solid var(--fs-accent);border-radius:var(--fs-radius);padding:20px 22px;margin-bottom:20px}
+.fs-basestate.is-partial{background:var(--fs-bg);border-color:var(--fs-line);border-style:dashed}
+.fs-basestate-eyebrow{margin:0 0 8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--fs-ink-soft)}
+.fs-basestate-text{margin:0;font-family:var(--fs-display);font-size:22px;line-height:1.32;letter-spacing:-0.015em;color:var(--fs-accent-dark)}
+.fs-basestate-note{margin:11px 0 0;font-size:12.5px;line-height:1.55;color:var(--fs-ink-soft)}
+@media(max-width:640px){.fs-basestate{padding:16px 17px}.fs-basestate-text{font-size:19px}}
 .fs-startpoint-card.is-on{border-color:var(--fs-accent);background:var(--fs-accent-soft);color:var(--fs-accent-dark)}
 
 /* ---------- Step flow (one focused task per screen) ---------- */
@@ -220,16 +232,8 @@ table.fs-table tr:last-child td{border-bottom:none}
 
 /* ---------- One-question-per-page wizard ---------- */
 .fs-wizard{max-width:620px;margin:0 auto;padding:8px 0 40px}
-.fs-wizard-progress{margin-bottom:26px}
-.fs-wizard-bar{height:6px;background:var(--fs-line-soft);border-radius:100px;overflow:hidden}
-.fs-wizard-bar span{display:block;height:100%;background:var(--fs-gold);border-radius:100px;transition:width .35s cubic-bezier(.4,0,.2,1)}
-.fs-wizard-progress p{margin:8px 0 0;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--fs-ink-soft)}
-.fs-wizard-card{background:var(--fs-paper);border:1px solid var(--fs-line);border-radius:var(--fs-radius);box-shadow:var(--fs-shadow);padding:30px 32px;margin-bottom:22px}
-.fs-wizard-q{font-family:var(--fs-display);font-size:25px;line-height:1.25;letter-spacing:-0.015em;color:var(--fs-accent-dark);margin:0 0 12px}
-.fs-wizard-nav{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .fs-wizard-skip{display:block;margin:18px auto 0;background:none;border:none;font-size:12.5px;color:var(--fs-ink-soft);text-decoration:underline;cursor:pointer}
 .fs-wizard-skip:hover{color:var(--fs-accent)}
-@media(max-width:640px){.fs-wizard-card{padding:24px 20px}.fs-wizard-q{font-size:21px}}
 
 .fs-linkbtn{background:none;border:none;padding:0 0 0 4px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--fs-ink-soft);text-decoration:underline}
 .fs-linkbtn:hover{color:var(--fs-accent)}
@@ -309,7 +313,7 @@ table.fs-table tr:last-child td{border-bottom:none}
        Assumption  →  Hypothesis  →  Insight
 
    • Assumption: the user's best starting answer, not yet examined.
-     Captured in the Opportunity Snapshot at the top of Phase 1.
+     Captured in the venture profile, before Phase 1 begins.
    • Hypothesis: a clearer, testable proposition. Phase 1's output.
    • Insight: an understanding real evidence sufficiently supports.
      Only earned in Phase 2, and only on a "Supported" outcome.
@@ -351,7 +355,7 @@ const CONFIG = {
   validationOutcomes: ["Not Yet Assessed", "Supported", "Partially supported", "Not supported", "Inconclusive"],
   /* What to do with a hypothesis the evidence did not sufficiently support. */
   nextMoves: ["", "Refine", "Retest", "Replace", "Reject"],
-  ventureStatuses: ["Opportunity Snapshot not started", "Opportunity Snapshot in progress", "Hypotheses in development", "Ready for validation", "Validation in progress", "Insights sufficiently supported"],
+  ventureStatuses: ["Starting statement not written", "Starting statement in progress", "Hypotheses in development", "Ready for validation", "Validation in progress", "Insights sufficiently supported"],
   valueDriverCategories: ["Attraction", "Conversion", "Retention"],
   /* The alternatives that actually beat most new ventures are not shops.
      They are inertia, self-service and substitution — so the tool seeds
@@ -561,9 +565,9 @@ const FIL_CHROME = {
   "Every entry here is made up and unvalidated. Nothing becomes an insight until real evidence is entered in Phase 2.": "Gawa-gawa lang at hindi pa napapatunayan ang lahat ng nakalagay dito. Walang magiging kabatiran hangga't walang totoong ebidensyang naipapasok sa Yugto 2.",
 
   /* --- venture statuses --- */
-  "Opportunity Snapshot not started": "Hindi pa nasisimulan ang Snapshot ng Oportunidad",
-  "Opportunity Snapshot in progress": "Ginagawa pa ang Snapshot ng Oportunidad",
-  "Opportunity Snapshot complete": "Kumpleto na ang Snapshot ng Oportunidad",
+  "Starting statement not written": "Wala pang panimulang pahayag",
+  "Starting statement in progress": "Ginagawa pa ang panimulang pahayag",
+  "%1 __________ %2.": "__________ ng %1 ng %2.",
   "Hypotheses in development": "Binubuo pa ang mga hipotesis",
   "Ready for validation": "Handa nang patunayan",
   "Validation in progress": "Isinasagawa ang pagpapatunay",
@@ -751,7 +755,7 @@ function toast(msg) {
    "notSure" is a first-class answer here — an incomplete snapshot never
    blocks entry to Phase 1. */
 function blankAssumption() {
-  return { assumption: "", notSure: false, lastUpdated: null };
+  return { assumption: "", pick: "", notSure: false, lastUpdated: null };
 }
 function blankVenture() {
   return {
@@ -760,8 +764,8 @@ function blankVenture() {
     summary: "", businessModel: "", startDate: "", urgentConstraint: "", desiredOutcome: "",
     scope: "", exclusions: "", ownerField: "", deadline: "", decisionDate: "",
     existingIntake: { performance: "", traffic: "", conversion: "", avgTransaction: "", repeatBehavior: "", grossMargin: "", fixedCosts: "", ownerDependency: "", auditTrigger: "" },
-    /* The three Essential Elements, as starting assumptions. Lives inside
-       Phase 1 as the Opportunity Snapshot — there is no separate page. */
+    /* The three Essential Elements, as starting assumptions. Asked inside
+       the venture profile — there is no separate page for them. */
     opportunitySnapshot: { problem: blankAssumption(), customer: blankAssumption(), solution: blankAssumption() },
     hypothesis: {
       problemId: { causeExploration: [""], alternativeExplanations: [""], frequency: "", consequence: "", problemStatement: "" },
@@ -787,7 +791,7 @@ function blankVenture() {
     profileOnboarded: false,
     insightCelebrationShown: false,
     /* Which Essential Element the user already had clarity on when they
-       started — decides the order the Opportunity Snapshot asks about the
+       started — decides the order the profile asks about the
        other two. "" means not chosen (existing ventures default to the
        original problem-first order). */
     startingPoint: "",
@@ -835,7 +839,7 @@ function loadDB() {
   if (DB.settings.lang && LANGS.some(l => l.id === DB.settings.lang)) LANG = DB.settings.lang;
   DB.ventures.forEach(migrateVenture);
 }
-/* Legacy Essential Element -> Opportunity Snapshot assumption. The old
+/* Legacy Essential Element -> starting assumption. The old
    "firstDraft" was the user's first statement of the element, which is
    exactly an assumption; any other notes they had typed are carried along
    rather than dropped. */
@@ -874,9 +878,8 @@ function migrateVenture(v) {
   if (!v.evidence) v.evidence = [];
   if (!v.existingIntake) v.existingIntake = blankVenture().existingIntake;
 
-  /* Schema v2 — the standalone Essential Elements workflow became the
-     Opportunity Snapshot at the top of Phase 1. Values move across; nothing
-     is discarded. */
+  /* Schema v2 — the standalone Essential Elements workflow folded into the
+     venture profile. Values move across; nothing is discarded. */
   if (!v.opportunitySnapshot) {
     const old = v.essentialElements || {};
     v.opportunitySnapshot = {
@@ -1079,27 +1082,81 @@ function assumptionAnswered(v, key) {
 }
 function snapshotStarted(v) { return ELEMENT_KEYS.some(k => assumptionAnswered(v, k)); }
 function snapshotComplete(v) { return ELEMENT_KEYS.every(k => assumptionAnswered(v, k)); }
-function snapshotStatusLabel(v) {
-  if (snapshotComplete(v)) return t("Opportunity Snapshot complete");
-  if (snapshotStarted(v)) return t("Opportunity Snapshot in progress");
-  return t("Opportunity Snapshot not started");
-}
 /* Reading an assumption back to the user elsewhere in the tool. Never
    fabricate one, and never phrase its absence as a blocker. */
 function assumptionEcho(v, key) {
   const written = assumptionText(v, key);
   if (written) return written;
   if (assumptionOf(v, key).notSure) return t("Not sure yet — you marked this one to come back to.");
-  return t("Not written yet — you can add it in the Opportunity Snapshot.");
+  return t("Not written yet — you can add it in the venture profile.");
 }
-function generateSnapshotSummary(v) {
-  if (!snapshotStarted(v)) return "";
-  const line = (key, template) => t(template, assumptionText(v, key) || (assumptionOf(v, key).notSure ? t("Not sure yet") : t("(not written yet)")));
-  return [
-    line("problem", "Problem assumption: %1"),
-    line("customer", "Customer assumption: %1"),
-    line("solution", "Solution assumption: %1"),
-  ].join("\n");
+/* ---------------- The base statement ----------------
+   One plain sentence assembled from the three quick answers: who it is for,
+   what they want, and which of the three shapes the want takes. It is meant
+   to be the most generic version of the opportunity, not a finding — it is
+   the foundation Phase 1 sharpens into hypotheses that can actually be
+   tested.
+
+   The verb comes from the problem category, which is the whole reason the
+   categories are asked as categories: "I don't want this anymore" becomes
+   "want to get rid of", "I need this" becomes "need", "I want this" becomes
+   "want". A pain point points at the difficulty itself; a need or a gap
+   points at the thing that would answer it. */
+const BASE_STATEMENT_TEMPLATES = {
+  "pain-point": "%1 want to get rid of %2.",
+  "need": "%1 need %2.",
+  "gap": "%1 want %2.",
+};
+function ucFirst(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
+/* A curated option is phrased for the picker ("People in my neighborhood");
+   the statement needs the same thing in the third person. Free text the user
+   typed is never rewritten. */
+function statementPart(v, key, options) {
+  const a = assumptionOf(v, key);
+  if (a.pick && a.pick !== "other") {
+    const found = options.find(o => o[0] === a.pick);
+    if (found) return t(found[2] || found[1]);
+  }
+  return assumptionText(v, key);
+}
+function baseStatementParts(v) {
+  const pick = assumptionOf(v, "problem").pick || "";
+  const who = statementPart(v, "customer", CUSTOMER_SEGMENT_OPTIONS);
+  const what = pick === "pain-point"
+    ? assumptionText(v, "problem")
+    : statementPart(v, "solution", INDUSTRY_OPTIONS);
+  return { pick, who, what };
+}
+function baseStatement(v) {
+  const parts = baseStatementParts(v);
+  /* With no category picked the verb is unknown, so it is left blank too —
+     guessing one would put a claim in their mouth. */
+  const tpl = BASE_STATEMENT_TEMPLATES[parts.pick] || "%1 __________ %2.";
+  const blank = "__________";
+  const text = ucFirst(t(tpl, parts.who || blank, parts.what || blank));
+  return { text, complete: !!(BASE_STATEMENT_TEMPLATES[parts.pick] && parts.who && parts.what) };
+}
+function baseStatementMissing(v) {
+  const parts = baseStatementParts(v);
+  const out = [];
+  if (!parts.who) out.push(t("who it is for"));
+  if (!parts.pick) out.push(t("what kind of problem it is"));
+  if (!parts.what) out.push(parts.pick === "pain-point" ? t("what is happening") : t("what could help"));
+  return out;
+}
+/* `bare` drops the label on the one screen whose own question already says
+   the same words. */
+function baseStatementBlock(v, note, bare) {
+  const st = baseStatement(v);
+  const missing = st.complete ? [] : baseStatementMissing(v);
+  return `
+  <div class="fs-basestate ${st.complete ? "" : "is-partial"}">
+    ${bare ? "" : `<p class="fs-basestate-eyebrow">${esc(t("Your starting statement"))}</p>`}
+    <p class="fs-basestate-text">${esc(st.text)}</p>
+    ${missing.length
+      ? `<p class="fs-basestate-note">${esc(t("Still blank: %1.", missing.join(", ")))}</p>`
+      : (note ? `<p class="fs-basestate-note">${esc(t(note))}</p>` : "")}
+  </div>`;
 }
 
 /* ---------------- Cause exploration safeguards ---------------- */
@@ -1176,7 +1233,7 @@ function problemGaps(v) {
   const customer = assumptionText(v, "customer");
   const gaps = [];
   if (!problem) {
-    gaps.push({ id: "problem", label: "What the difficulty actually is", why: "Nothing to sharpen yet — write a problem assumption in the Opportunity Snapshot first.", example: "Parents waiting at pickup have nowhere comfortable to stand." });
+    gaps.push({ id: "problem", label: "What the difficulty actually is", why: "Nothing to sharpen yet — write a problem assumption in the venture profile first.", example: "Parents waiting at pickup have nowhere comfortable to stand." });
   }
   if (!customer || hits(VAGUE_SUBJECTS, customer) || wordCount(customer) < 3) {
     gaps.push({ id: "who", label: "Who exactly", why: "A group this broad cannot be found, counted, or interviewed — and Phase 2 will need to do all three.", example: "Parents and yayas doing the 3pm pickup at one specific school — not \"customers\"." });
@@ -1471,8 +1528,8 @@ function ventureStatusKey(v) {
   if (VALIDATION_KEYS.some(k => validationStarted(getValidationCard(v, k)))) return "Validation in progress";
   if (hypothesisGateComplete(v)) return "Ready for validation";
   if (anyHypothesisWritten(v) || snapshotComplete(v)) return "Hypotheses in development";
-  if (snapshotStarted(v)) return "Opportunity Snapshot in progress";
-  return "Opportunity Snapshot not started";
+  if (snapshotStarted(v)) return "Starting statement in progress";
+  return "Starting statement not written";
 }
 function ventureStatus(v) { return t(ventureStatusKey(v)); }
 
@@ -1488,8 +1545,8 @@ function ventureStatus(v) { return t(ventureStatusKey(v)); }
    The stages are the ladder the tool already tracks, not new invented ones.
    ========================================================================= */
 const JOURNEY_STAGES = [
-  { key: "Opportunity Snapshot not started",  short: "Getting started" },
-  { key: "Opportunity Snapshot in progress",  short: "First answers down" },
+  { key: "Starting statement not written",  short: "Getting started" },
+  { key: "Starting statement in progress",  short: "First answers down" },
   { key: "Hypotheses in development",         short: "Building hypotheses" },
   { key: "Ready for validation",              short: "Ready to test" },
   { key: "Validation in progress",            short: "Gathering evidence" },
@@ -1989,7 +2046,6 @@ addFil({
   "Make this sharper before you test it": "Hasain muna ito bago subukan",
   "Sharpen who this is": "Linawin kung sino ito",
   "What the difficulty actually is": "Ano talaga ang hirap",
-  "Nothing to sharpen yet — write a problem assumption in the Opportunity Snapshot first.": "Wala pang mahahasa — magsulat muna ng palagay sa problema sa Snapshot ng Oportunidad.",
   "Parents waiting at pickup have nowhere comfortable to stand.": "Walang komportableng matayuan ang mga magulang na naghihintay sa sunduan.",
   "Who exactly": "Sino nga ba",
   "A group this broad cannot be found, counted, or interviewed — and Phase 2 will need to do all three.": "Ang ganitong kalawak na grupo ay hindi mahahanap, mabibilang, o makakapanayam — at kailangan ng Yugto 2 ang lahat ng tatlo.",
@@ -2068,6 +2124,8 @@ addFil({
    Values already saved in those fields are never destroyed; they surface in
    a collapsed block below so nothing is lost. */
 const RETIRED_PROFILE_FIELDS = [
+  ["urgentConstraint", "What is making this urgent?"],
+  ["desiredOutcome", "What do you want to get out of this?"],
   ["owner", "Owner / founder"],
   ["stage", "Business stage"],
   ["industry", "Industry / category"],
@@ -2091,28 +2149,6 @@ function retiredProfileValues(v) {
   RETIRED_PROFILE_FIELDS.forEach(([k, label]) => { if ((v[k] || "").trim()) out.push(["f_old_" + k, label, v[k]]); });
   RETIRED_INTAKE_FIELDS.forEach(([k, label]) => { if (((v.existingIntake || {})[k] || "").trim()) out.push(["ei_old_" + k, label, v.existingIntake[k]]); });
   return out;
-}
-
-/* The two starting-questions' examples used to be fixed to one scenario
-   (a lease renewal), which only makes sense for a business that already
-   exists. Each mode gets its own pair so the example never contradicts the
-   case type the user just picked. */
-const PROFILE_EXAMPLES = {
-  "new-venture": {
-    constraint: "I have ₱50,000 in savings and I want to know if this will work before I spend it.",
-    outcome: "A clear yes or no on whether to start this.",
-  },
-  "existing-business": {
-    constraint: "Sales have dropped for three months straight and my rent goes up next month.",
-    outcome: "A clear decision on whether to keep this going, change it, or stop.",
-  },
-  "consultant-case": {
-    constraint: "My client wants to open a second stall next month, but I do not think the first one is ready.",
-    outcome: "A recommendation I can explain to my client in plain words.",
-  },
-};
-function profileExample(v, key) {
-  return (PROFILE_EXAMPLES[v.mode] || PROFILE_EXAMPLES["new-venture"])[key];
 }
 
 /* =========================================================================
@@ -2198,100 +2234,69 @@ function bindStepFlow(v, flowId, steps, onFinish) {
    than just stopping.
    ========================================================================= */
 function profileSteps(v) {
-  const steps = [
-    { id: "name", label: "What should we call this?",
-      hint: "", example: "",
-      placeholder: "e.g. Riverside Coffee Kiosk",
-      get: () => v.name, set: (x) => { v.name = x; }, kind: "text" },
-    { id: "mode", label: "What kind of case is this?",
-      hint: "", example: "", kind: "mode" },
-    { id: "constraint", label: "What is making this urgent?",
-      hint: "Savings running out, rent going up, sales dropping — whatever is pushing you to decide now instead of later.",
-      example: profileExample(v, "constraint"),
-      get: () => v.urgentConstraint, set: (x) => { v.urgentConstraint = x; }, kind: "textarea" },
-    { id: "outcome", label: "What do you want to get out of this?",
-      hint: "A decision, a plan, a clear yes or no — what would make this worth your time?",
-      example: profileExample(v, "outcome"),
-      get: () => v.desiredOutcome, set: (x) => { v.desiredOutcome = x; }, kind: "textarea" },
-  ];
+  const steps = [{
+    id: "start",
+    question: "What do you have so far?",
+    body: () => `
+      <div class="fs-startpoint">
+        ${STARTING_POINTS.map(s => `<button type="button" class="fs-startpoint-card ${v.startingPoint === s.id ? "is-on" : ""}" data-startpoint="${s.id}">${esc(t(s.label))}</button>`).join("")}
+      </div>`,
+    bind: () => {
+      document.querySelectorAll("[data-startpoint]").forEach(btn => btn.addEventListener("click", () => {
+        v.startingPoint = btn.dataset.startpoint;
+        touchVenture(v);
+        refresh();
+      }));
+    },
+  }];
+
+  /* Whichever element they said they were starting from is asked first —
+     answering the one you already have in your head is a much easier first
+     move than answering the one the form happens to list first. */
+  snapshotOrder(v).forEach(key => steps.push(elementStep(v, key)));
+
+  /* The welcome screen already asked what kind of case this is, and what the
+     business is called. Neither is asked again here. */
   if (v.mode === "existing-business") {
-    steps.push({ id: "trigger", label: "What made you look into this?",
-      hint: "This is not a judgment on how the business started — it is reconstructing the problem, customer, and solution assumptions from what is actually happening now.",
+    steps.push({
+      id: "trigger",
+      question: "What made you look into this?",
       example: "I am working every day but there is nothing left at the end of the month.",
-      get: () => v.existingIntake.auditTrigger, set: (x) => { v.existingIntake.auditTrigger = x; }, kind: "textarea" });
-    steps.push({ id: "performance", label: "Roughly how is it doing now?",
+      body: () => `<div class="fs-field" style="margin-bottom:0"><textarea id="wz_trigger" style="min-height:110px">${esc(v.existingIntake.auditTrigger)}</textarea></div>`,
+      commit: () => { const el = document.getElementById("wz_trigger"); if (el) { v.existingIntake.auditTrigger = el.value; touchVenture(v); } },
+    });
+    steps.push({
+      id: "performance",
+      question: "Roughly how is it doing now?",
       hint: "A rough figure is fine — this is a starting point, not an audit.",
-      example: "", placeholder: "e.g. ₱45k/mo revenue",
-      get: () => v.existingIntake.performance, set: (x) => { v.existingIntake.performance = x; }, kind: "text" });
+      body: () => `<div class="fs-field" style="margin-bottom:0"><input type="text" id="wz_perf" value="${esc(v.existingIntake.performance)}" placeholder="${esc(t("e.g. ₱45k/mo revenue"))}"></div>`,
+      commit: () => { const el = document.getElementById("wz_perf"); if (el) { v.existingIntake.performance = el.value; touchVenture(v); } },
+    });
   }
+
+  steps.push({
+    id: "base",
+    question: "Here is your starting statement",
+    body: () => baseStatementBlock(v, "This is the base everything else builds on. It is a starting guess, not a finding — Phase 1 turns it into hypotheses you can test.", true),
+  });
   return steps;
 }
-let PROFILE_STEP = 0;
 
 function renderProfileWizard(v) {
   const main = document.getElementById("fsMain");
   const steps = profileSteps(v);
-  if (PROFILE_STEP >= steps.length) PROFILE_STEP = steps.length - 1;
-  if (PROFILE_STEP < 0) PROFILE_STEP = 0;
-  const step = steps[PROFILE_STEP];
-  const isLast = PROFILE_STEP === steps.length - 1;
-  const pct = Math.round(((PROFILE_STEP + 1) / steps.length) * 100);
-
-  let field;
-  if (step.kind === "mode") {
-    field = `<div class="fs-segmented" id="f_mode_group">
-      ${CONFIG.ventureModes.map(m => `<button type="button" class="fs-segment ${v.mode === m.id ? "is-on" : ""}" data-mode="${m.id}">${esc(t(m.label))}</button>`).join("")}
-    </div>`;
-  } else if (step.kind === "textarea") {
-    field = `<textarea id="wz_field" style="min-height:110px">${esc(step.get() || "")}</textarea>`;
-  } else {
-    field = `<input type="text" id="wz_field" value="${esc(step.get() || "")}" placeholder="${esc(t(step.placeholder || ""))}">`;
-  }
-
+  const finish = () => finishProfileWizard(v);
   main.innerHTML = `
   <div class="fs-wizard">
-    <div class="fs-wizard-progress">
-      <div class="fs-wizard-bar"><span style="width:${pct}%"></span></div>
-      <p>${esc(t("Question %1 of %2", PROFILE_STEP + 1, steps.length))}</p>
-    </div>
-
-    <div class="fs-wizard-card">
-      <h1 class="fs-wizard-q">${esc(t(step.label))}</h1>
-      ${step.hint ? `<p class="fs-hint">${esc(t(step.hint))}</p>` : ""}
-      ${step.example ? `<div class="fs-example">${esc(t("Example: %1", t(step.example)))}</div>` : ""}
-      <div class="fs-field" style="margin-bottom:0">${field}</div>
-    </div>
-
-    <div class="fs-wizard-nav">
-      ${PROFILE_STEP > 0 ? `<button class="fs-btn fs-btn-ghost" id="wz_back">&#8592; ${esc(t("Back"))}</button>` : `<span></span>`}
-      <button class="fs-btn" id="wz_next">${esc(isLast ? t("Finish") : t("Next"))} &#8594;</button>
-    </div>
+    ${renderStepFlow(v, "profile", steps, finish)}
     <button class="fs-wizard-skip" id="wz_skip">${esc(t("Skip this for now"))}</button>
   </div>`;
-
-  const commit = () => {
-    const el = document.getElementById("wz_field");
-    if (el && step.set) step.set(el.value);
-    touchVenture(v);
-  };
-  document.getElementById("wz_field")?.focus();
-  main.querySelectorAll("[data-mode]").forEach(btn => btn.addEventListener("click", () => {
-    v.mode = btn.dataset.mode;
-    touchVenture(v);
-    renderProfileWizard(v);
-  }));
-  document.getElementById("wz_back")?.addEventListener("click", () => { commit(); PROFILE_STEP--; renderProfileWizard(v); });
-  document.getElementById("wz_next").addEventListener("click", () => {
-    commit();
-    if (isLast) { finishProfileWizard(v); return; }
-    PROFILE_STEP++;
-    renderProfileWizard(v);
-  });
-  document.getElementById("wz_skip").addEventListener("click", () => { commit(); finishProfileWizard(v); });
+  bindStepFlow(v, "profile", steps, finish);
+  document.getElementById("wz_skip").addEventListener("click", finish);
 }
 function finishProfileWizard(v) {
   v.profileOnboarded = true;
-  PROFILE_STEP = 0;
+  setFlowIndex(v, "profile", 0);
   touchVenture(v);
   go("profile", v.id);
 }
@@ -2311,6 +2316,13 @@ function milestoneBanner(v) {
   </div>`;
 }
 
+function elementQuickPick(v, key) {
+  const heading = ELEMENT_QUESTIONS[key];
+  if (key === "solution") return renderSolutionQuickPick(v, heading, true);
+  if (key === "customer") return renderCustomerQuickPick(v, heading);
+  return renderProblemQuickPick(v, heading);
+}
+
 function renderProfile() {
   const v = getVenture(ROUTE.ventureId);
   const main = document.getElementById("fsMain");
@@ -2324,36 +2336,20 @@ function renderProfile() {
     <a class="fs-back-link" data-go="dashboard">&#8592; ${esc(t("All ventures"))}</a>
     <p class="fs-eyebrow">${esc(t("Venture / Case Profile"))}</p>
     <h1 class="fs-h1">${esc(v.name || t("Untitled venture"))}</h1>
-    <p class="fs-lede">${esc(t("Two things matter most here: why this is urgent, and what you want out of it. Everything else can wait."))}</p>
     ${demoFlag(v)}
     ${milestoneBanner(v)}
     <div class="fs-status-row"><span class="fs-status-line">${esc(ventureStatus(v))}</span></div>
     ${journeyBar(v)}
     ${progressTallyStrip(v)}
+    ${baseStatementBlock(v)}
 
     <div class="fs-card">
-      <div class="fs-field">
-        <label>${esc(t("What should we call this?"))}</label>
-        <input type="text" id="f_name" value="${esc(v.name)}" placeholder="${esc(t("e.g. Riverside Coffee Kiosk"))}">
-      </div>
-
-      <div class="fs-field">
+      ${snapshotOrder(v).map(key => `<div class="fs-element-block">${elementQuickPick(v, key)}</div>`).join("")}
+      <div class="fs-field" style="margin-bottom:0">
         <label>${esc(t("What kind of case is this?"))}</label>
         <div class="fs-segmented" id="f_mode_group">
           ${CONFIG.ventureModes.map(m => `<button type="button" class="fs-segment ${v.mode === m.id ? "is-on" : ""}" data-mode="${m.id}">${esc(t(m.label))}</button>`).join("")}
         </div>
-      </div>
-
-      <div class="fs-field">
-        <label>${esc(t("What is making this urgent?"))}</label>
-        ${guidedIntro(t("Savings running out, rent going up, sales dropping — whatever is pushing you to decide now instead of later."), t(profileExample(v, "constraint")))}
-        <textarea id="f_constraint">${esc(v.urgentConstraint)}</textarea>
-      </div>
-
-      <div class="fs-field">
-        <label>${esc(t("What do you want to get out of this?"))}</label>
-        ${guidedIntro(t("A decision, a plan, a clear yes or no — what would make this worth your time?"), t(profileExample(v, "outcome")))}
-        <textarea id="f_outcome">${esc(v.desiredOutcome)}</textarea>
       </div>
     </div>
 
@@ -2400,6 +2396,10 @@ function renderProfile() {
     </div>
   `;
 
+  bindQuickPickSelect("qp_solution");
+  bindQuickPickSelect("qp_customer");
+  bindProblemTypeCards(v);
+  bindNotSure(v, "problem"); bindNotSure(v, "customer"); bindNotSure(v, "solution");
   main.querySelectorAll("[data-go]").forEach(el => el.addEventListener("click", () => { saveProfileFields(v); go(el.dataset.go, v.id); }));
   main.querySelectorAll("[data-mode]").forEach(btn => btn.addEventListener("click", () => {
     if (v.mode === btn.dataset.mode) return;
@@ -2421,15 +2421,17 @@ function renderProfile() {
     go("dashboard");
   });
   main.querySelectorAll("input,textarea").forEach(el => el.addEventListener("blur", () => saveProfileFields(v)));
+  main.querySelectorAll("select").forEach(el => el.addEventListener("change", () => saveProfileFields(v)));
 }
 /* Only writes fields that are actually on screen. A field the current mode
    does not render keeps whatever the venture already had — switching modes
    must never silently wipe data. */
 function saveProfileFields(v) {
   const set = (id, apply) => { const el = document.getElementById(id); if (el) apply(el.value); };
-  set("f_name", x => { v.name = x; });
-  set("f_constraint", x => { v.urgentConstraint = x; });
-  set("f_outcome", x => { v.desiredOutcome = x; });
+  set("qp_solution_name", x => { if (x.trim()) v.name = x.trim(); });
+  saveQuickPick(v, "solution", "qp_solution", INDUSTRY_OPTIONS);
+  saveQuickPick(v, "customer", "qp_customer", CUSTOMER_SEGMENT_OPTIONS);
+  saveProblemDetail(v);
   set("f_consultant", x => { v.consultant = x; });
   set("f_deadline", x => { v.deadline = x; });
   set("f_scope", x => { v.scope = x; });
@@ -2449,6 +2451,64 @@ function saveProfileFields(v) {
    blocks anything; "Not sure yet" is a valid answer.
    ========================================================================= */
 addFil({
+  /* --- starting point, quick picks, starting statement --- */
+  "Step %1 of %2": "Hakbang %1 ng %2",
+  "What do you have so far?": "Ano na ang meron ka?",
+  "I have a business idea": "May ideya akong negosyo",
+  "I want to serve a specific customer": "May tiyak akong customer na gusto kong paglingkuran",
+  "I found a problem": "May nakita akong problema",
+  "What kind of problem is this?": "Anong klaseng problema ito?",
+  "Who are you selling to?": "Kanino ka magbebenta?",
+  "What kind of business is this?": "Anong klaseng negosyo ito?",
+  "Pain point": "Sakit",
+  "Need": "Pangangailangan",
+  "Gap": "Puwang",
+  "I don't want this anymore.": "Ayoko na nito.",
+  "I need this.": "Kailangan ko ito.",
+  "I want this.": "Gusto ko ito.",
+  "In a few words, what is happening?": "Sa ilang salita, ano ang nangyayari?",
+  "Business name": "Pangalan ng negosyo",
+  "(optional)": "(opsyonal)",
+  "e.g. Aling Nena Karinderya": "hal. Aling Nena Karinderya",
+  "— choose one —": "— pumili —",
+  "Type your own": "Isulat ang sa iyo",
+  "Sari-sari store or small retail shop": "Sari-sari store o maliit na tindahan",
+  "Food cart, karinderya, or eatery": "Food cart, karinderya, o kainan",
+  "Online reselling or online shop": "Online reselling o online shop",
+  "Services — repair, laundry, salon, and similar": "Serbisyo — repair, labada, salon, at katulad",
+  "Farming or agri-business": "Pagsasaka o agri-business",
+  "Delivery, transport, or logistics": "Delivery, transport, o logistics",
+  "Something else": "Iba pa",
+  "People in my neighborhood or community": "Mga tao sa lugar o komunidad ko",
+  "Students": "Mga estudyante",
+  "Commuters or workers nearby": "Mga commuter o manggagawa sa malapit",
+  "Online buyers": "Mga bumibili online",
+  "Other small businesses": "Ibang maliliit na negosyo",
+  "a sari-sari store nearby": "isang sari-sari store sa malapit",
+  "a place to eat nearby": "isang makakainan sa malapit",
+  "an online shop they can order from": "isang online shop na pwede nilang orderan",
+  "a repair, laundry or salon service nearby": "isang serbisyong repair, labada o salon sa malapit",
+  "farm produce they can get nearby": "ani ng sakahan na makukuha nila sa malapit",
+  "a delivery or transport service": "isang serbisyong delivery o transport",
+  "people in the neighborhood": "mga tao sa paligid",
+  "students": "mga estudyante",
+  "commuters and workers nearby": "mga commuter at manggagawa sa malapit",
+  "online buyers": "mga bumibili online",
+  "other small businesses": "ibang maliliit na negosyo",
+  "%1 want to get rid of %2.": "Ayaw na ng %1 ng %2.",
+  "%1 need %2.": "Kailangan ng %1 ng %2.",
+  "%1 want %2.": "Gusto ng %1 ng %2.",
+  "Your starting statement": "Ang panimula mong pahayag",
+  "Here is your starting statement": "Ito ang panimula mong pahayag",
+  "Still blank: %1.": "Kulang pa: %1.",
+  "who it is for": "kung para kanino ito",
+  "what kind of problem it is": "kung anong klaseng problema ito",
+  "what is happening": "kung ano ang nangyayari",
+  "what could help": "kung ano ang makakatulong",
+  "This is the base everything else builds on. It is a starting guess, not a finding — Phase 1 turns it into hypotheses you can test.": "Ito ang pundasyon ng lahat ng susunod. Panimulang hula ito, hindi natuklasan — gagawin itong hipotesis na kayang subukan sa Yugto 1.",
+  "Everything in this phase sharpens this one sentence.": "Hinahasa ng buong yugtong ito ang iisang pangungusap na ito.",
+  "Not written yet — you can add it in the venture profile.": "Hindi pa naisusulat — pwede mo itong idagdag sa profile ng negosyo.",
+  "Nothing to sharpen yet — write a problem assumption in the venture profile first.": "Wala pang mahahasa — magsulat muna ng palagay sa problema sa profile ng negosyo.",
   /* --- Opportunity Snapshot --- */
   "Opportunity Snapshot": "Snapshot ng Oportunidad",
   "Assumptions": "Mga palagay",
@@ -2476,7 +2536,6 @@ addFil({
   "Solution assumption: %1": "Palagay sa solusyon: %1",
   "(not written yet)": "(hindi pa naisusulat)",
   "Not sure yet — you marked this one to come back to.": "Hindi pa sigurado — minarkahan mo itong babalikan.",
-  "Not written yet — you can add it in the Opportunity Snapshot.": "Hindi pa naisusulat — pwede mo itong idagdag sa Snapshot ng Oportunidad.",
   "Try answering these first": "Subukan mo munang sagutin",
   /* assists */
   "You already know who your customer is and what you sell — it is completely normal to find it hard to say what problem this solves. Let us work backwards.": "Alam mo na kung sino ang customer mo at ano ang ibinebenta mo — normal lang na mahirap sabihin kung anong problema ang sinosolusyunan nito. Subukan nating balikan.",
@@ -2520,36 +2579,37 @@ function snapshotOrder(v) {
   const sp = STARTING_POINTS.find(s => s.id === v.startingPoint);
   return sp ? sp.order : ["problem", "customer", "solution"];
 }
+/* Third entry is the same option written in the third person, so it can drop
+   straight into the starting statement without reading like a form field. */
 const INDUSTRY_OPTIONS = [
-  ["sari-sari", "Sari-sari store or small retail shop"],
-  ["foodcart", "Food cart, karinderya, or eatery"],
-  ["reselling", "Online reselling or online shop"],
-  ["services", "Services — repair, laundry, salon, and similar"],
-  ["agri", "Farming or agri-business"],
-  ["delivery", "Delivery, transport, or logistics"],
-  ["other", "Something else"],
+  ["sari-sari", "Sari-sari store or small retail shop", "a sari-sari store nearby"],
+  ["foodcart", "Food cart, karinderya, or eatery", "a place to eat nearby"],
+  ["reselling", "Online reselling or online shop", "an online shop they can order from"],
+  ["services", "Services — repair, laundry, salon, and similar", "a repair, laundry or salon service nearby"],
+  ["agri", "Farming or agri-business", "farm produce they can get nearby"],
+  ["delivery", "Delivery, transport, or logistics", "a delivery or transport service"],
+  ["other", "Something else", ""],
 ];
 const CUSTOMER_SEGMENT_OPTIONS = [
-  ["neighbors", "People in my neighborhood or community"],
-  ["students", "Students"],
-  ["commuters", "Commuters or workers nearby"],
-  ["online", "Online buyers"],
-  ["b2b", "Other small businesses"],
-  ["other", "Something else"],
+  ["neighbors", "People in my neighborhood or community", "people in the neighborhood"],
+  ["students", "Students", "students"],
+  ["commuters", "Commuters or workers nearby", "commuters and workers nearby"],
+  ["online", "Online buyers", "online buyers"],
+  ["b2b", "Other small businesses", "other small businesses"],
+  ["other", "Something else", ""],
 ];
-/* Category names alone (pain point / need / gap) are the right idea but the
-   wrong words — a category is still a category, not a feeling someone
-   recognises in themselves. Each one is now the sentence a person would
-   actually think, in either language, with the category as a quiet label
-   underneath rather than the headline. */
+/* Pain point, need and gap are the categories — they lead, because the whole
+   point is to teach the three shapes a problem comes in. Underneath each one
+   sits the sentence a person would actually say to themselves, which is what
+   makes an abstract category recognisable without a definition. */
 const PROBLEM_TYPE_OPTIONS = [
-  ["pain-point", "I don't want this anymore.", "Pain point — something actively bothering you or your customers."],
-  ["need", "I need this.", "Need — something you or your customers are missing."],
-  ["gap", "I want this.", "Gap — something nobody nearby offers yet."],
+  ["pain-point", "Pain point", "I don't want this anymore."],
+  ["need", "Need", "I need this."],
+  ["gap", "Gap", "I want this."],
 ];
 function problemTypeLabel(id) {
   const found = PROBLEM_TYPE_OPTIONS.find(o => o[0] === id);
-  return found ? found[1] : "";
+  return found ? t(found[1]) : "";
 }
 function optionLabel(options, id) {
   const found = options.find(o => o[0] === id);
@@ -2595,53 +2655,67 @@ function quickPickRawId(id) {
   return sel ? sel.value : "";
 }
 
-function renderSolutionQuickPick(v) {
+/* `heading` is passed only where there is no step question already asking it —
+   on the compact profile page. Inside the flow the question is the heading,
+   and repeating it under itself is exactly the clutter this screen is for
+   removing. */
+function renderSolutionQuickPick(v, heading, withName) {
   const a = assumptionOf(v, "solution");
   return `
   <div class="fs-field">
-    <label>${esc(t("What kind of business is it?"))}</label>
+    ${heading ? `<label>${esc(t(heading))}</label>` : ""}
     ${quickPickSelect("qp_solution", INDUSTRY_OPTIONS, a.pick, a.assumption)}
   </div>
+  ${withName ? `
   <div class="fs-field">
     <label>${esc(t("Business name"))} <span style="text-transform:none;font-weight:400">${esc(t("(optional)"))}</span></label>
     <input type="text" id="qp_solution_name" value="${esc(v.name || "")}" placeholder="${esc(t("e.g. Aling Nena Karinderya"))}">
-  </div>
+  </div>` : ""}
   ${notSureRow(a, "solution")}`;
 }
-function renderCustomerQuickPick(v) {
+function renderCustomerQuickPick(v, heading) {
   const a = assumptionOf(v, "customer");
   return `
   <div class="fs-field">
-    <label>${esc(t("Who are you selling to?"))}</label>
+    ${heading ? `<label>${esc(t(heading))}</label>` : ""}
     ${quickPickSelect("qp_customer", CUSTOMER_SEGMENT_OPTIONS, a.pick, a.assumption)}
   </div>
   ${notSureRow(a, "customer")}`;
 }
-function renderProblemQuickPick(v) {
+function renderProblemQuickPick(v, heading) {
   const a = assumptionOf(v, "problem");
   return `
   <div class="fs-field">
-    <label>${esc(t("Which of these sounds like you?"))}</label>
+    ${heading ? `<label>${esc(t(heading))}</label>` : ""}
     <div class="fs-startpoint">
-      ${PROBLEM_TYPE_OPTIONS.map(([id, headline, sub]) => `
-        <button type="button" class="fs-startpoint-card ${a.pick === id ? "is-on" : ""}" data-problemtype="${id}">
-          <strong style="display:block">${esc(t(headline))}</strong>
-          <span style="display:block;font-size:12.5px;font-weight:400;color:var(--fs-ink-soft);margin-top:3px">${esc(t(sub))}</span>
+      ${PROBLEM_TYPE_OPTIONS.map(([id, category, phrase]) => `
+        <button type="button" class="fs-startpoint-card fs-typecard ${a.pick === id ? "is-on" : ""}" data-problemtype="${id}">
+          <span class="fs-pill fs-pill-neutral">${esc(t(category))}</span>
+          <span class="fs-typecard-phrase">${esc(t(phrase))}</span>
         </button>`).join("")}
     </div>
   </div>
   <div class="fs-field">
-    <label>${esc(t("In a few words, what is happening?"))} <span style="text-transform:none;font-weight:400">${esc(t("(optional)"))}</span></label>
-    <input type="text" id="qp_problem_detail" value="${esc((a.assumption || "").trim())}" placeholder="${esc(t("e.g. walang malapit na makainan ang mga manggagawa dito sa amin"))}">
+    <label>${esc(t("In a few words, what is happening?"))}</label>
+    <input type="text" id="qp_problem_detail" value="${esc((a.assumption || "").trim())}" placeholder="${esc(t("e.g. there is nowhere nearby for the workers around here to eat"))}">
   </div>
   ${notSureRow(a, "problem")}`;
 }
 function bindProblemTypeCards(v) {
   document.querySelectorAll("[data-problemtype]").forEach(btn => btn.addEventListener("click", () => {
+    saveOpenQuickPicks(v);
     v.opportunitySnapshot.problem.pick = btn.dataset.problemtype;
     touchVenture(v);
     refresh();
   }));
+}
+/* Whatever pickers happen to be on screen right now, committed before a
+   re-render throws the DOM away. Each save is a no-op when its widget is
+   not present. */
+function saveOpenQuickPicks(v) {
+  saveQuickPick(v, "solution", "qp_solution", INDUSTRY_OPTIONS);
+  saveQuickPick(v, "customer", "qp_customer", CUSTOMER_SEGMENT_OPTIONS);
+  saveProblemDetail(v);
 }
 function notSureRow(a, key) {
   return `
@@ -2650,6 +2724,7 @@ function notSureRow(a, key) {
 }
 function bindNotSure(v, key) {
   document.querySelectorAll("[data-notsure]").forEach(box => box.addEventListener("change", () => {
+    saveOpenQuickPicks(v);
     const k = box.dataset.notsure;
     v.opportunitySnapshot[k].notSure = box.checked;
     v.opportunitySnapshot[k].lastUpdated = todayISO();
@@ -2658,100 +2733,54 @@ function bindNotSure(v, key) {
   }));
 }
 
-function snapshotSteps(v) {
-  const startStep = {
-    id: "start",
-    question: "Where are you starting from?",
-    body: () => `
-      <div class="fs-startpoint">
-        ${STARTING_POINTS.map(s => `<button type="button" class="fs-startpoint-card ${v.startingPoint === s.id ? "is-on" : ""}" data-startpoint="${s.id}">${esc(t(s.label))}</button>`).join("")}
-      </div>
-      <p class="fs-hint" style="margin:14px 0 0">${esc(t("Whichever you pick, you can develop the other two right after — none of them need to be figured out yet."))}</p>`,
-    bind: () => {
-      document.querySelectorAll("[data-startpoint]").forEach(btn => btn.addEventListener("click", () => {
-        v.startingPoint = btn.dataset.startpoint;
-        touchVenture(v);
-        refresh();
-      }));
-    },
-  };
-
-  const stepFor = (key) => {
-    if (key === "solution") {
-      return {
-        id: "solution",
-        question: "What do you currently think could help?",
-        body: () => renderSolutionQuickPick(v),
-        bind: () => { bindQuickPickSelect("qp_solution"); bindNotSure(v, "solution"); },
-        commit: () => {
-          const name = document.getElementById("qp_solution_name")?.value.trim();
-          if (name) v.name = name;
-          const picked = quickPickRawId("qp_solution");
-          const text = quickPickValue("qp_solution", INDUSTRY_OPTIONS);
-          if (text === null) return;
-          const a = v.opportunitySnapshot.solution;
-          if (a.pick === picked && a.assumption === text) return;
-          a.pick = picked; a.assumption = text; a.lastUpdated = todayISO();
-          touchVenture(v);
-        },
-      };
-    }
-    if (key === "customer") {
-      return {
-        id: "customer",
-        question: "Who deals with this the most?",
-        body: () => renderCustomerQuickPick(v),
-        bind: () => { bindQuickPickSelect("qp_customer"); bindNotSure(v, "customer"); },
-        commit: () => {
-          const picked = quickPickRawId("qp_customer");
-          const text = quickPickValue("qp_customer", CUSTOMER_SEGMENT_OPTIONS);
-          if (text === null) return;
-          const a = v.opportunitySnapshot.customer;
-          if (a.pick === picked && a.assumption === text) return;
-          a.pick = picked; a.assumption = text; a.lastUpdated = todayISO();
-          touchVenture(v);
-        },
-      };
-    }
-    return {
-      id: "problem",
-      question: "What problem or hassle have you noticed?",
-      body: () => renderProblemQuickPick(v),
-      bind: () => { bindProblemTypeCards(v); bindNotSure(v, "problem"); },
-      commit: () => {
-        const a = v.opportunitySnapshot.problem;
-        const typeLabel = a.pick ? problemTypeLabel(a.pick) : "";
-        const detail = document.getElementById("qp_problem_detail")?.value.trim() || "";
-        const text = detail || typeLabel;
-        if (a.assumption === text) return;
-        a.assumption = text; a.lastUpdated = todayISO();
-        touchVenture(v);
-      },
+/* The three Essential Elements, asked once, inside the venture profile.
+   They used to live on their own screen at the top of Phase 1; a separate
+   screen for three quick taps was one screen too many. */
+const ELEMENT_QUESTIONS = {
+  problem: "What kind of problem is this?",
+  customer: "Who are you selling to?",
+  solution: "What kind of business is this?",
+};
+function saveQuickPick(v, key, id, options) {
+  const text = quickPickValue(id, options);
+  if (text === null) return;
+  const pick = quickPickRawId(id);
+  const a = v.opportunitySnapshot[key];
+  if (a.pick === pick && a.assumption === text) return;
+  a.pick = pick; a.assumption = text; a.lastUpdated = todayISO();
+  touchVenture(v);
+}
+function saveProblemDetail(v) {
+  const el = document.getElementById("qp_problem_detail");
+  if (!el) return;
+  const a = v.opportunitySnapshot.problem;
+  const detail = el.value.trim();
+  if (a.assumption === detail) return;
+  a.assumption = detail; a.lastUpdated = todayISO();
+  touchVenture(v);
+}
+function elementStep(v, key) {
+  const step = { id: key, question: ELEMENT_QUESTIONS[key] };
+  if (key === "solution") {
+    step.body = () => renderSolutionQuickPick(v);
+    step.bind = () => { bindQuickPickSelect("qp_solution"); bindNotSure(v, "solution"); };
+    step.commit = () => {
+      const name = document.getElementById("qp_solution_name")?.value.trim();
+      if (name) { v.name = name; touchVenture(v); }
+      saveQuickPick(v, "solution", "qp_solution", INDUSTRY_OPTIONS);
     };
-  };
-
-  const steps = [startStep, ...snapshotOrder(v).map(stepFor)];
-  steps.push({
-    id: "summary",
-    question: "Here is what you have so far",
-    body: () => {
-      const summary = generateSnapshotSummary(v);
-      return summary
-        ? `<div class="fs-suggest-box"><p style="white-space:pre-line;margin:0">${esc(summary)}</p></div>
-           <p class="fs-hint" style="margin:12px 0 0">${esc(t("These are assumptions, not conclusions. Next you turn each one into something you can test."))}</p>`
-        : `<p class="fs-hint" style="margin:0">${esc(t("Answer at least one element above to see the summary."))}</p>`;
-    },
-  });
-  return steps;
+  } else if (key === "customer") {
+    step.body = () => renderCustomerQuickPick(v);
+    step.bind = () => { bindQuickPickSelect("qp_customer"); bindNotSure(v, "customer"); };
+    step.commit = () => saveQuickPick(v, "customer", "qp_customer", CUSTOMER_SEGMENT_OPTIONS);
+  } else {
+    step.body = () => renderProblemQuickPick(v);
+    step.bind = () => { bindProblemTypeCards(v); bindNotSure(v, "problem"); };
+    step.commit = () => saveProblemDetail(v);
+  }
+  return step;
 }
 
-function renderSnapshot(v) {
-  return renderStepFlow(v, "snapshot", snapshotSteps(v), () => go("hypothesis", v.id, "problem"));
-}
-
-function bindSnapshot(v) {
-  bindStepFlow(v, "snapshot", snapshotSteps(v), () => go("hypothesis", v.id, "problem"));
-}
 /* =========================================================================
    RENDER: PHASE 1 — HYPOTHESIS
    ========================================================================= */
@@ -2759,17 +2788,16 @@ function renderHypothesis() {
   const v = getVenture(ROUTE.ventureId);
   const main = document.getElementById("fsMain");
   if (!v) { go("dashboard"); return; }
-  /* No admission gate: Phase 1 is always reachable. An unfinished snapshot
-     just means the snapshot step opens first. */
-  const tab = ROUTE.tab || (snapshotComplete(v) ? "problem" : "snapshot");
+  /* No admission gate: Phase 1 is always reachable, finished profile or not. */
+  const tab = ROUTE.tab || "problem";
 
   main.innerHTML = `
     <a class="fs-back-link" data-go="profile">&#8592; ${esc(t("%1 profile", v.name || t("Venture")))}</a>
     <p class="fs-eyebrow">${esc(t("Phase 1: Hypothesis"))}</p>
     <h1 class="fs-h1">${esc(t("Turn your starting assumptions into testable hypotheses"))}</h1>
     ${demoFlag(v)}
+    ${baseStatementBlock(v, "Everything in this phase sharpens this one sentence.")}
     <div class="fs-tabs">
-      <button class="fs-tab ${tab === "snapshot" ? "is-active" : ""}" data-tab="snapshot">${esc(t("Opportunity Snapshot"))}</button>
       <button class="fs-tab ${tab === "problem" ? "is-active" : ""}" data-tab="problem">${esc(t("1. Problem Hypothesis"))}</button>
       <button class="fs-tab ${tab === "segments" ? "is-active" : ""}" data-tab="segments">${esc(t("2. Customer Hypothesis"))}</button>
       <button class="fs-tab ${tab === "solution" ? "is-active" : ""}" data-tab="solution">${esc(t("3. Solution Hypothesis"))}</button>
@@ -2782,8 +2810,7 @@ function renderHypothesis() {
   main.querySelectorAll("[data-tab]").forEach(el => el.addEventListener("click", () => go("hypothesis", v.id, el.dataset.tab)));
 
   const body = document.getElementById("fsHypTabBody");
-  if (tab === "snapshot") body.innerHTML = renderSnapshot(v);
-  else if (tab === "problem") body.innerHTML = renderProblemId(v);
+  if (tab === "problem") body.innerHTML = renderProblemId(v);
   else if (tab === "segments") body.innerHTML = renderSegments(v);
   else if (tab === "solution") body.innerHTML = renderSolutionDiscovery(v);
   else body.innerHTML = renderHypothesisGate(v);
@@ -3203,9 +3230,7 @@ function renderHypothesisGate(v) {
 
 function bindHypothesisTab(v, tab) {
   document.querySelectorAll("[data-hyptab]").forEach(btn => btn.addEventListener("click", () => go("hypothesis", v.id, btn.dataset.hyptab)));
-  if (tab === "snapshot") {
-    bindSnapshot(v);
-  } else if (tab === "problem") {
+  if (tab === "problem") {
     bindStepFlow(v, "problem", problemSteps(v), () => go("hypothesis", v.id, "segments"));
   } else if (tab === "segments") {
     document.getElementById("seg_add")?.addEventListener("click", () => { v.hypothesis.segments.push(blankSegment()); touchVenture(v); go("hypothesis", v.id, "segments"); });
@@ -3767,7 +3792,7 @@ addFil({
   "Every claim, in one place": "Lahat ng pahayag, sa isang lugar",
   "+ Add Evidence": "+ Magdagdag ng Ebidensya",
   "No evidence recorded yet": "Wala pang naitatalang ebidensya",
-  "Evidence can be added here directly, or logged as you work through the Opportunity Snapshot and Phase 1.": "Pwedeng magdagdag ng ebidensya dito mismo, o itala habang dinadaanan mo ang Snapshot ng Oportunidad at Yugto 1.",
+  "Evidence can be added here directly, or logged as you work through Phase 1 and Phase 2.": "Pwedeng magdagdag ng ebidensya dito mismo, o itala habang dinadaanan mo ang Yugto 1 at Yugto 2.",
   "%1 fact": "%1 katotohanan",
   "%1 facts": "%1 katotohanan",
   "%1 assumption": "%1 palagay",
@@ -3883,7 +3908,7 @@ function renderEvidence() {
       <button class="fs-btn fs-btn-sm" id="ev_add">${esc(t("+ Add Evidence"))}</button>
     </div>
 
-    ${v.evidence.length === 0 ? `<div class="fs-empty"><h3>${esc(t("No evidence recorded yet"))}</h3><p>${esc(t("Evidence can be added here directly, or logged as you work through the Opportunity Snapshot and Phase 1."))}</p></div>` : v.evidence.map(e => renderEvidenceCard(e)).join("")}
+    ${v.evidence.length === 0 ? `<div class="fs-empty"><h3>${esc(t("No evidence recorded yet"))}</h3><p>${esc(t("Evidence can be added here directly, or logged as you work through Phase 1 and Phase 2."))}</p></div>` : v.evidence.map(e => renderEvidenceCard(e)).join("")}
   `;
   main.querySelectorAll("[data-go]").forEach(el => el.addEventListener("click", () => go(el.dataset.go, v.id)));
   document.getElementById("ev_add").addEventListener("click", () => { v.evidence.unshift(blankEvidence()); touchVenture(v); go("evidence", v.id); });
@@ -3944,8 +3969,8 @@ function render() {
   if (screen === "dashboard") renderDashboard();
   else if (screen === "profile") renderProfile();
   /* The standalone Essential Elements screen is gone; anything still
-     pointing at it lands on the Opportunity Snapshot inside Phase 1. */
-  else if (screen === "elements") { ROUTE = { screen: "hypothesis", ventureId: ROUTE.ventureId, tab: "snapshot" }; renderNav(); renderHypothesis(); }
+     pointing at it lands on the venture profile, where the elements now live. */
+  else if (screen === "elements") { ROUTE = { screen: "profile", ventureId: ROUTE.ventureId }; renderNav(); renderProfile(); }
   else if (screen === "hypothesis") renderHypothesis();
   else if (screen === "validation") renderValidation();
   else if (screen === "identity") renderIdentity();
@@ -3972,11 +3997,9 @@ const DEMO_CONTENT = {
     industry: "Food & beverage kiosk",
     location: "Fictional — Riverside Elementary School area",
     summary: "Fictional sample case, included to demonstrate the workflow. Nothing here has been validated: every entry is either a starting assumption or an untested hypothesis, and one contradiction and one competing explanation are deliberately left open.",
-    urgentConstraint: "Sample data only — fictional and unvalidated.",
-    desiredOutcome: "Demonstrate the Opportunity Snapshot → Hypothesis → Validation progression.",
     problemAssumption: "Parents and yayas waiting during school pickup may lack a comfortable nearby place to wait.",
-    customerAssumption: "Parents and yayas responsible for school pickup.",
-    solutionAssumption: "A small nearby coffee and snack kiosk may provide a more comfortable waiting option.",
+    customerAssumption: "Parents and yayas doing the daily school pickup",
+    solutionAssumption: "a small coffee and snack kiosk near the school gate",
     causes: [
       "Accessible seating and shelter near the pickup area appear limited.",
       "Dismissal times shift from day to day, so people stay standing near the gate rather than settling anywhere.",
@@ -4009,11 +4032,9 @@ const DEMO_CONTENT = {
     industry: "Kiosk ng pagkain at inumin",
     location: "Kathang-isip — paligid ng Riverside Elementary School",
     summary: "Kathang-isip na halimbawa, inilagay para ipakita ang daloy ng tool. Walang napapatunayan dito: bawat entry ay panimulang palagay o hipotesis na hindi pa nasusubok, at may isang magkasalungat na ebidensya at isang katunggaling paliwanag na sinadyang iwang bukas.",
-    urgentConstraint: "Sample data lang — kathang-isip at hindi pa napapatunayan.",
-    desiredOutcome: "Ipakita ang daloy: Snapshot ng Oportunidad → Hipotesis → Pagpapatunay.",
     problemAssumption: "Maaaring walang komportableng lugar na malapit para maghintay ang mga magulang at yaya tuwing sundo sa eskwelahan.",
-    customerAssumption: "Mga magulang at yaya na sumusundo sa eskwelahan.",
-    solutionAssumption: "Maaaring makatulong ang isang maliit na kiosk ng kape at meryenda sa malapit bilang mas komportableng hintayan.",
+    customerAssumption: "mga magulang at yaya na sumusundo araw-araw sa eskwelahan",
+    solutionAssumption: "isang maliit na kiosk ng kape at meryenda malapit sa gate ng eskwelahan",
     causes: [
       "Mukhang kakaunti ang maupuan at masisilungan malapit sa sunduan.",
       "Nagbabago-bago ang oras ng uwian, kaya nakatayo na lang sila malapit sa gate kaysa maghanap ng mauupuan.",
@@ -4076,12 +4097,16 @@ function seedDemoVenture(v, lang) {
   v.industry = d.industry;
   v.location = d.location;
   v.summary = d.summary;
-  v.urgentConstraint = d.urgentConstraint;
-  v.desiredOutcome = d.desiredOutcome;
+  v.urgentConstraint = "";
+  v.desiredOutcome = "";
 
-  /* The three Essential Elements, stated as assumptions. */
+  /* The three Essential Elements, stated as assumptions. The demo's answers
+     are written out rather than picked from the lists, so they carry no pick
+     id — which is exactly what a venture started before the pickers existed
+     looks like, and a useful thing for the sample case to exercise. */
+  v.startingPoint = "problem";
   v.opportunitySnapshot = {
-    problem: { ...blankAssumption(), assumption: d.problemAssumption, lastUpdated: todayISO() },
+    problem: { ...blankAssumption(), pick: "need", assumption: d.problemAssumption, lastUpdated: todayISO() },
     customer: { ...blankAssumption(), assumption: d.customerAssumption, lastUpdated: todayISO() },
     solution: { ...blankAssumption(), assumption: d.solutionAssumption, lastUpdated: todayISO() },
   };
