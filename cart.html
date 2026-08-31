@@ -560,6 +560,9 @@ const plannerState = { location: "", zone: null, eventType: null, size: null, cu
 // that code rides along through the whole planner and lands in the Google Sheet
 // on submission, so bookings never need to be manually attributed.
 const referralCode = new URLSearchParams(window.location.search).get("ref") || "";
+// Carries a promo code straight through from the page URL to checkout, so a link
+// in a social post (e.g. /cart?code=NAZTURNS5) arrives with the discount applied.
+const promoCode = new URLSearchParams(window.location.search).get("code") || "";
 
 function detectZone(raw) {
   const v = raw.trim().toLowerCase();
@@ -757,7 +760,8 @@ function renderPlannerResult() {
         `&deposit=${deposit}` +
         `&location=${encodeURIComponent(plannerState.location)}` +
         `&eventtype=${encodeURIComponent(eventTypeLabel())}` +
-        (referralCode ? `&ref=${encodeURIComponent(referralCode)}` : "");
+        (referralCode ? `&ref=${encodeURIComponent(referralCode)}` : "") +
+        (promoCode ? `&code=${encodeURIComponent(promoCode)}` : "");
       window.location.href = url;
     });
   } else {

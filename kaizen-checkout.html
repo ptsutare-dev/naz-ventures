@@ -10,6 +10,30 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css?v=20260816c">
+<style>
+/* Discount voucher */
+[hidden]{display:none !important}
+.summary-line{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:10px 0;font-size:.92rem;border-top:1px solid var(--pilot-cream-deep)}
+.summary-line strong{font-weight:700}
+.summary-line.is-discount strong{color:var(--pilot-rust)}
+.was-total{color:var(--color-text-muted);text-decoration:line-through;font-weight:400;margin-right:8px}
+.voucher-box{margin-top:14px;padding-top:16px;border-top:1px solid var(--pilot-cream-deep)}
+.voucher-box > label{display:block;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--pilot-rust-dark);margin-bottom:9px}
+.voucher-entry{display:flex;gap:8px}
+.voucher-entry input{flex:1;min-width:0;border:1px solid var(--pilot-cream-deep);border-radius:10px;background:#fff;padding:12px 14px;font-size:.92rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--pilot-ink)}
+.voucher-entry input:focus{outline:none;border-color:var(--pilot-rust)}
+.voucher-entry input::placeholder{font-weight:400;letter-spacing:0;text-transform:none;color:var(--color-text-muted)}
+.voucher-entry button{flex:0 0 auto;border:none;border-radius:10px;background:var(--pilot-rust-dark);color:#fff;padding:12px 20px;font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;cursor:pointer;transition:background .15s ease}
+.voucher-entry button:hover{background:var(--pilot-rust)}
+.voucher-applied{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--pilot-cream);border:1px solid var(--pilot-cream-deep);border-left:4px solid var(--pilot-gold);border-radius:12px;padding:12px 14px}
+.voucher-applied b{display:block;font-size:.92rem;font-weight:800;letter-spacing:.06em;color:var(--pilot-rust-dark)}
+.voucher-applied small{display:block;font-size:.78rem;color:var(--color-text-muted);margin-top:2px}
+.voucher-applied button{border:none;background:none;padding:0;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--color-text-muted);cursor:pointer;text-decoration:underline}
+.voucher-applied button:hover{color:var(--pilot-rust-dark)}
+.voucher-msg{font-size:.78rem;line-height:1.5;margin:9px 0 0}
+.voucher-msg.is-error{color:#a13c3c}
+.voucher-msg.is-ok{color:#3d6b32}
+</style>
 </head>
 <body>
 
@@ -64,6 +88,10 @@
           <input type="hidden" name="form-name" value="kaizen-checkout">
           <input type="hidden" name="venture" value="kaizen-spaces">
           <input type="hidden" id="checkoutSummaryField" name="booking-summary" value="">
+          <input type="hidden" name="voucher-code" data-voucher-field="code" value="">
+          <input type="hidden" name="discount-amount" data-voucher-field="discount" value="">
+          <input type="hidden" name="original-total" data-voucher-field="original-total" value="">
+          <input type="hidden" name="discounted-total" data-voucher-field="final-total" value="">
           <!-- Honeypot field — hidden from real visitors, catches bots -->
           <div class="honeypot" aria-hidden="true">
             <label for="checkout-company">Leave this field blank</label>
@@ -125,6 +153,20 @@
               <strong id="summaryLabel">—</strong>
               <span id="summaryDetail"></span>
             </div>
+          </div>
+          <div class="summary-line" id="totalLineRow" hidden><span>Estimated total</span><strong id="summaryTotal">₱0</strong></div>
+          <div class="summary-line is-discount" id="discountLine" hidden><span id="discountLabel">Discount</span><strong id="discountAmount">−₱0</strong></div>
+          <div class="voucher-box" id="voucherBox">
+            <label for="voucherInput">Discount code</label>
+            <div class="voucher-entry" data-voucher-entry>
+              <input type="text" id="voucherInput" data-voucher-input placeholder="Enter code" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false">
+              <button type="button" data-voucher-apply>Apply</button>
+            </div>
+            <div class="voucher-applied" data-voucher-applied hidden>
+              <span><b data-voucher-applied-code></b><small data-voucher-applied-note></small></span>
+              <button type="button" data-voucher-remove>Remove</button>
+            </div>
+            <p class="voucher-msg" data-voucher-message role="status" aria-live="polite"></p>
           </div>
           <div class="session-price-box session-price-box-standalone" style="max-width:none; margin-top:16px;">
             <span>Reservation Fee Due</span>
@@ -190,6 +232,7 @@
 </footer>
 
 <script src="js/script.js"></script>
+<script src="js/vouchers.js?v=20260831a"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
 // ---- EmailJS setup (optional — booking confirmation emails) ----
@@ -208,7 +251,8 @@ function sendConfirmationEmail(fields) {
     to_name: fields.name,
     booking_label: label,
     booking_detail: detail,
-    reservation_fee: money(deposit),
+    reservation_fee: money(currentVoucher ? currentVoucher.deposit : deposit),
+    discount_code: currentVoucher && currentVoucher.applied ? currentVoucher.code : "",
     booking_summary: document.getElementById("checkoutSummaryField").value,
   }).catch((err) => console.error("Confirmation email failed to send", err));
 }
@@ -225,10 +269,50 @@ document.title = `Checkout — ${label} — Kaizen Spaces`;
 document.getElementById("checkoutHeading").textContent = `Secure your ${label} booking`;
 document.getElementById("summaryLabel").textContent = label;
 document.getElementById("summaryDetail").textContent = detail;
-document.getElementById("summaryDeposit").textContent = money(deposit);
-document.getElementById("summaryTotalNote").textContent = total ? `20% of estimated total ${money(total)}` : "";
-document.getElementById("checkoutSummaryField").value =
-  `${label}${detail ? " — " + detail : ""} — Est. total ${money(total)} — Reservation fee due ${money(deposit)}`;
+const totalRowEl = document.getElementById("totalLineRow");
+const discountLineEl = document.getElementById("discountLine");
+
+// Repaints the booking summary. Called once on load and again every time a
+// discount code is applied or removed, so the reservation fee the customer
+// sends via GCash always matches what the summary shows.
+let currentVoucher = null;
+
+function paintSummary(voucher) {
+  currentVoucher = voucher;
+  const hasDiscount = voucher.applied && voucher.discount > 0;
+
+  totalRowEl.hidden = !total;
+  document.getElementById("summaryTotal").innerHTML = hasDiscount
+    ? `<span class="was-total">${money(total)}</span>${money(voucher.newTotal)}`
+    : money(total);
+
+  discountLineEl.hidden = !hasDiscount;
+  if (hasDiscount) {
+    document.getElementById("discountLabel").textContent = `Discount (${voucher.code})`;
+    document.getElementById("discountAmount").textContent = "\u2212" + money(voucher.discount);
+  }
+
+  document.getElementById("summaryDeposit").textContent = money(voucher.deposit);
+  document.getElementById("summaryTotalNote").textContent = voucher.newTotal
+    ? `20% of ${hasDiscount ? "discounted" : "estimated"} total ${money(voucher.newTotal)}`
+    : "";
+
+  const codeNote = voucher.applied
+    ? ` — Code ${voucher.code}${voucher.quoteOnly ? " (apply to quotation)" : ` (less ${money(voucher.discount)})`}`
+    : "";
+  document.getElementById("checkoutSummaryField").value =
+    `${label}${detail ? " — " + detail : ""} — Est. total ${money(total)}` +
+    `${hasDiscount ? ` — Discounted total ${money(voucher.newTotal)}` : ""}${codeNote}` +
+    ` — Reservation fee due ${money(voucher.deposit)}`;
+}
+
+NazVouchers.mount({
+  root: "voucherBox",
+  scope: "kaizen",
+  total: total,
+  deposit: deposit,
+  onChange: paintSummary,
+});
 if (prefilledDate) document.getElementById("checkout-date").value = prefilledDate;
 
 const checkoutForm = document.getElementById("checkout-form");

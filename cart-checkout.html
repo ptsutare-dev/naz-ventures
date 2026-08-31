@@ -46,6 +46,25 @@
 .gcash-box-cart span{font-size:12px;color:#5b554d;line-height:1.6;display:block}
 .order-summary-row{display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding:12px 0;font-size:13px}
 .order-summary-row:first-of-type{border-top:none}
+/* Discount voucher — editorial cart.css look: hard borders, no radius */
+[hidden]{display:none !important}
+.voucher-box{border-top:1px solid var(--line);padding:16px 0 4px}
+.voucher-box > label{display:block;font:700 10px Arial,sans-serif;text-transform:uppercase;letter-spacing:.08em;margin-bottom:9px;color:#5b554d}
+.voucher-entry{display:flex;gap:8px}
+.voucher-entry input{flex:1;min-width:0;border:1px solid var(--ink);background:#fff;color:var(--ink);padding:13px 14px;font:700 13px Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.voucher-entry input::placeholder{color:#a89a90;font-weight:400;letter-spacing:0;text-transform:none}
+.voucher-entry button{flex:0 0 auto;border:1px solid var(--ink);background:var(--ink);color:#fff;padding:13px 20px;font:700 11px Arial,sans-serif;text-transform:uppercase;letter-spacing:.09em;cursor:pointer}
+.voucher-entry button:hover{background:var(--orange);border-color:var(--orange)}
+.voucher-applied{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--ink);border-left:4px solid var(--orange);background:#fff;padding:13px 14px}
+.voucher-applied b{display:block;font:700 13px Arial,sans-serif;letter-spacing:.06em}
+.voucher-applied small{display:block;font-size:11px;color:#5b554d;margin-top:3px}
+.voucher-applied button{border:none;background:none;padding:0;font:700 10px Arial,sans-serif;text-transform:uppercase;letter-spacing:.08em;color:#8d837b;cursor:pointer;text-decoration:underline}
+.voucher-applied button:hover{color:var(--ink)}
+.voucher-msg{font-size:11px;line-height:1.5;margin:9px 0 0;min-height:1px}
+.voucher-msg.is-error{color:#a13c3c}
+.voucher-msg.is-ok{color:#3d6b32}
+.discount-line strong{color:var(--orange)}
+.was-total{color:#8d837b;text-decoration:line-through;font-weight:400;margin-right:7px}
 </style>
 </head>
 <body>
@@ -103,6 +122,10 @@
         <input type="hidden" name="form-name" value="cart-checkout">
         <input type="hidden" id="checkoutSummaryField" name="booking-summary" value="">
         <input type="hidden" id="checkoutReferralField" name="referred-by" value="">
+        <input type="hidden" name="voucher-code" data-voucher-field="code" value="">
+        <input type="hidden" name="discount-amount" data-voucher-field="discount" value="">
+        <input type="hidden" name="original-total" data-voucher-field="original-total" value="">
+        <input type="hidden" name="discounted-total" data-voucher-field="final-total" value="">
         <div class="honeypot" aria-hidden="true">
           <label for="checkout-company">Leave this field blank</label>
           <input type="text" id="checkout-company" name="hp_field" tabindex="-1" autocomplete="off">
@@ -143,6 +166,19 @@
       <h2 id="packageName">Naz Coffee Cart</h2>
       <div class="order-summary-row"><span id="detailLine">—</span></div>
       <div class="order-line"><span>Estimated total</span><strong id="totalLine">₱0</strong></div>
+      <div class="order-line discount-line" id="discountLine" hidden><span id="discountLabel">Discount</span><strong id="discountAmount">−₱0</strong></div>
+      <div class="voucher-box" id="voucherBox">
+        <label for="voucherInput">Discount code</label>
+        <div class="voucher-entry" data-voucher-entry>
+          <input type="text" id="voucherInput" data-voucher-input placeholder="Enter code" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false">
+          <button type="button" data-voucher-apply>Apply</button>
+        </div>
+        <div class="voucher-applied" data-voucher-applied hidden>
+          <span><b data-voucher-applied-code></b><small data-voucher-applied-note></small></span>
+          <button type="button" data-voucher-remove>Remove</button>
+        </div>
+        <p class="voucher-msg" data-voucher-message role="status" aria-live="polite"></p>
+      </div>
       <div class="deposit-total">
         <span>Reservation fee due</span><strong id="depositLine">₱0</strong><small id="depositNote">20% of the estimated total</small>
       </div>
@@ -161,6 +197,7 @@
   <a href="cart.html">Back to Coffee Cart ↑</a>
 </footer>
 
+<script src="js/vouchers.js?v=20260831a"></script>
 <script>
 function trackEvent(name, params) {
   window.dataLayer = window.dataLayer || [];
@@ -212,14 +249,50 @@ const money = (amount) => "₱" + new Intl.NumberFormat("en-PH").format(amount);
 document.title = `Checkout — ${packageName} — Naz Coffee Cart`;
 document.getElementById("packageName").textContent = packageName;
 document.getElementById("detailLine").textContent = detail;
-document.getElementById("totalLine").textContent = money(total);
-document.getElementById("depositLine").textContent = money(deposit);
-document.getElementById("depositNote").textContent = total ? `20% of estimated total ${money(total)}` : "";
 document.getElementById("checkout-location").value = eventLocation;
 document.getElementById("checkout-eventtype").value = eventType;
-document.getElementById("checkoutSummaryField").value =
-  `${packageName}${detail ? " — " + detail : ""} — Est. total ${money(total)} — Reservation fee due ${money(deposit)}`;
 document.getElementById("checkoutReferralField").value = referralCode;
+
+const totalLineEl = document.getElementById("totalLine");
+const discountLineEl = document.getElementById("discountLine");
+
+// Repaints the booking summary. Called once on load and again every time a
+// discount code is applied or removed, so the reservation fee the customer
+// sends via GCash always matches what the summary shows.
+function paintSummary(voucher) {
+  const hasDiscount = voucher.applied && voucher.discount > 0;
+
+  totalLineEl.innerHTML = hasDiscount
+    ? `<span class="was-total">${money(total)}</span>${money(voucher.newTotal)}`
+    : money(total);
+
+  discountLineEl.hidden = !hasDiscount;
+  if (hasDiscount) {
+    document.getElementById("discountLabel").textContent = `Discount (${voucher.code})`;
+    document.getElementById("discountAmount").textContent = "\u2212" + money(voucher.discount);
+  }
+
+  document.getElementById("depositLine").textContent = money(voucher.deposit);
+  document.getElementById("depositNote").textContent = voucher.newTotal
+    ? `20% of ${hasDiscount ? "discounted" : "estimated"} total ${money(voucher.newTotal)}`
+    : "";
+
+  const codeNote = voucher.applied
+    ? ` — Code ${voucher.code}${voucher.quoteOnly ? " (apply to quotation)" : ` (less ${money(voucher.discount)})`}`
+    : "";
+  document.getElementById("checkoutSummaryField").value =
+    `${packageName}${detail ? " — " + detail : ""} — Est. total ${money(total)}` +
+    `${hasDiscount ? ` — Discounted total ${money(voucher.newTotal)}` : ""}${codeNote}` +
+    ` — Reservation fee due ${money(voucher.deposit)}`;
+}
+
+NazVouchers.mount({
+  root: "voucherBox",
+  scope: "cart",
+  total: total,
+  deposit: deposit,
+  onChange: paintSummary,
+});
 
 const checkoutForm = document.getElementById("checkout-form");
 const checkoutStatus = document.getElementById("form-status");

@@ -747,12 +747,16 @@ function proceedToCheckout() {
   }
 
   const deposit = Math.round(total * 0.2);
+  // Carries a promo code straight through from the page URL to checkout, so a link
+  // in a social post (e.g. /kaizen-spaces?code=NAZTURNS5) arrives with it applied.
+  const promoCode = new URLSearchParams(window.location.search).get("code") || "";
   const url = "kaizen-checkout.html" +
     `?label=${encodeURIComponent(label)}` +
     `&detail=${encodeURIComponent(detail)}` +
     `&total=${total}` +
     `&deposit=${deposit}` +
-    (chosenDate ? `&date=${encodeURIComponent(chosenDate)}` : "");
+    (chosenDate ? `&date=${encodeURIComponent(chosenDate)}` : "") +
+    (promoCode ? `&code=${encodeURIComponent(promoCode)}` : "");
   window.location.href = url;
 }
 
