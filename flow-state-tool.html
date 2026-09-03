@@ -439,6 +439,13 @@ const FIL_CHROME = {
   "Solution Assumption": "Palagay sa Solusyon",
   "Problem Hypothesis": "Hipotesis sa Problema",
   "Customer Hypothesis": "Hipotesis sa Customer",
+  "What do people do about this today?": "Ano ang ginagawa ng mga tao tungkol dito ngayon?",
+  "Include doing nothing — carrying on exactly as they are is the option you most often lose to.": "Isama ang walang ginagawa — ang pagpapatuloy lang sa kung ano na sila ang madalas na kalaban mong nananalo.",
+  "The ones most people forget — tap to add": "Ang madalas makalimutan — pumindot para idagdag",
+  "Why would someone choose you instead?": "Bakit ka nila pipiliin sa halip?",
+  "A reason only counts if it would move someone off what they already do — not a quality you would claim about yourself.": "Bilang lang ang dahilan kung kaya nitong ilipat ang tao mula sa ginagawa na nila — hindi ang katangiang sasabihin mo tungkol sa sarili mo.",
+  "Starter ideas — tap to add": "Mga panimulang ideya — pumindot para idagdag",
+  "Worth a second look": "Tingnan mo ulit ito",
   "Solution Hypothesis": "Hipotesis sa Solusyon",
   "Problem Insight": "Kabatiran sa Problema",
   "Customer Insight": "Kabatiran sa Customer",
@@ -1240,26 +1247,10 @@ const CONSEQUENCE_MARKERS = [
   /\b(so they|which means|as a result|leads to|ends up|so that|cost|costs|lose|loses|losing|waste|wastes|skip|skips|give up|gives up|walk away|go without)\b/i,
   /\b(kaya|dahil dito|napipilitan|nasasayang|natatagalan|tumitigil|sumusuko|hindi na)\b/i,
 ];
-const PLACE_MARKERS = [
-  /\b(near|beside|outside|inside|at the|along|around|within|street|gate|market|station|office|school|site|barangay)\b/i,
-  /\b(malapit|tabi|labas|loob|sa may|kalye|gate|palengke|opisina|eskwelahan|barangay)\b/i,
-];
 function hits(patterns, text) { return patterns.some(re => re.test(text || "")); }
 function wordCount(s) { return (s || "").trim().split(/\s+/).filter(Boolean).length; }
 
 /* What is missing from the problem picture, in the order worth fixing. */
-function customerGaps(v) {
-  const customer = assumptionText(v, "customer");
-  const gaps = [];
-  if (!customer) return gaps;
-  if (hits(VAGUE_SUBJECTS, customer) || wordCount(customer) < 3) {
-    gaps.push({ id: "narrow", label: "Narrow it to a group you could stand in front of", example: "\"Parents and yayas on the 3pm pickup run\" beats \"parents\"." });
-  }
-  if (!hits(TIME_MARKERS, customer) && !hits(PLACE_MARKERS, customer)) {
-    gaps.push({ id: "occasion", label: "Add the occasion or the place", example: "Same person behaves differently on a school run than on a weekend errand." });
-  }
-  return gaps;
-}
 
 /* Candidate explanations for why a situation is hard, drawn from the ways
    things actually get hard for people. Deliberately excludes "the thing I
@@ -1353,13 +1344,6 @@ function countsAsStatusQuo(c) {
 function namedCompetitors(v) { return v.hypothesis.competitors.filter(c => (c.name || "").trim()); }
 function namedDrivers(v) { return v.hypothesis.valueDrivers.filter(d => (d.name || "").trim()); }
 
-/* Attraction / Conversion / Retention are three different ways to fail, not
-   three labels. Missing one has a specific consequence worth naming. */
-const COVERAGE_CONSEQUENCE = {
-  "Attraction": "Nothing here explains why anyone would notice you in the first place.",
-  "Conversion": "Nothing here explains why someone who turns up actually buys. Traffic without conversion is a busy shop losing money.",
-  "Retention": "Nothing here explains why anyone comes back. Without repeat custom you pay to win every peso of revenue, forever.",
-};
 function driverCoverage(v) {
   const counts = {};
   CONFIG.valueDriverCategories.forEach(c => { counts[c] = 0; });
@@ -1375,12 +1359,14 @@ function solutionGaps(v) {
 
   if (!comps.length) {
     gaps.push({
+      id: "no-alts",
       label: "Nothing recorded for what people do today",
       why: "You cannot claim to be better than an alternative you have not named. Start with what happens if you never open.",
       example: "\"Doing nothing / putting up with it\" is a real competitor, and usually the strongest one.",
     });
   } else if (!comps.some(countsAsStatusQuo)) {
     gaps.push({
+      id: "all-businesses",
       label: "Every alternative you listed is a business",
       why: "Most new ventures do not lose to a rival shop. They lose to people carrying on exactly as they are, which costs nothing and disappoints nobody.",
       example: "Add \"Doing nothing / putting up with it\" and write honestly what makes that comfortable.",
@@ -1390,6 +1376,7 @@ function solutionGaps(v) {
   const unbacked = drivers.filter(d => !(d.whyMatters || "").trim());
   if (unbacked.length) {
     gaps.push({
+      id: "unbacked",
       label: "\"%1\" has no reason anyone would switch for it",
       labelArgs: [unbacked[0].name.trim()],
       why: "Every operator believes they have good service and good products. A driver only counts if it would move someone off what they already do.",
@@ -1400,6 +1387,7 @@ function solutionGaps(v) {
   const untied = drivers.filter(d => !(d.beats || "").trim());
   if (comps.length && untied.length) {
     gaps.push({
+      id: "unpointed",
       label: "\"%1\" is not pointed at anything",
       labelArgs: [untied[0].name.trim()],
       why: "What makes you different has to beat something specific. Pick the alternative it wins against, or it is just a compliment, not a real claim.",
@@ -1410,6 +1398,7 @@ function solutionGaps(v) {
   const noSwitchCost = comps.filter(c => !(c.whyStay || "").trim());
   if (comps.length && noSwitchCost.length === comps.length) {
     gaps.push({
+      id: "no-staycost",
       label: "No reason recorded why anyone would stay put",
       why: "The reasons people do not switch are usually stronger than the reasons they would. Writing them down is what stops a hypothesis being wishful.",
       example: "\"It is free, and they are already standing there anyway.\"",
@@ -1418,6 +1407,7 @@ function solutionGaps(v) {
 
   if (!(h.smallestTest || "").trim()) {
     gaps.push({
+      id: "no-smallest",
       label: "No smallest version named",
       why: "Phase 2 tests an offer, not a concept. If you cannot say what you would put in front of someone next week, there is nothing to validate.",
       example: "A 3-day pop-up cart at the gate, 3–4pm, one drink and one snack, ₱65.",
@@ -2862,6 +2852,19 @@ addFil({
 
   /* --- Customer Hypothesis --- */
   "+ Add Segment": "+ Magdagdag ng Segment",
+  "Who exactly are you selling to?": "Kanino ka ba talaga nagbebenta?",
+  "Split them into groups small enough that you could go and stand in front of one.": "Hatiin sila sa mga grupong maliit na kaya mong puntahan at harapin nang personal.",
+  "Tap a way to split them": "Pumindot ng paraan ng paghahati",
+  "People who live or work nearby": "Mga nakatira o nagtatrabaho sa malapit",
+  "Most days, going in or out": "Halos araw-araw, papasok o palabas",
+  "People just passing by": "Mga dumadaan lang",
+  "On the way to somewhere else": "Papunta sa ibang lugar",
+  "People in a hurry": "Mga nagmamadali",
+  "When there is no time to cook or sit down": "Kapag walang oras magluto o umupo",
+  "People buying for someone else": "Mga bumibili para sa iba",
+  "For a child, a parent, or a workmate": "Para sa anak, magulang, o katrabaho",
+  "People who come at one time of day": "Mga dumarating sa isang oras ng araw",
+  "Morning, lunch, or after work — pick one": "Umaga, tanghalian, o pagkatapos ng trabaho — pumili ng isa",
   "Sharpen your customer assumption into one or more specific groups you could actually go and find. Who you name here is a proposition to be tested, not a finding.": "Hasain ang palagay mo sa customer para maging isa o higit pang tiyak na grupong kaya mong puntahan at hanapin. Ang pangalanan mo dito ay panukalang susubukin, hindi natuklasang katotohanan.",
   "No segments yet — add one to start.": "Wala pang segment — magdagdag ng isa para makapagsimula.",
   "Segment name": "Pangalan ng segment",
@@ -3075,15 +3078,31 @@ function bindProblemAlternatives(v) {
 }
 
 /* --- Step 2: Customer Hypothesis --- */
+/* Where segmentation actually begins for someone who has never done it.
+   Not "choose a segmentation basis" — a handful of splits anyone can
+   recognise among their own customers. Tapping one creates a half-filled
+   group: the name and the occasion, which are the parts a starter can
+   honestly guess, leaving what they want blank because only the owner
+   knows that. */
+const SEGMENT_STARTERS = [
+  { id: "nearby", name: "People who live or work nearby", occasion: "Most days, going in or out" },
+  { id: "passing", name: "People just passing by", occasion: "On the way to somewhere else" },
+  { id: "hurry", name: "People in a hurry", occasion: "When there is no time to cook or sit down" },
+  { id: "forothers", name: "People buying for someone else", occasion: "For a child, a parent, or a workmate" },
+  { id: "timeofday", name: "People who come at one time of day", occasion: "Morning, lunch, or after work — pick one" },
+];
+
 function renderSegments(v) {
   const segs = v.hypothesis.segments;
   return `
   <div class="fs-card">
-    <div class="fs-card-head"><h3>${esc(t("Customer Hypothesis"))}</h3><button class="fs-btn fs-btn-sm" id="seg_add">${esc(t("+ Add Segment"))}</button></div>
-    <p class="fs-hint">${esc(t("Sharpen your customer assumption into one or more specific groups you could actually go and find. Who you name here is a proposition to be tested, not a finding."))}</p>
-    <div class="fs-example">${esc(t('Your customer assumption: "%1"', assumptionEcho(v, "customer")))}</div>
-    ${coachPanel(customerGaps(v), "Sharpen who this is")}
-    ${segs.length === 0 ? `<p class="fs-hint" style="margin:0">${esc(t("No segments yet — add one to start."))}</p>` : segs.map(s => renderSegmentCard(s)).join("")}
+    <div class="fs-card-head"><h3>${esc(t("Who exactly are you selling to?"))}</h3><button class="fs-btn fs-btn-sm" id="seg_add">${esc(t("+ Add Segment"))}</button></div>
+    <p class="fs-hint">${esc(t("Split them into groups small enough that you could go and stand in front of one."))}</p>
+    <div class="fs-suggest-box">
+      <div class="fs-suggest-label">${esc(t("Tap a way to split them"))}</div>
+      <div class="fs-suggest-actions">${SEGMENT_STARTERS.map(s => `<button data-add-seg="${s.id}">${esc(t(s.name))}</button>`).join("")}</div>
+    </div>
+    ${segs.map(s => renderSegmentCard(s)).join("")}
   </div>`;
 }
 function renderSegmentCard(s) {
@@ -3107,56 +3126,74 @@ function renderSegmentCard(s) {
 }
 
 /* --- Step 3: Solution Hypothesis --- */
+/* The gap notices used to stack at the top of one long page, including the
+   ones about drivers you had not reached yet. Each now shows on the screen
+   whose work it is about. */
+function solutionGapsFor(v, ids) {
+  return solutionGaps(v).filter(g => ids.indexOf(g.id) !== -1);
+}
+function solutionSteps(v) {
+  return [
+    {
+      id: "alternatives",
+      question: "What do people do about this today?",
+      hint: "Include doing nothing — carrying on exactly as they are is the option you most often lose to.",
+      body: () => `
+        <div class="fs-suggest-box">
+          <div class="fs-suggest-label">${esc(t("The ones most people forget — tap to add"))}</div>
+          <div class="fs-suggest-actions">${CONFIG.alternativeStarters.map(a => `<button data-add-alt="${a.id}">${esc(t(a.name))}</button>`).join("")}</div>
+        </div>
+        ${coachPanel(solutionGapsFor(v, ["no-alts", "all-businesses", "no-staycost"]), "Worth a second look")}
+        ${v.hypothesis.competitors.map(c => renderCompetitorCard(c)).join("")}
+        <button class="fs-btn fs-btn-ghost fs-btn-sm" id="comp_add">${esc(t("+ Add Alternative"))}</button>`,
+    },
+    {
+      id: "drivers",
+      question: "Why would someone choose you instead?",
+      hint: "A reason only counts if it would move someone off what they already do — not a quality you would claim about yourself.",
+      body: () => {
+        const coverage = driverCoverage(v);
+        const named = namedCompetitors(v);
+        return `
+        <div class="fs-suggest-box">
+          <div class="fs-suggest-label">${esc(t("Starter ideas — tap to add"))}</div>
+          <div class="fs-suggest-actions">${CONFIG.starterValueDrivers.map(d => `<button data-add-starter="${esc(t(d))}">+ ${esc(t(d))}</button>`).join("")}</div>
+        </div>
+        <div class="fs-coverage">
+          ${CONFIG.valueDriverCategories.map(c => `
+            <div class="fs-coverage-cell ${coverage[c] ? "is-on" : ""}">
+              <strong>${esc(t(c))}</strong>
+              <span>${coverage[c] ? esc(t("%1 recorded", coverage[c])) : esc(t("none yet"))}</span>
+            </div>`).join("")}
+        </div>
+        ${coachPanel(solutionGapsFor(v, ["unbacked", "unpointed"]), "Worth a second look")}
+        ${v.hypothesis.valueDrivers.map(d => renderDriverCard(d, named)).join("")}
+        <button class="fs-btn fs-btn-ghost fs-btn-sm" id="vd_add">${esc(t("+ Add Value Driver"))}</button>`;
+      },
+    },
+    {
+      id: "statement",
+      question: "Write it as one testable hypothesis",
+      body: () => {
+        const draft = generateSolutionHypothesisDraft(v);
+        return `
+        <div class="fs-field">
+          <label>${esc(t("The smallest version you could test within a week"))}</label>
+          <input type="text" id="sol_smallest" value="${esc(v.hypothesis.smallestTest)}" placeholder="${esc(t("e.g. a 3-day pop-up cart at the gate, 3-4pm, one drink and one snack"))}">
+        </div>
+        ${coachPanel(solutionGapsFor(v, ["no-smallest"]), "Worth a second look")}
+        ${draft ? suggestBox(draft, `<button id="sol_use_sug">${esc(t("Use suggestion"))}</button>`) : ""}
+        <div class="fs-field" style="margin-bottom:0"><textarea id="sol_hypothesis" style="min-height:120px" placeholder="${esc(t("Use the suggestion above, or write your own — phrased as something that could turn out to be wrong."))}">${esc(v.hypothesis.solutionHypothesis)}</textarea></div>`;
+      },
+      commit: () => {
+        const el = document.getElementById("sol_hypothesis");
+        if (el && v.hypothesis.solutionHypothesis !== el.value) { v.hypothesis.solutionHypothesis = el.value; touchVenture(v); }
+      },
+    },
+  ];
+}
 function renderSolutionDiscovery(v) {
-  const comps = v.hypothesis.competitors;
-  const drivers = v.hypothesis.valueDrivers;
-  const draft = generateSolutionHypothesisDraft(v);
-  const coverage = driverCoverage(v);
-  const named = namedCompetitors(v);
-  return `
-  ${coachPanel(solutionGaps(v), "Where this claim is currently weak")}
-
-  <div class="fs-card">
-    <div class="fs-card-head"><h3>${esc(t("What people do today"))}</h3><button class="fs-btn fs-btn-sm" id="comp_add">${esc(t("+ Add Alternative"))}</button></div>
-    <p class="fs-hint">${esc(t("Every alternative here is something you have to beat — including the option of carrying on exactly as they are. Start with the ones people rarely write down."))}</p>
-    <div class="fs-suggest-box">
-      <div class="fs-suggest-label">${esc(t("The alternatives most people forget"))}</div>
-      <div class="fs-suggest-actions">${CONFIG.alternativeStarters.map(a => `<button data-add-alt="${a.id}">${esc(t(a.name))}</button>`).join("")}</div>
-    </div>
-    ${comps.length === 0 ? `<p class="fs-hint" style="margin:0">${esc(t("None recorded yet."))}</p>` : comps.map(c => renderCompetitorCard(c)).join("")}
-  </div>
-
-  <div class="fs-card">
-    <div class="fs-card-head"><h3>${esc(t("Value Drivers"))}</h3><button class="fs-btn fs-btn-sm" id="vd_add">${esc(t("+ Add Value Driver"))}</button></div>
-    <p class="fs-hint">${esc(t("A value driver is a reason someone picks you over what they do today — not a quality you would claim about yourself. Every operator thinks their coffee is good; the question is who would change their routine for it."))}</p>
-    <div class="fs-suggest-box"><div class="fs-suggest-label">${esc(t("Starter ideas"))}</div><div class="fs-suggest-actions">${CONFIG.starterValueDrivers.map(d => `<button data-add-starter="${esc(t(d))}">+ ${esc(t(d))}</button>`).join("")}</div></div>
-
-    <div class="fs-coverage">
-      ${CONFIG.valueDriverCategories.map(c => `
-        <div class="fs-coverage-cell ${coverage[c] ? "is-on" : ""}">
-          <strong>${esc(t(c))}</strong>
-          <span>${coverage[c] ? esc(t("%1 recorded", coverage[c])) : esc(t("none yet"))}</span>
-        </div>`).join("")}
-    </div>
-    ${CONFIG.valueDriverCategories.filter(c => !coverage[c]).map(c => `<p class="fs-hint" style="margin:0 0 6px"><strong>${esc(t(c))}:</strong> ${esc(t(COVERAGE_CONSEQUENCE[c]))}</p>`).join("")}
-
-    ${drivers.map(d => renderDriverCard(d, named)).join("")}
-  </div>
-
-  <div class="fs-card">
-    <div class="fs-card-head"><h3>${esc(t("Solution Hypothesis"))}</h3><span class="fs-pill fs-pill-assumption">${esc(t("Not yet tested"))}</span></div>
-    <p class="fs-hint">${esc(t("Two parts, both testable: what you would actually put in front of someone, and why they would take it instead of their current option."))}</p>
-    <div class="fs-example">${esc(t('Your solution assumption: "%1"', assumptionEcho(v, "solution")))}</div>
-
-    <div class="fs-field">
-      <label>${esc(t("The smallest version you could test within a week"))}</label>
-      <p class="fs-hint" style="margin:2px 0 9px">${esc(t("No lease, no loan, no hiring. If you cannot name one, Phase 2 has nothing to validate — and that is worth knowing now rather than after you sign something."))}</p>
-      <input type="text" id="sol_smallest" value="${esc(v.hypothesis.smallestTest)}" placeholder="${esc(t("e.g. a 3-day pop-up cart at the gate, 3-4pm, one drink and one snack"))}">
-    </div>
-
-    ${draft ? suggestBox(draft, `<button id="sol_use_sug">${esc(t("Use suggestion"))}</button>`) : `<p class="fs-hint" style="margin:0">${esc(t("Add an alternative or a value driver above to generate a draft."))}</p>`}
-    <div class="fs-field"><label>${esc(t("Solution Hypothesis"))}</label><textarea id="sol_hypothesis" style="min-height:120px">${esc(v.hypothesis.solutionHypothesis)}</textarea></div>
-  </div>`;
+  return renderStepFlow(v, "solution", solutionSteps(v), () => go("hypothesis", v.id, "gate"));
 }
 function renderDriverCard(d, alternatives) {
   return `
@@ -3232,6 +3269,18 @@ function bindHypothesisTab(v, tab) {
     bindStepFlow(v, "problem", problemSteps(v), () => go("hypothesis", v.id, "segments"));
   } else if (tab === "segments") {
     document.getElementById("seg_add")?.addEventListener("click", () => { v.hypothesis.segments.push(blankSegment()); touchVenture(v); go("hypothesis", v.id, "segments"); });
+    document.querySelectorAll("[data-add-seg]").forEach(btn => btn.addEventListener("click", () => {
+      const s = SEGMENT_STARTERS.find(x => x.id === btn.dataset.addSeg);
+      if (!s) return;
+      /* Tapping the same split twice should not stack two identical groups. */
+      if (v.hypothesis.segments.some(x => x.name === t(s.name))) return;
+      const seg = blankSegment();
+      seg.name = t(s.name);
+      seg.occasion = t(s.occasion);
+      v.hypothesis.segments.push(seg);
+      touchVenture(v);
+      go("hypothesis", v.id, "segments");
+    }));
     document.querySelectorAll("[data-del-seg]").forEach(btn => btn.addEventListener("click", () => { v.hypothesis.segments = v.hypothesis.segments.filter(s => s.id !== btn.dataset.delSeg); touchVenture(v); go("hypothesis", v.id, "segments"); }));
     document.querySelectorAll("[data-use-seg-sug]").forEach(btn => btn.addEventListener("click", () => {
       const seg = v.hypothesis.segments.find(s => s.id === btn.dataset.useSegSug);
@@ -3253,6 +3302,15 @@ function bindHypothesisTab(v, tab) {
       });
     });
   } else if (tab === "solution") {
+    bindStepFlow(v, "solution", solutionSteps(v), () => go("hypothesis", v.id, "gate"));
+    /* The hypothesis textarea had no handler of its own before — it was only
+       ever written by the "use suggestion" button, so anything typed by hand
+       was lost on the next render. */
+    document.getElementById("sol_hypothesis")?.addEventListener("blur", e => {
+      if (v.hypothesis.solutionHypothesis === e.target.value) return;
+      v.hypothesis.solutionHypothesis = e.target.value;
+      touchVenture(v);
+    });
     document.getElementById("comp_add")?.addEventListener("click", () => { v.hypothesis.competitors.push(blankCompetitor()); touchVenture(v); go("hypothesis", v.id, "solution"); });
     document.querySelectorAll("[data-add-alt]").forEach(btn => btn.addEventListener("click", () => {
       const a = CONFIG.alternativeStarters.find(x => x.id === btn.dataset.addAlt);
