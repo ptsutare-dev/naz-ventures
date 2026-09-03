@@ -176,15 +176,6 @@ table.fs-table tr:last-child td{border-bottom:none}
 .fs-demo-flag{background:var(--fs-assumption-soft);border:1px solid #ecd9ae;border-radius:var(--fs-radius);padding:11px 15px;margin-bottom:20px;font-size:12.5px;line-height:1.55;color:#7a5409}
 .fs-status-line{display:inline-block;font-size:12px;font-weight:600;color:var(--fs-accent-dark);background:var(--fs-accent-soft);border-radius:100px;padding:4px 12px}
 /* ---------- Progress, tally and milestone ---------- */
-.fs-journey{margin:0 0 18px}
-.fs-journey-bar{height:5px;background:var(--fs-line-soft);border-radius:100px;overflow:hidden}
-.fs-journey-bar span{display:block;height:100%;background:var(--fs-gold);border-radius:100px;transition:width .4s cubic-bezier(.4,0,.2,1)}
-.fs-journey-stages{display:flex;justify-content:space-between;gap:6px;margin-top:7px}
-.fs-journey-stages span{font-size:10px;font-weight:600;color:var(--fs-unknown);text-align:center;flex:1;line-height:1.3}
-.fs-journey-stages span.is-done{color:var(--fs-fact)}
-.fs-journey-stages span.is-now{color:var(--fs-accent-dark);font-weight:700}
-@media(max-width:640px){.fs-journey-stages span{font-size:9px}}
-
 .fs-tally{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 22px}
 @media(max-width:560px){.fs-tally{grid-template-columns:repeat(2,1fr)}}
 .fs-tally-cell{border:1px solid var(--fs-line);border-radius:var(--fs-radius-sm);padding:11px 12px;background:var(--fs-paper);text-align:center}
@@ -198,8 +189,21 @@ table.fs-table tr:last-child td{border-bottom:none}
 .fs-milestone h2{font-family:var(--fs-display);font-size:20px;line-height:1.25;color:var(--fs-accent-dark);margin:0 0 8px}
 .fs-milestone p{font-size:13.5px;line-height:1.6;color:var(--fs-ink-soft);margin:0 0 14px;max-width:560px}
 
-.fs-card-journey{height:4px;background:var(--fs-line-soft);border-radius:100px;overflow:hidden;margin-top:12px}
-.fs-card-journey span{display:block;height:100%;background:var(--fs-gold);border-radius:100px}
+/* The card's progress block. Six ticks rather than one continuous bar:
+   a filled bar reads as "how much is left", which is discouraging and also
+   wrong — these are six named milestones, not a percentage. The step count
+   and the stage name sit above it so the ticks are never asked to explain
+   themselves, and a plain next line says what to actually do. */
+.fs-vc-journey{margin-top:13px;padding-top:12px;border-top:1px solid var(--fs-line-soft)}
+.fs-vc-journey-top{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.fs-vc-journey-step{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--fs-unknown);white-space:nowrap}
+.fs-vc-journey-stage{font-size:13px;font-weight:700;color:var(--fs-accent-dark);line-height:1.3}
+.fs-vc-journey-ticks{display:flex;gap:4px;margin-top:8px}
+.fs-vc-journey-ticks i{flex:1;height:5px;border-radius:100px;background:var(--fs-line-soft)}
+.fs-vc-journey-ticks i.is-done{background:var(--fs-gold)}
+.fs-vc-journey-ticks i.is-now{background:var(--fs-gold);box-shadow:0 0 0 3px var(--fs-gold-soft)}
+.fs-vc-journey-next{font-size:11.5px;line-height:1.5;color:var(--fs-ink-soft);margin:10px 0 0}
+.fs-vc-journey-done{font-size:11.5px;line-height:1.5;color:var(--fs-fact);font-weight:600;margin:10px 0 0}
 
 /* ---------- Starting-point picker ---------- */
 .fs-startpoint{display:flex;flex-direction:column;gap:10px}
@@ -531,6 +535,13 @@ const FIL_CHROME = {
   "Ready to test": "Handa nang subukan",
   "Gathering evidence": "Nangangalap ng ebidensya",
   "Evidence-backed": "May batayang ebidensya",
+  "Next: %1": "Susunod: %1",
+  "answer a few quick questions to get your starting statement": "sagutin ang ilang mabilis na tanong para makuha ang panimulang pahayag mo",
+  "finish your starting statement, then turn it into hypotheses you can test": "tapusin ang panimulang pahayag mo, tapos gawin itong mga hipotesis na kaya mong subukan",
+  "finish all three hypotheses so they are ready to test": "tapusin ang tatlong hipotesis para handa na silang subukan",
+  "start testing — talk to real people and record what you find": "magsimulang subukan — kausapin ang totoong tao at itala ang nakita mo",
+  "keep recording evidence until each hypothesis holds up": "patuloy na itala ang ebidensya hanggang tumagal ang bawat hipotesis",
+  "All three hold up against real evidence.": "Tumatagal ang tatlo laban sa totoong ebidensya.",
 
   /* --- progress tally --- */
   "starting assumption": "panimulang palagay",
@@ -1544,13 +1555,22 @@ function ventureStatus(v) { return t(ventureStatusKey(v)); }
 
    The stages are the ladder the tool already tracks, not new invented ones.
    ========================================================================= */
+/* Each stage carries the next move in plain words. A progress display that
+   only reports position leaves the reader to work out what to do about it;
+   naming the next action is the part that makes it worth showing at all. */
 const JOURNEY_STAGES = [
-  { key: "Starting statement not written",  short: "Getting started" },
-  { key: "Starting statement in progress",  short: "First answers down" },
-  { key: "Hypotheses in development",         short: "Building hypotheses" },
-  { key: "Ready for validation",              short: "Ready to test" },
-  { key: "Validation in progress",            short: "Gathering evidence" },
-  { key: "Insights sufficiently supported",   short: "Evidence-backed" },
+  { key: "Starting statement not written",  short: "Getting started",
+    next: "answer a few quick questions to get your starting statement" },
+  { key: "Starting statement in progress",  short: "First answers down",
+    next: "finish your starting statement, then turn it into hypotheses you can test" },
+  { key: "Hypotheses in development",       short: "Building hypotheses",
+    next: "finish all three hypotheses so they are ready to test" },
+  { key: "Ready for validation",            short: "Ready to test",
+    next: "start testing — talk to real people and record what you find" },
+  { key: "Validation in progress",          short: "Gathering evidence",
+    next: "keep recording evidence until each hypothesis holds up" },
+  { key: "Insights sufficiently supported", short: "Evidence-backed",
+    next: "" },
 ];
 function journeyIndex(v) {
   const k = ventureStatusKey(v);
@@ -1566,16 +1586,27 @@ function progressTally(v) {
   const tested = VALIDATION_KEYS.filter(k => validationTestComplete(getValidationCard(v, k))).length;
   return { answered, hypotheses, insights, tested, evidence: (v.evidence || []).length };
 }
-/* The journey bar: where you are on the road, and what is left. */
-function journeyBar(v) {
+/* Where this venture is up to, for the dashboard card. It used to be a bare
+   gold bar with no words at all, sitting under a status line that said the
+   same thing — so it explained nothing and repeated something. Now it is the
+   one place that answers "where is this one at": the step you are on, its
+   name, six ticks you can count, and the next move. */
+function cardJourney(v) {
   const idx = journeyIndex(v);
-  const pct = Math.round((idx / (JOURNEY_STAGES.length - 1)) * 100);
+  const stage = JOURNEY_STAGES[idx];
+  const total = JOURNEY_STAGES.length;
+  const ticks = JOURNEY_STAGES.map((s, i) =>
+    `<i class="${i < idx ? "is-done" : i === idx ? "is-now" : ""}"></i>`).join("");
   return `
-  <div class="fs-journey">
-    <div class="fs-journey-bar"><span style="width:${pct}%"></span></div>
-    <div class="fs-journey-stages">
-      ${JOURNEY_STAGES.map((s, i) => `<span class="${i < idx ? "is-done" : i === idx ? "is-now" : ""}">${esc(t(s.short))}</span>`).join("")}
+  <div class="fs-vc-journey">
+    <div class="fs-vc-journey-top">
+      <span class="fs-vc-journey-step">${esc(t("Step %1 of %2", idx + 1, total))}</span>
+      <span class="fs-vc-journey-stage">${esc(t(stage.short))}</span>
     </div>
+    <div class="fs-vc-journey-ticks">${ticks}</div>
+    ${stage.next
+      ? `<p class="fs-vc-journey-next">${esc(t("Next: %1", t(stage.next)))}</p>`
+      : `<p class="fs-vc-journey-done">${esc(t("All three hold up against real evidence."))}</p>`}
   </div>`;
 }
 /* What you have built so far, in plain counts. Only shows once there is
@@ -1855,8 +1886,7 @@ function renderDashboard() {
   const main = document.getElementById("fsMain");
   const cards = DB.ventures.map(v => {
     const c = evidenceCounts(v);
-    const status = ventureStatus(v);
-    const gateNote = v.hypothesis.decisionGate.decision !== "Not Yet Assessed" ? " &middot; " + esc(t("Phase 1 decision: %1", tDecision(v.hypothesis.decisionGate.decision))) : "";
+    const gateNote = v.hypothesis.decisionGate.decision !== "Not Yet Assessed" ? esc(t("Phase 1 decision: %1", tDecision(v.hypothesis.decisionGate.decision))) : "";
     return `<div class="fs-venture-card" data-open="${v.id}">
       <h3>${esc(v.name || "Untitled venture")}</h3>
       <div class="fs-vc-meta">${esc(tMode(v.mode))}${v.industry ? " &middot; " + esc(v.industry) : ""}${v.location ? " &middot; " + esc(v.location) : ""}</div>
@@ -1866,8 +1896,8 @@ function renderDashboard() {
         <span><b>${c.UNKNOWN}</b> ${esc(t("unknowns"))}</span>
         ${c.contradictions ? `<span style="color:var(--fs-warn)"><b>${c.contradictions}</b> ${esc(t("contradictions"))}</span>` : ""}
       </div>
-      <div class="fs-vc-meta" style="margin-top:10px"><span class="fs-status-line">${esc(status)}</span>${gateNote}</div>
-      <div class="fs-card-journey"><span style="width:${Math.round((journeyIndex(v) / (JOURNEY_STAGES.length - 1)) * 100)}%"></span></div>
+      ${gateNote ? `<div class="fs-vc-meta" style="margin-top:10px">${gateNote}</div>` : ""}
+      ${cardJourney(v)}
     </div>`;
   });
   const mine = ownVentures();
@@ -2335,7 +2365,6 @@ function renderProfile() {
     ${demoFlag(v)}
     ${milestoneBanner(v)}
     <div class="fs-status-row"><span class="fs-status-line">${esc(ventureStatus(v))}</span></div>
-    ${journeyBar(v)}
     ${progressTallyStrip(v)}
     ${baseStatementBlock(v)}
 
