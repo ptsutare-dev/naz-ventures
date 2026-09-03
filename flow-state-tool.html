@@ -521,6 +521,16 @@ const FIL_CHROME = {
   "How often does this happen, and what does it cost them?": "Gaano kadalas ito nangyayari, at ano ang nawawala sa kanila?",
   "Every school day, about 180 households — they stand 20+ minutes and leave straight after.": "Bawat araw ng pasok, mga 180 sambahayan — nakatayo sila 20+ minuto at umaalis agad pagkatapos.",
   "What might be causing this?": "Ano kaya ang nagdudulot nito?",
+  "How often does this happen, and what do they lose when it does?": "Gaano kadalas ito nangyayari, at ano ang nawawala sa kanila kapag nangyari?",
+  "What they lose": "Ano ang nawawala sa kanila",
+  "e.g. 20 minutes standing in the heat, or ₱50 on tricycle fare": "hal. 20 minutong nakatayo sa init, o ₱50 pamasahe sa tricycle",
+  "Why do you think this is happening?": "Bakit sa tingin mo ito nangyayari?",
+  "Give your best guesses. You do not have to be right — Phase 2 is where you find out which one is true.": "Ibigay ang pinakamainam mong hula. Hindi kailangang tama agad — sa Yugto 2 mo malalaman kung alin ang totoo.",
+  "Common reasons — tap one to start a line": "Karaniwang dahilan — pumindot para magsimula ng linya",
+  "Best guess %1...": "Hula %1...",
+  "+ Add another guess": "+ Magdagdag ng isa pang hula",
+  "If those guesses are wrong, what else could explain it?": "Kung mali ang mga hula mo, ano pa kaya ang pwedeng dahilan?",
+  "Write at least one. Looking only for the answer you already believe is the easiest way to get this wrong.": "Magsulat ng kahit isa. Ang paghahanap lang sa sagot na pinaniniwalaan mo na ang pinakamadaling paraan para magkamali.",
   "The last line you write is not automatically the root cause — it is your best guess until evidence says otherwise.": "Ang huling linyang isusulat mo ay hindi awtomatikong ugat ng problema — hula mo lang ito hangga't walang ebidensyang magsasabi ng iba.",
   "One competing explanation is the cheapest protection against testing only the answer you were hoping for.": "Ang isang katunggaling paliwanag ang pinakamurang proteksyon laban sa pagsubok lang sa sagot na inaasahan mo.",
   "Write it as one testable hypothesis": "Isulat ito bilang isang masusubok na hipotesis",
@@ -2939,15 +2949,15 @@ function problemSteps(v) {
   return [
     {
       id: "detail",
-      question: "How often does this happen, and what does it cost them?",
+      question: "How often does this happen, and what do they lose when it does?",
       body: () => `
         <div class="fs-field">
           <label>${esc(t("How often"))}</label>
           <input type="text" id="p_frequency" value="${esc(p.frequency)}" placeholder="${esc(t("e.g. every school day, about 180 households"))}">
         </div>
         <div class="fs-field" style="margin-bottom:0">
-          <label>${esc(t("What it costs them"))}</label>
-          <input type="text" id="p_consequence" value="${esc(p.consequence)}" placeholder="${esc(t("e.g. they stand 20+ minutes and leave straight after"))}">
+          <label>${esc(t("What they lose"))}</label>
+          <input type="text" id="p_consequence" value="${esc(p.consequence)}" placeholder="${esc(t("e.g. 20 minutes standing in the heat, or ₱50 on tricycle fare"))}">
         </div>`,
       bind: () => {
         document.getElementById("p_frequency")?.addEventListener("blur", e => { if (p.frequency === e.target.value) return; p.frequency = e.target.value; touchVenture(v); refresh(); });
@@ -2961,18 +2971,18 @@ function problemSteps(v) {
     },
     {
       id: "causes",
-      question: "What might be causing this?",
-      hint: "The last line you write is not automatically the root cause — it is your best guess until evidence says otherwise.",
+      question: "Why do you think this is happening?",
+      hint: "Give your best guesses. You do not have to be right — Phase 2 is where you find out which one is true.",
       body: () => {
         const flagged = absenceFlaggedCauses(v);
         return `
         <div class="fs-suggest-box">
-          <div class="fs-suggest-label">${esc(t("Common reasons things get hard — tap one to start a line"))}</div>
+          <div class="fs-suggest-label">${esc(t("Common reasons — tap one to start a line"))}</div>
           <div class="fs-suggest-actions">${CAUSE_PATTERNS.map(c => `<button data-cause="${c.id}">${esc(t(c.label))}</button>`).join("")}</div>
         </div>
         <div class="fs-field" style="margin-bottom:0">
-          ${p.causeExploration.map((w, i) => `<input type="text" class="fs-why" data-i="${i}" value="${esc(w)}" placeholder="${esc(t("Possible cause %1...", i + 1))}" style="margin-bottom:8px">`).join("")}
-          ${p.causeExploration.length < 3 ? `<button class="fs-btn fs-btn-ghost fs-btn-sm" id="p_addwhy">${esc(t("+ Explore one level deeper"))}</button>` : ""}
+          ${p.causeExploration.map((w, i) => `<input type="text" class="fs-why" data-i="${i}" value="${esc(w)}" placeholder="${esc(t("Best guess %1...", i + 1))}" style="margin-bottom:8px">`).join("")}
+          ${p.causeExploration.length < 3 ? `<button class="fs-btn fs-btn-ghost fs-btn-sm" id="p_addwhy">${esc(t("+ Add another guess"))}</button>` : ""}
         </div>
         ${flagged.length ? `
         <div class="fs-caution" style="margin-top:16px;margin-bottom:0">
@@ -2985,8 +2995,8 @@ function problemSteps(v) {
     },
     {
       id: "alternatives",
-      question: "What else might explain this situation?",
-      hint: "One competing explanation is the cheapest protection against testing only the answer you were hoping for.",
+      question: "If those guesses are wrong, what else could explain it?",
+      hint: "Write at least one. Looking only for the answer you already believe is the easiest way to get this wrong.",
       body: () => {
         const alts = p.alternativeExplanations;
         return `
