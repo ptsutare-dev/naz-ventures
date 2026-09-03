@@ -2136,6 +2136,8 @@ const RETIRED_PROFILE_FIELDS = [
   ["decisionDate", "Decision date"],
 ];
 const RETIRED_INTAKE_FIELDS = [
+  ["auditTrigger", "What triggered this audit?"],
+  ["performance", "Current performance"],
   ["traffic", "Traffic / inquiries"],
   ["conversion", "Conversion"],
   ["avgTransaction", "Average transaction"],
@@ -2256,24 +2258,18 @@ function profileSteps(v) {
   snapshotOrder(v).forEach(key => steps.push(elementStep(v, key)));
 
   /* The welcome screen already asked what kind of case this is, and what the
-     business is called. Neither is asked again here. */
-  if (v.mode === "existing-business") {
-    steps.push({
-      id: "trigger",
-      question: "What made you look into this?",
-      example: "I am working every day but there is nothing left at the end of the month.",
-      body: () => `<div class="fs-field" style="margin-bottom:0"><textarea id="wz_trigger" style="min-height:110px">${esc(v.existingIntake.auditTrigger)}</textarea></div>`,
-      commit: () => { const el = document.getElementById("wz_trigger"); if (el) { v.existingIntake.auditTrigger = el.value; touchVenture(v); } },
-    });
-    steps.push({
-      id: "performance",
-      question: "Roughly how is it doing now?",
-      hint: "A rough figure is fine — this is a starting point, not an audit.",
-      body: () => `<div class="fs-field" style="margin-bottom:0"><input type="text" id="wz_perf" value="${esc(v.existingIntake.performance)}" placeholder="${esc(t("e.g. ₱45k/mo revenue"))}"></div>`,
-      commit: () => { const el = document.getElementById("wz_perf"); if (el) { v.existingIntake.performance = el.value; touchVenture(v); } },
-    });
-  }
+     business is called. Neither is asked again here.
 
+     An existing business used to get two extra screens here — what made you
+     look into this, and roughly how it is doing. Both are gone. Nothing in
+     the tool ever read either answer: they fed no statement, no hypothesis
+     and no gate, so they cost two screens of typing and returned nothing.
+     The reconstruction they were meant to help with already happens in
+     Phase 1, where the Problem screen works backwards from what the owner
+     already sells, and a performance figure is a Phase 2 baseline — it needs
+     a hypothesis to be a baseline *for*. Every mode now has the same five
+     screens; the mode with the busiest, most stressed users is no longer
+     the one with the longest entry. */
   steps.push({
     id: "base",
     question: "Here is your starting statement",
@@ -2353,20 +2349,6 @@ function renderProfile() {
       </div>
     </div>
 
-    ${v.mode === "existing-business" ? `
-    <div class="fs-card">
-      <div class="fs-field">
-        <label>${esc(t("What made you look into this?"))}</label>
-        ${guidedIntro(t("This is not a judgment on how the business started — it is reconstructing the problem, customer, and solution assumptions from what is actually happening now. They still have to be tested like any other assumption."), t("I am working every day but there is nothing left at the end of the month."))}
-        <textarea id="ei_trigger">${esc(v.existingIntake.auditTrigger)}</textarea>
-      </div>
-      <div class="fs-field">
-        <label>${esc(t("Roughly how is it doing now?"))}</label>
-        <p class="fs-hint" style="margin:2px 0 9px">${esc(t("A rough figure is fine — this is a starting point, not an audit."))}</p>
-        <input type="text" id="ei_performance" value="${esc(v.existingIntake.performance)}" placeholder="${esc(t("e.g. ₱45k/mo revenue"))}">
-      </div>
-    </div>` : ""}
-
     ${v.mode === "consultant-case" ? `
     <div class="fs-card">
       <div class="fs-field-row">
@@ -2435,8 +2417,6 @@ function saveProfileFields(v) {
   set("f_consultant", x => { v.consultant = x; });
   set("f_deadline", x => { v.deadline = x; });
   set("f_scope", x => { v.scope = x; });
-  set("ei_trigger", x => { v.existingIntake.auditTrigger = x; });
-  set("ei_performance", x => { v.existingIntake.performance = x; });
   RETIRED_PROFILE_FIELDS.forEach(([k]) => set("f_old_" + k, x => { v[k] = x; }));
   RETIRED_INTAKE_FIELDS.forEach(([k]) => set("ei_old_" + k, x => { v.existingIntake[k] = x; }));
   touchVenture(v);
