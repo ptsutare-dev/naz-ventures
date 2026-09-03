@@ -1238,25 +1238,6 @@ function hits(patterns, text) { return patterns.some(re => re.test(text || ""));
 function wordCount(s) { return (s || "").trim().split(/\s+/).filter(Boolean).length; }
 
 /* What is missing from the problem picture, in the order worth fixing. */
-function problemGaps(v) {
-  const pid = v.hypothesis.problemId;
-  const problem = assumptionText(v, "problem");
-  const customer = assumptionText(v, "customer");
-  const gaps = [];
-  if (!problem) {
-    gaps.push({ id: "problem", label: "What the difficulty actually is", why: "Nothing to sharpen yet — write a problem assumption in the venture profile first.", example: "Parents waiting at pickup have nowhere comfortable to stand." });
-  }
-  if (!customer || hits(VAGUE_SUBJECTS, customer) || wordCount(customer) < 3) {
-    gaps.push({ id: "who", label: "Who exactly", why: "A group this broad cannot be found, counted, or interviewed — and Phase 2 will need to do all three.", example: "Parents and yayas doing the 3pm pickup at one specific school — not \"customers\"." });
-  }
-  if (!pid.frequency.trim() && !hits(TIME_MARKERS, problem)) {
-    gaps.push({ id: "when", label: "How often, and when", why: "A difficulty that happens twice a year is a different business from one that happens daily.", example: "Every school day, roughly 3:00–4:00pm, about 180 households." });
-  }
-  if (!pid.consequence.trim() && !hits(CONSEQUENCE_MARKERS, problem)) {
-    gaps.push({ id: "cost", label: "What it costs them", why: "A problem with no consequence is an annoyance, and people do not pay to remove annoyances.", example: "They stand for 20+ minutes in the heat, so they leave straight after and buy nothing nearby." });
-  }
-  return gaps;
-}
 function customerGaps(v) {
   const customer = assumptionText(v, "customer");
   const gaps = [];
@@ -2083,6 +2064,7 @@ addFil({
   "How often, and when": "Gaano kadalas, at kailan",
   "A difficulty that happens twice a year is a different business from one that happens daily.": "Ibang negosyo ang hirap na nangyayari dalawang beses sa isang taon kumpara sa nangyayari araw-araw.",
   "Every school day, roughly 3:00–4:00pm, about 180 households.": "Bawat araw ng pasok, humigit-kumulang 3:00–4:00pm, mga 180 sambahayan.",
+  "How often": "Gaano kadalas",
   "What it costs them": "Ano ang halaga nito sa kanila",
   "A problem with no consequence is an annoyance, and people do not pay to remove annoyances.": "Ang problemang walang bunga ay inis lang, at hindi nagbabayad ang tao para alisin ang inis.",
   "They stand for 20+ minutes in the heat, so they leave straight after and buy nothing nearby.": "Nakatayo sila nang 20+ minuto sa init, kaya umaalis sila agad at walang binibili sa paligid.",
@@ -2805,7 +2787,7 @@ function renderHypothesis() {
     <p class="fs-eyebrow">${esc(t("Phase 1: Hypothesis"))}</p>
     <h1 class="fs-h1">${esc(t("Turn your starting assumptions into testable hypotheses"))}</h1>
     ${demoFlag(v)}
-    ${baseStatementBlock(v, "Everything in this phase sharpens this one sentence.")}
+    ${baseStatementBlock(v)}
     <div class="fs-tabs">
       <button class="fs-tab ${tab === "problem" ? "is-active" : ""}" data-tab="problem">${esc(t("1. Problem Hypothesis"))}</button>
       <button class="fs-tab ${tab === "segments" ? "is-active" : ""}" data-tab="segments">${esc(t("2. Customer Hypothesis"))}</button>
@@ -2958,16 +2940,13 @@ function problemSteps(v) {
     {
       id: "detail",
       question: "How often does this happen, and what does it cost them?",
-      example: "Every school day, about 180 households — they stand 20+ minutes and leave straight after.",
       body: () => `
-        <div class="fs-example" style="margin-bottom:14px">${esc(t('Your problem assumption: "%1"', assumptionEcho(v, "problem")))}</div>
-        ${coachPanel(problemGaps(v), "Make this sharper before you test it")}
         <div class="fs-field">
-          <label>${esc(t("How often does this happen?"))}</label>
+          <label>${esc(t("How often"))}</label>
           <input type="text" id="p_frequency" value="${esc(p.frequency)}" placeholder="${esc(t("e.g. every school day, about 180 households"))}">
         </div>
         <div class="fs-field" style="margin-bottom:0">
-          <label>${esc(t("What does it cost them?"))}</label>
+          <label>${esc(t("What it costs them"))}</label>
           <input type="text" id="p_consequence" value="${esc(p.consequence)}" placeholder="${esc(t("e.g. they stand 20+ minutes and leave straight after"))}">
         </div>`,
       bind: () => {
