@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Naz Loop | Workday coffee from Naz Coffee</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@600;700&display=swap">
+<link rel="stylesheet" href="/loop/loop.css">
+</head>
+<body data-version="a1b2" data-frame="0" data-kit="1">
+<header class="nvgh-bar">
+  <div class="nvgh-inner">
+    <a class="nvgh-brand" href="/">
+      <img src="/assets/logos/naz-ventures-mark.png" alt="Naz Ventures" onerror="this.style.display='none'">
+      <span>Naz Ventures<small>Business Ecosystem</small></span>
+    </a>
+    <span class="nvgh-tag">Naz Loop</span>
+  </div>
+</header>
+
+<main>
+  <!-- HERO: Factor A (message frame) changes the headline and lead only -->
+  <section class="hero shell">
+    <div class="hero-grid">
+      <div>
+        <p class="eyebrow">Naz Loop · from Naz Coffee, Pangil</p>
+        <h1>Your coffee, <em>delivered</em> to your desk every workday.</h1>
+        <p class="lead">Choose your drink and we bring it in your morning or afternoon window. Pause or skip anytime on Viber.</p>
+        <div class="price-chip"><strong>Loop Daily: ₱2,580 a month</strong><br>20 drinks a month · ₱129 per drink</div>
+      </div>
+      <div class="hero-photo">
+        <img src="/assets/photos/interior-band.jpg" alt="Inside Naz Coffee in Pangil" onerror="this.style.display='none'">
+        <div class="cup-badge">
+          <div class="cup-icon"><div class="lid"></div><div class="body">07</div></div>
+          <div><b>Your own numbered Loop cup</b><span class="small">Delivered 9:00–10:30 a.m. or 2:00–3:30 p.m.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHARED: identical on all four versions -->
+  <section class="section shell">
+    <p class="eyebrow">How it works</p>
+    <h2>Three steps, then it runs itself.</h2>
+    <div class="cards">
+      <div class="card"><div class="num">01</div><h3>Pick a plan and a drink</h3><p class="small">Sign up online and choose your usual drink. Change it any time.</p></div>
+      <div class="card"><div class="num">02</div><h3>We bring it to your post</h3><p class="small">Your drink arrives in your delivery window, every workday.</p></div>
+      <div class="card"><div class="num">03</div><h3>Skip or pause on Viber</h3><p class="small">Message us by 8:00 p.m. the night before. No calls, no forms.</p></div>
+    </div>
+  </section>
+
+  <section class="section shell">
+    <p class="eyebrow">The Loop menu · hot or iced, 12 oz</p>
+    <h2>Six drinks to choose from.</h2>
+    <div class="menu-grid">
+      <div class="menu-item">Flat White<span>Espresso, steamed milk</span></div>
+      <div class="menu-item">Cafe Latte<span>Espresso, more milk</span></div>
+      <div class="menu-item">Spanish Latte<span>Sweetened, creamy</span></div>
+      <div class="menu-item">Naz Signature<span>The house favorite</span></div>
+      <div class="menu-item">Matcha Latte<span>Premium matcha, milk</span></div>
+      <div class="menu-item">Long Black<span>Espresso, hot water</span></div>
+    </div>
+    <div class="windows">
+      <div class="card"><p class="eyebrow" style="margin:0 0 6px">Morning Loop</p><h3>9:00–10:30 a.m.</h3></div>
+      <div class="card"><p class="eyebrow" style="margin:0 0 6px">Afternoon Loop</p><h3>2:00–3:30 p.m.</h3></div>
+    </div>
+
+    <!-- Factor B (cup-kit terms) -->
+    <div class="kit">
+      <div class="cups">
+        <div class="cup-icon"><div class="lid"></div><div class="body">01</div></div>
+        <div class="cup-icon"><div class="lid"></div><div class="body">02</div></div>
+        <div class="cup-icon"><div class="lid"></div><div class="body">03</div></div>
+      </div>
+      <div><h3>Your Loop Kit: three numbered cups, free.</h3><p>A ₱150 fee applies only if a cup is not returned.</p></div>
+    </div>
+  </section>
+
+  <!-- STUDY QUESTIONS -->
+  <section class="study" id="study">
+    <div class="narrow">
+      <p class="step-label">Your turn</p>
+      <h2>A few questions about this page</h2>
+      <p class="small">Please take a moment to read the page above first.</p>
+      <button class="button block" id="continueBtn" disabled style="margin-top:14px">Please read the page first</button>
+      <p class="timer" id="timer"></p>
+
+      <form id="studyForm" class="hidden" novalidate>
+        <div class="panel">
+          <p class="step-label">Part 1 of 4</p>
+          <p class="small" style="margin-top:0">1 = strongly disagree · 7 = strongly agree</p>
+          <div class="q" data-scale="pi_1"><p>If Naz Loop were offered at my workplace, I would subscribe.</p></div>
+          <div class="q" data-scale="pi_2"><p>The probability that I would consider subscribing is high.</p></div>
+          <div class="q" data-scale="pi_3"><p>My willingness to subscribe to Naz Loop is high.</p></div>
+        </div>
+
+        <div class="panel">
+          <p class="step-label">Part 2 of 4</p>
+          <h3>Would you like to reserve a founding slot?</h3>
+          <p class="small">It's free and doesn't commit you to buy. Founding members are the first at each workplace when Naz Loop launches.</p>
+          <div class="reserve" style="margin-top:12px">
+            <button type="button" class="button" data-reserve="1">Reserve my founding slot</button>
+            <button type="button" class="button ghost" data-reserve="0">Not now</button>
+          </div>
+          <p class="notice hidden" id="reserveNote" style="margin-top:12px"></p>
+        </div>
+
+        <div id="rest" class="hidden">
+          <div class="panel">
+            <p class="step-label">Part 3 of 4 · Price</p>
+            <p class="small" style="margin-top:0">Think about one Naz Loop drink delivered to your workplace. Type a price in pesos.</p>
+            <div class="q"><p>At what price would a Loop drink be so cheap that you would doubt its quality?</p><div class="peso"><span>₱</span><input type="number" inputmode="numeric" min="0" name="vw_too_cheap"></div></div>
+            <div class="q"><p>At what price would it be a bargain, a great buy for the money?</p><div class="peso"><span>₱</span><input type="number" inputmode="numeric" min="0" name="vw_bargain"></div></div>
+            <div class="q"><p>At what price would it start to feel expensive, though you would still consider it?</p><div class="peso"><span>₱</span><input type="number" inputmode="numeric" min="0" name="vw_expensive"></div></div>
+            <div class="q"><p>At what price would it be so expensive that you would not consider it?</p><div class="peso"><span>₱</span><input type="number" inputmode="numeric" min="0" name="vw_too_expensive"></div></div>
+            <p class="error" id="vwError">Usually each answer is higher than the one before it. Please check your prices.</p>
+          </div>
+
+          <div class="panel">
+            <p class="step-label">Part 4 of 4 · About you</p>
+            <p class="small" style="margin-top:0">1 = strongly disagree · 7 = strongly agree</p>
+            <div class="q" data-scale="green_1"><p>It is important to me that the products I use do not harm the environment.</p></div>
+            <div class="q" data-scale="green_2"><p>I consider the potential environmental impact of my actions when making many of my decisions.</p></div>
+            <div class="q" data-scale="green_3"><p>My purchase habits are affected by my concern for our environment.</p></div>
+            <div class="q" data-scale="attention"><p>Please select 5 (somewhat agree) for this item.</p></div>
+            <div class="q" data-scale="green_4"><p>I am concerned about wasting the resources of our planet.</p></div>
+            <div class="q" data-scale="green_5"><p>I would describe myself as environmentally responsible.</p></div>
+            <div class="q" data-scale="green_6"><p>I am willing to be inconvenienced in order to take actions that are more environmentally friendly.</p></div>
+            <div class="q" data-scale="manip_check"><p>The Naz Loop page I saw emphasized community and reducing waste.</p></div>
+
+            <div class="q"><p>What kind of workplace do you work in?</p>
+              <select name="workplace_type">
+                <option value="">Choose one</option>
+                <option>Hospital or clinic</option><option>Municipal or government office</option>
+                <option>School or college</option><option>Private office</option>
+                <option>Logistics or warehouse</option><option>Other</option>
+              </select></div>
+            <div class="q"><p>How many coffee, tea or matcha drinks do you have in a usual week?</p>
+              <select name="coffee_per_week">
+                <option value="">Choose one</option>
+                <option>2–3</option><option>4–6</option><option>7–10</option><option>More than 10</option>
+              </select></div>
+            <div class="q"><p>Have you bought from Naz Coffee before?</p>
+              <select name="prior_customer"><option value="">Choose one</option><option>Yes</option><option>No</option></select></div>
+            <div class="q"><p>Your age group</p>
+              <select name="age_band"><option value="">Choose one</option><option>18–24</option><option>25–34</option><option>35–44</option><option>45–54</option><option>55 or older</option></select></div>
+            <div class="q"><p>Gender</p>
+              <select name="gender"><option value="">Choose one</option><option>Female</option><option>Male</option><option>Prefer not to say</option></select></div>
+          </div>
+
+          <p class="error" id="formError">Please answer every question before submitting.</p>
+          <button class="button block" type="submit" style="margin-top:18px">Submit my answers</button>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">Naz Coffee · Pangil, Laguna · A Naz Ventures business</footer>
+
+<script src="/loop/loop.js"></script>
+<script>
+(function () {
+  var body = document.body, VERSION = body.dataset.version;
+  var READ_SECONDS = 45;
+  var study = NAZ_LOOP.load();
+  var preview = NAZ_LOOP.param('preview') === '1';
+
+  if (!study || study.version !== VERSION) {
+    if (preview) { study = { id: 'PREVIEW', version: VERSION, started_ms: Date.now(), town: '' }; }
+    else { window.location.replace('/loop/'); return; }
+  }
+  var pageStart = Date.now();
+
+  // Build the 7-point scales
+  document.querySelectorAll('[data-scale]').forEach(function (q) {
+    var name = q.getAttribute('data-scale'), row = document.createElement('div');
+    row.className = 'scale';
+    for (var i = 1; i <= 7; i++) {
+      var l = document.createElement('label');
+      l.innerHTML = '<input type="radio" name="' + name + '" value="' + i + '" aria-label="' + i + '">';
+      row.appendChild(l);
+    }
+    var ends = document.createElement('div');
+    ends.className = 'scale-ends';
+    ends.innerHTML = '<span>Strongly disagree</span><span>Strongly agree</span>';
+    q.appendChild(row); q.appendChild(ends);
+  });
+
+  // Reading timer: the questions unlock after 45 seconds
+  var btn = document.getElementById('continueBtn'), timer = document.getElementById('timer');
+  var left = preview ? 0 : READ_SECONDS;
+  function tick() {
+    if (left <= 0) { btn.disabled = false; btn.textContent = "I've read the page, continue"; timer.textContent = ''; return; }
+    timer.textContent = 'The questions open in ' + left + ' seconds. Please read the page above.';
+    left--; setTimeout(tick, 1000);
+  }
+  tick();
+  var pageSeconds = 0;
+  btn.addEventListener('click', function () {
+    pageSeconds = Math.round((Date.now() - pageStart) / 1000);
+    btn.classList.add('hidden'); timer.classList.add('hidden');
+    document.getElementById('studyForm').classList.remove('hidden');
+  });
+
+  // Founding-slot choice (the behavioral measure)
+  var reserved = null;
+  document.querySelectorAll('[data-reserve]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      reserved = Number(b.getAttribute('data-reserve'));
+      document.querySelectorAll('[data-reserve]').forEach(function (x) { x.disabled = true; });
+      var note = document.getElementById('reserveNote');
+      note.textContent = reserved ? 'Thank you! Your founding slot is noted. A few more questions.' : 'No problem. A few more questions.';
+      note.classList.remove('hidden');
+      document.getElementById('rest').classList.remove('hidden');
+    });
+  });
+
+  function val(form, n) {
+    var c = form.querySelector('[name="' + n + '"]:checked');
+    if (c) return c.value;
+    var el = form.querySelector('[name="' + n + '"]');
+    return el && el.type !== 'radio' ? el.value.trim() : '';
+  }
+  function mean(arr) { return Math.round(arr.reduce(function (a, b) { return a + b; }, 0) / arr.length * 100) / 100; }
+
+  document.getElementById('studyForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var f = e.target;
+    var names = ['pi_1','pi_2','pi_3','vw_too_cheap','vw_bargain','vw_expensive','vw_too_expensive',
+      'green_1','green_2','green_3','green_4','green_5','green_6','attention','manip_check',
+      'workplace_type','coffee_per_week','prior_customer','age_band','gender'];
+    var d = {}, missing = reserved === null;
+    names.forEach(function (n) { d[n] = val(f, n); if (d[n] === '') missing = true; });
+    document.getElementById('formError').classList.toggle('show', missing);
+    if (missing) return;
+
+    var vw = [d.vw_too_cheap, d.vw_bargain, d.vw_expensive, d.vw_too_expensive].map(Number);
+    var ordered = vw[0] <= vw[1] && vw[1] <= vw[2] && vw[2] <= vw[3];
+    var vwErr = document.getElementById('vwError');
+    if (!ordered && !vwErr.classList.contains('show')) {   // warn once, then accept as answered
+      vwErr.classList.add('show'); vwErr.scrollIntoView({ block: 'center' }); return;
+    }
+
+    var pi = ['pi_1','pi_2','pi_3'].map(function (n) { return Number(d[n]); });
+    var gr = ['green_1','green_2','green_3','green_4','green_5','green_6'].map(function (n) { return Number(d[n]); });
+    var payload = {
+      type: 'response',
+      response_id: study.id, version: VERSION,
+      frame: Number(body.dataset.frame), kit: Number(body.dataset.kit),
+      consent_at: study.consent_at || '', submitted_at: new Date().toISOString(),
+      duration_sec: Math.round((Date.now() - study.started_ms) / 1000), page_seconds: pageSeconds,
+      town: study.town || '',
+      pi_1: pi[0], pi_2: pi[1], pi_3: pi[2], pi_mean: mean(pi),
+      reserved: reserved,
+      vw_too_cheap: vw[0], vw_bargain: vw[1], vw_expensive: vw[2], vw_too_expensive: vw[3], vw_ordered: ordered ? 1 : 0,
+      green_1: gr[0], green_2: gr[1], green_3: gr[2], green_4: gr[3], green_5: gr[4], green_6: gr[5], green_mean: mean(gr),
+      manip_check: Number(d.manip_check), attention_pass: d.attention === '5' ? 1 : 0,
+      workplace_type: d.workplace_type, coffee_per_week: d.coffee_per_week, prior_customer: d.prior_customer,
+      age_band: d.age_band, gender: d.gender,
+      preview: preview ? 1 : 0
+    };
+    f.querySelector('[type=submit]').disabled = true;
+    NAZ_LOOP.send(payload).then(function (status) {
+      if (!preview) NAZ_LOOP.markDone();
+      window.location.href = '/loop/thanks.html' + (status === 'preview' ? '?preview=1' : '');
+    });
+  });
+})();
+</script>
+</body>
+</html>

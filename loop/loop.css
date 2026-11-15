@@ -1,0 +1,113 @@
+/* Naz Loop study pages — matches nazventures.online (cream / espresso / brown, Playfair + Poppins + Georgia) */
+:root{
+  --cream:#f7f4ef; --sand:#f7eede; --sand-line:#f0dfc4; --paper:#ffffff;
+  --ink:#0b0b0b; --espresso:#2b1b14; --brown:#6f4e37; --deep:#5c2b16;
+  --muted:#5f5149; --line:rgba(11,11,11,.14); --ok:#2f6b3a; --warn:#9a3b16;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:Arial,Helvetica,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+img{max-width:100%;display:block}
+.shell{width:min(1080px,calc(100% - 40px));margin:0 auto}
+.narrow{width:min(720px,calc(100% - 40px));margin:0 auto}
+
+/* Header (same look as the site's shared bar, without the nav so participants stay in the study) */
+.nvgh-bar{position:sticky;top:0;z-index:50;background:rgba(247,238,222,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--sand-line);font-family:'Poppins',Arial,sans-serif}
+.nvgh-inner{max-width:1080px;margin:0 auto;padding:0 20px;height:68px;display:flex;align-items:center;justify-content:space-between}
+.nvgh-brand{display:flex;align-items:center;gap:10px;font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:1.15rem;color:var(--deep);text-decoration:none}
+.nvgh-brand img{width:36px;height:36px;object-fit:contain}
+.nvgh-brand small{display:block;font-family:'Poppins',Arial,sans-serif;font-size:.6rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#8a6a58}
+.nvgh-tag{font-family:'Poppins',Arial,sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--deep);border:1px solid var(--sand-line);background:#fff8ee;padding:7px 12px;border-radius:999px}
+
+/* Typography */
+.eyebrow{font-family:'Poppins',Arial,sans-serif;font-size:.74rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--brown);margin:0 0 14px}
+h1,h2,h3{font-family:Georgia,'Times New Roman',serif;font-weight:400;letter-spacing:-.02em;margin:0}
+h1{font-size:clamp(2.3rem,7vw,4.2rem);line-height:1.02}
+h1 em,h2 em{color:var(--brown);font-style:italic}
+h2{font-size:clamp(1.7rem,4.6vw,2.5rem);line-height:1.1}
+h3{font-size:1.25rem;line-height:1.2}
+.lead{font-family:Georgia,serif;font-size:clamp(1.05rem,2.6vw,1.22rem);color:#3a2d26;margin:18px 0 0;max-width:34em}
+.small{font-size:.86rem;color:var(--muted)}
+
+/* Buttons */
+.button{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--brown);color:#fff;border:0;border-radius:100px;padding:15px 24px;font:700 .92rem/1 Arial,Helvetica,sans-serif;cursor:pointer;text-decoration:none;transition:background .15s ease,opacity .15s ease}
+.button:hover{background:var(--espresso)}
+.button.ghost{background:transparent;color:var(--ink);border:1px solid var(--ink)}
+.button.ghost:hover{background:#efe8de}
+.button[disabled]{opacity:.45;cursor:not-allowed}
+.button.block{width:100%}
+
+/* Hero */
+.hero{padding:44px 0 28px}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+.hero-photo{position:relative;border-radius:22px;overflow:hidden;background:var(--espresso);aspect-ratio:4/5}
+.hero-photo img{width:100%;height:100%;object-fit:cover;opacity:.92}
+.cup-badge{position:absolute;left:18px;bottom:18px;right:18px;background:rgba(247,244,239,.95);border-radius:16px;padding:14px 16px;display:flex;gap:12px;align-items:center}
+.cup-icon{flex:0 0 46px;height:56px;position:relative}
+.cup-icon .lid{position:absolute;top:0;left:3px;right:3px;height:10px;border-radius:6px 6px 2px 2px;background:var(--espresso)}
+.cup-icon .body{position:absolute;top:9px;left:6px;right:6px;bottom:0;background:var(--brown);clip-path:polygon(0 0,100% 0,88% 100%,12% 100%);display:flex;align-items:center;justify-content:center;color:#fff;font:700 .78rem Arial}
+.cup-badge b{display:block;font-family:Georgia,serif;font-weight:400;font-size:1.02rem}
+.price-chip{display:inline-block;margin-top:22px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 16px;font-size:.95rem}
+.price-chip strong{font-family:Georgia,serif;font-size:1.25rem;font-weight:400;color:var(--espresso)}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+
+/* Sections */
+.section{padding:40px 0;border-top:1px solid var(--line)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:20px}
+.card .num{font-family:Georgia,serif;font-size:1.6rem;color:var(--brown)}
+.menu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px}
+.menu-item{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 16px;font-family:Georgia,serif}
+.menu-item span{display:block;font-family:Arial,sans-serif;font-size:.78rem;color:var(--muted)}
+.windows{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
+.kit{background:var(--espresso);color:#f7eede;border-radius:22px;padding:26px;display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center;margin-top:22px}
+.kit h3{color:#fff}
+.kit p{margin:8px 0 0;color:#eadbc8}
+.kit .cups{display:flex;gap:6px}
+.kit .cups .cup-icon .body{background:#c9a27e;color:var(--espresso)}
+.kit .cups .cup-icon .lid{background:#f7eede}
+
+/* Study panel */
+.study{background:var(--sand);border-top:1px solid var(--sand-line);padding:36px 0 60px}
+.panel{background:var(--paper);border:1px solid var(--sand-line);border-radius:22px;padding:24px;margin-top:18px}
+.panel + .panel{margin-top:16px}
+.step-label{font:700 .72rem/1 'Poppins',Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--brown);margin-bottom:8px}
+.q{padding:16px 0;border-top:1px solid var(--line)}
+.q:first-of-type{border-top:0}
+.q > p{margin:0 0 10px;font-weight:700}
+.scale{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.scale label{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:.72rem;color:var(--muted);text-align:center;cursor:pointer}
+.scale input{appearance:none;-webkit-appearance:none;width:34px;height:34px;border-radius:50%;border:1.5px solid var(--brown);background:#fff;margin:0;cursor:pointer;display:grid;place-items:center;font:700 .85rem Arial;color:var(--brown)}
+.scale input::before{content:attr(value)}
+.scale input:checked{background:var(--brown);color:#fff}
+.scale-ends{display:flex;justify-content:space-between;font-size:.74rem;color:var(--muted);margin-top:6px}
+.choices{display:grid;gap:8px}
+.choices label{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer}
+.choices input{margin-top:3px;accent-color:var(--brown)}
+.peso{display:flex;align-items:center;border:1px solid var(--line);border-radius:12px;background:#fff;overflow:hidden;max-width:240px}
+.peso span{padding:12px 14px;background:#efe8de;font-weight:700}
+.peso input{border:0;padding:12px;font-size:1rem;width:100%;outline:none}
+select,input[type=text],input[type=tel]{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:1rem}
+.reserve{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.timer{font-size:.86rem;color:var(--muted);margin-top:10px;text-align:center}
+.error{color:var(--warn);font-size:.86rem;margin-top:10px;display:none}
+.error.show{display:block}
+.notice{background:#fff8ee;border:1px solid var(--sand-line);border-radius:14px;padding:14px 16px;font-size:.9rem}
+.hidden{display:none !important}
+.footer{padding:28px 0;font-size:.8rem;color:var(--muted);text-align:center}
+.consent-text p{margin:0 0 10px}
+.consent-text h3{margin:16px 0 6px;font-size:1.05rem}
+
+@media (max-width:820px){
+  .hero-grid{grid-template-columns:1fr}
+  .hero-photo{aspect-ratio:16/11}
+  .cards,.menu-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:520px){
+  .cards{grid-template-columns:1fr}
+  .windows,.reserve{grid-template-columns:1fr}
+  .scale input{width:30px;height:30px}
+  .kit{grid-template-columns:1fr}
+  .nvgh-tag{display:none}
+}

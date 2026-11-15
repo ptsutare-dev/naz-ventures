@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Naz Loop | A short study by Naz Coffee</title>
+<meta name="description" content="Help Naz Coffee test a new workplace coffee service. About 8 minutes.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@600;700&display=swap">
+<link rel="stylesheet" href="/loop/loop.css">
+</head>
+<body>
+<header class="nvgh-bar">
+  <div class="nvgh-inner">
+    <a class="nvgh-brand" href="/">
+      <img src="/assets/logos/naz-ventures-mark.png" alt="Naz Ventures" onerror="this.style.display='none'">
+      <span>Naz Ventures<small>Business Ecosystem</small></span>
+    </a>
+    <span class="nvgh-tag">Naz Coffee study</span>
+  </div>
+</header>
+
+<main class="narrow" style="padding:36px 0 60px">
+
+  <!-- Step 1: intro -->
+  <section id="s-intro">
+    <p class="eyebrow">About 8 minutes · on your phone</p>
+    <h1>Help us test a <em>new idea</em> for your workday coffee.</h1>
+    <p class="lead">Naz Coffee in Pangil is testing a new service for people who work in the lakeshore towns. You'll look at one web page and answer a few short questions. You can join a raffle for one of five free months of coffee at the end.</p>
+    <div class="hero-cta"><button class="button" data-go="s-consent">Start</button></div>
+  </section>
+
+  <!-- Already participated -->
+  <section id="s-done" class="hidden">
+    <h2>You've already taken part. <em>Thank you!</em></h2>
+    <p class="lead">Each person can answer once, so your earlier answers are the ones we'll use.</p>
+  </section>
+
+  <!-- Step 2: consent -->
+  <section id="s-consent" class="hidden">
+    <p class="eyebrow">Step 1 of 2 · Informed consent</p>
+    <h2>Before you begin</h2>
+    <div class="panel consent-text">
+      <h3>Study title</h3>
+      <p>Testing marketing messages for a reusable-cup workplace coffee subscription in the Baybay Circuit</p>
+      <h3>Researcher</h3>
+      <p>Patrick Sutare, MS in Entrepreneurship student, De La Salle University (ENT602M Entrepreneurial Marketing)</p>
+      <h3>Purpose</h3>
+      <p>To learn how workers respond to different descriptions of a proposed coffee subscription service.</p>
+      <h3>What you will do</h3>
+      <p>View one web page and answer about 25 questions on your phone. This takes about 8 minutes.</p>
+      <h3>Voluntary participation</h3>
+      <p>Taking part is your choice. You may stop at any time without penalty. Choosing not to take part will not affect your relationship with Naz Coffee or with Balian Community College.</p>
+      <h3>Risks and benefits</h3>
+      <p>There are no known risks beyond everyday life. You may join a raffle for one of five free months of Loop Lite.</p>
+      <h3>Information you should know</h3>
+      <p>Different participants see different versions of the page. This is part of the study design and is explained at the end. Reserving a founding slot is free and does not commit you to buy.</p>
+      <h3>Confidentiality</h3>
+      <p>Answers are recorded without your name. Your mobile number, if you join the raffle, is kept separately and deleted after the draw. Data are handled under the Data Privacy Act of 2012 (RA 10173), used only for this academic requirement and Naz Coffee's planning, and reported only as group results.</p>
+      <h3>Questions</h3>
+      <p>Contact the researcher, Patrick Sutare, through Naz Coffee's official page, or the course instructor, Dr. Louie A. Divinagracia, De La Salle University.</p>
+    </div>
+    <div class="panel">
+      <p style="margin:0 0 14px;font-weight:700">I am 18 or older. I have read this information and agree to take part.</p>
+      <div class="reserve">
+        <button class="button" id="agree">I agree</button>
+        <button class="button ghost" id="disagree">I do not agree</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 3: screening -->
+  <section id="s-screen" class="hidden">
+    <p class="eyebrow">Step 2 of 2 · A few quick checks</p>
+    <h2>Is this study a fit for you?</h2>
+    <form id="screenForm" class="panel" novalidate>
+      <div class="q"><p>Are you 18 years old or older?</p>
+        <div class="choices">
+          <label><input type="radio" name="age18" value="yes"> Yes</label>
+          <label><input type="radio" name="age18" value="no"> No</label>
+        </div></div>
+      <div class="q"><p>Do you work on-site (not from home) at least 3 days a week?</p>
+        <div class="choices">
+          <label><input type="radio" name="onsite" value="yes"> Yes</label>
+          <label><input type="radio" name="onsite" value="no"> No</label>
+        </div></div>
+      <div class="q"><p>In which town is your workplace?</p>
+        <select name="town">
+          <option value="">Choose a town</option>
+          <option>Pangil</option><option>Pakil</option><option>Paete</option>
+          <option>Siniloan</option><option>Famy</option><option>Mabitac</option>
+          <option value="Other">Somewhere else</option>
+        </select></div>
+      <div class="q"><p>Do you drink coffee, tea or matcha at least twice a week?</p>
+        <div class="choices">
+          <label><input type="radio" name="drinker" value="yes"> Yes</label>
+          <label><input type="radio" name="drinker" value="no"> No</label>
+        </div></div>
+      <div class="q"><p>Are you a Naz Coffee staff member, intern, or a family member of the owner?</p>
+        <div class="choices">
+          <label><input type="radio" name="insider" value="yes"> Yes</label>
+          <label><input type="radio" name="insider" value="no"> No</label>
+        </div></div>
+      <div class="q"><p>Are you currently enrolled in a class taught by Patrick Sutare at Balian Community College?</p>
+        <div class="choices">
+          <label><input type="radio" name="student" value="yes"> Yes</label>
+          <label><input type="radio" name="student" value="no"> No</label>
+        </div></div>
+      <p class="error" id="screenError">Please answer every question.</p>
+      <button class="button block" type="submit" style="margin-top:16px">Continue</button>
+    </form>
+  </section>
+
+  <!-- Not eligible / declined -->
+  <section id="s-out" class="hidden">
+    <h2>Thank you for your time.</h2>
+    <p class="lead" id="outText">This study is for people who work on-site in the six lakeshore towns we deliver to, so we won't ask you any more questions.</p>
+    <p class="small" style="margin-top:20px">You're always welcome at Naz Coffee, Pangil.</p>
+  </section>
+</main>
+
+<footer class="footer">Naz Coffee · Pangil, Laguna · A Naz Ventures business</footer>
+
+<script src="/loop/loop.js"></script>
+<script>
+(function () {
+  var TOWNS = ['Pangil', 'Pakil', 'Paete', 'Siniloan', 'Famy', 'Mabitac'];
+  function show(id) {
+    ['s-intro','s-done','s-consent','s-screen','s-out'].forEach(function (s) {
+      document.getElementById(s).classList.toggle('hidden', s !== id);
+    });
+    window.scrollTo(0, 0);
+  }
+  if (NAZ_LOOP.isDone() && !NAZ_LOOP.isPreview()) { show('s-done'); return; }
+
+  var study = { id: NAZ_LOOP.uid(), started_ms: Date.now() };
+
+  document.querySelectorAll('[data-go]').forEach(function (b) {
+    b.addEventListener('click', function () { show(b.getAttribute('data-go')); });
+  });
+
+  document.getElementById('agree').addEventListener('click', function () {
+    study.consent_at = new Date().toISOString();
+    show('s-screen');
+  });
+  document.getElementById('disagree').addEventListener('click', function () {
+    document.getElementById('outText').textContent = 'No problem at all. Nothing you entered has been recorded.';
+    show('s-out');
+  });
+
+  document.getElementById('screenForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var f = e.target, v = function (n) { var el = f.querySelector('[name="' + n + '"]:checked') || f.querySelector('[name="' + n + '"]'); return el ? el.value : ''; };
+    var ans = { age18: v('age18'), onsite: v('onsite'), town: f.town.value, drinker: v('drinker'), insider: v('insider'), student: v('student') };
+    var missing = Object.keys(ans).some(function (k) { return !ans[k]; });
+    document.getElementById('screenError').classList.toggle('show', missing);
+    if (missing) return;
+
+    var reasons = [];
+    if (ans.age18 !== 'yes') reasons.push('under18');
+    if (ans.onsite !== 'yes') reasons.push('not_onsite');
+    if (TOWNS.indexOf(ans.town) < 0) reasons.push('outside_towns');
+    if (ans.drinker !== 'yes') reasons.push('not_drinker');
+    if (ans.insider === 'yes') reasons.push('naz_insider');
+    if (ans.student === 'yes') reasons.push('researcher_student');
+
+    if (reasons.length) {
+      NAZ_LOOP.send({ type: 'screenout', id: study.id, at: new Date().toISOString(), reasons: reasons.join(';') });
+      show('s-out');
+      return;
+    }
+    var forced = NAZ_LOOP.param('v').toLowerCase();
+    study.version = (NAZ_LOOP.isPreview() && NAZ_LOOP.VERSIONS.indexOf(forced) >= 0) ? forced : NAZ_LOOP.assign();
+    study.town = ans.town;
+    NAZ_LOOP.save(study);
+    window.location.href = '/loop/' + study.version + '.html';
+  });
+})();
+</script>
+</body>
+</html>

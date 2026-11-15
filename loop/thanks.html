@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thank you | Naz Loop study</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@600;700&display=swap">
+<link rel="stylesheet" href="/loop/loop.css">
+</head>
+<body>
+<header class="nvgh-bar">
+  <div class="nvgh-inner">
+    <a class="nvgh-brand" href="/">
+      <img src="/assets/logos/naz-ventures-mark.png" alt="Naz Ventures" onerror="this.style.display='none'">
+      <span>Naz Ventures<small>Business Ecosystem</small></span>
+    </a>
+    <span class="nvgh-tag">Naz Coffee study</span>
+  </div>
+</header>
+
+<main class="narrow" style="padding:36px 0 60px">
+  <p class="notice hidden" id="previewNote">Preview mode: answers were not saved. Add your Google Sheet link to <code>loop.js</code> to start collecting.</p>
+
+  <p class="eyebrow">All done</p>
+  <h1>Thank you for <em>your time.</em></h1>
+  <p class="lead">Your answers have been recorded without your name.</p>
+
+  <div class="panel">
+    <p class="step-label">What this study was about</p>
+    <p style="margin:0 0 10px">Naz Coffee is planning <strong>Naz Loop</strong>: a monthly coffee plan delivered to workplaces in reusable cups that we collect, wash and refill.</p>
+    <p style="margin:0 0 10px">To learn what matters to people, participants were shown one of four versions of the page. Some versions described Naz Loop mainly as convenient. Others described it as a shared ritual that avoids single-use cups. The cup-kit terms also differed: some saw a refundable deposit, others a free kit with a fee for lost cups.</p>
+    <p style="margin:0">Comparing the groups shows which description and which terms people prefer. Nothing you answered commits you to buy anything.</p>
+  </div>
+
+  <div class="panel" id="raffleBox">
+    <p class="step-label">Optional · Raffle and launch updates</p>
+    <h3>Join the raffle for one of five free months of Loop Lite</h3>
+    <p class="small">Your number is saved separately from your answers, so it can't be linked to them. Raffle numbers are deleted after the draw.</p>
+    <form id="raffleForm" novalidate>
+      <div class="q"><p>First name</p><input type="text" name="first_name" autocomplete="given-name"></div>
+      <div class="q"><p>Mobile or Viber number</p><input type="tel" name="mobile" inputmode="tel" placeholder="09XX XXX XXXX" autocomplete="tel"></div>
+      <div class="q">
+        <div class="choices">
+          <label><input type="checkbox" name="raffle" checked> Enter me in the raffle</label>
+          <label><input type="checkbox" name="updates"> Message me when Naz Loop launches at my workplace</label>
+        </div>
+      </div>
+      <p class="error" id="raffleError">Please enter a valid mobile number (11 digits starting with 09).</p>
+      <button class="button block" type="submit">Submit</button>
+    </form>
+  </div>
+  <div class="panel hidden" id="raffleDone"><h3>You're in. Good luck!</h3><p class="small" style="margin:6px 0 0">We'll contact winners by Viber after the draw.</p></div>
+
+  <p class="small" style="margin-top:24px">Questions? Message Naz Coffee's official page or ask for Patrick at the shop in Pangil.</p>
+</main>
+
+<footer class="footer">Naz Coffee · Pangil, Laguna · A Naz Ventures business</footer>
+
+<script src="/loop/loop.js"></script>
+<script>
+(function () {
+  if (NAZ_LOOP.param('preview') === '1' || NAZ_LOOP.isPreview()) document.getElementById('previewNote').classList.remove('hidden');
+  document.getElementById('raffleForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var f = e.target, mobile = f.mobile.value.replace(/\D/g, '');
+    if (mobile.indexOf('63') === 0) mobile = '0' + mobile.slice(2);
+    var ok = /^09\d{9}$/.test(mobile) && (f.raffle.checked || f.updates.checked);
+    document.getElementById('raffleError').classList.toggle('show', !ok);
+    if (!ok) return;
+    f.querySelector('[type=submit]').disabled = true;
+    NAZ_LOOP.send({
+      type: 'raffle', at: new Date().toISOString(),
+      first_name: f.first_name.value.trim().slice(0, 40), mobile: mobile,
+      raffle: f.raffle.checked ? 1 : 0, launch_updates: f.updates.checked ? 1 : 0
+    }).then(function () {
+      document.getElementById('raffleBox').classList.add('hidden');
+      document.getElementById('raffleDone').classList.remove('hidden');
+    });
+  });
+})();
+</script>
+</body>
+</html>
