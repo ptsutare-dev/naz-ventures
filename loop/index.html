@@ -171,10 +171,15 @@
       return;
     }
     var forced = NAZ_LOOP.param('v').toLowerCase();
-    study.version = (NAZ_LOOP.isPreview() && NAZ_LOOP.VERSIONS.indexOf(forced) >= 0) ? forced : NAZ_LOOP.assign();
-    study.town = ans.town;
-    NAZ_LOOP.save(study);
-    window.location.href = '/loop/' + study.version + '.html';
+    var go = f.querySelector('[type=submit]');
+    go.disabled = true; go.textContent = 'One moment…';
+    var pick = (NAZ_LOOP.isPreview() && NAZ_LOOP.VERSIONS.indexOf(forced) >= 0) ? Promise.resolve(forced) : NAZ_LOOP.requestVersion(study.id);
+    pick.then(function (version) {
+      study.version = version;
+      study.town = ans.town;
+      NAZ_LOOP.save(study);
+      window.location.href = '/loop/' + version + '.html';
+    });
   });
 })();
 </script>

@@ -29,7 +29,7 @@ NAZ_LOOP.markDone = function () {
 };
 NAZ_LOOP.isPreview = function () { return !NAZ_LOOP.ENDPOINT; };
 
-/* Simple random assignment: each version has a 25% chance. */
+/* Fallback only: a simple random pick, used if the Google Sheet cannot be reached. */
 NAZ_LOOP.assign = function () {
   var a = new Uint32Array(1);
   (window.crypto || window.msCrypto).getRandomValues(a);
@@ -55,6 +55,18 @@ NAZ_LOOP.send = function (payload) {
     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify(payload)
   }).then(function () { return 'sent'; }).catch(function () { return 'failed'; });
+};
+
+/* Block randomization: ask the Google Sheet for the next version in its shuffled deck of four.
+ * Falls back to a random pick if the sheet does not answer within 6 seconds. */
+NAZ_LOOP.requestVersion = function (id) {
+  if (NAZ_LOOP.isPreview()) return Promise.resolve(NAZ_LOOP.assign());
+  var ctrl = window.AbortController ? new AbortController() : null;
+  var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 6000);
+  return fetch(NAZ_LOOP.ENDPOINT + '?action=assign&id=' + encodeURIComponent(id), ctrl ? { signal: ctrl.signal } : {})
+    .then(function (r) { return r.json(); })
+    .then(function (d) { clearTimeout(timer); return NAZ_LOOP.VERSIONS.indexOf(d.version) >= 0 ? d.version : NAZ_LOOP.assign(); })
+    .catch(function () { clearTimeout(timer); return NAZ_LOOP.assign(); });
 };
 
 NAZ_LOOP.param = function (name) {
