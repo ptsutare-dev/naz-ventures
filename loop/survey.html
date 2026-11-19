@@ -102,6 +102,84 @@
       </div>
     </section>
 
+    <!-- Step: product features (what to build into Naz Loop) -->
+    <section class="step-page" data-step="features">
+      <p class="eyebrow">Build your Loop</p>
+      <h2>If you joined, how would it <em>work best for you?</em></h2>
+      <div class="panel">
+        <div class="q"><p>Do you ever have coffee or snacks delivered to your workplace now (by a rider, a co-worker or the shop)?</p>
+          <div class="choices">
+            <label><input type="radio" name="deliv_now" value="often"> Often, at least once a week</label>
+            <label><input type="radio" name="deliv_now" value="sometimes"> Sometimes</label>
+            <label><input type="radio" name="deliv_now" value="never"> Never</label>
+          </div></div>
+        <div class="q"><p>Which delivery time would suit you best?</p>
+          <div class="choices">
+            <label><input type="radio" name="window" value="morning"> Morning, 9:00–10:30 a.m.</label>
+            <label><input type="radio" name="window" value="midday"> Around lunch, 11:30 a.m.–1:00 p.m.</label>
+            <label><input type="radio" name="window" value="afternoon"> Afternoon, 2:00–3:30 p.m.</label>
+            <label><input type="radio" name="window" value="two_a_day"> I'd want a drink at two of these times</label>
+          </div></div>
+        <div class="q"><p>How many Loop drinks a month would you really use?</p>
+          <div class="choices">
+            <label><input type="radio" name="plan_size" value="8"> About 8 (2 a week)</label>
+            <label><input type="radio" name="plan_size" value="12"> About 12 (3 a week)</label>
+            <label><input type="radio" name="plan_size" value="20"> About 20 (every workday)</label>
+            <label><input type="radio" name="plan_size" value="40"> About 40 (2 every workday)</label>
+          </div></div>
+        <div class="q"><p>How would you rather pay for the plan?</p>
+          <div class="choices">
+            <label><input type="radio" name="billing" value="monthly"> Once a month</label>
+            <label><input type="radio" name="billing" value="payday"> Twice a month, on payday (15th and 30th)</label>
+            <label><input type="radio" name="billing" value="weekly"> Every week</label>
+          </div></div>
+        <div class="q"><p>How would you pay?</p>
+          <div class="choices">
+            <label><input type="radio" name="pay_method" value="ewallet"> GCash or Maya</label>
+            <label><input type="radio" name="pay_method" value="cash"> Cash</label>
+            <label><input type="radio" name="pay_method" value="bank"> Bank transfer</label>
+            <label><input type="radio" name="pay_method" value="salary"> Salary deduction through my workplace</label>
+          </div></div>
+        <div class="q"><p>Where would you rather choose, skip or change your drink?</p>
+          <div class="choices">
+            <label><input type="radio" name="order_channel" value="viber"> Viber</label>
+            <label><input type="radio" name="order_channel" value="messenger"> Facebook Messenger</label>
+            <label><input type="radio" name="order_channel" value="sms"> Text message</label>
+            <label><input type="radio" name="order_channel" value="web"> A simple web page</label>
+          </div></div>
+        <div class="q"><p>How would you rather return your Loop cup?</p>
+          <div class="choices">
+            <label><input type="radio" name="cup_return" value="rider"> Hand it to the rider at the next delivery</label>
+            <label><input type="radio" name="cup_return" value="dropbox"> Leave it in a Loop box at my workplace</label>
+            <label><input type="radio" name="cup_return" value="cafe"> Bring it back to the café</label>
+          </div></div>
+        <div class="q"><p>Would you join a team plan, where 5 or more co-workers subscribe together for a lower price per drink?</p>
+          <div class="choices">
+            <label><input type="radio" name="team_plan" value="yes"> Yes</label>
+            <label><input type="radio" name="team_plan" value="maybe"> Maybe</label>
+            <label><input type="radio" name="team_plan" value="no"> No</label>
+          </div></div>
+        <div class="q"><p>Which extras would you use? Choose all that apply.</p>
+          <div class="choices" data-multi="addons">
+            <label><input type="checkbox" name="addons" value="pastry"> A pastry or snack with my drink</label>
+            <label><input type="checkbox" name="addons" value="gift_drink"> Send a drink to a co-worker</label>
+            <label><input type="checkbox" name="addons" value="meeting_order"> Group orders for meetings or events</label>
+            <label><input type="checkbox" name="addons" value="saved_pref"> Save my sugar and milk preference</label>
+            <label><input type="checkbox" name="addons" value="rollover"> Carry unused drinks over to next month</label>
+            <label><input type="checkbox" name="addons" value="none"> None of these</label>
+          </div></div>
+        <div class="q"><p>What would worry you most about subscribing?</p>
+          <div class="choices">
+            <label><input type="radio" name="worry" value="unused"> Paying ahead and not using all my drinks</label>
+            <label><input type="radio" name="worry" value="late"> The drink arriving late, cold or melted</label>
+            <label><input type="radio" name="worry" value="hygiene"> Whether the cups are really clean</label>
+            <label><input type="radio" name="worry" value="price"> The price</label>
+            <label><input type="radio" name="worry" value="lock_in"> Being stuck in a plan I can't stop</label>
+            <label><input type="radio" name="worry" value="none"> Nothing would worry me</label>
+          </div></div>
+      </div>
+    </section>
+
     <!-- Step: Part A habits -->
     <section class="step-page" data-step="habits">
       <p class="eyebrow">Your coffee habits</p>
@@ -319,10 +397,23 @@
   });
 
   var form = document.getElementById('survey');
+  form.querySelectorAll('input[name=addons]').forEach(function (b) {
+    b.addEventListener('change', function () {
+      if (!b.checked) return;
+      form.querySelectorAll('input[name=addons]').forEach(function (o) {
+        if (o !== b && (b.value === 'none' || o.value === 'none')) o.checked = false;
+      });
+    });
+  });
   var pages = Array.prototype.slice.call(document.querySelectorAll('.step-page'));
   var idx = 0, offerSeconds = {}, pageStart = Date.now(), vwWarned = false;
 
   function val(n) {
+    var boxes = form.querySelectorAll('input[type=checkbox][name="' + n + '"]');
+    if (boxes.length) {   // multi-select: semicolon list of ticked values
+      return Array.prototype.filter.call(boxes, function (b) { return b.checked; })
+        .map(function (b) { return b.value; }).join(';');
+    }
     var c = form.querySelector('[name="' + n + '"]:checked');
     if (c) return c.value;
     var el = form.querySelector('[name="' + n + '"]');
@@ -387,7 +478,8 @@
     var vw = ['vw_too_cheap','vw_bargain','vw_expensive','vw_too_expensive'];
     vw.forEach(function (n) { p[n] = Number(val(n)); });
     p.vw_ordered = (p.vw_too_cheap <= p.vw_bargain && p.vw_bargain <= p.vw_expensive && p.vw_expensive <= p.vw_too_expensive) ? 1 : 0;
-    ['buy_freq','time_of_day','channel','buy_for','spend','step_out','tumbler','fav_drink','found_naz'].forEach(function (n) { p[n] = val(n); });
+    ['deliv_now','window','plan_size','billing','pay_method','order_channel','cup_return','team_plan','addons','worry',
+     'buy_freq','time_of_day','channel','buy_for','spend','step_out','tumbler','fav_drink','found_naz'].forEach(function (n) { p[n] = val(n); });
     for (var i = 1; i <= 8; i++) p['aio_' + i] = Number(val('aio_' + i));
     var gr = [1, 2, 3, 4, 5, 6].map(function (k) { return Number(val('green_' + k)); });
     gr.forEach(function (g, k) { p['green_' + (k + 1)] = g; });
