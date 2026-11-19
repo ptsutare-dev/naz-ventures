@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Naz Loop | A short study by Naz Coffee</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@600;700&display=swap">
+<link rel="stylesheet" href="/loop/loop.css">
+<style>
+  .progress{height:6px;background:var(--sand-line);border-radius:99px;overflow:hidden;margin:0 0 22px}
+  .progress i{display:block;height:100%;background:var(--brown);width:0;transition:width .3s ease}
+  .offer{background:var(--paper);border:1px solid var(--sand-line);border-radius:22px;padding:24px;margin-top:6px}
+  .offer h2{font-size:clamp(1.6rem,5vw,2.2rem)}
+  .offer .points{margin-top:16px}
+  .offer .kit{margin-top:18px;padding:20px}
+  .offer .price-chip{margin-top:18px}
+  .pick label{align-items:flex-start}
+  .pick b{display:block;font-family:Georgia,serif;font-weight:400;font-size:1.05rem}
+  .pick span{display:block;font-size:.84rem;color:var(--muted);margin-top:2px}
+  .navrow{display:grid;grid-template-columns:auto 1fr;gap:10px;margin-top:18px}
+  .q input[type=text]{margin-top:8px}
+</style>
+</head>
+<body>
+<header class="nvgh-bar">
+  <div class="nvgh-inner">
+    <a class="nvgh-brand" href="/">
+      <img src="/assets/logos/naz-ventures-mark.png" alt="Naz Ventures" onerror="this.style.display='none'">
+      <span>Naz Ventures<small>Business Ecosystem</small></span>
+    </a>
+    <span class="nvgh-tag">Naz Loop study</span>
+  </div>
+</header>
+
+<main class="narrow" style="padding:28px 0 60px">
+  <div class="progress" aria-hidden="true"><i id="bar"></i></div>
+  <form id="survey" novalidate>
+
+    <!-- Step: shared basics (identical for every offer) -->
+    <section class="step-page" data-step="basics">
+      <p class="eyebrow">Meet Naz Loop</p>
+      <h2>A monthly coffee plan, <em>delivered to your workplace.</em></h2>
+      <p class="lead">First, the parts that are the same in all four versions you'll see.</p>
+
+      <div class="panel">
+        <div class="price-chip" style="margin-top:0"><strong>Loop Daily: ₱2,580 a month</strong><br>20 drinks a month · ₱129 per drink</div>
+        <p class="step-label" style="margin-top:22px">How it works</p>
+        <div class="steps">
+          <div class="step"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 8h12l-1.4 12H7.4z"/><path d="M5 8h14M8 5h8"/></svg><b>Pick a drink</b><span>Change it anytime</span></div>
+          <div class="step"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="16" r="3.5"/><circle cx="18" cy="16" r="3.5"/><path d="M6 16l4-8h5l3 8M9 8h3"/></svg><b>We bring it</b><span>To your workplace</span></div>
+          <div class="step"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg><b>Skip or pause</b><span>On Viber, by 8 p.m.</span></div>
+        </div>
+        <p class="step-label" style="margin-top:22px">Delivery windows</p>
+        <div class="windows" style="margin-top:0">
+          <div class="window"><span>Morning</span><b>9:00–10:30 a.m.</b></div>
+          <div class="window"><span>Afternoon</span><b>2:00–3:30 p.m.</b></div>
+        </div>
+        <p class="step-label" style="margin-top:22px">The Loop menu · hot or iced</p>
+        <div class="menu-grid">
+          <div class="menu-item">Flat White</div><div class="menu-item">Cafe Latte</div><div class="menu-item">Spanish Latte</div>
+          <div class="menu-item">Naz Signature</div><div class="menu-item">Matcha Latte</div><div class="menu-item">Long Black</div>
+        </div>
+        <p class="step-label" style="margin-top:22px">Your Loop cup</p>
+        <div class="features">
+          <div class="feature"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4L7 20M17 4l-2 16M4.5 9h15M3.5 15h15"/></svg><div><b>Yours alone</b><span>Printed with your number</span></div></div>
+          <div class="feature"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5c3 4 6 7.2 6 10.5a6 6 0 0 1-12 0c0-3.3 3-6.5 6-10.5z"/></svg><div><b>Cleaned every day</b><span>Washed and sanitized after each use</span></div></div>
+          <div class="feature"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4a2 2 0 0 1 2 2v7.3a4 4 0 1 1-4 0V6a2 2 0 0 1 2-2z"/></svg><div><b>Hot or iced</b><span>12 oz, with a sip lid</span></div></div>
+          <div class="feature"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l7 3v5.2c0 4.3-3 7.6-7 8.8-4-1.2-7-4.5-7-8.8V6.5z"/><path d="M9 12l2 2 4-4"/></svg><div><b>Food-safe</b><span>BPA-free</span></div></div>
+        </div>
+      </div>
+      <p class="small" style="margin-top:16px">Next you'll see four versions of the offer, one at a time. Each is a little different. Please rate each one on its own.</p>
+    </section>
+
+    <!-- Steps: four offers (filled in by script, in this person's random order) -->
+    <section class="step-page" data-step="offer" data-pos="1"></section>
+    <section class="step-page" data-step="offer" data-pos="2"></section>
+    <section class="step-page" data-step="offer" data-pos="3"></section>
+    <section class="step-page" data-step="offer" data-pos="4"></section>
+
+    <!-- Step: favorite -->
+    <section class="step-page" data-step="pick">
+      <p class="eyebrow">Your favorite</p>
+      <h2>If you could choose only one, which would you <em>sign up for?</em></h2>
+      <div class="panel">
+        <div class="choices pick" id="pickList"></div>
+      </div>
+    </section>
+
+    <!-- Step: price -->
+    <section class="step-page" data-step="price">
+      <p class="eyebrow">Price</p>
+      <h2>What would one Loop drink be <em>worth to you?</em></h2>
+      <div class="panel">
+        <p class="small" style="margin-top:0">Think about one Naz Loop drink delivered to your workplace. Type a price in pesos.</p>
+        <div class="q"><p>At what price would a Loop drink be so cheap that you would doubt its quality?</p><div class="peso"><span>₱</span><input type="number" inputmode="numeric" min="0" name="vw_too_cheap"></div></div>
+        <div class="q"><p>At what price would it be a bargain, a great buy for the money?</p><div class="peso"><span>₱</span><input type="number" inputmode="numeric" min="0" name="vw_bargain"></div></div>
+        <div class="q"><p>At what price would it start to feel expensive, though you would still consider it?</p><div class="peso"><span>₱</span><input type="number" inputmode="numeric" min="0" name="vw_expensive"></div></div>
+        <div class="q"><p>At what price would it be so expensive that you would not consider it?</p><div class="peso"><span>₱</span><input type="number" inputmode="numeric" min="0" name="vw_too_expensive"></div></div>
+        <p class="error" id="vwError">Usually each answer is higher than the one before it. Please check your prices, or tap Next again to keep them.</p>
+      </div>
+    </section>
+
+    <!-- Step: Part A habits -->
+    <section class="step-page" data-step="habits">
+      <p class="eyebrow">Your coffee habits</p>
+      <h2>How coffee fits <em>your day</em></h2>
+      <div class="panel">
+        <div class="q"><p>In a usual week, how many times do you buy a coffee, tea or matcha drink (from anywhere)?</p>
+          <div class="choices">
+            <label><input type="radio" name="buy_freq" value="0-1"> 0 to 1 time</label>
+            <label><input type="radio" name="buy_freq" value="2"> 2 times</label>
+            <label><input type="radio" name="buy_freq" value="3-4"> 3 to 4 times</label>
+            <label><input type="radio" name="buy_freq" value="5+"> 5 times or more</label>
+          </div></div>
+        <div class="q"><p>When do you usually have it?</p>
+          <div class="choices">
+            <label><input type="radio" name="time_of_day" value="morning"> Morning</label>
+            <label><input type="radio" name="time_of_day" value="midday"> Around lunch</label>
+            <label><input type="radio" name="time_of_day" value="afternoon"> Afternoon</label>
+            <label><input type="radio" name="time_of_day" value="evening"> Evening</label>
+            <label><input type="radio" name="time_of_day" value="varies"> It varies</label>
+          </div></div>
+        <div class="q"><p>How do you usually get your Naz Coffee drink?</p>
+          <div class="choices">
+            <label><input type="radio" name="channel" value="dine_in"> Dine in</label>
+            <label><input type="radio" name="channel" value="takeout"> Take out</label>
+            <label><input type="radio" name="channel" value="delivery"> Delivery</label>
+            <label><input type="radio" name="channel" value="mix"> A mix of these</label>
+          </div></div>
+        <div class="q"><p>When you buy coffee, who is it usually for?</p>
+          <div class="choices">
+            <label><input type="radio" name="buy_for" value="self"> Just me</label>
+            <label><input type="radio" name="buy_for" value="1-2_others"> Me and 1 or 2 others</label>
+            <label><input type="radio" name="buy_for" value="group"> A group (3 or more)</label>
+          </div></div>
+        <div class="q"><p>How much do you usually spend on one drink?</p>
+          <div class="choices">
+            <label><input type="radio" name="spend" value="<100"> Less than ₱100</label>
+            <label><input type="radio" name="spend" value="100-139"> ₱100 to ₱139</label>
+            <label><input type="radio" name="spend" value="140-179"> ₱140 to ₱179</label>
+            <label><input type="radio" name="spend" value="180+"> ₱180 or more</label>
+          </div></div>
+        <div class="q"><p>During work hours, can you step out to buy coffee?</p>
+          <div class="choices">
+            <label><input type="radio" name="step_out" value="yes"> Yes, easily</label>
+            <label><input type="radio" name="step_out" value="sometimes"> Sometimes</label>
+            <label><input type="radio" name="step_out" value="rarely"> Rarely or never</label>
+          </div></div>
+        <div class="q"><p>Do you bring your own tumbler or reusable cup when you buy coffee?</p>
+          <div class="choices">
+            <label><input type="radio" name="tumbler" value="always"> Always or usually</label>
+            <label><input type="radio" name="tumbler" value="sometimes"> Sometimes</label>
+            <label><input type="radio" name="tumbler" value="never"> Rarely or never</label>
+          </div></div>
+        <div class="q"><p>What is your usual drink at Naz Coffee?</p>
+          <select name="fav_drink">
+            <option value="">Choose one</option>
+            <option>Flat White</option><option>Cafe Latte</option><option>Spanish Latte</option>
+            <option>Naz Signature</option><option>Matcha Latte</option><option>Long Black or Americano</option>
+            <option>Pour-over or brewed coffee</option><option>Non-coffee drink</option><option>Something else</option>
+          </select></div>
+        <div class="q"><p>How did you first find Naz Coffee?</p>
+          <select name="found_naz">
+            <option value="">Choose one</option>
+            <option>Walked or drove by</option><option>Facebook or Instagram</option>
+            <option>A friend, family member or co-worker</option><option>Food delivery app</option>
+            <option>An event, workshop or class</option><option>Something else</option>
+          </select></div>
+      </div>
+    </section>
+
+    <!-- Step: Part B lifestyle (unlabeled; used for clustering) -->
+    <section class="step-page" data-step="lifestyle">
+      <p class="eyebrow">You and your work</p>
+      <h2>How much do you agree with <em>each statement?</em></h2>
+      <div class="panel">
+        <p class="small" style="margin-top:0">1 = strongly disagree · 7 = strongly agree</p>
+        <div class="q" data-scale="aio_1"><p>I often buy drinks or snacks for my teammates.</p></div>
+        <div class="q" data-scale="aio_2"><p>My work makes it hard to leave my post.</p></div>
+        <div class="q" data-scale="aio_3"><p>I want my coffee to taste the same every time.</p></div>
+        <div class="q" data-scale="aio_4"><p>Coffee helps me focus on my work.</p></div>
+        <div class="q" data-scale="aio_5"><p>I go to cafés mainly to relax and get away.</p></div>
+        <div class="q" data-scale="aio_6"><p>A café's space matters as much as its coffee.</p></div>
+        <div class="q" data-scale="aio_7"><p>I usually choose the cheapest option that's good enough.</p></div>
+        <div class="q" data-scale="aio_8"><p>I compare prices before I buy coffee.</p></div>
+      </div>
+    </section>
+
+    <!-- Step: GREEN scale -->
+    <section class="step-page" data-step="green">
+      <p class="eyebrow">You and the environment</p>
+      <h2>A few more <em>statements</em></h2>
+      <div class="panel">
+        <p class="small" style="margin-top:0">1 = strongly disagree · 7 = strongly agree</p>
+        <div class="q" data-scale="green_1"><p>It is important to me that the products I use do not harm the environment.</p></div>
+        <div class="q" data-scale="green_2"><p>I consider the potential environmental impact of my actions when making many of my decisions.</p></div>
+        <div class="q" data-scale="green_3"><p>My purchase habits are affected by my concern for our environment.</p></div>
+        <div class="q" data-scale="attention"><p>Please select 5 for this item.</p></div>
+        <div class="q" data-scale="green_4"><p>I am concerned about wasting the resources of our planet.</p></div>
+        <div class="q" data-scale="green_5"><p>I would describe myself as environmentally responsible.</p></div>
+        <div class="q" data-scale="green_6"><p>I am willing to be inconvenienced in order to take actions that are more environmentally friendly.</p></div>
+      </div>
+    </section>
+
+    <!-- Step: profile -->
+    <section class="step-page" data-step="profile">
+      <p class="eyebrow">Last step</p>
+      <h2>A little <em>about you</em></h2>
+      <div class="panel">
+        <div class="q"><p>What kind of workplace do you work in?</p>
+          <select name="workplace_type">
+            <option value="">Choose one</option>
+            <option>Hospital or clinic</option><option>Municipal or government office</option>
+            <option>School or college</option><option>Private office</option>
+            <option>Store, shop or restaurant</option><option>Logistics or warehouse</option>
+            <option>I work from home</option><option>Not currently working</option><option>Other</option>
+          </select></div>
+        <div class="q"><p>Which town do you work in (or live in, if you don't work outside home)?</p>
+          <select name="town">
+            <option value="">Choose one</option>
+            <option>Pangil</option><option>Pakil</option><option>Paete</option><option>Siniloan</option>
+            <option>Famy</option><option>Mabitac</option><option>Kalayaan</option><option>Lumban</option><option>Other</option>
+          </select></div>
+        <div class="q"><p>Your age group</p>
+          <select name="age_band"><option value="">Choose one</option><option>18–24</option><option>25–34</option><option>35–44</option><option>45–54</option><option>55 or older</option></select></div>
+        <div class="q"><p>Gender</p>
+          <select name="gender"><option value="">Choose one</option><option>Female</option><option>Male</option><option>Prefer not to say</option></select></div>
+      </div>
+    </section>
+
+    <p class="error" id="stepError">Please answer every question on this page.</p>
+    <div class="navrow">
+      <button type="button" class="button ghost" id="backBtn">Back</button>
+      <button type="button" class="button" id="nextBtn">Next</button>
+    </div>
+  </form>
+</main>
+
+<footer class="footer">Naz Coffee · Pangil, Laguna · A Naz Ventures business</footer>
+
+<script src="/loop/loop.js"></script>
+<script>
+(function () {
+  var preview = NAZ_LOOP.param('preview') === '1';
+  var study = NAZ_LOOP.load();
+  if (!study || !study.order) {
+    if (preview) study = { id: 'PREVIEW', started_ms: Date.now(), order: NAZ_LOOP.shuffle(NAZ_LOOP.VERSIONS), visits: '' };
+    else { window.location.replace('/loop/'); return; }
+  }
+
+  /* The four offers. Factor A = message, Factor B = cup-kit terms. Texts match the original study pages. */
+  var CHECK = '<li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>';
+  var FRAMES = {
+    a1: { headline: 'Your coffee, <em>delivered</em> to your desk every workday.',
+          points: ['Choose your drink and we bring it in your morning or afternoon window.',
+                   'Pause or skip anytime on Viber.'] },
+    a2: { headline: 'A daily cup for the people who <em>take care</em> of everyone else.',
+          points: ['Your drink arrives at your post in your own numbered Loop cup.',
+                   'We take it back, wash it and bring it again, with no single-use cups.',
+                   'One member keeps about 240 cups a year out of the lakeshore.',
+                   "Be a founding member of your workplace's Loop."] }
+  };
+  var KITS = {
+    b1: { title: 'Your Loop Kit: three numbered cups.', text: '₱300 refundable deposit, returned in full when you leave.' },
+    b2: { title: 'Your Loop Kit: three numbered cups, free.', text: 'A ₱150 fee applies only if a cup is not returned.' }
+  };
+  var LETTERS = ['A', 'B', 'C', 'D'];
+  var order = study.order; // e.g. ['a2b1','a1b1','a2b2','a1b2']
+
+  function strip(html) { return html.replace(/<[^>]+>/g, ''); }
+
+  // Fill the four offer pages in this person's order
+  document.querySelectorAll('[data-step="offer"]').forEach(function (sec) {
+    var pos = Number(sec.getAttribute('data-pos')), v = order[pos - 1];
+    var fa = FRAMES[v.slice(0, 2)], kb = KITS[v.slice(2)];
+    sec.setAttribute('data-version', v);
+    sec.innerHTML =
+      '<p class="eyebrow">Offer ' + LETTERS[pos - 1] + ' · ' + pos + ' of 4</p>' +
+      '<div class="offer">' +
+        '<p class="eyebrow" style="margin-bottom:10px">Naz Loop · from Naz Coffee, Pangil</p>' +
+        '<h2>' + fa.headline + '</h2>' +
+        '<ul class="points">' + fa.points.map(function (p) { return CHECK + p + '</span></li>'; }).join('') + '</ul>' +
+        '<div class="price-chip"><strong>Loop Daily: ₱2,580 a month</strong><br>20 drinks a month · ₱129 per drink</div>' +
+        '<div class="kit"><div class="cups">' +
+          '<div class="cup-icon"><div class="lid"></div><div class="body">01</div></div>' +
+          '<div class="cup-icon"><div class="lid"></div><div class="body">02</div></div>' +
+          '<div class="cup-icon"><div class="lid"></div><div class="body">03</div></div>' +
+        '</div><div><h3>' + kb.title + '</h3><p>' + kb.text + '</p></div></div>' +
+      '</div>' +
+      '<div class="panel">' +
+        '<p class="small" style="margin-top:0">Thinking only about Offer ' + LETTERS[pos - 1] + ': 1 = strongly disagree · 7 = strongly agree</p>' +
+        '<div class="q" data-scale="' + v + '_pi_1"><p>If this offer were available at my workplace, I would subscribe.</p></div>' +
+        '<div class="q" data-scale="' + v + '_pi_2"><p>The probability that I would consider subscribing to this offer is high.</p></div>' +
+        '<div class="q" data-scale="' + v + '_pi_3"><p>My willingness to subscribe to this offer is high.</p></div>' +
+      '</div>';
+  });
+
+  // Favorite-pick list, in the same order the person saw the offers
+  document.getElementById('pickList').innerHTML = order.map(function (v, i) {
+    return '<label><input type="radio" name="favorite" value="' + v + '"><div><b>Offer ' + LETTERS[i] + '</b>' +
+      '<span>' + strip(FRAMES[v.slice(0, 2)].headline) + '</span><span>' + KITS[v.slice(2)].title + ' ' + KITS[v.slice(2)].text + '</span></div></label>';
+  }).join('') + '<label><input type="radio" name="favorite" value="none"><div><b>None of them</b><span>I would not sign up for any of these.</span></div></label>';
+
+  // Build the 7-point scales
+  document.querySelectorAll('[data-scale]').forEach(function (q) {
+    var name = q.getAttribute('data-scale'), row = document.createElement('div');
+    row.className = 'scale';
+    for (var i = 1; i <= 7; i++) {
+      var l = document.createElement('label');
+      l.innerHTML = '<input type="radio" name="' + name + '" value="' + i + '" aria-label="' + i + '">';
+      row.appendChild(l);
+    }
+    var ends = document.createElement('div');
+    ends.className = 'scale-ends';
+    ends.innerHTML = '<span>Strongly disagree</span><span>Strongly agree</span>';
+    q.appendChild(row); q.appendChild(ends);
+  });
+
+  var form = document.getElementById('survey');
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.step-page'));
+  var idx = 0, offerSeconds = {}, pageStart = Date.now(), vwWarned = false;
+
+  function val(n) {
+    var c = form.querySelector('[name="' + n + '"]:checked');
+    if (c) return c.value;
+    var el = form.querySelector('[name="' + n + '"]');
+    return el && el.type !== 'radio' ? el.value.trim() : '';
+  }
+  function namesOn(page) {
+    var seen = {};
+    page.querySelectorAll('input[name], select[name]').forEach(function (el) { seen[el.name] = 1; });
+    return Object.keys(seen);
+  }
+  function show(i) {
+    pages.forEach(function (p, j) { p.classList.toggle('hidden', j !== i); });
+    document.getElementById('backBtn').classList.toggle('hidden', i === 0);
+    document.getElementById('nextBtn').textContent = i === pages.length - 1 ? 'Submit my answers' : 'Next';
+    document.getElementById('bar').style.width = Math.round(i / (pages.length - 1) * 100) + '%';
+    document.getElementById('stepError').classList.remove('show');
+    pageStart = Date.now();
+    window.scrollTo(0, 0);
+  }
+
+  document.getElementById('backBtn').addEventListener('click', function () { if (idx > 0) show(--idx); });
+  document.getElementById('nextBtn').addEventListener('click', function () {
+    var page = pages[idx];
+    var missing = namesOn(page).some(function (n) { return val(n) === ''; });
+    document.getElementById('stepError').classList.toggle('show', missing);
+    if (missing) return;
+
+    if (page.getAttribute('data-step') === 'price') {
+      var vw = ['vw_too_cheap','vw_bargain','vw_expensive','vw_too_expensive'].map(function (n) { return Number(val(n)); });
+      var ok = vw[0] <= vw[1] && vw[1] <= vw[2] && vw[2] <= vw[3];
+      var err = document.getElementById('vwError');
+      if (!ok && !vwWarned) { vwWarned = true; err.classList.add('show'); return; }  // warn once, then accept
+      err.classList.remove('show');
+    }
+    if (page.getAttribute('data-step') === 'offer') {
+      var v = page.getAttribute('data-version');
+      offerSeconds[v] = (offerSeconds[v] || 0) + Math.round((Date.now() - pageStart) / 1000);
+    }
+    if (idx < pages.length - 1) { show(++idx); return; }
+    submit();
+  });
+
+  function mean(arr) { return Math.round(arr.reduce(function (a, b) { return a + b; }, 0) / arr.length * 100) / 100; }
+
+  function submit() {
+    var p = {
+      type: 'response2',
+      response_id: study.id,
+      consent_at: study.consent_at || '', submitted_at: new Date().toISOString(),
+      duration_sec: Math.round((Date.now() - study.started_ms) / 1000),
+      visits_3mo: study.visits || '', src: study.src || '',
+      order: order.join(',')
+    };
+    NAZ_LOOP.VERSIONS.forEach(function (v) {
+      var pi = [1, 2, 3].map(function (k) { return Number(val(v + '_pi_' + k)); });
+      p['pos_' + v] = order.indexOf(v) + 1;
+      p[v + '_pi_1'] = pi[0]; p[v + '_pi_2'] = pi[1]; p[v + '_pi_3'] = pi[2];
+      p[v + '_pi_mean'] = mean(pi);
+      p[v + '_sec'] = offerSeconds[v] || 0;
+    });
+    p.favorite = val('favorite');
+    var vw = ['vw_too_cheap','vw_bargain','vw_expensive','vw_too_expensive'];
+    vw.forEach(function (n) { p[n] = Number(val(n)); });
+    p.vw_ordered = (p.vw_too_cheap <= p.vw_bargain && p.vw_bargain <= p.vw_expensive && p.vw_expensive <= p.vw_too_expensive) ? 1 : 0;
+    ['buy_freq','time_of_day','channel','buy_for','spend','step_out','tumbler','fav_drink','found_naz'].forEach(function (n) { p[n] = val(n); });
+    for (var i = 1; i <= 8; i++) p['aio_' + i] = Number(val('aio_' + i));
+    var gr = [1, 2, 3, 4, 5, 6].map(function (k) { return Number(val('green_' + k)); });
+    gr.forEach(function (g, k) { p['green_' + (k + 1)] = g; });
+    p.green_mean = mean(gr);
+    p.attention_pass = val('attention') === '5' ? 1 : 0;
+    ['workplace_type','town','age_band','gender'].forEach(function (n) { p[n] = val(n); });
+    p.preview = preview ? 1 : 0;
+
+    var btn = document.getElementById('nextBtn');
+    btn.disabled = true; btn.textContent = 'Saving…';
+    NAZ_LOOP.send(p).then(function (status) {
+      if (!preview) NAZ_LOOP.markDone();
+      try { sessionStorage.removeItem(NAZ_LOOP.STUDY_KEY); } catch (e) {}
+      window.location.href = '/loop/thanks.html' + (preview || status === 'preview' ? '?preview=1' : '');
+    });
+  }
+
+  show(0);
+})();
+</script>
+</body>
+</html>

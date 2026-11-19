@@ -8,6 +8,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@600;700&display=swap">
 <link rel="stylesheet" href="/loop/loop.css">
+<style>
+  .voucher{background:var(--espresso);color:#f7eede;border-radius:22px;padding:26px;margin-top:22px;text-align:center}
+  .voucher .code{display:inline-block;margin:14px 0 6px;padding:12px 22px;border:2px dashed #c9a27e;border-radius:14px;font:700 1.7rem/1 'Poppins',Arial,sans-serif;letter-spacing:.12em;color:#fff}
+  .voucher h3{color:#fff;font-size:1.4rem}
+  .voucher p{margin:6px 0 0;color:#eadbc8;font-size:.92rem}
+</style>
 </head>
 <body>
 <header class="nvgh-bar">
@@ -21,39 +27,47 @@
 </header>
 
 <main class="narrow" style="padding:36px 0 60px">
-  <p class="notice hidden" id="previewNote">Preview mode: answers were not saved. Add your Google Sheet link to <code>loop.js</code> to start collecting.</p>
+  <p class="notice hidden" id="previewNote">Preview mode: this test was marked as a preview and will be left out of the results.</p>
 
   <p class="eyebrow">All done</p>
   <h1>Thank you for <em>your time.</em></h1>
   <p class="lead">Your answers have been recorded without your name.</p>
 
+  <!-- Thank-you treat: the same for everyone, whatever their answers -->
+  <div class="voucher">
+    <p class="step-label" style="color:#c9a27e">Your thank-you treat</p>
+    <h3 id="voucherTitle">₱20 off your next drink</h3>
+    <div class="code" id="voucherCode">LOOPTHANKS</div>
+    <p id="voucherTerms">Show this screen at the Naz Coffee counter. One per customer. Valid until 31 December 2026.</p>
+  </div>
+
   <div class="panel">
     <p class="step-label">What this study was about</p>
-    <p style="margin:0 0 10px">Naz Coffee is planning <strong>Naz Loop</strong>: a monthly coffee plan delivered to workplaces in reusable cups that we collect, wash and refill.</p>
-    <p style="margin:0 0 10px">To learn what matters to people, participants were shown one of four versions of the page. Some versions described Naz Loop mainly as convenient. Others described it as a shared ritual that avoids single-use cups. The cup-kit terms also differed: some saw a refundable deposit, others a free kit with a fee for lost cups.</p>
-    <p style="margin:0">Comparing the groups shows which description and which terms people prefer. Nothing you answered commits you to buy anything.</p>
+    <p style="margin:0 0 10px">Naz Coffee is planning <strong>Naz Loop</strong>: a monthly coffee plan delivered to workplaces in reusable cups that we collect, wash and refill. It has not launched yet, and the prices shown are proposals.</p>
+    <p style="margin:0 0 10px">The four offers you rated differed in two ways. Two described Naz Loop mainly as convenient, and two described it as a daily ritual that cares for workers and avoids single-use cups. The cup-kit terms also differed: a ₱300 refundable deposit, or a free kit with a ₱150 fee for lost cups.</p>
+    <p style="margin:0">Your ratings, together with your coffee habits, help us learn which offer suits which kind of customer. Nothing you answered commits you to buy anything.</p>
   </div>
 
   <div class="panel" id="raffleBox">
     <p class="step-label">Optional · Raffle and launch updates</p>
-    <h3>Join the raffle for one of five free months of Loop Lite</h3>
+    <h3>Win one of three Loop cups with your name on it</h3>
     <p class="small">Your number is saved separately from your answers, so it can't be linked to them. Raffle numbers are deleted after the draw.</p>
     <form id="raffleForm" novalidate>
-      <div class="q"><p>First name</p><input type="text" name="first_name" autocomplete="given-name"></div>
+      <div class="q"><p>First name (as you'd like it printed on the cup)</p><input type="text" name="first_name" maxlength="20" autocomplete="given-name"></div>
       <div class="q"><p>Mobile or Viber number</p><input type="tel" name="mobile" inputmode="tel" placeholder="09XX XXX XXXX" autocomplete="tel"></div>
       <div class="q">
         <div class="choices">
           <label><input type="checkbox" name="raffle" checked> Enter me in the raffle</label>
-          <label><input type="checkbox" name="updates"> Message me when Naz Loop launches at my workplace</label>
+          <label><input type="checkbox" name="updates"> Message me when Naz Loop launches</label>
         </div>
       </div>
       <p class="error" id="raffleError">Please enter a valid mobile number (11 digits starting with 09).</p>
       <button class="button block" type="submit">Submit</button>
     </form>
   </div>
-  <div class="panel hidden" id="raffleDone"><h3>You're in. Good luck!</h3><p class="small" style="margin:6px 0 0">We'll contact winners by Viber after the draw.</p></div>
+  <div class="panel hidden" id="raffleDone"><h3>You're in. Good luck!</h3><p class="small" style="margin:6px 0 0">We'll contact the three winners by Viber after the draw.</p></div>
 
-  <p class="small" style="margin-top:24px">Questions? Message Naz Coffee's official page or ask for Patrick at the shop in Pangil.</p>
+  <p class="small" style="margin-top:24px">Questions? Message Naz Coffee's official Facebook page.</p>
 </main>
 
 <footer class="footer">Naz Coffee · Pangil, Laguna · A Naz Ventures business</footer>
@@ -72,7 +86,7 @@
     f.querySelector('[type=submit]').disabled = true;
     NAZ_LOOP.send({
       type: 'raffle', at: new Date().toISOString(),
-      first_name: f.first_name.value.trim().slice(0, 40), mobile: mobile,
+      first_name: f.first_name.value.trim().slice(0, 20), mobile: mobile,
       raffle: f.raffle.checked ? 1 : 0, launch_updates: f.updates.checked ? 1 : 0
     }).then(function () {
       document.getElementById('raffleBox').classList.add('hidden');

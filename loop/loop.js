@@ -6,7 +6,7 @@ var NAZ_LOOP = {
   ENDPOINT: 'https://script.google.com/macros/s/AKfycbz7cxdWzNEiPm-gdRXy2wFshDULBVk39528YmiMZ1-nhx6MY5sqMFRxXSKNdF2O1QR3/exec',
   VERSIONS: ['a1b1', 'a1b2', 'a2b1', 'a2b2'],
   STUDY_KEY: 'nazLoopStudy',
-  DONE_KEY: 'nazLoopDone'
+  DONE_KEY: 'nazLoopDone2'
 };
 
 NAZ_LOOP.uid = function () {
@@ -67,6 +67,20 @@ NAZ_LOOP.requestVersion = function (id) {
     .then(function (r) { return r.json(); })
     .then(function (d) { clearTimeout(timer); return NAZ_LOOP.VERSIONS.indexOf(d.version) >= 0 ? d.version : NAZ_LOOP.assign(); })
     .catch(function () { clearTimeout(timer); return NAZ_LOOP.assign(); });
+};
+
+/* Within-subjects design: every person sees all four offers, in a random order.
+ * Fisher-Yates shuffle using the browser's secure random generator. */
+NAZ_LOOP.shuffle = function (arr) {
+  var a = arr.slice(), r = new Uint32Array(a.length);
+  (window.crypto || window.msCrypto).getRandomValues(r);
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = r[i] % (i + 1), t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+};
+NAZ_LOOP.requestOrder = function () {
+  return Promise.resolve(NAZ_LOOP.shuffle(NAZ_LOOP.VERSIONS));
 };
 
 NAZ_LOOP.param = function (name) {
